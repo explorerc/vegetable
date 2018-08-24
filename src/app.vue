@@ -1,10 +1,7 @@
 
 <template>
     <div id="app">
-        <div>123456789abcdefghijklmnopqrst123456789abcdefghijklmnopqrst</div>
-        <div class="box example">
-
-        </div>
+        <router-view></router-view>
     </div>
 </template>
 
