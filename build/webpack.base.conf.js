@@ -142,6 +142,7 @@ const webpackConfig = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
+        IMGHOST: JSON.stringify(config[process.env.BUILD_ENV].IMGHOST),
         BUILD_ENV: JSON.stringify(config[process.env.BUILD_ENV].BUILD_ENV),
         API_PATH: JSON.stringify(config[process.env.BUILD_ENV].API_PATH),
         PUBLIC_PATH: JSON.stringify(config[process.env.BUILD_ENV].PUBLIC_PATH)

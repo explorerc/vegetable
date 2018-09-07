@@ -15,6 +15,7 @@ Vue.use(Vuex)
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = process.env.NODE_ENV !== 'production'
+Vue.prototype.$imgHost = process.env.IMGHOST
 
 export default () => {
   const router = createRouter()
