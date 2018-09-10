@@ -34,8 +34,6 @@ const webpackConfig = {
   },
   externals: {
     'vue': 'Vue',
-    'vue-router': 'VueRouter',
-    'vuex': 'Vuex',
     'element-ui': 'ELEMENT',
   },
   resolve: {
