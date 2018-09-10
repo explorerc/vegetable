@@ -25,7 +25,7 @@ const webpackConfig = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? '' : 'source-map',
   entry: {
-    index: resolve('src/index.js')
+    index: resolve('src/app.js')
   },
   output: {
     filename: subPath('js/[name].[hash:8].js'),
@@ -109,18 +109,18 @@ const webpackConfig = {
   },
   optimization: {
     splitChunks: {
-      chunks: "initial",
       cacheGroups: {
-        vendor: {
-          test: /node_modules\//,
-          name: "vendor",
-          priority: 10
+        common: {
+          name: 'common',
+          chunks: 'async',
+          minChunks: 2,
+          minSize: 0
         },
-        commons: {
-          name: "common",
-          test: /src\//,
-          minChunks: 1,
-          minSize: 30000
+        vender: {
+          name: 'vendor',
+          test: resolve('node_modules'),
+          chunks: 'all',
+          priority: 10
         }
       }
     },
