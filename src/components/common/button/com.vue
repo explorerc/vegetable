@@ -34,7 +34,7 @@ export default {
   white-space: nowrap;
   cursor: pointer;
   background: #fff;
-  border: 1px solid #dcdfe6;
+  border: 1px solid transparent;
   border-color: #dcdfe6;
   border-radius: 4px;
   color: #606266;

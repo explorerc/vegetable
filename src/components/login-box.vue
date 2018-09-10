@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .login-container /deep/ {
   .dialog-wrap {
-    width: 385px;
+    width: 540px;
     .dialog-body {
       padding: 30px 40px 10px;
       .rule {
@@ -65,17 +65,20 @@ export default {
         padding-bottom: 30px;
       }
       .mobile {
-        padding-bottom: 20px;
+        margin-bottom: 20px;
+        height: 80px;
         width: 100%;
       }
       .code {
-        padding-bottom: 20px;
+        height: 80px;
+        margin-bottom: 20px;
         display: inline-block;
-        width: 200px;
+        width: 292px;
       }
       .codeBtn {
-        width: 100px;
+        width: 160px;
         padding: 10px 0;
+        height: 80px;
       }
     }
     .footer {
@@ -84,6 +87,7 @@ export default {
       width: 100%;
       button {
         width: 100%;
+        height: 80px;
       }
     }
   }

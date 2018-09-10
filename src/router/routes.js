@@ -16,6 +16,8 @@ const CheckState = () =>
 // 报名成功页
 const Live = () =>
   import('src/pages/watch/live')
+const Test = () =>
+  import('src/pages/test-login')
 export default [{
   path: '/',
   name: 'Layout',
@@ -47,5 +49,10 @@ export default [{
   path: '/live',
   name: 'live',
   component: Live
+},
+{
+  path: '/test',
+  name: 'Test',
+  component: Test
 }
 ]
