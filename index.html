@@ -29,6 +29,7 @@
 
   <% if(process.env.BUILD_ENV!='prod') { %>
   <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+<<<<<<< HEAD
   <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.js"></script>
   <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.js"></script>
   <% } else { %>
@@ -37,6 +38,11 @@
   <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
   <% } %>
 
+=======
+  <% } else { %>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.runtime.min.js"></script>
+  <% } %>
+>>>>>>> 03dbbe5d47a152334289de929ebceaf830186109
   <script src="//cnstatic01.e.vhall.com/3rdlibs/element-ui/2.0.10/index.js"></script>
   <script src="//cnstatic01.e.vhall.com/3rdlibs/yidun/captcha/load.min.js"></script>
 </body>
