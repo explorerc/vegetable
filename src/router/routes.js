@@ -20,7 +20,7 @@ export default [{
   path: '/',
   name: 'Layout',
   component: GuidLayout,
-  redirect: 'setAccount',
+  redirect: '/live',
   children: [{
     path: '/signUp',
     name: 'signUp',

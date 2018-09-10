@@ -110,7 +110,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 
 .fade-enter-active,
 .fade-leave-active {

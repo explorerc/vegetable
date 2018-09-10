@@ -40,8 +40,8 @@ const webpackConfig = merge(baseConfig, {
     hot: true,
     contentBase: resolve('dist'),
     open: false,
-    host: '172.16.11.167',
-    port: 2333,
+    host: '0.0.0.0',
+    port: 8866,
     overlay: {
       warnings: false,
       errors: true
