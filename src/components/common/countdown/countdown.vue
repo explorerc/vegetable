@@ -51,3 +51,16 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+.v-cundown {
+  margin-bottom: 80px;
+  span {
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    line-height: 65px;
+    border: 1px solid #666;
+    text-align: center;
+  }
+}
+</style>

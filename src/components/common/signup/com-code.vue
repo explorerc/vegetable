@@ -24,7 +24,7 @@
         phoneKey: '',
         isImg: false,
         cap: null,
-        code: 0
+        code: ''
       }
     },
     mounted () {

@@ -3,14 +3,15 @@
     <label class="v-label">
       {{label}}
     </label>
-    <input type="text" :value="inputVal" class="v-input">
+    <input type="text" :value="inputVal" class="v-input" :placeholder="placeholder">
   </div>
 </template>
 <script>
   export default {
     props: {
       label: String,
-      inputVal: String
+      inputVal: String,
+      placeholder: String
     },
     data () {
       return {}
