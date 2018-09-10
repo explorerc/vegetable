@@ -22,19 +22,23 @@
   </script>
 
   <link rel="stylesheet" href="//cnstatic01.e.vhall.com/3rdlibs/element-ui/2.0.10/index.css">
+  <!--依赖的播放器资源-->
+  <!-- 观看-->
+  <script src="https://static.vhallyun.com/jssdk/dvideo-plugin.js?v=1.0.0"></script>
+  <script src="https://static.vhallyun.com/jssdk/vhall-jssdk-player-1.0.0.js"></script>
 
   <% if(process.env.BUILD_ENV!='prod') { %>
-    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
-    <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.js"></script>
-    <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.js"></script>
-    <% } else { %>
-      <script src="https://cdn.bootcss.com/vue/2.5.16/vue.runtime.min.js"></script>
-      <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
-      <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
-      <% } %>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+  <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.js"></script>
+  <% } else { %>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.runtime.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+  <% } %>
 
-        <script src="//cnstatic01.e.vhall.com/3rdlibs/element-ui/2.0.10/index.js"></script>
-        <script src="//cnstatic01.e.vhall.com/3rdlibs/yidun/captcha/load.min.js"></script>
+  <script src="//cnstatic01.e.vhall.com/3rdlibs/element-ui/2.0.10/index.js"></script>
+  <script src="//cnstatic01.e.vhall.com/3rdlibs/yidun/captcha/load.min.js"></script>
 </body>
 
 </html>

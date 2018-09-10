@@ -21,6 +21,9 @@ module.exports = {
     "no-spaced-func": 2,
     "no-var": 0,
     "no-debugger": 0,
+  },
+  globals: {
+    Vhall: true
   }
 
 }
