@@ -15,10 +15,11 @@ const loginManage = {
       params: data
     })
   },
-  getLoginInfo () {
+  getLoginInfo (data) {
     return utils.ajax({
-      method: 'post',
-      url: '/user/consumer-user/info'
+      method: 'get',
+      url: '/user/consumer-user/info',
+      params: data
     })
   }
 }

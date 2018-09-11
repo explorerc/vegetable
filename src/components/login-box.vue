@@ -69,7 +69,7 @@ export default {
         mobile: this.mobile,
         type: 'CONSUMER_USER_LOGIN',
         captcha: this.captchaKey,
-        errHandler: true
+        __errHandler: true
       }).then((res) => {
         if (res.code === 200) {
           this.time--
@@ -89,7 +89,7 @@ export default {
         mobile: this.mobile,
         code: this.code,
         wechatAuth: sessionStorage.getItem('wechatAuth'),
-        errHandler: true
+        __errHandler: true
       }).then((res) => {
         if (res.code === 200) {
           this.$parent.updateLoginInfo(res.data)

@@ -21,14 +21,9 @@ const defaultOptions = {
 axios.interceptors.request.use(
   config => {
     config.params = config.params || {}
-    config.errHandler = false
     if (config.params.__loading) {
       Loading(true)
       delete config.params.__loading
-    }
-    if (config.params.errHandler) {
-      config.errHandler = true
-      delete config.params.errHandler
     }
     if (config.method === 'post') {
       config.data = qs.stringify(config.params)
@@ -65,13 +60,13 @@ export const ajax = (options) => {
   }).catch((error) => {
     Loading(false)
     console.log('出错了', error)
-    MessageBox({
-      header: '提示',
-      content: error
-    })
-    if (options.errHandler) {
+    if (options.params.__errHandler) {
       return Promise.resolve(error)
     } else {
+      MessageBox({
+        header: '提示',
+        content: error
+      })
       return new Promise(() => {})
     }
   })

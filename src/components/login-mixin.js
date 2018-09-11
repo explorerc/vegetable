@@ -11,7 +11,9 @@ export default {
     }
   },
   created () {
-    authManage.getLoginInfo().then(res => {
+    authManage.getLoginInfo({
+      __errHandler: true
+    }).then(res => {
       this.updateLoginInfo(res.data)
     })
   },
