@@ -1,4 +1,5 @@
 import ComLogin from './login-box.vue'
+import authManage from 'src/api/auth-manage'
 
 export default {
   components: {
@@ -8,6 +9,11 @@ export default {
     return {
       login: null
     }
+  },
+  created () {
+    authManage.getLoginInfo().then(res => {
+      this.updateLoginInfo(res.data)
+    })
   },
   mounted () {
     this.login = this.$children.find(child => {
@@ -19,6 +25,12 @@ export default {
     }
   },
   methods: {
+    getAuthInfo () {
+      return sessionStorage.getItem('wechatAuth')
+    },
+    getLoginInfo () {
+      return JSON.parse(sessionStorage.getItem('login'))
+    },
     doAuth (url) {
       let _url = location.href
       if (url) {
@@ -28,14 +40,26 @@ export default {
       // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(_url)}`
       location.href = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
     },
-    doLogin () {
+    doLogin (url) {
       if (!sessionStorage.getItem('wechatAuth')) {
-        // let url=location.href
+        let _url = location.href
+        if (url) {
+          _url = url
+        }
         // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(url)}`
-        location.href = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+        _url = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+        if (_url.indexOf('?') === -1) {
+          _url += '?_pop=true'
+        } else {
+          _url += '&_pop=true'
+        }
+        location.href = _url
       } else {
         this.login.visible = true
       }
+    },
+    updateLoginInfo (data) {
+      sessionStorage.setItem('login', JSON.stringify(data))
     }
   }
 }

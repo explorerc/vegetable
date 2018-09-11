@@ -12,7 +12,10 @@ router.beforeResolve((to, from, next) => {
   if (to.query.wechatAuth) {
     sessionStorage.setItem('wechatAuth', to.query.wechatAuth)
     delete to.query['wechatAuth']
-    // to.meta.pop = true
+    if (to.query['_pop']) {
+      delete to.query['_pop']
+      to.meta.pop = true
+    }
     next({
       path: to.path,
       params: to.params,

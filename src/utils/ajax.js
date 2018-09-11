@@ -20,8 +20,15 @@ const defaultOptions = {
 
 axios.interceptors.request.use(
   config => {
+    config.params = config.params || {}
+    config.errHandler = false
     if (config.params.__loading) {
       Loading(true)
+      delete config.params.__loading
+    }
+    if (config.params.errHandler) {
+      config.errHandler = true
+      delete config.params.errHandler
     }
     if (config.method === 'post') {
       config.data = qs.stringify(config.params)
@@ -42,7 +49,6 @@ axios.interceptors.response.use(
   res => {
     Loading(false)
     if (res.data.code !== 200) {
-      // 错误处理
       return Promise.reject(res.data.msg)
     }
     return res
@@ -54,7 +60,6 @@ axios.interceptors.response.use(
 export const ajax = (options) => {
   options.url = options.abPath || BASE_URL + options.url
   let _options = Object.assign({}, defaultOptions, options)
-  console.log(_options)
   return axios(_options).then((res) => {
     return res.data
   }).catch((error) => {
@@ -64,6 +69,10 @@ export const ajax = (options) => {
       header: '提示',
       content: error
     })
-    return new Promise(() => {})
+    if (options.errHandler) {
+      return Promise.resolve(error)
+    } else {
+      return new Promise(() => {})
+    }
   })
 }
