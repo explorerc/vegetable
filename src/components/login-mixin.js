@@ -61,7 +61,9 @@ export default {
       }
     },
     updateLoginInfo (data) {
-      sessionStorage.setItem('login', JSON.stringify(data))
+      if (data) {
+        sessionStorage.setItem('login', JSON.stringify(data))
+      }
     }
   }
 }
