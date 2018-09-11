@@ -14,7 +14,9 @@ export default {
     authManage.getLoginInfo({
       __errHandler: true
     }).then(res => {
-      this.updateLoginInfo(res.data)
+      if (res.data) {
+        this.updateLoginInfo(res.data)
+      }
     })
   },
   mounted () {
@@ -63,6 +65,9 @@ export default {
     updateLoginInfo (data) {
       if (data) {
         sessionStorage.setItem('login', JSON.stringify(data))
+      } else {
+        sessionStorage.removeItem('login')
+        sessionStorage.removeItem('wechatAuth')
       }
     }
   }
