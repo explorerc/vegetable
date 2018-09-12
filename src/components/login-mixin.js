@@ -1,5 +1,4 @@
 import ComLogin from './login-box.vue'
-import authManage from 'src/api/auth-manage'
 
 export default {
   components: {
@@ -9,15 +8,6 @@ export default {
     return {
       login: null
     }
-  },
-  created () {
-    authManage.getLoginInfo({
-      __errHandler: true
-    }).then(res => {
-      if (res.data) {
-        this.updateLoginInfo(res.data)
-      }
-    })
   },
   mounted () {
     this.login = this.$children.find(child => {
