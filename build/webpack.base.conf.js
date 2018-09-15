@@ -43,9 +43,6 @@ const webpackConfig = {
       resolve('node_modules')
     ],
     alias: {
-      // 'vue': 'vue/dist/vue.runtime.min.js',
-      // 'vue-router': 'vue-router/dist/vue-router.min.js',
-      // 'vuex': 'vuex/dist/vuex.min.js',
       'src': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),

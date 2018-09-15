@@ -14,6 +14,9 @@ module.exports = {
   env: {
     browser: true,
   },
+  globals: {
+    initNECaptcha: true
+  },
   rules: {
     'no-extend-native': 'off',
     'no-new': 'off',

@@ -1,5 +1,5 @@
 <template>
-  <div class="com-dialog" v-show="visible" @click.prevent="handleClose">
+  <div class="com-dialog" v-show="visible" @click.prevent="wrapClose">
     <transition name="fade" >
       <div class="dialog-wrap" v-show="innerVisible" @click.stop="()=>{}">
         <div class="dialog-header" :class="{'align-center':center}">
@@ -27,7 +27,8 @@ export default {
     content: String,
     center: Boolean,
     visible: Boolean,
-    beforeClose: Function
+    beforeClose: Function,
+    dialogClose: Boolean
   },
   data () {
     return {
@@ -35,6 +36,11 @@ export default {
     }
   },
   methods: {
+    wrapClose () {
+      if (this.dialogClose) {
+        this.handleClose()
+      }
+    },
     handleClose () {
       if (typeof this.beforeClose === 'function') {
         this.beforeClose(this.hide)
