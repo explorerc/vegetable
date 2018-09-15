@@ -2,7 +2,7 @@
   <div class="v-vercode">
     <div id="captcha"></div>
     <div class="v-input-from">
-      <input type="text" v-model="code" @blur="pushCode">
+    <com-input :value.sync="code" @blur="pushCode" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus"></com-input>
       <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()" >获取动态码<span v-show="isSend" class="v-getcode-span">(<em>{{second}}</em>s)</span></a>
     </div>
   </div>
@@ -11,8 +11,12 @@
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   export default {
     props: {
+      code: String,
       phone: String,
-      isGetCode: Boolean
+      isGetCode: Boolean,
+      placeholder: String,
+      errorMsg: String,
+      maxLength: Number
     },
     data () {
       return {
@@ -23,8 +27,7 @@
         timerr: '',
         phoneKey: '',
         isImg: false,
-        cap: null,
-        code: ''
+        cap: null
       }
     },
     mounted () {
@@ -62,6 +65,9 @@
       })
     },
     watch: {
+      phone: function (val) {
+        this.isGetCodePermission()
+      },
       isImg: function (val) {
         this.isGetCodePermission()
       },
@@ -118,7 +124,7 @@
         })
       },
       isGetCodePermission () { // 获取验证码是否可点击
-        if (this.isImg) {
+        if (this.isImg && this.verificationPhone()) {
           this.isProhibit = false
         } else {
           this.isProhibit = true
@@ -126,6 +132,17 @@
       },
       pushCode () {
         this.$emit('inputFocus', this.code)
+      },
+      inputFocus () {
+        this.$emit('update:errorMsg', '')
+      },
+      verificationPhone () {
+        let phoneReg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+        console.log(this.phone)
+        if (this.phone !== '' && phoneReg.test(this.phone)) {
+          return true
+        }
+        return false
       }
     }
   }
@@ -133,25 +150,56 @@
 <style lang="scss" scoped>
 .v-vercode {
   width: 100%;
+  #captcha {
+    margin-bottom: 50px;
+  }
   .v-input-from {
     width: 100%;
+    height: 90px;
     position: relative;
+    margin-bottom: 50px;
     input {
       width: 100%;
-      height: 60px;
-      line-height: 60px;
+      height: 90px;
+      line-height: 88px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 28px;
+      color: #888;
+      padding: 0 225px 0 20px;
+      &.warning {
+        border-color: #fc5659;
+      }
+      &:hover {
+        border-color: #4b5afe;
+      }
+    }
+    .error-msg {
+      position: absolute;
+      font-size: 14px;
+      color: #fc5659;
+      top: 98px;
+      left: 0;
     }
     a {
       text-decoration: none;
     }
     .v-getcode {
       position: absolute;
-      top: 8px;
-      right: 15px;
+      top: 5px;
+      right: 5px;
       display: block;
-      width: 260px;
-      height: 45px;
-      border: 1px solid #666;
+      width: 200px;
+      height: 80px;
+      line-height: 80px;
+      background-color: #ffd021;
+      color: #222;
+      text-align: center;
+      border-radius: 6px;
+      &.prohibit {
+        background-color: #dedede;
+        color: #888;
+      }
       .v-getcode-span {
         margin-left: 10px;
       }

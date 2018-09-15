@@ -42,7 +42,7 @@ export default {
     identifyingcodeManage.getCodeId().then((res) => {
       if (res.code === 200) {
         this.key = res.data
-        initNECaptcha({
+        window.initNECaptcha({
           element: '#captcha',
           mode: 'float',
           width: '100%',

@@ -40,10 +40,19 @@
   }
 </script>
 <style lang="scss" scoped>
-.v-select {
+.v-select /deep/ {
   width: 100%;
+  margin-bottom: 50px;
   .el-select {
     width: 100%;
+    height: 90px;
+    line-height: 88px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    .el-input__inner {
+      color: #888;
+      padding: 0 20px;
+    }
   }
 }
 </style>

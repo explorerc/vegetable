@@ -3,7 +3,7 @@
     <label class="v-label">
       {{label}}
     </label>
-    <input type="text" :value="inputVal" class="v-input" :placeholder="placeholder">
+    <com-input :value.sync="val" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus"></com-input>
   </div>
 </template>
 <script>
@@ -11,10 +11,14 @@
     props: {
       label: String,
       inputVal: String,
-      placeholder: String
+      placeholder: String,
+      errorMsg: String,
+      maxLength: Number
     },
     data () {
-      return {}
+      return {
+        val: ''
+      }
     },
     mounted () {
     },
@@ -23,23 +27,53 @@
     created () {
     },
     watch: {
+      val: {
+        handler (n) {
+          this.$emit('update:inputVal', n)
+        },
+        immediate: true
+      }
     },
     methods: {
+      inputFocus () {
+        this.$emit('update:errorMsg', '')
+      }
     }
   }
 </script>
 <style lang="scss" scoped>
-.input-form {
+.input-form /deep/{
   width: 100%;
+  height: 90px;
+  margin-bottom: 50px;
+  position: relative;
   .v-label {
     display: block;
     text-align: left;
   }
   .v-input {
     display: block;
-    height: 60px;
-    line-height: 60px;
+    line-height: 88px;
     width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    padding: 0 20px;
+    font-size: 28px;
+    color: #888;
+    &.warning {
+      border-color: #fc5659;
+    }
+    &:hover {
+      border-color: #4b5afe;
+    }
+  }
+  .error-msg {
+    position: absolute;
+    font-size: 14px;
+    color: #fc5659;
+    top: 98px;
+    left: 0;
   }
 }
 </style>

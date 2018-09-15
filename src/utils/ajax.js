@@ -44,7 +44,7 @@ axios.interceptors.response.use(
   res => {
     Loading(false)
     if (res.data.code !== 200) {
-      return Promise.reject(res.data.msg)
+      return Promise.reject(res.data)
     }
     return res
   }, error => {

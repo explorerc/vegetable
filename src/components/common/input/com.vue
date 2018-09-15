@@ -162,8 +162,8 @@ export default {
 .com-input /deep/ {
   position: relative;
   display: inline-block;
-  width: 200px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
   .error-msg {
     display: block;
     position: absolute;

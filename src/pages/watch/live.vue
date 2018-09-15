@@ -1,65 +1,97 @@
 <template>
   <div class="v-video">
-    <div class="v-text">
-      6666666
-    </div>
-    <video id="myVideo" src="../../assets/image/activity3.mp4" x5-video-player-type="h5" playsinline x5-video-player-fullscreen="false" x5-video-orientation="landscape|portrait" controls style="object-position: 0px 0px;"></video>
-    <p>
-      adfdsaffffffffffffffffffffffffffffffffasdfdasf
-    </p>
+    <play-video role="watcher" :play-type="playType" :startInit="startInit"></play-video>
   </div>
 </template>
 <script>
-import LivePuller from '../../components/common/video/pull/LivePuller'
+// import VodPuller from '../../components/common/video/pull/VodPuller'
+// import Slider from '../../components/common/video-control/con-slider'
+import PlayVideo from './video/index' // 直播推流回放组件
+// import LiveHttp from 'src/api/manage'
+
 export default {
+  components: {PlayVideo},
   data () {
     return {
-      event: {
-        type: 'guide' // guide是报名活动 normal是无限制活动
-      }
+      activityId: '',
+      playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+      startInit: false
     }
   },
   mounted () {
-    this.init()
-  },
-  components: {
   },
   created () {
-    let appId = '499279ae'
-    let roomId = 'lss_5b3c9d9d'
-    let rootEleId = 'my-pusher'
-    let token = 'access:499279ae:885ba973a5d6ad10'
-    rootEleId = 'my-puller'
-    this.puller = new LivePuller(appId, roomId, rootEleId, token)
-    this.puller.initLivePlayer(true)
-    this.puller.accountId = 'xiao2'
-  },
-  watch: {
+    this.initToken()
   },
   methods: {
-    init: function () {
-      // document.querySelector('#myVideo').style['object-position'] = '0px 0px'
+    /* 初始化，获取权限 */
+    initToken () {
+      this.$nextTick(() => {
+        this.startInit = true
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.v-video {
+.v-video /deep/ {
   width: 100%;
-  height: 100%;
+  height: 422px;
   position: relative;
+  overflow: hidden;
   .v-text {
     position: absolute;
     top: 20px;
     left: 20px;
     z-index: 2;
   }
+  #my-puller {
+    width: 100%;
+    height: 422px;
+  }
+  .v-controls {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    left: 0;
+    .el-slider {
+      width: 500px;
+      position: absolute;
+      top: 360px;
+      left: 60px;
+      // top: 320px;
+    }
+    .v-fullScreen {
+      position: absolute;
+      top: 375px;
+      // top: 320px;
+      right: 50px;
+      color: #ffffff;
+    }
+    .v-start {
+      position: absolute;
+      // top: 375px;
+      top: 320px;
+      right: 110px;
+      color: #ffffff;
+    }
+  }
   video {
     width: 100%;
-    height: 100%;
+    height: 422px;
+    object-fit: fill;
   }
   p {
     color: red;
+  }
+  .v-div {
+    position: absolute;
+    top: 422px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    overflow: auto;
   }
 }
 </style>

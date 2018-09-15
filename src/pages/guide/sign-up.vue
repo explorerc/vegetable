@@ -1,20 +1,26 @@
 <template>
   <div class="v-signup">
     <p class="v-title">
-      这里显示引导标题
+      为了更好的接收活动直播提醒，请填写如下信息：
     </p>
-    <div class="v-summary">
-      是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介
-      是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介
-      是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介
-      是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介是直播简介
+    <div class="v-operation" v-if="activity.viewCondition === 'APPOINT'">
+      <template v-for="item in questionList">
+        <template v-if="item.type === 'mobile'">
+          {{questionList}}
+          <com-input  :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+          <com-verification-code :inputVal="code" :phone="item.val"  @inputFocus="getCode($event)" :isGetCode="isGetCode" placeholder='请输入验证码' :errorMsg.sync="errorMsg"></com-verification-code>
+        </template>
+        <com-input v-else-if="item.type === 'email'" :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+        <com-input v-else-if="item.type === 'integer'" :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+        <com-select v-else-if="item.type === 'select'" :selectOptions="selectOptions" :selectValue="item.val" @selected="selected($event)"></com-select>
+        <com-input v-else-if="item.type === 'text'" :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+      </template>
+      <a href="javascript:;" @click="submitAppoint" class="v-submit">提交</a>
     </div>
-    <div class="v-operation">
-      <com-input label="您的姓名" inputVal="Biubiu"></com-input>
-      <com-input label="手机号" inputVal="15210101011"></com-input>
-      <com-verification-code phone='15210102723' @inputFocus="getCode($event)" :isGetCode="isGetCode"></com-verification-code>
-      <com-select :selectOptions="selectOptions" :selectValue="selectValue" @selected="selected($event)"></com-select>
-      <a href="javascript:;" @click="submit">提交</a>
+    <div class="v-operation" v-else>
+      <com-input inputVal="15210101011" placeholder='请输入手机号'></com-input>
+      <com-verification-code phone='15210102723' @inputFocus="getCode($event)" :isGetCode="isGetCode" placeholder='输入验证码'></com-verification-code>
+      <a href="javascript:;" @click="submit" class="v-submit">提交</a>
     </div>
   </div>
 </template>
@@ -23,10 +29,11 @@
   import ComInput from '../../components/common/signup/com-input.vue'
   import ComVerificationCode from '../../components/common/signup/com-code.vue'
   import ComSelect from '../../components/common/signup/com-select.vue'
+  import GuidManage from '../../api/guid-manage.js'
   export default {
     data () {
       return {
-        code: 0,
+        code: '',
         isGetCode: true,
         selectOptions: [{
           value: '选项1',
@@ -44,10 +51,16 @@
           value: '选项5',
           label: '北京烤鸭'
         }],
-        selectValue: '黄金糕'
+        questionList: [],
+        selectValue: '黄金糕',
+        activity: {
+          viewCondition: 'APPOINT'
+        },
+        errorMsg: '请填写验证码'
       }
     },
     mounted () {
+      this.getQuestionLists()
     },
     components: {
       'com-input': ComInput,
@@ -64,17 +77,66 @@
       },
       selected (val) {
         this.selectValue = val
-        alert(this.selectValue)
+      },
+      submitAppoint () {
+        this.questionList.forEach(element => {
+          if (!this.verification(element.val, element.required, element.type)) {
+            switch (element.type) {
+              case 'mobile': element.errorMsg = '请正确填写手机号'
+                break
+              case 'email': element.errorMsg = '请正确填写邮箱'
+                break
+              default: element.errorMsg = '请正确填写表格'
+                break
+            }
+            return false
+          }
+        })
       },
       submit () {
         this.isGetCode = !this.isGetCode
         this.$router.replace('/Success')
+      },
+      getQuestionLists () {
+        let data = {
+          'activityId': this.$route.params.id
+        }
+        GuidManage.getQuestionInfo(data).then((res) => {
+          if (res.code === 200) {
+            this.questionList = res.data.questionList.map((item) => {
+              item.val = ''
+              item.errorMsg = ''
+              return item
+            })
+          }
+        })
+      },
+      verification (val, isRequired, type) {
+        let phoneReg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+        let emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+        let integerReg = /^[0-9]*$/
+        if (val === '') {
+          if (isRequired === 'Y') {
+            return false
+          }
+        } else {
+          switch (type) {
+            case 'mobile': return phoneReg.test(val)
+            case 'integer': return integerReg.test(val)
+            case 'email': return emailReg.test(val)
+          }
+        }
+        return true
       }
     }
   }
 </script>
 <style lang="scss" scoped>
 .v-signup {
+  .v-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
 }
 </style>
 

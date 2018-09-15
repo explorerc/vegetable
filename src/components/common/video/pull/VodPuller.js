@@ -1,9 +1,27 @@
 import BasePuller from './BasePuller'
 
 export default class VodPuller extends BasePuller {
-  constructor () {
-    super()
-    this.type = 'VodPuller'
+  constructor (appId, recordId, rootEleId, token) {
+    super(appId, rootEleId, token)
+    this.type = 'vod'
+    this.recordId = recordId
+  }
+
+  initVodPlayer (autoplay = false, completionBK = null) {
+    let VhallPlayer = window.VhallPlayer
+    VhallPlayer.init({
+      recordId: this.recordId,
+      type: 'vod',
+      videoNode: this.rootEleId,
+      complete: () => {
+        completionBK && completionBK()
+        if (autoplay) {
+          VhallPlayer.play()
+        }
+      }
+    })
+
+    this.player = VhallPlayer
   }
 
   get duration () {
