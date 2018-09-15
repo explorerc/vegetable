@@ -12,46 +12,16 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <com-edit ref="editTarget" class="block2-edit" @show="showHandle" @hide="hideHandle">
-      <com-button class="add-btn" @click="addBlock">添加图块</com-button>
-      <ul class="block2-edit-group">
-        <li v-for="(item,index) in value.data" :key="'block2_edit_item'+index">
-          <div class="block2-title" @click="titleClick(index)">{{`图块${index+1}`}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
-          <div class="block2-content" :class="{active:active===index}">
-            <div>
-              <com-upload
-      accept="png|jpg|jpeg|bmp|gif"
-      uploadTxt="上传"
-      actionUrl="/api/upload/image"
-      inputName="file"
-      :fileSize="2048"
-      :exParams="{}"
-      @load="uploadLoad($event,index)"
-      >
-      </com-upload>
-            </div>
-            <div>
-               <com-editer height="400" class="font-editer" v-model="item.content" ></com-editer>
-            </div>
-            <div>
-               <com-input placeholder="按钮链接" v-model="item.link"></com-input>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </com-edit>
   </div>
 </template>
 
 <script>
-import ComEditer from 'src/components/ve-html5-editer'
 import ComFont from 'components/site/font'
 import editMixin from './mixin'
-import ComEdit from './edit'
 export default {
   mixins: [editMixin],
   components: {
-    ComEdit, ComEditer, ComFont
+    ComFont
   },
   props: {
     min: {

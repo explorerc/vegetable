@@ -4,41 +4,14 @@
       <div v-if="value.videoType==='upload'" id="myVideo" class="video-wrap"></div>
       <div v-if="value.videoType==='url'" v-html="value.url" class="iframe-wrap"></div>
     </div>
-    <com-edit ref="editTarget" class="video-edit-content">
-      <com-tabs :value="value.videoType" @change="checkInit">
-        <com-tab index="upload" >
-          <div slot="label"><el-radio v-model="value.videoType" label="upload">上传视频</el-radio></div>
-          <div class="upload-field">
-            <com-button @click="doUpload">上传视频</com-button>
-            <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
-            <span>{{uploadErrorMsg}}</span>
-            <div class="hide">
-              <input type="file" ref="upload" id="upload"/>
-              <input type="text" id='rename'>
-              <button ref="confirmUpload" id="confirmUpload" class="saveBtn"></button>
-            </div>
-          </div>
-        </com-tab>
-        <com-tab index="url" >
-          <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
-          <div>
-            <com-input class="link-input" :rows="6" type="textarea" placeholder="视频url" v-model="value.url"></com-input>
-          </div>
-        </com-tab>
-      </com-tabs>
-    </com-edit>
   </div>
 </template>
 
 <script>
 import editMixin from './mixin'
-import ComEdit from './edit'
-import LiveHttp from 'src/api/activity-manger'
+import LiveHttp from 'src/api/activity-mange'
 export default {
   mixins: [editMixin],
-  components: {
-    ComEdit
-  },
   data () {
     return {
       vhallParams: {},

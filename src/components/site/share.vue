@@ -15,16 +15,16 @@
     </div>
     <div ref="target" class="share" >
       <ul class="share-group">
-        <li v-if="value.sina">
-          <a class="share-item" @click="doSina">
-            <div class="icon sina"></div>
-            <span>新浪微博</span>
+        <li v-if="value.wx">
+          <a class="share-item" @click="doWX">
+            <div class="icon wx"></div>
+            <span>微信好友</span>
           </a>
         </li>
-        <li v-if="value.qqSpace">
-          <a class="share-item" @click="doQQSpace">
-            <div class="icon qq-space"></div>
-            <span>QQ空间</span>
+        <li v-if="value.wxSpace">
+          <a class="share-item" @click="doWXSpace">
+            <div class="icon wx-space"></div>
+            <span>微信朋友圈</span>
           </a>
         </li>
         <li v-if="value.qq">
@@ -33,16 +33,16 @@
             <span>QQ好友</span>
           </a>
         </li>
-        <li v-if="value.wxSpace">
-          <a class="share-item" @click="doWXSpace">
-            <div class="icon wx-space"></div>
-            <span>朋友圈</span>
+        <li v-if="value.qqSpace">
+          <a class="share-item" @click="doQQSpace">
+            <div class="icon qq-space"></div>
+            <span>QQ空间</span>
           </a>
         </li>
-        <li v-if="value.wx">
-          <a class="share-item" @click="doWX">
-            <div class="icon wx"></div>
-            <span>微信好友</span>
+        <li v-if="value.sina">
+          <a class="share-item" @click="doSina">
+            <div class="icon sina"></div>
+            <span>新浪微博</span>
           </a>
         </li>
         <li v-if="value.copy">
@@ -53,64 +53,13 @@
         </li>
       </ul>
     </div>
-    <com-edit ref="editTarget">
-      <ul class="edit-share-group">
-        <li>
-          <span class="label">新浪微博</span>
-          <el-switch
-            v-model="value.sina"
-            >
-          </el-switch>
-        </li>
-        <li>
-           <span class="label">QQ空间</span>
-          <el-switch
-            v-model="value.qqSpace"
-            >
-          </el-switch>
-          </li>
-          <li>
-           <span class="label">QQ好友</span>
-          <el-switch
-            v-model="value.qq"
-            >
-          </el-switch>
-          </li>
-          <li>
-           <span class="label">朋友圈</span>
-          <el-switch
-            v-model="value.wxSpace"
-            >
-          </el-switch>
-          </li>
-          <li>
-           <span class="label">微信好友</span>
-          <el-switch
-            v-model="value.wx"
-            >
-          </el-switch>
-          </li>
-          <li>
-           <span class="label">复制链接</span>
-          <el-switch
-            v-model="value.copy"
-            >
-          </el-switch>
-        </li>
-      </ul>
-    </com-edit>
   </div>
 </template>
 
 <script>
 import editMixin from './mixin'
-import ComEdit from './edit'
-
 export default {
   mixins: [editMixin],
-  components: {
-    ComEdit
-  },
   props: {
     share: {
       type: Object,
@@ -122,7 +71,7 @@ export default {
   data () {
     return {
       showDialog: false,
-      url: 'http://localhost:2333/brand/template',
+      url: 'http://localhost:2333/template',
       sina: true
     }
   },
@@ -239,8 +188,8 @@ export default {
       li {
         display: inline-block;
         font-size: 14px;
-        height: 80px;
-        width: 60px;
+        height: 100%;
+        width: 90px;
         margin-right: 20px;
         &:last-child {
           margin-right: 0;
@@ -251,52 +200,32 @@ export default {
           height: 100%;
           cursor: pointer;
           .icon {
-            height: 60px;
-            background-image: url(../../assets/image/shareIcon.png);
+            width: 90px;
+            height: 90px;
             background-repeat: no-repeat;
-            background-size: 460px;
+            background-size: 100% 100%;
+            margin-bottom: 6px;
             &.sina {
-              background-position: 3px 0px;
-              &:hover {
-                background-position: 3px -80px;
-              }
+              background-image: url('~assets/image/sina.png');
             }
             &.qq-space {
-              background-position: -78px 0px;
-              &:hover {
-                background-position: -78px -80px;
-              }
+              background-image: url('~assets/image/qq_space.png');
             }
             &.qq {
-              background-position: -159px 0px;
-              &:hover {
-                background-position: -159px -80px;
-              }
+              background-image: url('~assets/image/qq.png');
             }
             &.wx-space {
-              background-position: -241px 0px;
-              &:hover {
-                background-position: -241px -80px;
-              }
+              background-image: url('~assets/image/wx_space.png');
             }
             &.wx {
-              background-position: -321px 0px;
-              &:hover {
-                background-position: -321px -80px;
-              }
+              background-image: url('~assets/image/wx.png');
             }
             &.copy {
-              background-position: -403px 0px;
-              &:hover {
-                background-position: -403px -80px;
-              }
+              background-image: url('~assets/image/copy_link.png');
             }
           }
           span {
             display: inline-block;
-            &:hover {
-              color: #5aa700;
-            }
           }
         }
       }

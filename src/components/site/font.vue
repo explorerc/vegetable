@@ -3,21 +3,18 @@
     <div ref="target">
       <div class="font-content" v-html="value.content"></div>
     </div>
-    <com-edit ref="editTarget" follow :offsetTop="-38" class="font-edit" @show="showHandle" @hide="hideHandle">
-      <com-editer class="font-editer" v-model="value.content" ></com-editer>
-    </com-edit>
   </div>
 </template>
 
 <script>
-import ComEditer from 'src/components/ve-html5-editer'
 import editMixin from './mixin'
-import ComEdit from './edit'
-
 export default {
   mixins: [editMixin],
-  components: {
-    ComEdit, ComEditer
+  props: {
+    offTop: {
+      type: Number,
+      default: -38
+    }
   },
   data () {
     return {
@@ -27,13 +24,13 @@ export default {
   },
   methods: {
     showHandle (rect) {
-      this.$refs.target.style.cssText = 'visibility:hidden'
+      // this.$refs.target.style.cssText = 'visibility:hidden'
       // let height = this.$refs.editTarget.$el.querySelector('.vue-html5-editor .toolbar').offsetHeight
       // console.log(rect.height - height)
-      this.$refs.editTarget.$el.querySelector('.vue-html5-editor .content').style.cssText = `height:auto;min-height:100px`
+      // this.$refs.editTarget.$el.querySelector('.vue-html5-editor .content').style.cssText = `height:auto;min-height:300px`
     },
     hideHandle () {
-      this.$refs.target.style.cssText = ''
+      // this.$refs.target.style.cssText = ''
     }
   }
 }
@@ -53,15 +50,26 @@ export default {
       min-width: auto;
       height: 100%;
       .vue-html5-editor {
-        height: 100%;
+        min-height: 400px;
         line-height: inherit;
         background-color: transparent;
+        position: relative;
+        border-radius: 0px;
         .toolbar {
           background-color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
         }
         .content {
           padding: 0;
-          overflow: hidden;
+          position: absolute;
+          top: 37px;
+          left: 0;
+          overflow: auto;
+          width: 100%;
+          bottom: 0;
         }
       }
       li {

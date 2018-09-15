@@ -60,7 +60,7 @@ export const ajax = (options) => {
   }).catch((error) => {
     Loading(false)
     console.log('出错了', error)
-    if (options.params.__errHandler) {
+    if ((options.data && options.data.__errHandler) || (options.params && options.params.__errHandler)) {
       return Promise.resolve(error)
     } else {
       MessageBox({

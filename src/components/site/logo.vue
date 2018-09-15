@@ -3,30 +3,13 @@
     <div ref="target" class="logo-content">
       <a target="_blank" :href=" value.link | voidLink "><img class="left" :src="url"></a>
     </div>
-    <com-edit ref="editTarget">
-<com-upload
-      accept="png|jpg|jpeg|bmp|gif"
-      uploadTxt="上传"
-      actionUrl="/api/upload/image"
-      inputName="file"
-      :fileSize="2048"
-      :exParams="{}"
-      @load="uploadLoad"
-      >
-      </com-upload>
-      <com-input placeholder="跳转链接" v-model="value.link"></com-input>
-    </com-edit>
   </div>
 </template>
 
 <script>
 import editMixin from './mixin'
-import ComEdit from './edit'
 export default {
   mixins: [editMixin],
-  components: {
-    ComEdit
-  },
   data () {
     return {
       host: process.env.IMGHOST + '/'
@@ -65,6 +48,7 @@ export default {
       max-height: 100%;
       position: absolute;
       top: 50%;
+      left: 0;
       transform: translateY(-50%);
     }
   }

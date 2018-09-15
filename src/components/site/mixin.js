@@ -55,8 +55,8 @@ export default {
       }
     },
     showEdit () {
-      let rect = this.$refs.target.getBoundingClientRect()
-      this.$refs.editTarget.show(rect)
+      // let rect = this.$refs.target.getBoundingClientRect()
+      this.$refs.editTarget.show()
     },
     disable () {
       this.value.enable = false

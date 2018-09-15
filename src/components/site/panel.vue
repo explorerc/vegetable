@@ -6,73 +6,14 @@
       </div>
       <slot></slot>
     </div>
-    <com-edit ref="editTarget">
-      <com-tabs :value="value.bgType">
-       <com-tab index="color" >
-         <div slot="label"><el-radio v-model="value.bgType" label="color">显示颜色</el-radio></div>
-         <div>
-           <el-color-picker show-alpha v-model="value.color"></el-color-picker>
-         </div>
-       </com-tab>
-       <com-tab index="img" >
-          <div slot="label"><el-radio v-model="value.bgType" label="img">显示图片</el-radio></div>
-          <div>
-            <com-upload
-            accept="png|jpg|jpeg|bmp|gif"
-            uploadTxt="上传"
-            actionUrl="/api/upload/image"
-            inputName="file"
-            :fileSize="2048"
-            :exParams="{}"
-            @load="uploadLoad"
-            >
-            </com-upload>
-          </div>
-       </com-tab>
-       <com-tab index="video" >
-          <div slot="label"><el-radio v-model="value.bgType" label="video">显示视频</el-radio></div>
-          <div>
-            <com-tabs :value="value.videoType" @change="">
-              <com-tab index="upload" >
-                <div slot="label"><el-radio v-model="value.videoType" label="upload">上传视频</el-radio></div>
-                <div>
-                  <com-upload
-                  accept="mp4"
-                  uploadTxt="上传"
-                  actionUrl="/api/upload/video"
-                  inputName="file"
-                  :fileSize="10240"
-                  :exParams="{}"
-                  @progress="progress"
-                  @load="uploadLoad"
-                  >
-                  </com-upload>
-                  <span>进度{{pro}}</span>
-                </div>
-              </com-tab>
-              <com-tab index="url" >
-                <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
-                <div>
-                  <com-input placeholder="视频url" v-model="value.video"></com-input>
-                </div>
-              </com-tab>
-           </com-tabs>
-         </div>
-       </com-tab>
-      </com-tabs>
-    </com-edit>
   </div>
 </template>
 
 <script>
 import editMixin from './mixin'
-import ComEdit from './edit'
 
 export default {
   mixins: [editMixin],
-  components: {
-    ComEdit
-  },
   data () {
     return {
       pro: '0%',
@@ -154,6 +95,7 @@ export default {
       video {
         position: absolute;
         top: 0;
+        left: 0;
         width: 100%;
       }
       iframe {

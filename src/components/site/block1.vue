@@ -2,65 +2,28 @@
   <div class="block1-container" v-if="value.enable">
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
-        <li class="block1-item" v-for="(item,index) in value.list" :key="'block1_item'+index">
+        <li class="block1-item" :class="item.type" v-for="(item,index) in value.list" :key="'block1_item'+index">
           <a target="_black" :href="item.link | voidLink">
             <img v-if="item.img" class="img" :src="host+item.img">
-            <div class="content" :class="{top:value.type==='top'}" v-html="item.content">
+            <div class="content"  v-html="item.content">
             </div>
             <!-- <com-font :class="{content:true,top:value.type==='top'}" :edit="edit" v-model="item.content"></com-font> -->
-            <com-btn v-if="value.showBtn" :edit="edit" v-model="value.btn"></com-btn>
+            <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
           </a>
         </li>
       </ul>
     </div>
-    <com-edit ref="editTarget" class="block1-edit">
-      <com-button class="add-btn" @click="addBlock">添加图块</com-button>
-      <div>
-        <el-radio v-model="value.type" label="top">图片上</el-radio>
-        <el-radio v-model="value.type" label="bottom">图片下</el-radio>
-      </div>
-      <div>
-         <el-checkbox v-model="value.showBtn">是否显示按钮</el-checkbox>
-      </div>
-      <ul class="block1-edit-group">
-        <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
-          <div class="block1-title" @click="titleClick(index)">{{`图块${index+1}`}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
-          <div class="block1-content" :class="{active:active===index}">
-            <div>
-              <com-upload
-      accept="png|jpg|jpeg|bmp|gif"
-      uploadTxt="上传"
-      actionUrl="/api/upload/image"
-      inputName="file"
-      :fileSize="2048"
-      :exParams="{}"
-      @load="uploadLoad($event,index)"
-      >
-      </com-upload>
-            </div>
-            <div>
-               <com-editer class="font-editer" v-model="item.content" ></com-editer>
-            </div>
-            <div>
-               <com-input placeholder="按钮链接" v-model="item.link"></com-input>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </com-edit>
   </div>
 </template>
 
 <script>
 import ComBtn from 'components/site/button'
 import ComFont from 'components/site/font'
-import ComEditer from 'src/components/ve-html5-editer'
 import editMixin from './mixin'
-import ComEdit from './edit'
 export default {
   mixins: [editMixin],
   components: {
-    ComEdit, ComEditer, ComBtn, ComFont
+    ComBtn, ComFont
   },
   props: {
     min: {
@@ -83,8 +46,14 @@ export default {
       let len = this.value.list.length
       if (len < this.max) {
         this.value.list.push({
-          content: ``,
-          img: ''
+          content: '',
+          img: '',
+          btn: {
+            enable: true,
+            text: '',
+            bgColor: '',
+            fontColor: ''
+          }
         })
         this.active = len
       }
@@ -138,14 +107,28 @@ export default {
         }
         .content {
           width: 100%;
-          &.top {
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+        &.top {
+          .content {
             position: absolute;
             left: 0;
             top: 0;
           }
         }
-        &:last-child {
-          margin-right: 0;
+        &.right {
+          overflow: hidden;
+          img {
+            float: left;
+          }
+        }
+        &.left {
+          overflow: hidden;
+          img {
+            float: right;
+          }
         }
       }
     }
