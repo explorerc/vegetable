@@ -2,7 +2,7 @@
   <div class="v-vercode">
     <div id="captcha"></div>
     <div class="v-input-from">
-    <com-input :value.sync="code" @blur="pushCode" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus"></com-input>
+    <com-input :value.sync="val" @blur="pushCode" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus"></com-input>
       <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()" >获取动态码<span v-show="isSend" class="v-getcode-span">(<em>{{second}}</em>s)</span></a>
     </div>
   </div>
@@ -15,8 +15,8 @@
       phone: String,
       isGetCode: Boolean,
       placeholder: String,
-      errorMsg: String,
-      maxLength: Number
+      maxLength: Number,
+      errorMsg: String
     },
     data () {
       return {
@@ -27,7 +27,8 @@
         timerr: '',
         phoneKey: '',
         isImg: false,
-        cap: null
+        cap: null,
+        val: ''
       }
     },
     mounted () {
@@ -64,6 +65,9 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     watch: {
       phone: function (val) {
         this.isGetCodePermission()
@@ -81,6 +85,12 @@
           this.phoneKey = ''
           this.cap.refresh()
         }
+      },
+      val: {
+        handler (n) {
+          this.$emit('update:code', n)
+        },
+        immediate: true
       }
     },
     methods: {
@@ -92,18 +102,14 @@
 
         let data = {
           'mobile': this.phone,
-          'type': 'BUSINESS_USER_LOGIN',
+          'type': 'APPLY_ACTIVITY',
           captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
-          if (res.code !== 200) {
-            clearInterval(this.timerr)
-            this.isSend = false
-            this.isProhibit = true
-            this.second = 60
-            this.isImg = false
-            this.phoneKey = ''
-            this.cap.refresh()
+          if (res.code === 10050) {
+            this.$emit('update:errorMsg', '动态码输入过于频繁')
+          } else if (res.code !== 200) {
+            this.$emit('update:errorMsg', res.msg)
           } else {
             this.isSend = true
             this.isProhibit = true
@@ -126,6 +132,13 @@
       isGetCodePermission () { // 获取验证码是否可点击
         if (this.isImg && this.verificationPhone()) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+          }
         } else {
           this.isProhibit = true
         }
@@ -189,7 +202,7 @@
       top: 5px;
       right: 5px;
       display: block;
-      width: 200px;
+      width: 250px;
       height: 80px;
       line-height: 80px;
       background-color: #ffd021;

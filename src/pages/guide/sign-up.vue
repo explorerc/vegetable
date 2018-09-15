@@ -6,14 +6,13 @@
     <div class="v-operation" v-if="activity.viewCondition === 'APPOINT'">
       <template v-for="item in questionList">
         <template v-if="item.type === 'mobile'">
-          {{questionList}}
-          <com-input  :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
-          <com-verification-code :inputVal="code" :phone="item.val"  @inputFocus="getCode($event)" :isGetCode="isGetCode" placeholder='请输入验证码' :errorMsg.sync="errorMsg"></com-verification-code>
+          <com-input  :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg" :maxLength="11"></com-input>
+          <com-verification-code :inputVal.sync="code" :code.sync="code" :phone="item.val"  @inputFocus="getCode($event)" :isGetCode="isGetCode" placeholder='请输入验证码' :maxLength="6"  :errorMsg.sync="codeError"></com-verification-code>
         </template>
-        <com-input v-else-if="item.type === 'email'" :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
-        <com-input v-else-if="item.type === 'integer'" :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
-        <com-select v-else-if="item.type === 'select'" :selectOptions="selectOptions" :selectValue="item.val" @selected="selected($event)"></com-select>
-        <com-input v-else-if="item.type === 'text'" :inputVal="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+        <com-input v-else-if="item.type === 'email'" :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+        <com-input v-else-if="item.type === 'integer'" :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+        <com-select v-else-if="item.type === 'select'" :selectOptions="item.detail" @selected="selected($event, item.id)"></com-select>
+        <com-input v-else-if="item.type === 'text'" :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
       </template>
       <a href="javascript:;" @click="submitAppoint" class="v-submit">提交</a>
     </div>
@@ -22,6 +21,9 @@
       <com-verification-code phone='15210102723' @inputFocus="getCode($event)" :isGetCode="isGetCode" placeholder='输入验证码'></com-verification-code>
       <a href="javascript:;" @click="submit" class="v-submit">提交</a>
     </div>
+    <p class="v-explain">
+      我已阅读并遵守<span class="v-blue">《服务条款》</span>
+    </p>
   </div>
 </template>
 
@@ -35,28 +37,12 @@
       return {
         code: '',
         isGetCode: true,
-        selectOptions: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        questionList: [],
-        selectValue: '黄金糕',
         activity: {
           viewCondition: 'APPOINT'
         },
-        errorMsg: '请填写验证码'
+        questionList: [],
+        selectVal: [],
+        codeError: ''
       }
     },
     mounted () {
@@ -75,12 +61,20 @@
       getCode (val) {
         this.code = val
       },
-      selected (val) {
-        this.selectValue = val
+      selected (val, id) {
+        let obj = []
+        obj['questionId'] = id
+        obj['answer'] = val
+        this.selectVal.push(obj)
       },
       submitAppoint () {
+        let isVerification = true
+        let data = {
+          activityId: this.$route.params.id,
+          answer: []
+        }
         this.questionList.forEach(element => {
-          if (!this.verification(element.val, element.required, element.type)) {
+          if (isVerification && !this.verification(element.val, element.required, element.type)) {
             switch (element.type) {
               case 'mobile': element.errorMsg = '请正确填写手机号'
                 break
@@ -89,13 +83,38 @@
               default: element.errorMsg = '请正确填写表格'
                 break
             }
-            return false
+            isVerification = false
+          }
+          if (element.type === 'mobile') {
+            data.mobile = element.val
+          } else if (element.type !== 'select') {
+            let obj = {}
+            obj.questionId = element.id
+            obj.answer = element.val
+            data.answer.push(obj)
           }
         })
+        if (isVerification) {
+          if (!this.verification(this.code, 'Y', 'integer')) {
+            this.codeError = '请输入正确验证码'
+          }
+          data.code = this.code
+          for (let i; i < this.selectVal.length; i++) {
+            let obj = {}
+            obj.questionId = this.selectVal[i].id
+            obj.answer = this.selectVal[i].val
+            data.answer.push(obj)
+          }
+          GuidManage.applyActivity(data).then((res) => {
+            if (res.code === 200) {
+              this.$router.replace('/Success/' + this.$route.params.id)
+            }
+          })
+        }
       },
       submit () {
         this.isGetCode = !this.isGetCode
-        this.$router.replace('/Success')
+        this.$router.replace('/Success/' + this.$route.params.id)
       },
       getQuestionLists () {
         let data = {
@@ -136,6 +155,15 @@
   .v-title {
     font-size: 28px;
     margin-bottom: 30px;
+  }
+  .v-explain {
+    text-align: center;
+    font-size: 22px;
+    color: #555;
+    margin-top: 15px;
+    .v-blue {
+      color: #4b5afe;
+    }
   }
 }
 </style>

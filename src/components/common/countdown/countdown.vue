@@ -32,6 +32,9 @@
     methods: {
       fomatDate (sec) {
         this.showTime.day = sec / 3600 / 24 >> 0
+        if (this.showTime.day < 9) {
+          this.showTime.day = '0' + this.showTime.day
+        }
         this.showTime.hour = ((sec / 3600 % 24 >> 0) + '').padStart(2, 0)
         this.showTime.minute = ((sec / 60 % 60 >> 0) + '').padStart(2, 0)
         this.showTime.second = ((sec % 60 >> 0) + '').padStart(2, 0)
@@ -56,10 +59,9 @@
   margin-bottom: 80px;
   span {
     display: inline-block;
-    width: 65px;
-    height: 65px;
-    line-height: 65px;
-    border: 1px solid #666;
+    font-size: 63px;
+    color: #fc5659;
+    padding: 0 5px;
     text-align: center;
   }
 }

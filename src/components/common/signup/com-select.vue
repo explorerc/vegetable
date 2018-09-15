@@ -3,9 +3,9 @@
     <el-select v-model="val" placeholder="请选择">
       <el-option
         v-for="item in selectOptions"
-        :key="item.value"
-        :label="item.label"
-        :value="item.label">
+        :key="item.id"
+        :label="item.value"
+        :value="item.key">
       </el-option>
     </el-select>
   </div>
@@ -13,8 +13,7 @@
 <script>
   export default {
     props: {
-      selectOptions: Array,
-      selectValue: String
+      selectOptions: Array
     },
     data () {
       return {
@@ -26,11 +25,12 @@
     components: {
     },
     created () {
+      console.log('666' + this.selectOptions)
     },
     watch: {
-      selectValue: function () {
-        this.val = this.selectValue
-      },
+      // selectValue: function () {
+      //   this.val = this.selectValue
+      // },
       val: function () {
         this.$emit('selected', this.val)
       }
