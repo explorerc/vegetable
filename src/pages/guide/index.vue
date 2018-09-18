@@ -3,103 +3,247 @@
     <p class="v-title">
       {{activity.title}}
     </p>
-    <div class="v-summary" v-if="!activity.isCountdown">
-      {{activity.description}}
+    <div class="v-summary" v-if="!activity.isCountdown || (activity.viewCondition === 'NONE' && activity.countDown < 1800) || viewLimit.canAppoint !== 'Y'">
+      <div v-html="activity.description"></div>
     </div>
     <div class="v-operation" v-if="activity.countDown >= 1800">  <!-- 距离活动开始大于30min -->
+    <a href="javascript:;" @click="sendAction('666')">666</a>
       <template v-if="activity.viewCondition === 'APPOINT'">  <!-- 报名活动 -->
-        <com-countdown :time="activity.countDown" @timeOut="timeOut" v-if="activity.isCountdown"></com-countdown>
-        <template v-if="activity.isApplay"> <!-- 已报名 -->
-          <a href="javascript:;" class="v-submit">已报名</a>
+        <template v-if="viewLimit.canAppoint === 'Y'"> <!-- 报名未截止 -->
+          <com-countdown :time="activity.countDown" v-if="activity.isCountdown"></com-countdown>
+          <template v-if="user.isApplay"> <!-- 已报名 -->
+            <button class="primary-button">已报名</button>
+          </template>
+          <template v-else> <!-- 未报名 -->
+            <button class="primary-button" @click="jumpPage('/SignUp/')">立即报名</button>
+            <a href="javascript:;" class="v-registered" @click="jumpPage('/CheckState/')" v-if="!this.user.phone">已报名</a>
+          </template>
         </template>
-        <template v-else> <!-- 未报名 -->
-          <a :href="goUrl" class="v-submit">立即报名</a>
-          <a href="/CheckState" class="v-registered">已报名</a>
+        <template v-else> <!-- 报名已截止 -->
+          <template v-if="user.isApplay"> <!-- 已报名 -->
+            <button class="primary-button">已报名</button>
+          </template>
+          <template v-else>
+            <button class="primary-button" @click="jumpPage('/CheckState/')" v-if="!this.user.phone">报名验证</button>
+          </template>
         </template>
       </template>
       <template v-else>  <!-- 无限制活动 -->
-        <com-countdown :time="activity.countDown" @timeOut="timeOut" v-if="activity.isCountdown"></com-countdown>
-        <a href="javascript:;" class="v-submit" v-if="activity.isOrder">已预约</a>
+        <com-countdown :time="activity.countDown" v-if="activity.isCountdown"></com-countdown>
+        <button class="primary-button"  v-if="user.isOrder">已预约</button>
         <template v-else>
-          <a :href="goUrl" class="v-submit">预约</a>
-          <a href="/CheckState" class="v-registered">已预约</a>
+          <button class="primary-button" @click="jumpPage('/SignUp/')">预约</button>
+          <a href="javascript:;" class="v-registered" @click="jumpPage('/CheckState/')" v-if="!this.user.phone">已预约</a>
         </template>
       </template>
     </div>
     <div class="v-operation" v-else> <!-- 距离活动开始小于30min -->
       <template v-if="activity.viewCondition === 'APPOINT'">  <!-- 报名活动 -->
-        <com-countdown :time="activity.countDown" @timeOut="timeOut" v-if="activity.isCountdown"></com-countdown>
-        <template v-if="activity.isApplay"> <!-- 已报名 -->
-          <!-- ！！！跳转观看页面 -->
+        <template v-if="viewLimit.canAppoint === 'Y'">
+          <com-countdown :time="activity.countDown" v-if="activity.isCountdown"></com-countdown>
+          <template v-if="user.isApplay"> <!-- 已报名 -->
+            <!-- ！！！跳转观看页面 -->
+          </template>
+          <template v-else>  <!-- 未报名 -->
+            <button class="primary-button" @click="jumpPage('/SignUp/')">立即报名</button>
+            <a href="javascript:;" class="v-registered" @click="jumpPage('/CheckState/')" v-if="!this.user.phone">已报名</a>
+          </template>
         </template>
-        <template v-else>  <!-- 未报名 -->
-          <a :href="goUrl" class="v-submit">立即报名</a>
-          <a href="/CheckState" class="v-registered">已报名</a>
+        <template v-else> <!-- 报名已截止 -->
+          <template v-if="user.isApplay"> <!-- 已报名 -->
+            <!-- <a href="javascript:;" class="v-submit">已报名</a> -->
+          </template>
+          <template v-else>
+            <button class="primary-button" @click="jumpPage('/CheckState/')" v-if="!this.user.phone">报名验证</button>
+          </template>
         </template>
       </template>
       <!-- 无限制活动 -->
+      <template v-else>
+        <button class="primary-button" @click="doAuth('http://www.baidu.com')">进入直播</button>
+      </template>
       <!-- ！！！跳转观看页面 -->
     </div>
   </div>
 </template>
 <script>
-  import comCountdown from '../../components/common/countdown/countdown'
-  import activityManage from '../../api/activity-manage.js'
+  import comCountdown from 'components/common/countdown/countdown'
+  import activityManage from 'api/activity-manage.js'
+  import loginMixin from 'components/login-mixin'
+  import sdkManage from 'api/sdk-manage.js'
+  import ChatService from 'components/common/chat/ChatService.js'
+  import { mapMutations, mapState } from 'vuex'
+  import * as types from 'src/store/mutation-types'
+  import ChatConfig from 'src/api/chat-config'
   export default {
+    mixins: [loginMixin],
     data () {
       return {
         goUrl: '',
         goRegisteredUrl: '', // 已报名检验页面
         activity: {
           viewCondition: '', // APPOINT是报名活动 ''是无限制活动
-          isApplay: true, // 是否已报名
-          isOrder: true, // 是否已预约
           title: '', // 活动标题
           description: '', // 活动简介
           isCountdown: false, // 是否显示倒计时
-          countDown: ''// 距离活动开始时间（秒）
+          countDown: '', // 距离活动开始时间（秒）
+          status: '' // 当前活动状态
+        },
+        user: {
+          phone: '', // 无条件观看用户手机
+          isApplay: false, // 是否已经报名
+          isOrder: false // 是否已经预约
+        },
+        viewLimit: {
+          finishTime: '', // 报名截止时间
+          canAppoint: 'Y' // 是否可报名
+        },
+        vhallParams: {
+          token: '',
+          appId: '',
+          channelId: '',
+          accountId: ''
         }
       }
     },
     mounted () {
+      this.getInfo()
     },
     components: {
       'com-countdown': comCountdown
     },
     created () {
-      this.goUrl = '/SignUp/' + this.$route.params.id
-      let data = {
-        'activityId': this.$route.params.id
-      }
-      activityManage.getLiveInfo(data).then((res) => {
-        if (res.code === 200) {
-          this.activity.viewCondition = res.data.activity.viewCondition
-          this.activity.title = res.data.activity.title
-          this.activity.countDown = res.data.activity.countDown
-          this.activity.isCountdown = res.data.guide.showType === 'COUNTDOWN'
-          this.activity.isApplay = res.data.joinInfo.isApplay
-          this.activity.isOrder = res.data.joinInfo.isOrder
-
-          if (this.activity.countDown < 1800) {
-            if (this.activity.viewCondition === 'APPOINT') {
-              if (this.activity.isApplay) {
-                this.$router.replace('http://www.baidu.com')
-              }
-            } else {
-              this.$router.replace('http://www.baidu.com')
-            }
-          }
-        }
-      })
     },
+    computed: mapState('tokenMager', {
+      chatParams: state => state.chatParams
+    }),
     watch: {
       countDown: function () {
         console.log(this.activity.countDown)
       }
     },
     methods: {
-      timeOut () {
-        console.log('活动开始啦')
+      ...mapMutations('tokenMager', {
+        setChatParams: types.CHAT_PARAMS
+      }),
+      jumpPage (url) {
+        let jumpUrl = url + this.$route.params.id
+        this.doAuth(jumpUrl)
+      },
+      initSdk () {
+        this.service = new ChatService()
+        this.service.init(this.vhallParams)
+      // window.Vhall.ready(() => {
+      // })
+      },
+      handleActivityStart (msg) {
+        this.activity.countDown = 1799
+      },
+      sendAction (msg) {
+        // 发送消息
+        this.service.activityId = this.$route.params.id
+        // this.service.sendCustomMsg('activityStart', msg)
+        sdkManage.send({
+          activityId: this.$route.params.id,
+          type: ChatConfig.BEGIN_LIVE,
+          content: msg,
+          __errHandler: true
+        }).then((res) => {
+          if (res.code === 200) {
+          }
+        })
+      },
+      async getInfo () {
+        let data = {
+          activityId: this.$route.params.id,
+          __errHandler: true
+        }
+        let userInfo = JSON.parse(sessionStorage.getItem('login'))
+        if (userInfo) {
+          this.user.phone = userInfo.mobile
+        }
+        await activityManage.getLiveInfo(data).then((res) => {
+          if (res.code === 200) {
+            this.activity.viewCondition = res.data.activity.viewCondition
+            this.activity.status = res.data.activity.status
+            this.activity.title = res.data.activity.title
+            this.activity.countDown = res.data.activity.countDown
+            this.activity.description = res.data.activity.description
+            this.activity.isCountdown = res.data.guide.showType === 'COUNTDOWN'
+            this.user.isApplay = res.data.joinInfo.isApplay
+            this.user.isOrder = res.data.joinInfo.isOrder
+            if (res.data.viewLimit.canAppoint) {
+              this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
+              this.viewLimit.finishTime = res.data.viewLimit.finishTime
+            }
+            if (this.activity.countDown < 1800) {
+              if (this.activity.viewCondition === 'APPOINT') {
+                if (this.user.isApplay) {
+                  this.doAuth('http://www.baidu.com')
+                }
+              } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+                this.doAuth('http://www.baidu.com')
+              }
+            } else {
+              let time = this.activity.countDown
+              let interval = setInterval(i => {
+                time--
+                if (time < 30 * 60) {
+                  this.activity.countDown = 1799
+                  clearInterval(interval)
+                }
+              }, 1000)
+            }
+            if (this.activity.status === 'LIVING') {
+              if (this.activity.viewCondition === 'APPOINT') {
+                if (this.user.isApplay) {
+                  this.doAuth('http://www.baidu.com')
+                }
+              } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+                this.doAuth('http://www.baidu.com')
+              }
+            }
+          }
+        })
+        this.getToken()
+      },
+      getToken () {
+        if ((this.activity.viewCondition === 'APPOINT' && this.user.isApplay) || this.activity.viewCondition !== 'APPOINT') {
+          // 报名活动在已报名状态下和预约活动所有状态下可收到消息
+          if (!this.chatParams.token) {
+            // 当前vuex中没有聊天token 需要获取
+            activityManage.getRegactivity({
+              activityId: this.$route.params.id,
+              __errHandler: true
+            }).then((res) => {
+              if (res.code === 200) {
+                sdkManage.getSdkparams({
+                  activityId: this.$route.params.id,
+                  activityUserId: res.data.activityUserId,
+                  __errHandler: true
+                }).then((res) => {
+                  if (res.code === 200) {
+                    this.vhallParams.token = res.data.token
+                    this.vhallParams.appId = res.data.appId
+                    this.vhallParams.channelId = res.data.channelRoom
+                    this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
+                    this.setChatParams(this.vhallParams)
+                    this.$nextTick(() => {
+                      this.initSdk()
+                      this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
+                    })
+                  }
+                })
+              }
+            })
+          } else {
+            this.vhallParams = this.chatParams
+            this.$nextTick(() => {
+              this.initSdk()
+              this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
+            })
+          }
+        }
       }
     }
   }

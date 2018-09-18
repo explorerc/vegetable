@@ -26,7 +26,8 @@ module.exports = {
     "no-debugger": 0,
   },
   globals: {
-    Vhall: true
+    Vhall: true,
+    VhallChat: true
   }
 
 }

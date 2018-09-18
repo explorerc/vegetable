@@ -30,9 +30,13 @@ export default {
       if (url) {
         _url = url
       }
-      console.log(_url)
-      // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(_url)}`
-      location.href = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+      if (!sessionStorage.getItem('wechatAuth')) {
+        console.log(_url)
+        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(_url)}`
+        // location.href = `${_url}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+      } else {
+        location.href = _url
+      }
     },
     doLogin (url) {
       if (!sessionStorage.getItem('wechatAuth')) {
@@ -40,8 +44,8 @@ export default {
         if (url) {
           _url = url
         }
-        // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(url)}`
-        _url = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(url)}`
+        // _url = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
         if (_url.indexOf('?') === -1) {
           _url += '?_pop=true'
         } else {

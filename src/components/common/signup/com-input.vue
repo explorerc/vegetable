@@ -3,7 +3,7 @@
     <label class="v-label">
       {{label}}
     </label>
-    <com-input :value.sync="val" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus"></com-input>
+    <com-input :value.sync="val" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus" :disabled="isDisabled"></com-input>
   </div>
 </template>
 <script>
@@ -13,7 +13,8 @@
       inputVal: String,
       placeholder: String,
       errorMsg: String,
-      maxLength: Number
+      maxLength: Number,
+      isDisabled: String
     },
     data () {
       return {
@@ -32,6 +33,12 @@
           this.$emit('update:inputVal', n)
         },
         immediate: true
+      },
+      inputVal: {
+        handler (n) {
+          this.val = n
+        },
+        immediate: true
       }
     },
     methods: {
@@ -42,7 +49,7 @@
   }
 </script>
 <style lang="scss" scoped>
-.input-form /deep/{
+.input-form /deep/ {
   width: 100%;
   height: 90px;
   margin-bottom: 50px;

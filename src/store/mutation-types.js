@@ -11,3 +11,7 @@ export const LIVE_GUIDED = 'LIVE_GUIDED'
 
 // 邮件邀约
 export const EMAIL_INFO = 'EMAIL_INFO'
+// 聊天+回放+暖场 token
+export const CHAT_PARAMS = 'CHAT_PARAMS'
+// 直播 token
+export const LIVE_PARAMS = 'LIVE_PARAMS'

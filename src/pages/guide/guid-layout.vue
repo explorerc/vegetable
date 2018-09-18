@@ -41,18 +41,12 @@ export default {
     display: block;
     width: 100%;
     padding: 30px;
-    .v-submit {
+    .primary-button {
       display: block;
-      font-size: 32px;
       width: 490px;
       height: 90px;
-      line-height: 90px;
-      background-color: #ffd021;
-      color: #222;
       border-radius: 50px;
-      text-align: center;
-      text-decoration: none;
-      margin: 30px auto 0;
+      margin: 35px auto;
     }
     .v-registered {
       font-size: 22px;

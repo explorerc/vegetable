@@ -25,7 +25,6 @@
     components: {
     },
     created () {
-      console.log('666' + this.selectOptions)
     },
     watch: {
       // selectValue: function () {
