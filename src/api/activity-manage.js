@@ -7,6 +7,13 @@ const GuidManage = {
       url: '/frontend/live/info',
       params: data
     })
+  },
+  queryPassSdkInfo () {
+    return utils.ajax({
+      method: 'post',
+      url: '/common/paas/create-access-token',
+      params: {}
+    })
   }
 }
 export default GuidManage

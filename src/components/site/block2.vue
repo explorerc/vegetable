@@ -1,12 +1,14 @@
 <template>
   <div class="block2-container" v-if="value.enable">
     <div ref="target" class="block2-content">
-      <el-carousel trigger="click" :autoplay="autoplay" :height="height" :interval="4000">
-        <el-carousel-item v-for="(item,index) in value.data" :key="'block2_item_'+index">
-          <a target="_black" :href="item.link | voidLink">
-            <div class="block2-item" :style="{'background-image':`url(${host+item.img})`}" >
-              <div class="block2-item-content" v-html="item.content"></div>
-              <!-- <com-font :edit="edit" v-model="item.content"></com-font> -->
+      <el-carousel trigger="click" :class="widthClass" :autoplay="autoplay" :height="height" :interval="value.loop">
+        <el-carousel-item :class="item.type"  v-for="(item,index) in value.list" :key="'block2_item_'+index">
+          <a target="_black" :href="item.link | voidLink" >
+            <div v-if="item.bgColor" class="left-area" :style="{backgroundColor:item.bgColor}"></div>
+            <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
+            <div class="content"  >
+              <div v-html="item.content"></div>
+              <com-btn v-if="value.showBtn" :edit="value.enable" v-model="item.btn"></com-btn>
             </div>
           </a>
         </el-carousel-item>
@@ -16,12 +18,13 @@
 </template>
 
 <script>
+import ComBtn from 'components/site/button'
 import ComFont from 'components/site/font'
 import editMixin from './mixin'
 export default {
   mixins: [editMixin],
   components: {
-    ComFont
+    ComFont, ComBtn
   },
   props: {
     min: {
@@ -78,6 +81,11 @@ export default {
     },
     showHandle (rect) {
       this.autoplay = false
+    }
+  },
+  computed: {
+    widthClass () {
+      return `width${this.value.list.length}`
     }
   }
 }

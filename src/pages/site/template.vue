@@ -9,11 +9,13 @@ import siteService from 'src/api/site-manage'
 
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
+import temp4 from './template4.vue'
 
 export default {
   components: {
     't0478320': temp1,
-    't0478321': temp2
+    't0478321': temp2,
+    't0478323': temp4
   },
   data () {
     return {

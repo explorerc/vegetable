@@ -9,7 +9,7 @@
 
 <script>
 import editMixin from './mixin'
-import LiveHttp from 'src/api/activity-mange'
+import LiveHttp from 'src/api/activity-manage'
 export default {
   mixins: [editMixin],
   data () {
@@ -91,16 +91,9 @@ export default {
   mounted () {
     LiveHttp.queryPassSdkInfo().then((res) => {
       this.vhallParams = res.data
-      /* $nextTick保证dom被渲染之后进行paas插件初始化 */
-      this.$nextTick(() => {
-        // 初始化pass上传插件
-        this.initVhallUpload()
-        if (this.value.videoType === 'upload' && this.value.recordId) {
-          this.$nextTick(() => {
-            this.initVideo()
-          })
-        }
-      })
+      if (this.value.videoType === 'upload' && this.value.recordId) {
+        this.initVideo()
+      }
     })
   }
 }
