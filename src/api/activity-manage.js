@@ -1,7 +1,7 @@
 import utils from 'src/utils'
 
-const GuidManage = {
-  getLiveInfo (data) { // 获取报名表单
+const ActivityManage = {
+  getLiveInfo (data) { // 获取活动信息
     return utils.ajax({
       method: 'post',
       url: '/frontend/live/info',
@@ -21,6 +21,12 @@ const GuidManage = {
       url: '/common/paas/create-access-token',
       params: {}
     })
+  },
+  getRegactivity (data) { // 获取参会信息
+    return utils.ajax({
+      url: '/frontend/user/reg-activity',
+      params: data
+    })
   }
 }
-export default GuidManage
+export default ActivityManage

@@ -45,13 +45,6 @@ const VideoManage = {
       }
     })
   },
-  queryPassSdkInfo () {
-    return utils.ajax({
-      method: 'post',
-      url: '/common/paas/create-access-token',
-      params: {}
-    })
-  },
   /**
    *  通过id获取暖场信息
    */

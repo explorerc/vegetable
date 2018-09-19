@@ -38,18 +38,22 @@
         this.showTime.hour = ((sec / 3600 % 24 >> 0) + '').padStart(2, 0)
         this.showTime.minute = ((sec / 60 % 60 >> 0) + '').padStart(2, 0)
         this.showTime.second = ((sec % 60 >> 0) + '').padStart(2, 0)
-        if (sec === 0) {
+        if (sec === 30 * 60) {
           this.$emit('timeOut')
           clearInterval(this.timer)
         }
       },
       countDown (time) {
-        let interval = setInterval(i => {
-          this.fomatDate(time--)
-          if (time < 0) {
-            clearInterval(interval)
-          }
-        }, 1000)
+        if (time > 0) {
+          let interval = setInterval(i => {
+            this.fomatDate(time--)
+            if (time < 0) {
+              clearInterval(interval)
+            }
+          }, 1000)
+        } else {
+          this.fomatDate(0)
+        }
       }
     }
   }

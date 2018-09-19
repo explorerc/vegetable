@@ -5,6 +5,7 @@ import aModules from './modules/a'
 import bModules from './modules/b'
 import loginModules from './modules/login'
 import liveMagerModules from './modules/liveMager'
+import tokenMagerModules from './modules/getToken'
 Vue.use(Vuex)
 
 const isDev = process.env.NODE_ENV !== 'production'
@@ -36,7 +37,8 @@ const store = new Vuex.Store({
     a: aModules,
     b: bModules,
     login: loginModules,
-    liveMager: liveMagerModules
+    liveMager: liveMagerModules,
+    tokenMager: tokenMagerModules
   }
 })
 

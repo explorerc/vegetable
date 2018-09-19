@@ -2,8 +2,8 @@
   <div class="v-vercode">
     <div id="captcha"></div>
     <div class="v-input-from">
-    <com-input :value.sync="val" @blur="pushCode" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus"></com-input>
-      <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()" >获取动态码<span v-show="isSend" class="v-getcode-span">(<em>{{second}}</em>s)</span></a>
+    <com-input :value.sync="val" @blur="pushCode" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus" :codeType="codeType"></com-input>
+      <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()" >获取验证码<span v-show="isSend" class="v-getcode-span">(<em>{{second}}</em>s)</span></a>
     </div>
   </div>
 </template>
@@ -16,7 +16,8 @@
       isGetCode: Boolean,
       placeholder: String,
       maxLength: Number,
-      errorMsg: String
+      errorMsg: String,
+      codeType: String // 验证码类型
     },
     data () {
       return {
@@ -32,12 +33,14 @@
       }
     },
     mounted () {
+      console.log(this.phone)
     },
     components: {
     },
     created () {
-      let data = {}
-      identifyingcodeManage.getCodeId(data).then((res) => {
+      identifyingcodeManage.getCodeId({
+        __errHandler: true
+      }).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
@@ -70,7 +73,7 @@
     },
     watch: {
       phone: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
@@ -101,13 +104,14 @@
         }
 
         let data = {
-          'mobile': this.phone,
-          'type': 'APPLY_ACTIVITY',
-          captcha: this.phoneKey
+          mobile: this.phone,
+          type: this.codeType,
+          captcha: this.phoneKey,
+          __errHandler: true
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code === 10050) {
-            this.$emit('update:errorMsg', '动态码输入过于频繁')
+            this.$emit('update:errorMsg', '验证码输入过于频繁')
           } else if (res.code !== 200) {
             this.$emit('update:errorMsg', res.msg)
           } else {
@@ -129,7 +133,7 @@
           }
         })
       },
-      isGetCodePermission () { // 获取验证码是否可点击
+      isGetCodePermission (val) { // 获取验证码是否可点击
         if (this.isImg && this.verificationPhone()) {
           this.isProhibit = false
           if (this.second > 0) {
@@ -138,6 +142,11 @@
             this.second = 60
             this.mobileOpacity = 1
             clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
           }
         } else {
           this.isProhibit = true
