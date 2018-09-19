@@ -8,6 +8,13 @@ const GuidManage = {
       params: data
     })
   },
+  getShareInfo (data) { // 获取报名表单
+    return utils.ajax({
+      method: 'post',
+      url: '/frontend/share/info',
+      params: data
+    })
+  },
   queryPassSdkInfo () {
     return utils.ajax({
       method: 'post',

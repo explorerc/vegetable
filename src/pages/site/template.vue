@@ -1,11 +1,12 @@
 <template>
   <div class="template-container">
-    <component class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
+    <component class="template-content" :editAble="false" v-model="data" v-bind:is="com"></component>
   </div>
 </template>
 
 <script>
 import siteService from 'src/api/site-manage'
+import activityManage from 'src/api/activity-manage.js'
 
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
@@ -20,37 +21,51 @@ export default {
   data () {
     return {
       com: '',
-      isPreview: false,
+      isPreview: true,
+      share: {
+        des: '',
+        title: '',
+        imgUrl: '',
+        link: location.href
+      },
       data: {},
-      ptid: this.$route.query.tid,
       tid: this.$route.params.id
     }
   },
   mounted () {
-    if (this.$route.path.indexOf('edit') === -1) {
-      this.isPreview = true
-    }
     this.init()
   },
   methods: {
     init () {
-      if (this.ptid) {
-        this.com = `t${this.ptid}`
-      } else {
-        siteService.getSiteData({
-          __loading: true,
-          activityId: this.tid
-        }).then(res => {
-          let data = JSON.parse(res.data.value)
-          this.com = `t${data.tid}`
-          data.editAble = true
-          let dataStr = JSON.stringify(data).replace(/font-size:\s(\d+)px;/g, function ($0, $1) {
-            return $0.replace($1, $1 / 2)
-          })
-          data = JSON.parse(dataStr)
-          this.data = data
+      activityManage.getLiveInfo({
+        activityId: this.tid
+      }).then(res => {
+        this.share.title = res.data.activity.title
+        this.share.des = res.data.activity.description
+        this.share.imgUrl = res.data.activity.imgUrl
+        activityManage.getShareInfo({
+          route: 'officia_route'
+        }).then((res) => {
+          if (res.data && res.data.title) {
+            this.share.title = res.data.title
+            this.share.des = res.data.description
+            this.share.imgUrl = res.data.imgUrl
+          }
         })
-      }
+      })
+      siteService.getSiteData({
+        __loading: true,
+        activityId: this.tid
+      }).then(res => {
+        let data = JSON.parse(res.data.value)
+        this.com = `t${data.tid}`
+        data.editAble = true
+        let dataStr = JSON.stringify(data).replace(/font-size:\s(\d+)px;/g, function ($0, $1) {
+          return $0.replace($1, $1 / 2)
+        })
+        data = JSON.parse(dataStr)
+        this.data = data
+      })
     }
   }
 }
