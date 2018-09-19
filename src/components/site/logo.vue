@@ -25,7 +25,11 @@ export default {
   },
   computed: {
     url () {
-      return this.host + this.value.url
+      if (this.value.url.indexOf('mp') === 0) {
+        return this.host + this.value.url
+      } else {
+        return this.value.url
+      }
     }
   }
 }

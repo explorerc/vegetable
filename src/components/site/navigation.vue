@@ -1,6 +1,7 @@
 <template>
   <div class="navigation-container" v-if="value.enable">
     <div ref="target" class="navigation-content">
+      <div class="more-link">更多链接</div>
       <ul class="nav-group">
         <li class="nav-item" v-for="(item,index) in value.data.list" :key="index">
           <a :style="{color:value.data.fontColor}" :target="item.type" :href="item.link | voidLink">{{item.text}}</a>
@@ -51,6 +52,9 @@ export default {
 .navigation-container /deep/ {
   .navigation-content {
     height: 100%;
+    .more-link {
+      display: none;
+    }
     li {
       cursor: pointer;
     }

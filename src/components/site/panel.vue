@@ -50,11 +50,11 @@ export default {
       if (data.bgType === 'color') {
         this.$refs.target.style.cssText = `background-color:${data.color}`
       } else if (data.bgType === 'img') {
-        this.$refs.target.style.cssText = `background-image:url(${this.host + data.img})`
+        this.$refs.target.style.cssText = `background-image:url(${data.img.indexOf('mp') === 0 ? this.host + data.img : data.img})`
       } else if (data.bgType === 'video' && data.video) {
         if (data.videoType === 'upload') {
           if (!(/^(http|https|<iframe):\/\//.test(data.video))) {
-            this.$refs.target.querySelector('.media-container video').setAttribute('src', `${this.host + data.video}`)
+            this.$refs.target.querySelector('.media-container video').setAttribute('src', `${data.video.indexOf('mp') === 0 ? this.host + data.video : data.video}`)
           }
         } else {
           if (/^(http|https):\/\//.test(data.video)) {

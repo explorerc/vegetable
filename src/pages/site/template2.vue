@@ -2,11 +2,12 @@
   <div class="template1-container">
     <com-panel class="section1" :edit="editAble" v-model="data.section1Data.panel">
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
-      <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
+      <span class="iconfont" :class="[{'icon-nav-open':!menuOpen},{'icon-close':menuOpen}]" @click="()=>{menuOpen=!menuOpen}"></span>
+      <com-nav class="nav" :class="{active:menuOpen}" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
     <div class="section2" :edit="editAble" v-model="data.section2Data.panel">
-      <com-panel class="panel_right" :edit="editAble" v-model="data.section2Data.panel2">
-      </com-panel>
+      <!-- <com-panel class="panel_right" :edit="editAble" v-model="data.section2Data.panel2">
+      </com-panel> -->
       <com-panel class="panel_left" :edit="editAble" v-model="data.section2Data.panel1">
       </com-panel>
       <com-panel class="panel_center" :edit="editAble" v-model="data.section2Data.panel3">
@@ -58,15 +59,14 @@ import ComBlock2 from 'components/site/block2'
 import ComShare from 'components/site/share'
 import ComVideo from 'components/site/video'
 
-import defaultData from './templateData'
-
 export default {
   components: {
     ComLogo, ComNav, ComPanel, ComFont, ComBtn, ComBlock1, ComShare, ComBlock2, ComVideo
   },
   data () {
     return {
-      data: defaultData.template2()
+      menuOpen: false,
+      data: {}
     }
   },
   props: {
@@ -97,7 +97,6 @@ export default {
 
 <style scoped lang="scss">
 .template1-container /deep/ {
-  min-width: 1366px;
   .edit {
     position: absolute;
     top: 0;
@@ -119,16 +118,22 @@ export default {
     }
   }
   .support {
-    height: 50px;
-    line-height: 50px;
+    height: 70px;
+    line-height: 70px;
     text-align: center;
     color: rgba(85, 85, 85, 1);
-    font-size: 14px;
+    font-size: 28px;
   }
   .section1 {
     width: 100%;
-    height: 60px;
-    overflow: hidden;
+    height: 90px;
+    .iconfont {
+      cursor: pointer;
+      float: right;
+      margin-right: 30px;
+      margin-top: 30px;
+      color: white;
+    }
     .panel {
       text-align: center;
     }
@@ -140,40 +145,48 @@ export default {
       top: 0;
     }
     .nav {
-      height: 100%;
-      display: inline-block;
-      width: auto;
+      position: fixed;
+      width: 340px;
+      z-index: 3;
+      bottom: 0;
+      top: 0;
+      background-color: #2e2e2e;
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+      &.active {
+        transform: translateX(0);
+      }
+      .more-link {
+        display: block;
+        color: white;
+        height: 90px;
+        line-height: 90px;
+        font-size: 30px;
+        border-bottom: 1px solid #555555;
+      }
       .nav-group {
         font-size: 0;
         line-height: 58px;
         .nav-item {
-          padding: 0 27px;
-          height: 30px;
-          line-height: 30px;
+          width: 340px;
           display: inline-block;
           color: white;
-          font-size: 16px;
-          vertical-align: middle;
-          a {
-            padding-bottom: 9px;
-            min-width: 64px;
-            display: inline-block;
-            text-align: center;
-            &:hover {
-              border-bottom: 3px solid #fd654c;
-            }
-          }
+          font-size: 30px;
+          line-height: 30px;
+          background-color: rgba(46, 46, 46, 1);
+          text-align: center;
+          padding: 28px 0;
         }
       }
     }
   }
   .section2 {
     width: 100%;
-    height: 600px;
+    height: 400px;
     position: relative;
     .panel_left {
+      width: 100%;
       height: 100%;
-      margin-right: 400px;
     }
     .panel_right {
       width: 400px;
@@ -181,18 +194,20 @@ export default {
       float: right;
     }
     .panel_center {
-      width: 483px;
-      height: 420px;
+      width: 540px;
+      height: 474px;
       position: absolute;
-      top: 80px;
-      right: 98px;
-      text-align: left;
+      top: 134px;
+      left: 50%;
+      margin-left: -270px;
+      text-align: center;
+      z-index: 1;
       .panel {
         padding: 35px;
       }
       .font-container {
         width: 100%;
-        min-height: 200px;
+        min-height: 300px;
       }
       .font-editer {
         height: 400px;
@@ -205,16 +220,16 @@ export default {
       .btn {
         display: block;
         margin-top: 24px;
-        text-align: left;
+        text-align: center;
         .btn-content {
           display: inline-block;
           position: relative;
         }
         .com-button {
           border: 2px solid rgba(253, 253, 253, 1);
-          min-width: 200px;
-          height: 50px;
-          font-size: 16px;
+          width: 300px;
+          height: 60px;
+          font-size: 28px;
         }
       }
     }
@@ -223,6 +238,7 @@ export default {
     width: 100%;
     height: auto;
     text-align: center;
+    padding-top: 190px;
     .panel {
       padding-bottom: 80px;
     }
@@ -235,17 +251,19 @@ export default {
     .font-des {
       display: block;
       margin: auto;
-      width: 70%;
-      min-width: 900px;
-      min-height: 150px;
-      margin-bottom: 70px;
+      padding: 0 50px;
     }
     .share-group {
+      margin-top: 50px;
       li {
-        width: 120px;
-        height: 46px;
+        width: 180px;
+        height: 54px;
         margin-right: 20px;
-        line-height: 46px;
+        margin-bottom: 20px;
+        line-height: 54px;
+        &:nth-of-type(3) {
+          margin-right: 0;
+        }
         .share-item {
           position: relative;
           .icon {
@@ -258,8 +276,9 @@ export default {
             margin-bottom: 0;
             & + span {
               position: relative;
-              left: 13px;
+              left: 16px;
               color: white;
+              font-size: 24px;
             }
             &.wx {
               background-color: #07b906;
@@ -313,7 +332,11 @@ export default {
     }
     .block1-group {
       .block1-item {
-        margin-right: 80px;
+        margin-right: 120px;
+        margin-bottom: 60px;
+        &:nth-of-type(3) {
+          margin-right: 0;
+        }
         img {
           width: 130px;
         }
@@ -325,7 +348,7 @@ export default {
     height: auto;
     text-align: center;
     .panel {
-      padding-bottom: 80px;
+      padding-bottom: 60px;
     }
     .font-container {
       margin-top: 100px;
@@ -336,8 +359,12 @@ export default {
     .block1-group {
       .block1-item {
         border: 1px solid rgba(226, 226, 226, 1);
-        width: 250px;
-        height: 320px;
+        width: 304px;
+        height: 450px;
+        margin-bottom: 70px;
+        &:nth-of-type(2) {
+          margin-right: 0;
+        }
         img {
           width: 100%;
         }
@@ -358,8 +385,6 @@ export default {
       min-height: 82px;
     }
     .block1-group {
-      width: 1070px;
-      margin: auto;
       .block1-item {
         display: block;
         margin: auto;
@@ -367,19 +392,14 @@ export default {
         &:last-child {
           margin-bottom: 0;
         }
-        &.left {
-          img {
-            margin-right: 0;
-            margin-left: 80px;
-          }
-        }
         .content {
-          width: auto;
+          padding: 0 50px;
         }
         img {
-          width: 500px;
-          height: 500px;
-          margin-right: 80px;
+          width: 650px;
+          height: 650px;
+          margin: auto;
+          float: none !important;
         }
       }
     }
@@ -398,20 +418,13 @@ export default {
       min-height: 85px;
     }
     .block1-group {
-      &.width3 {
-        .block1-item {
-          width: 346px;
-          img {
-            height: 200px;
-          }
-        }
-      }
       .block1-item {
-        width: 540px;
-        margin-right: 40px;
+        width: 650px;
+        margin-right: 0;
+        margin-bottom: 48px;
         img {
           width: 100%;
-          height: 310px;
+          height: 375px;
         }
       }
     }
@@ -424,24 +437,23 @@ export default {
       padding-bottom: 40px;
     }
     .font-container {
-      margin-top: 100px;
+      margin-top: 0;
       text-align: left;
       width: 650px;
       min-height: 95px;
     }
     .block1-group {
-      width: 1124px;
       .block1-item {
         width: 200px;
-        height: 100px;
+        height: 90px;
         margin-right: 30px;
         margin-bottom: 30px;
         border: 1px solid rgba(226, 226, 226, 1);
-        &:nth-of-type(5) {
+        &:nth-of-type(3n) {
           margin-right: 0;
         }
         img {
-          width: 100px;
+          width: 84px;
           display: block;
           margin: auto;
         }
@@ -450,15 +462,15 @@ export default {
   }
   .section9 {
     width: 100%;
-    height: 300px;
+    height: 372px;
     .panel {
       text-align: center;
-      padding-top: 70px;
+      padding-top: 50px;
     }
     .font-content {
       text-align: left;
-      width: 650px;
       min-height: 100px;
+      padding: 0 100px;
     }
     .font-editer {
       height: 400px;
@@ -466,7 +478,7 @@ export default {
     }
     .btn {
       display: block;
-      margin-top: 24px;
+      margin-top: 40px;
       text-align: left;
       text-align: center;
       .btn-content {
@@ -475,11 +487,11 @@ export default {
       }
       .com-button {
         border: 2px solid rgba(253, 253, 253, 1);
-        min-width: 200px;
-        height: 40px;
-        line-height: 40px;
-        padding: 0 20px;
-        font-size: 16px;
+        width: 300px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 28px;
+        padding: 0;
       }
     }
   }
