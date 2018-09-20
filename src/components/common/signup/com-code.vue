@@ -219,8 +219,18 @@
       text-align: center;
       border-radius: 6px;
       &.prohibit {
-        background-color: #dedede;
-        color: #888;
+        background-color: #ffd021;
+        opacity: 0.8;
+        &:hover {
+          background-color: #ffd021;
+          opacity: 0.8;
+        }
+      }
+      &:hover {
+        background-color: #fdd43f;
+      }
+      &:active {
+        background-color: #eec11a;
       }
       .v-getcode-span {
         margin-left: 10px;
