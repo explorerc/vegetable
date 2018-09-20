@@ -52,19 +52,19 @@ export default {
             this.share.imgUrl = res.data.imgUrl
           }
         })
-      })
-      siteService.getSiteData({
-        __loading: true,
-        activityId: this.tid
-      }).then(res => {
-        let data = JSON.parse(res.data.value)
-        this.com = `t${data.tid}`
-        data.editAble = true
-        let dataStr = JSON.stringify(data).replace(/font-size:\s(\d+)px;/g, function ($0, $1) {
-          return $0.replace($1, $1 / 2)
+        siteService.getSiteData({
+          __loading: true,
+          activityId: this.tid
+        }).then(res => {
+          let data = JSON.parse(res.data.value)
+          this.com = `t${data.tid}`
+          data.editAble = true
+          let dataStr = JSON.stringify(data).replace(/font-size:\s(\d+)px;/g, function ($0, $1) {
+            return $0.replace($1, $1 / 2)
+          })
+          data = JSON.parse(dataStr)
+          this.data = data
         })
-        data = JSON.parse(dataStr)
-        this.data = data
       })
     }
   }
