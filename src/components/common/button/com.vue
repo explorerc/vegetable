@@ -33,11 +33,11 @@ export default {
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
-  background: #fff;
   border: 1px solid transparent;
-  border-color: #dcdfe6;
+  color: #222;
+  background-color: #ffd021;
+  border-color: #ffd021;
   border-radius: 4px;
-  color: #606266;
   text-align: center;
   box-sizing: border-box;
   outline: none;
@@ -47,30 +47,24 @@ export default {
   padding: 10px 20px;
   font-size: 14px;
   &:hover {
-    color: #409eff;
-    border-color: #c6e2ff;
-    background-color: #ecf5ff;
+    background-color: #fdd43f;
+  }
+  &:active {
+    background-color: #eec11a;
   }
   &.primary {
-    color: #fff;
-    background-color: #409eff;
-    border-color: #409eff;
+    color: #222;
+    background-color: #ffd021;
     &:hover {
-      color: #fff;
-      background-color: #66b1ff;
-      border-color: #66b1ff;
+      background-color: #fdd43f;
     }
     &.loading {
-      color: #fff;
-      background-color: #66b1ff;
-      border-color: #66b1ff;
+      opacity: 0.8;
     }
   }
   &.loading {
     cursor: default;
-    color: #409eff;
-    border-color: #c6e2ff;
-    background-color: #ecf5ff;
+    opacity: 0.8;
   }
   .icon-Loading {
     font-size: 12px;

@@ -196,6 +196,9 @@
         border-color: #4b5afe;
       }
     }
+    .phone-code .limit {
+      display: none;
+    }
     .error-msg {
       position: absolute;
       font-size: 14px;
