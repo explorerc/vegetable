@@ -4,16 +4,12 @@
   </div>
 </template>
 <script>
-// import VodPuller from '../../components/common/video/pull/VodPuller'
-// import Slider from '../../components/common/video-control/con-slider'
 import PlayVideo from './video/index' // 直播推流回放组件
-// import LiveHttp from 'src/api/manage'
 
 export default {
   components: {PlayVideo},
   data () {
     return {
-      activityId: '',
       playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
       startInit: false
     }

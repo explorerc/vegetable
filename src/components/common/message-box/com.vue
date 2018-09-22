@@ -85,7 +85,8 @@
           this.closeTime = newVal
           clearInterval(this.intervalTime)
           this.intervalTime = setInterval(() => {
-            if (!this.closeTime--) {
+            this.closeTime--
+            if (!this.closeTime) {
               clearInterval(this.intervalTime)
               this.$emit('handleClick', {
                 action: 'cancel'
