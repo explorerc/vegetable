@@ -9,13 +9,9 @@
     </div>
     <i class="iconfont icon-bofang" v-if="playBtnShow" @click="playVideo"></i>
     <div class="control-box">
-      <div class="control-video-box" v-if="(playType=='vod'&&!outLineLink)||playType=='warm'">
-        <video-control
-          :currentTime="currentTime"
-          :totalTime="totalTime"
-          :qualitys="qualitys"
-          @control="playControl"></video-control>
-      </div>
+      <a href="javascript:;" @click="play" class="v-play" :style="{'bottom':controlPsoition}"> <span v-if="isPlay">暂停</span><span v-else>播放</span></a>
+      <span>{{formatTime(currentTime)}}/{{formatTime(videoDuration)}}</span> <el-slider v-model="playPosition" @change="sliderChange($event)" v-if="playType=='vod'" :style="{'bottom':controlPsoition}"></el-slider>
+      <a href="javascript:;" @click="fullScreen" class="v-fullScreen" :style="{'bottom':controlPsoition}">全屏</a>
     </div>
   </div>
 </template>
@@ -24,13 +20,11 @@
   import VideoHttp from 'src/api/video-manage'
   import LivePuller from 'src/components/common/video/pull/LivePuller'
   import { mapMutations, mapState } from 'vuex'
-  import VideoControl from './control'
   import * as types from '../../../store/mutation-types'
   // import HostPusher from 'src/components/common/video/push/HostPusher'
 
   export default {
     name: 'index',
-    components: { VideoControl },
     data () {
       return {
         playComps: {},
@@ -44,12 +38,19 @@
           accountId: '',
           token: ''
         },
+        paasParams: {
+          appId: '',
+          roomId: '',
+          inavId: '',
+          token: '',
+          accountId: ''
+        },
+        videoDuration: 100000,
         currentTime: 0,
-        totalTime: 10000,
+        playPosition: 0,
         stInterval: '',
         isPlay: false,
-        controlPsoition: '1.333vw',
-        qualitys: [] // 视频质量
+        controlPsoition: '1.333vw'
       }
     },
     props: {
@@ -66,13 +67,6 @@
         type: Boolean,
         required: true,
         default: false
-      },
-      paasParams: {
-        appId: '',
-        roomId: '',
-        inavId: '',
-        token: '',
-        accountId: ''
       }
     },
     computed: {
@@ -83,6 +77,9 @@
       }),
       imageSrc () {
         return `${this.$imgHost}/${this.imageUrl}`
+      },
+      rate () {
+        return parseInt(100 * this.currentTime / this.videoDuration)
       }
     },
     mounted () {
@@ -92,13 +89,11 @@
         function () {
           if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
-            that.$emit('orientationchange', 'horizontalScreen')
             that.horizontalScreen() // 横屏
 
           // alert("123");仅alert纯文本可以正常运行
           } else {
             that.herticalScreen() // 竖屏
-            that.$emit('orientationchange', 'herticalScreen')
           }
         // window.location.reload();
         },
@@ -111,6 +106,11 @@
           this.initComponent()
         } else {
           this.stopPlay()
+        }
+      },
+      playPosition (newVal) {
+        if (newVal === 100) {
+          this.isPlay = false
         }
       },
       liveDevices () {
@@ -168,9 +168,21 @@
       },
       /* 初始化直播 */
       initLivePlay () {
-        if (this.role === 'watcher') { // 观看端
-          this.initPuller()
+        let data = {
+          'activityId': this.$route.params.id
         }
+        VideoHttp.getSdkToken(data).then((res) => {
+          this.paasParams = {
+            appId: res.data.appId,
+            roomId: res.data.liveRoom,
+            inavId: res.data.hdRoom, // 互动id
+            token: res.data.token,
+            accountId: res.data.accountId
+          }
+          if (this.role === 'watcher') { // 观看端
+            this.initPuller()
+          }
+        })
       },
       initPlayBack () {
         VideoHttp.queryPlayBackInfoById(this.$route.params.id).then(res => {
@@ -180,7 +192,7 @@
             this.outLineLink = res.data.replay.link
           } else if (res.data.replay.type === 'VIDEO' || res.data.replay.type === 'SLICE') { // 回放视频
             this.recordId = res.data.replay.video
-            this.totalTime = res.data.replay.duration
+            this.videoDuration = res.data.replay.duration
             this.playBackVideo()
           }
         })
@@ -189,7 +201,6 @@
       playBackVideo () {
         this.$nextTick(() => {
           if (!this.recordId) return
-
           window.Vhall.ready(() => {
             window.VhallPlayer.init({
               recordId: this.recordId,
@@ -197,9 +208,15 @@
               videoNode: this.playBoxId,
               complete: () => {
                 this.playBtnShow = false
-                this.qualitys = window.VhallPlayer.getQualitys()
                 window.VhallPlayer.play()
                 this.dealWithVideo()
+                if (this.stInterval) {
+                  clearInterval(this.stInterval)
+                }
+                this.stInterval = setInterval(() => {
+                  this.currentTime = window.VhallPlayer.getCurrentTime()
+                  this.playPosition = window.VhallPlayer.getCurrentTime() * 100 / this.videoDuration
+                }, 300)
               }
             })
           })
@@ -214,8 +231,8 @@
       dealWithVideo () {
         clearInterval(this.setIntervalHandler)
         this.setIntervalHandler = setInterval(() => {
-          this.currentTime = window.VhallPlayer.getCurrentTime()
-          if (this.totalTime === this.currentTime) {
+          this.playPosition = window.VhallPlayer.getCurrentTime() * 100 / this.videoDuration
+          if (this.videoDuration === this.currentTime) {
             clearInterval(this.setIntervalHandler)
           }
         }, 1000)
@@ -225,8 +242,6 @@
           this.imageUrl = res.data.imgUrl
           this.recordId = res.data.recordId
           this.playBtnShow = true
-          this.totalTime = parseInt(res.data.record.duration)
-          this.playBackVideo()
         })
       },
       /* 初始拉流播放插件 */
@@ -235,11 +250,11 @@
           window.playComps.destroy()
         }
         this.$nextTick(() => {
-          this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
+          this.playComps = new LivePuller(this.paasParams.appId, this.paasParams.roomId, this.playBoxId, this.paasParams.token)
           this.playComps.initLivePlayer(true, () => {
             console.log('----------开始播放----------')
           })
-          this.playComps.accountId = this.roomPaas.accountId
+          this.playComps.accountId = this.paasParams.accountId
         })
       },
       pullBroadCast () {
@@ -307,13 +322,11 @@
         alert('请把手机横评放置')
       },
       horizontalScreen () {
-        // 横屏
         this.isShowCover = false
         this.height = '100%'
         this.controlPsoition = '9.333vw'
       },
       herticalScreen () {
-        // 竖屏
         this.isShowCover = true
         this.height = '56.267vw'
         this.controlPsoition = '1.333vw'
@@ -322,38 +335,20 @@
         this.isStart = true
         this.puller.play()
       },
-      /* 开启，禁止声音 */
-      play (e) {
-        if (this.playType === 'warm' || this.playType === 'vod') { // 暖场，回放
-          if (e) {
-            window.VhallPlayer.play()
-          } else {
-            window.VhallPlayer.pause()
-          }
-        }
+      sliderChange (val) {
+        // console.log(val)
+        window.VhallPlayer.seek(val / 100 * this.videoDuration)
+        this.currentTime = val
+        window.VhallPlayer.play()
+        this.isPlay = true
       },
-      playControl (e) {
-        const controlType = e.type
-        if (controlType === 'progress') { // seek播放进度
-          this.seekProgress(e.value)
-        } else if (controlType === 'play') { // 播放控制
-          this.play(e.value)
-        } else if (controlType === 'mute') { // 是否禁音
-          this.mutoAuto(e.value)
-        } else if (controlType === 'volumeSize') { // 声音大小
-          this.changeVolume(e.value)
-        } else if (controlType === 'selectQuality') { // 画面质量
-          window.VhallPlayer.setQuality(e.value)
-        } else if (controlType === 'fullScree') { // 全屏控制
-          this.fullScree(e.value)
-        } else if (controlType === 'fullBrowser') { // 浏览器全屏
-          this.$emit('fullBrowser', e.value)
+      play () {
+        if (this.isPlay) {
+          window.VhallPlayer.pause()
+        } else {
+          window.VhallPlayer.play()
         }
-      },
-      seekProgress (progress) {
-        if (window.VhallPlayer) {
-          window.VhallPlayer.seek(this.totalTime * progress / 100)
-        }
+        this.isPlay = !this.isPlay
       }
     }
   }

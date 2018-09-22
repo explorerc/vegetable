@@ -102,19 +102,59 @@ iframe {
   height: 100%;
   width: 100%;
 }
+
 ::-webkit-scrollbar-track-piece {
-  background-color:#f6f6f6;
+  background-color: #f6f6f6;
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar {
-  width:6px;
-  height:6px;
+  width: 6px;
+  height: 6px;
 }
-::-webkit-scrollbar-thumb {//滚动条的设置
-  background-color:#e2e2e2;
-  background-clip:padding-box;
+
+::-webkit-scrollbar-thumb {
+  //滚动条的设置
+  background-color: #e2e2e2;
+  background-clip: padding-box;
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background-color:#bbb;
+  background-color: #bbb;
+}
+
+.el-slider__runway {
+  background-color: #555555 !important;
+  opacity: 0.9 !important;
+}
+
+.el-slider__bar {
+  background-color: #FFD021 !important;
+  opacity: 0.7 !important;
+}
+
+.el-slider__button {
+  border: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: #FFD021 !important;
+  position: relative;
+  // box-shadow: 0px 0px 20px #FFD021;
+}
+
+.el-slider__button-wrapper {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 36px;
+    height: 36px;
+    top: 18px;
+    left: 18px;
+    border-radius: 50%;
+    background-color: rgba(255, 208, 33, .3);
+  }
 }

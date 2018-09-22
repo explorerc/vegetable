@@ -15,3 +15,9 @@ export const EMAIL_INFO = 'EMAIL_INFO'
 export const CHAT_PARAMS = 'CHAT_PARAMS'
 // 直播 token
 export const LIVE_PARAMS = 'LIVE_PARAMS'
+// 视频设备
+export const VIDEO_DEVICE = 'VIDEO_DEVICE'
+// paas参会参数。 消息，回放，暖场使用
+export const ROOM_PAAS = 'ROOM_PAAS'
+// 活动信息
+export const ACTIVITY_INFO = 'ACTIVITY_INFO'

@@ -13,10 +13,13 @@ const Success = () =>
 // 报名成功页
 const CheckState = () =>
   import('src/pages/guide/check-state')
+// 观看页面
+const Watch = () =>
+  import('src/pages/watch/Watch')
 // 直播页面
 const Live = () =>
   import('src/pages/watch/live')
-// 直播页面
+// 回放页面
 const Playback = () =>
   import('src/pages/watch/playback')
 const Test = () =>
@@ -55,7 +58,11 @@ export default [{
   name: 'SiteTemplate',
   component: SiteTemplate
 },
-
+{
+  path: '/watch/:id',
+  name: 'watch',
+  component: Watch
+},
 {
   path: '/live/:id',
   name: 'live',
