@@ -21,6 +21,12 @@ const loginManage = {
       url: '/user/consumer-user/info',
       params: data
     })
+  },
+  getMasterInfo () {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/user/get-user-info'
+    })
   }
 }
 export default loginManage

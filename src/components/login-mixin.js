@@ -1,4 +1,5 @@
 import ComLogin from './login-box.vue'
+import authManage from 'src/api/auth-manage'
 
 export default {
   components: {
@@ -63,6 +64,24 @@ export default {
         sessionStorage.removeItem('login')
         sessionStorage.removeItem('wechatAuth')
       }
+    },
+    getMasterInfo (data) {
+      return new Promise((resolve, reject) => {
+        if (sessionStorage.getItem('master')) {
+          resolve(JSON.parse(sessionStorage.getItem('master')))
+        } else {
+          authManage.getMasterInfo({
+            __errHandler: true
+          }).then(res => {
+            if (res.code === 200) {
+              sessionStorage.setItem('master', JSON.stringify(res.data))
+              resolve(res.data)
+            }
+          }).catch((err) => {
+            reject(err)
+          })
+        }
+      })
     }
   }
 }
