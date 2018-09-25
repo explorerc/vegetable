@@ -1,16 +1,6 @@
 import utils from 'src/utils'
-
 let token = ''
-/* 直播互动 */
 const VideoManage = {
-  // 获取参会id
-  getActivityUserId (data) {
-    return utils.ajax({
-      method: 'get',
-      url: '/frontend/user/reg-activity',
-      params: data
-    })
-  },
   getSdkToken (data) { // 获取观看端token
     return utils.ajax({
       method: 'post',
@@ -18,42 +8,46 @@ const VideoManage = {
       params: data
     })
   },
-  /* paas token获取接口 */
-  getPaasParam (activityId) {
+  sendAnn (data) {
     return utils.ajax({
-      method: 'get',
-      url: '/initiator/live/get-sdk-token',
-      params: {
-        activityId: activityId
-      },
+      method: 'post',
+      url: '/initiator/channel/send-announcement',
+      params: data,
       headers: {
         Authorization: token
       }
     })
   },
-  /***
-   * 查询默认回放信息
-   * @param data
-   * @returns {*}
-   */
-  queryPlayBackInfoById (activityId) {
+  // 禁言
+  muteMember (data) {
     return utils.ajax({
       method: 'post',
-      url: '/frontend/replay/default-replay',
-      params: {
-        activityId: activityId
+      url: '/initiator/user/gag',
+      params: data,
+      headers: {
+        Authorization: token
       }
     })
   },
-  /**
-   *  通过id获取暖场信息
-   */
-  queryWarmInfoById (id) {
+  // 全体禁言
+  muteAll (data) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/user/gag-all',
+      params: data,
+      headers: {
+        Authorization: token
+      }
+    })
+  },
+  // 踢出
+  kickMember (data) {
     return utils.ajax({
       method: 'post',
-      url: '/manage/warm-up-manage/get',
-      params: {
-        activityId: id
+      url: '/initiator/user/kick',
+      params: data,
+      headers: {
+        Authorization: token
       }
     })
   },

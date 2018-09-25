@@ -16,8 +16,8 @@
             <div class="v-introduction" v-html="activityInfo.description"></div>
           </com-tab>
           <com-tab label="互动聊天" :index="2">
-            <div class="v-chat-box">
-              666
+            <div class="chat-content">
+              <chating :type="playType"></chating>
             </div>
             <div class="v-chat-control" @click="chatClick()">
               <i class="v-showpsd iconfont icon-biaoqing"></i>
@@ -61,6 +61,7 @@ import sdkManage from 'api/sdk-manage.js'
 import { mapMutations, mapState } from 'vuex'
 import * as types from '../../store/mutation-types'
 import ChatConfig from 'src/api/chat-config'
+import Chating from '../../components/chat' // 聊天
 import ChatService from '../../components/common/chat/ChatService.js'
 const playTypes = {
   'PREPARE': 'pre',
@@ -75,7 +76,7 @@ const playStatuTypes = {
   'PLAYBACK': '回放'
 }
 export default {
-  components: {Playback},
+  components: { Playback, Chating },
   data () {
     return {
       activityData: {
@@ -151,6 +152,7 @@ export default {
         __errHandler: true
       }
       let activityInfo = null
+      debugger
       await activityManage.getLiveInfo(data).then((res) => {
         if (res.code === 200) {
           activityInfo = res.data.activity
@@ -167,16 +169,15 @@ export default {
           } else {
             this.currentView = Live
           }
-        }
-      })
-
-      /* 查询真实在线人数 */
-      activityManage.queryOnlineNum({
-        activityId: this.$route.params.id
-      }).then((res) => {
-        if (res.code === 200) {
-          activityInfo.onlineNum = res.data.onlineNum
-          this.storeActivityInfo(activityInfo)
+          /* 查询真实在线人数 */
+          activityManage.queryOnlineNum({
+            activityId: this.$route.params.id
+          }).then((res) => {
+            if (res.code === 200) {
+              activityInfo.onlineNum = res.data.onlineNum
+              this.storeActivityInfo(activityInfo)
+            }
+          })
         }
       })
     },
@@ -419,7 +420,7 @@ export default {
         width: 100%;
         padding: 40px;
       }
-      .v-chat-box {
+      .chat-content {
         width: 100%;
         padding: 40px;
         position: absolute;

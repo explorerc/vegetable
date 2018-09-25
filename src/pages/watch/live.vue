@@ -7,7 +7,7 @@
 import PlayVideo from './video/index' // 直播推流回放组件
 
 export default {
-  components: {PlayVideo},
+  components: { PlayVideo },
   data () {
     return {
       playType: 'live', // 直播(live), 回放(vod), 暖场(warm)

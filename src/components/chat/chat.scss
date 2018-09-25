@@ -1,0 +1,380 @@
+@import "assets/css/mixin.scss";
+@import "assets/css/transitions.scss";
+.bscroll {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height:calc(100%-150px);
+  &.vod {
+    height:100%;
+  }
+  .msg-tips {
+    bottom:10px;
+    left:50%;
+    margin-left:-75px;
+    position: absolute;
+    width:150px;
+    height:30px;
+    line-height: 30px;
+    text-align: center;
+    background:rgba(233,235,255,0.9);
+    border-radius:15px;
+    border:1px solid rgba(129,140,254,1);
+    color:$color-blue;
+    cursor: pointer;
+  }
+  .announce-box {
+    position: absolute;
+    bottom: 0px;
+    left:50%;
+    margin-left:-160px;
+    width:320px;
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    color:#fff;
+    font-size:14px;
+    background:rgba(75,90,254,1);
+    border-radius:4px;
+    padding:0 40px;
+    overflow: hidden;
+    i {
+      background: url('~assets/image/auto_wechat.png') no-repeat;
+      position: absolute;
+      width:50px;
+      height:50px;
+      top:50%;
+      margin-top:-25px;
+      left:-10px;
+    }
+    .close {
+      cursor: pointer;
+      position: absolute;
+      color:#fff;
+      font-size: 20px;
+      top:10px;
+      right:10px;
+      width:10px;
+      height:10px;
+      line-height:10px;
+      &:hover {
+        opacity:0.8;
+      }
+    }
+    .txt-box {
+      height:50px;
+      overflow: hidden;
+      position: relative;
+    }
+    .txt {
+      position: absolute;
+      white-space: nowrap;
+      animation: marsquee 5s linear 1s infinite  ;
+      animation-fill-mode:backwards;
+    }
+  }
+}
+@keyframes marsquee {
+  0% {
+    transform: translateX(100%)
+  }
+  100% {
+    transform: translateX(-100%)
+  }
+}
+.bscroll-vertical-scrollbar {
+  opacity: 1 !important;
+}
+.chat-wrap {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  .chat-list {
+    // overflow-y: scroll;
+    padding:0px 12px;
+    dl {
+      position: relative;
+      dt{
+        width:30px;
+        height:30px;
+        border-radius: 30px;
+        float: left;
+        background:$color-default;
+        margin-right:12px;
+        overflow: hidden;
+        border-radius: 200px;
+        color: #fff;
+        font-weight: bold;
+        &.avatar {
+          text-align: center;
+          line-height:30px;
+        }
+        img {
+          width:100%;
+          height:100%;
+        }
+      }
+      dd {
+        float: left;
+
+      }
+      .name {
+        display: block;
+        color:$color-font-sub;
+        margin-bottom: 5px;
+        width:240px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        .handle {
+          width:20px;
+          height:20px;
+          cursor: pointer;
+          display: none;
+          font-size: 12px;
+          position: absolute;
+          top: 5px;
+          right: 10px;
+          background: url('~assets/image/more-hover.png') no-repeat center;
+          background-size:contain;
+          ol {
+            display: none;
+            width:130px;
+            background:rgba(255,255,255,1);
+            box-shadow:0px 2px 6px 0px rgba(0,0,0,0.2);
+            border-radius:4px;
+            position: absolute;
+            top: 17px;
+            right: -10px;
+            z-index: 999;
+            text-align: center;
+            padding:5px 0;
+            li {
+              height:40px;
+              line-height: 40px;
+              margin-top: 0;
+              i {
+                width:20.5px;
+                height:16px;
+                display: inline-block;
+                // background: url('~assets/image/qq_s.png') no-repeat;
+                background:url('~assets/image/chat-kickout.png') no-repeat center;
+                background-size: contain;
+                margin-right: 10px;
+                position: relative;
+                top: 2px;
+                &.kick {
+                  top:3px;
+                }
+                &.mute {
+                  width: 17.5px;
+                  height:16px;
+                }
+              }
+              &.kick i {
+              }
+              &.mute i {
+                background-image:url('~assets/image/chat.png') ;
+                top:5px;
+              }
+              &:hover {
+                color:$color-blue;
+                background:rgba(240,241,254,1);
+                &.kick i {
+                  background-image:url('~assets/image/chat-kickout-hover.png') ;
+                }
+                &.mute i {
+                  background-image:url('~assets/image/chat-hover.png') ;
+                }
+              }
+            }
+          }
+          &:hover {
+            ol {
+              display: inline-block;
+            }
+          }
+        }
+        em {
+          padding:1px 10px;
+          font-size:12px;
+          color:$color-blue;
+          background:rgba(240,241,254,1);
+          border-radius: 10px;
+        }
+      }
+      .txt /deep/{
+        padding:7px 11px;
+        color:$color-font;
+        background:rgba(239,239,239,1);
+        border-radius:4px;
+        max-width:260px ;
+        word-break: break-all;
+        display: inline-block;
+        img {
+          width:26px;
+          height:26px;
+          display: inline-block;
+        }
+      }
+    }
+    li {
+      margin-top:16px;
+    }
+    li:not(.right){
+      :hover {
+        .handle {
+          display: inline-block;
+        }
+      }
+    }
+    li.right {
+      dt {
+        float: right;
+        margin-right:0px;
+        margin-left:12px;
+        overflow: hidden;
+      }
+      dd {
+        float: right;
+      }
+      .name {
+        text-align: right;
+        em {
+          position: relative;
+          top: 0px;
+          right: 7px;
+          float: left;
+          left: 93px;
+          top: 3px;
+        }
+      }
+      .txt {
+        float: right;
+      }
+    }
+  }
+  .send-box {
+    margin:0 auto;
+    width:100%;
+    position: absolute;
+    bottom:95px;
+    left:0px;
+    .top {
+      width:100%;
+      height:37px;
+      background:rgba(245,245,245,1);
+      .icon-emoji {
+        background:url('~assets/image/face.png') no-repeat center;
+        background-size:contain;
+        cursor: pointer;
+        left:16px;
+        top:50%;
+        margin-top:-10px;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius:100px;
+        &:hover {
+          background-image: url('~assets/image/face-hover.png');
+        }
+      }
+      .icon-swap {
+        position: absolute;
+        cursor: pointer;
+        right:16px;
+        top:50%;
+        margin-top:-10px;
+        width: 20px;
+        height:20px;
+        border-radius:100px;
+        background:url('~assets/image/broadcast.png') no-repeat center;
+        background-size:contain;
+        &:hover {
+          background-image: url('~assets/image/broadcast-hover.png');
+        }
+      }
+      .mute-all {
+        position: absolute;
+        cursor: pointer;
+        right:60px;
+        top:50%;
+        margin-top:-10px;
+        width: 20px;
+        height:20px;
+        border-radius:100px;
+        background:url('~assets/image/broadcast.png') no-repeat center;
+        background-size:contain;
+        &:hover {
+          background-image: url('~assets/image/broadcast-hover.png');
+        }
+      }
+      .face-box {
+        position: absolute;
+        top: -209px;
+        left: 0px;
+        width: 98%;
+        background: #fff;
+        z-index: 10;
+        img {
+          width: 26px;
+          height: 26px;
+          float: left;
+          cursor: pointer;
+        }
+      }
+    }
+    .bottom {
+      overflow: hidden;
+      width:300px;
+      left:50%;
+      margin-left: -150px;
+      background:rgba(255,255,255,1);
+      border-radius:4px;
+      border:1px solid rgba(255,208,33,1);
+      position: absolute;
+      height:50px;
+      .mute-box {
+        cursor: not-allowed;
+        line-height: 50px;
+        text-align: center;
+        width:100%;
+        height:100%;
+      }
+    }
+    .send-btn {
+      width:100%;
+      height:100%;
+      background:$color-default;
+      position: absolute;
+      top:0;
+      right:0;
+      display: block;
+      width:50px;
+      height:48px;
+      line-height: 48px;
+      text-align: center;
+      color:$color-font;
+      font-size:14px;
+      cursor: pointer;
+    }
+    .inp {
+      width:250px;
+      height:100%;
+      padding:5px 10px;
+      border:none;
+    }
+  }
+  .not-login {
+    margin:0 auto;
+    width:100%;
+    position: absolute;
+    bottom:95px;
+    left:0px;
+    color:$color-font;
+    span {
+      color:$color-blue;
+      cursor: pointer;
+    }
+  }
+}
