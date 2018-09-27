@@ -11,7 +11,6 @@
   import ComVerificationCode from '../../components/common/signup/com-code.vue'
   import activityManage from '../../api/activity-manage.js'
   import authManage from 'src/api/auth-manage'
-  import GuidManage from '../../api/guid-manage.js'
   export default {
     data () {
       return {
@@ -53,8 +52,8 @@
       getCode (val) {
         this.code = val
       },
-      orderActivity () { // 预约活动
-        GuidManage.orderActivity({
+      subScribe () { // 预约活动
+        activityManage.subScribe({
           activityId: this.$route.params.id,
           __errHandler: true
         }).then((res) => {
@@ -86,7 +85,7 @@
           }
         }
         if (this.user.isOrder || this.user.isDisabled) {
-          this.orderActivity()
+          this.subScribe()
         } else {
           authManage.login({
             mobile: this.user.phone,
@@ -97,7 +96,7 @@
             if (res.code === 200) {
               if (res.data) {
                 sessionStorage.setItem('login', JSON.stringify(res.data))
-                activityManage.getLiveInfo({
+                activityManage.getWebinarinfo({
                   activityId: this.$route.params.id,
                   __errHandler: true
                 }).then((res) => {
@@ -105,7 +104,7 @@
                     if (res.data.joinInfo.isOrder) {
                       this.$router.replace('/guid/' + this.$route.params.id)
                     } else {
-                      this.orderActivity()
+                      this.subScribe()
                     }
                   } else {
                     this.$messageBox({
@@ -161,7 +160,7 @@
         return true
       },
       getActivity () { // 获取活动信息
-        activityManage.getLiveInfo({
+        activityManage.getWebinarinfo({
           activityId: this.$route.params.id,
           __errHandler: true
         }).then((res) => {

@@ -14,12 +14,12 @@ export default class LivePuller extends BasePuller {
   }
 
   initLivePlayer (autoplay = false, completionBK = null) {
-    let VhallSDK = window.Vhall
-    let VhallPlayer = window.VhallPlayer
+    // let VhallSDK = window.Vhall
+    // let VhallPlayer = window.VhallPlayer
     console.log('1调用初始化拉流器')
-    VhallSDK.ready(() => {
+    window.Vhall.ready(() => {
       console.log('2SDK初始化完成')
-      VhallPlayer.init({
+      window.VhallPlayer.init({
         roomId: this.roomId,
         type: 'live',
         videoNode: this.rootEleId,
@@ -27,12 +27,12 @@ export default class LivePuller extends BasePuller {
           console.log('3播放器初始化完成')
           completionBK && completionBK()
           if (autoplay) {
-            VhallPlayer.play()
+            window.VhallPlayer.play()
           }
         }
       })
 
-      this.player = VhallPlayer
+      this.player = window.VhallPlayer
     })
   }
 
@@ -40,7 +40,7 @@ export default class LivePuller extends BasePuller {
     super.accoundId = val
 
     console.log('aaa', this.appId, this.roomId, this.rootEleId, this.token)
-    Vhall.config({
+    window.Vhall.config({
       appId: this.appId,
       accountId: val,
       token: this.token

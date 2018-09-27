@@ -15,14 +15,8 @@ const loginManage = {
       params: data
     })
   },
-  getLoginInfo (data) {
-    return utils.ajax({
-      method: 'get',
-      url: '/user/consumer-user/info',
-      params: data
-    })
-  },
-  getMasterInfo () {
+  /* 获取参会人员信息 */
+  getJoinInfo () {
     return utils.ajax({
       method: 'get',
       url: '/initiator/user/get-user-info'

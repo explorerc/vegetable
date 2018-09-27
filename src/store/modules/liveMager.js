@@ -22,15 +22,18 @@ const liveMagerModules = {
       channelRoom: '',
       hdRoom: '',
       liveRoom: '',
-      token: ''
+      token: '',
+      channelId: ''
     },
-    activityInfo: {}
+    activityInfo: {}, // 活动信息
+    joinInfo: {} // 参会信息
   },
   getters: {
     liveDevices: state => state.liveDevices,
     emailInfo: state => state.emailInfo,
     roomPaas: (state) => state.roomPaas,
-    activityInfo: (state) => state.activityInfo
+    activityInfo: (state) => state.activityInfo,
+    joinInfo: state => state.joinInfo
   },
   mutations: {
     [types.VIDEO_DEVICE] (state, reLoad) {
@@ -40,10 +43,13 @@ const liveMagerModules = {
       state.emailInfo = reLoad
     },
     [types.ROOM_PAAS] (state, reLoad) {
-      state.roomPaas = reLoad
+      state.roomPaas = Object.assign({}, reLoad, { channelId: reLoad.channelRoom })
     },
     [types.ACTIVITY_INFO] (state, reLoad) {
       state.activityInfo = reLoad
+    },
+    [types.JOIN_INFO] (state, reLoad) {
+      state.joinInfo = reLoad
     }
   }
 }

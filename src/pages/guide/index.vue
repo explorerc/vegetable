@@ -7,7 +7,6 @@
       <div v-html="activity.description"></div>
     </div>
     <div class="v-operation" v-if="activity.countDown >= 1800">  <!-- 距离活动开始大于30min -->
-    <a href="javascript:;" @click="sendAction('666')">666</a>
       <template v-if="activity.viewCondition === 'APPOINT'">  <!-- 报名活动 -->
         <template v-if="viewLimit.canAppoint === 'Y'"> <!-- 报名未截止 -->
           <com-countdown :time="activity.countDown" v-if="activity.isCountdown"></com-countdown>
@@ -70,11 +69,11 @@
   import comCountdown from 'components/common/countdown/countdown'
   import activityManage from 'api/activity-manage.js'
   import loginMixin from 'components/login-mixin'
-  import sdkManage from 'api/sdk-manage.js'
   import ChatService from 'components/common/chat/ChatService.js'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import ChatConfig from 'src/api/chat-config'
+  import LiveHttp from '../../api/Live-manage.js'
   export default {
     mixins: [loginMixin],
     data () {
@@ -139,20 +138,6 @@
       handleActivityStart (msg) {
         this.activity.countDown = 1799
       },
-      sendAction (msg) {
-        // 发送消息
-        this.service.activityId = this.$route.params.id
-        // this.service.sendCustomMsg('activityStart', msg)
-        sdkManage.send({
-          activityId: this.$route.params.id,
-          type: ChatConfig.BEGIN_LIVE,
-          content: msg,
-          __errHandler: true
-        }).then((res) => {
-          if (res.code === 200) {
-          }
-        })
-      },
       async getInfo () {
         let data = {
           activityId: this.$route.params.id,
@@ -162,7 +147,7 @@
         if (userInfo) {
           this.user.phone = userInfo.mobile
         }
-        await activityManage.getLiveInfo(data).then((res) => {
+        await activityManage.getWebinarinfo(data).then((res) => {
           if (res.code === 200) {
             this.activity.viewCondition = res.data.activity.viewCondition
             this.activity.status = res.data.activity.status
@@ -217,7 +202,7 @@
               __errHandler: true
             }).then((res) => {
               if (res.code === 200) {
-                sdkManage.getSdkparams({
+                LiveHttp.getSdkparams({
                   activityId: this.$route.params.id,
                   activityUserId: res.data.activityUserId,
                   __errHandler: true

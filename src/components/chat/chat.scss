@@ -4,65 +4,76 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  height:calc(100%-150px);
+  height:calc(100%);
   &.vod {
     height:100%;
   }
   .msg-tips {
     bottom:10px;
     left:50%;
-    margin-left:-75px;
+    font-size: 26px;
+    margin-left:-140px;
     position: absolute;
-    width:150px;
-    height:30px;
-    line-height: 30px;
+    width:280px;
+    height:70px;
+    line-height: 68px;
     text-align: center;
     background:rgba(233,235,255,0.9);
-    border-radius:15px;
+    border-radius:45px;
     border:1px solid rgba(129,140,254,1);
     color:$color-blue;
     cursor: pointer;
+    .icon-xiangxia{
+      padding-top: 30px;
+      height:70px;
+      line-height: 68px;
+      font-size: 30px;
+      transform: scale(0.5);
+      -webkit-transform-origin: top left;
+      display: inline-block;
+      vertical-align: middle
+    }
   }
   .announce-box {
     position: absolute;
-    bottom: 0px;
-    left:50%;
-    margin-left:-160px;
-    width:320px;
-    height:50px;
-    line-height: 50px;
+    top: 0px;
+    left: 0;
+    width:100%;
+    height:80px;
+    line-height: 80px;
     text-align: center;
     color:#fff;
-    font-size:14px;
+    font-size:26px;
     background:rgba(75,90,254,1);
     border-radius:4px;
-    padding:0 40px;
+    padding:0 40px 0 70px;
     overflow: hidden;
-    i {
-      background: url('~assets/image/auto_wechat.png') no-repeat;
+    svg {
+      // background: url('~assets/image/auto_wechat.png') no-repeat;
       position: absolute;
       width:50px;
       height:50px;
       top:50%;
       margin-top:-25px;
-      left:-10px;
+      left:10px;
+      font-size: 30px;
     }
-    .close {
+    .icon-close {
       cursor: pointer;
       position: absolute;
       color:#fff;
-      font-size: 20px;
-      top:10px;
-      right:10px;
-      width:10px;
-      height:10px;
-      line-height:10px;
+      font-size: 30px;
+      width: 30px;
+      height: 30px;
+      right: 10px;
+      top: 0px;
       &:hover {
         opacity:0.8;
       }
     }
     .txt-box {
-      height:50px;
+      height:80px;
+      line-height: 80px;
       overflow: hidden;
       position: relative;
     }
@@ -85,19 +96,19 @@
 .bscroll-vertical-scrollbar {
   opacity: 1 !important;
 }
-.chat-wrap {
+.chat-wrap /deep/ {
   height: 100%;
   width: 100%;
   position: relative;
   .chat-list {
     // overflow-y: scroll;
-    padding:0px 12px;
+    padding:0px 40px;
     dl {
       position: relative;
       dt{
-        width:30px;
-        height:30px;
-        border-radius: 30px;
+        width:50px;
+        height:50px;
+        border-radius: 50px;
         float: left;
         background:$color-default;
         margin-right:12px;
@@ -107,7 +118,7 @@
         font-weight: bold;
         &.avatar {
           text-align: center;
-          line-height:30px;
+          line-height:50px;
         }
         img {
           width:100%;
@@ -116,16 +127,17 @@
       }
       dd {
         float: left;
-
       }
       .name {
         display: block;
         color:$color-font-sub;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         width:240px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-size: 24px;
+        color: #888;
         .handle {
           width:20px;
           height:20px;
@@ -196,19 +208,22 @@
           }
         }
         em {
-          padding:1px 10px;
-          font-size:12px;
+          height: 30px;
+          padding:0 15px;
+          font-size:22px;
+          line-height: 30px;
           color:$color-blue;
           background:rgba(240,241,254,1);
-          border-radius: 10px;
+          border-radius:100px;
+          float: right;
         }
       }
-      .txt /deep/{
+      .txt{
         padding:7px 11px;
         color:$color-font;
         background:rgba(239,239,239,1);
         border-radius:4px;
-        max-width:260px ;
+        max-width:550px ;
         word-break: break-all;
         display: inline-block;
         img {
@@ -239,6 +254,7 @@
         float: right;
       }
       .name {
+        width: 100%;
         text-align: right;
         em {
           position: relative;
@@ -254,27 +270,44 @@
       }
     }
   }
+  .v-send-box-bg{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 2;
+  }
   .send-box {
     margin:0 auto;
-    width:100%;
-    position: absolute;
-    bottom:95px;
-    left:0px;
-    .top {
+    width:620px;
+    height: 440px;
+    position: fixed;
+    top:330px;
+    left:50%;
+    margin-left: -310px;
+    background-color: #fff;
+    border-radius:8px;
+    overflow: hidden;
+    z-index: 6;
+    .bottom {
       width:100%;
-      height:37px;
+      height:80px;
+      line-height: 80px;
       background:rgba(245,245,245,1);
+      padding: 0 36px;
       .icon-emoji {
+        vertical-align: middle;
         background:url('~assets/image/face.png') no-repeat center;
         background-size:contain;
         cursor: pointer;
-        left:16px;
-        top:50%;
-        margin-top:-10px;
-        position: absolute;
-        width: 20px;
-        height: 20px;
+        width: 40px;
+        height: 40px;
         border-radius:100px;
+        display: inline-block;
         &:hover {
           background-image: url('~assets/image/face-hover.png');
         }
@@ -309,31 +342,30 @@
           background-image: url('~assets/image/broadcast-hover.png');
         }
       }
+      .send-btn {
+        color:#4B5AFE;
+        font-size:32px;
+        cursor: pointer;
+      }
       .face-box {
         position: absolute;
-        top: -209px;
+        bottom: 85px;
         left: 0px;
         width: 98%;
         background: #fff;
         z-index: 10;
         img {
-          width: 26px;
-          height: 26px;
+          width: 30px;
+          height: 30px;
           float: left;
           cursor: pointer;
         }
       }
     }
-    .bottom {
-      overflow: hidden;
-      width:300px;
+    .top {
+      width:100%;
+      height:360px;
       left:50%;
-      margin-left: -150px;
-      background:rgba(255,255,255,1);
-      border-radius:4px;
-      border:1px solid rgba(255,208,33,1);
-      position: absolute;
-      height:50px;
       .mute-box {
         cursor: not-allowed;
         line-height: 50px;
@@ -342,27 +374,20 @@
         height:100%;
       }
     }
-    .send-btn {
+    .inp {
       width:100%;
       height:100%;
-      background:$color-default;
-      position: absolute;
-      top:0;
-      right:0;
-      display: block;
-      width:50px;
-      height:48px;
-      line-height: 48px;
-      text-align: center;
-      color:$color-font;
-      font-size:14px;
-      cursor: pointer;
-    }
-    .inp {
-      width:250px;
-      height:100%;
-      padding:5px 10px;
+      padding:35px;
       border:none;
+      textarea {
+        border:none;
+      }
+      .limit{
+        bottom: -55px;
+        z-index: 9;
+        font-size: 28px;
+        right: 145px;
+      }
     }
   }
   .not-login {

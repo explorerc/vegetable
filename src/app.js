@@ -42,3 +42,40 @@ new Vue({
   store,
   render: h => h(App)
 })
+
+let ready = window.Vhall.ready
+let readyStatus = false
+let callback = []
+window.Vhall.ready = fn => {
+  if (readyStatus) {
+    fn()
+  } else {
+    callback.push(fn)
+  }
+}
+
+ready(() => {
+  for (let i = 0, item; (item = callback[i++]);) {
+    item()
+  }
+  callback = []
+  readyStatus = true
+})
+
+let config = window.Vhall.config
+let exec = false
+window.Vhall.config = options => {
+  // let find = true
+
+  // for (var p in options) {
+  //   if (options[p] === '' || options[p] === undefined) {
+  //     find = false
+  //     break
+  //   }
+  // }
+  // if (!find) return
+
+  if (exec) return
+  exec = true
+  config(options)
+}

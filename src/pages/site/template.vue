@@ -7,10 +7,12 @@
 <script>
 import siteService from 'src/api/site-manage'
 import activityManage from 'src/api/activity-manage.js'
+import { mapState } from 'vuex'
 
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
 import temp4 from './template4.vue'
+import wxShareFunction from '../../assets/js/wx-share.js'
 
 export default {
   components: {
@@ -29,15 +31,38 @@ export default {
         link: location.href
       },
       data: {},
-      tid: this.$route.params.id
+      tid: this.$route.params.id,
+      wxShare: { // 微信分享数据
+        wxShareData: {
+          appId: '',
+          timestamp: '',
+          nonceStr: '',
+          signature: ''
+        },
+        shareData: {
+          title: '', // 分享标题
+          desc: '', // 分享简介
+          link: '', // 分享链接
+          imgUrl: '' // 分享图片
+        },
+        shareUser: {
+          shareId: '' // 分享者id
+        }
+      }
     }
   },
   mounted () {
     this.init()
+    this.shareFunction()
+  },
+  computed: {
+    ...mapState('liveMager', {
+      joinInfo: (state) => state.joinInfo
+    })
   },
   methods: {
     init () {
-      activityManage.getLiveInfo({
+      activityManage.getWebinarinfo({
         activityId: this.tid
       }).then(res => {
         this.share.title = res.data.activity.title
@@ -66,6 +91,31 @@ export default {
           this.data = data
         })
       })
+    },
+    async shareFunction () { // 微信分享
+      let _url = window.location.href
+      if (this.joinInfo.activityUserId) {
+        _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
+      }
+      this.wxShare.shareData.link = _url
+      await activityManage.getShareSign(_url).then((res) => { // 获取微信分享签名等信息
+        if (res.code === 200) {
+          this.wxShare.wxShareData.appId = res.data.appId
+          this.wxShare.wxShareData.timestamp = res.data.timestamp
+          this.wxShare.wxShareData.nonceStr = res.data.nonceStr
+          this.wxShare.wxShareData.signature = res.data.signature
+        }
+      })
+      await activityManage.getShareInfo({ // 获取分享标题等信息
+        route: 'guide_route'
+      }).then((res) => {
+        if (res.code === 200 && res.data) {
+          this.wxShare.shareData.title = res.data.title ? res.data.title : ''
+          this.wxShare.shareData.desc = res.data.description ? res.data.description : ''
+          this.wxShare.shareData.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+        }
+      })
+      wxShareFunction(this.wxShare)
     }
   }
 }

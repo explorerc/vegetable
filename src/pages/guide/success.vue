@@ -13,17 +13,16 @@
       <span v-else-if="activity.viewCondition === 'NONE'">预约成功</span>
     </p>
     <p>活动将于<span class="v-red">{{activity.startTime}}</span>准时开播</p>
-    <a href="javascript:;" @click="sendAction('666')">发送消息</a>
   </div>
 </template>
 <script>
   import activityManage from '../../api/activity-manage.js'
   import loginMixin from 'components/login-mixin'
   import ChatService from '../../components/common/chat/ChatService.js'
-  import sdkManage from '../../api/sdk-manage.js'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import ChatConfig from 'src/api/chat-config'
+  import LiveHttp from '../../api/Live-manage.js'
   export default {
     mixins: [loginMixin],
     data () {
@@ -75,22 +74,8 @@
       handleActivityStart (msg) {
         this.activity.countDown = 1799
       },
-      sendAction (msg) {
-        // 发送消息
-        this.service.activityId = this.$route.params.id
-        // this.service.sendCustomMsg('activityStart', msg)
-        sdkManage.send({
-          activityId: this.$route.params.id,
-          type: ChatConfig.BEGIN_LIVE,
-          content: msg,
-          __errHandler: true
-        }).then((res) => {
-          if (res.code === 200) {
-          }
-        })
-      },
       async getInfo () {
-        await activityManage.getLiveInfo({
+        await activityManage.getWebinarinfo({
           activityId: this.$route.params.id,
           __errHandler: true
         }).then((res) => {
@@ -124,7 +109,7 @@
               __errHandler: true
             }).then((res) => {
               if (res.code === 200) {
-                sdkManage.getSdkparams({
+                LiveHttp.getSdkparams({
                   activityId: this.$route.params.id,
                   activityUserId: res.data.activityUserId,
                   __errHandler: true

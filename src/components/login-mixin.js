@@ -70,7 +70,7 @@ export default {
         if (sessionStorage.getItem('master')) {
           resolve(JSON.parse(sessionStorage.getItem('master')))
         } else {
-          authManage.getMasterInfo({
+          authManage.getJoinInfo({
             __errHandler: true
           }).then(res => {
             if (res.code === 200) {

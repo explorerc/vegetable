@@ -1,13 +1,13 @@
 <template>
   <div class="chat-wrap" @click='boxClick'>
-    <div class="bscroll" ref="bscroll" :class="type !== 'LIVE'? 'vod' : 'live'">
+    <div class="bscroll" ref="bscroll" :class="type !== 'live'? 'vod' : 'live'" @mouseover="stopScroll = true" @mouseout="stopScroll = false">
       <ol class='chat-list bscroll-container'>
-        <li v-for='(item,idx) in chatData' :data-joinId="item.id" :class="{'right': joinInfo.activityUserId == item.id}">
+        <li v-for='(item,idx) in chatData' :data-joinId="item.id" :class="{'right': joinInfo.activityUserId*1 == item.id*1}">
           <dl class='clearfix'>
             <dt v-if="item.avatar !== ''"><img :src="`${imgHost}/${item.avatar}`"></dt>
             <dt class='avatar' v-else >{{item.name.substr(0,1)}}</dt>
             <dd>
-              <div class="name" v-if='type === "LIVE"'><em v-if="item.detail.role">{{item.detail.role}}</em> {{item.name}} <i class='handle' v-if='!isWatch'>
+              <div class="name" v-if='type === "live"'>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em> <i class='handle' v-if='!isWatch && item.detail.role !== "主持人"'>
                 <ol>
                   <li class='mute' v-if="item.isGag === 'N'" @click='handleMuted(0,item.id)'><i></i>禁言</li>
                   <li class='mute' v-else @click='handleMuted(1,item.id)'><i></i>取消禁言</li>
@@ -23,61 +23,67 @@
         </li>
       </ol>
       <transition v-if="tipsShow && tipsCount > 0" >
-        <span class="msg-tips"  @click='scrollBtm'>有{{tipsCount}}条新消息</span>
+        <span class="msg-tips"  @click='scrollBtm'>有{{tipsCount}}条新消息 <i class="iconfont icon-xiangxia"></i> </span>
       </transition>
-      <transition name='top'  mode="out-in" appear>
+      <transition name="left-right" mode="out-in">
         <div class="announce-box" v-if="announceShow" >
-          <i class='icon-speak'></i>
+          <svg class="icon" style="width: 6.667vw; height: 6.667vw;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1305 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3285"><path d="M236.3648 689.6384a102.4 102.4 0 0 1 144.6144 7.5776l119.9104 133.1712a102.4 102.4 0 1 1-152.2176 137.0368l-119.9104-133.1712a102.4 102.4 0 0 1 7.6032-144.64z" fill="#222222" p-id="3286"></path><path d="M277.4528 734.4384a25.6 25.6 0 0 0-1.8944 36.1472l119.9104 133.1968a25.6 25.6 0 0 0 38.0672-34.2784l-119.9104-133.1712a25.6 25.6 0 0 0-36.1728-1.8944z" fill="#FFD021" p-id="3287"></path><path d="M144.5888 482.4832l47.2064-12.416a464.8448 464.8448 0 0 0 278.3744-207.104l72.832-119.1168c-15.3088 169.7024-7.9104 291.7888 22.1696 366.208 30.08 74.4704 107.52 162.304 232.2944 263.6032l-138.3168-37.7088a456.064 456.064 0 0 0-342.9376 42.1376l-42.5472 23.8336a173.6704 173.6704 0 0 1-245.9392-86.4256 173.6704 173.6704 0 0 1 116.864-233.0112z" fill="#222222" p-id="3288"></path><path d="M211.328 544.3328l-47.2064 12.4416a96.8448 96.8448 0 0 0-59.904 141.056 96.8704 96.8704 0 0 0 131.8656 37.12l42.5472-23.8336a532.8384 532.8384 0 0 1 389.632-52.1472L528.896 313.9328a541.7728 541.7728 0 0 1-317.5424 230.4z" fill="#FFD021" p-id="3289"></path><path d="M819.5072 795.9552c-94.4896 38.1696-217.088-93.1072-293.3248-281.856-76.2624-188.7232-79.2832-368.3072 15.2064-406.5024 94.5152-38.144 217.088 93.1328 293.3504 281.856 76.2368 188.7232 79.2576 368.3072-15.232 406.5024z" fill="#222222" p-id="3290"></path><path d="M790.7328 724.736c12.9792-5.248 24.2944-35.7888 23.424-88.0384-1.024-61.3888-18.7904-139.6736-50.6368-218.496s-73.472-147.456-115.3536-192.3072c-35.6608-38.1952-65.024-52.3264-78.0032-47.104s-24.2688 35.8144-23.3984 88.064c1.024 61.3888 18.7648 139.6736 50.6112 218.496s73.472 147.456 115.3792 192.3328c35.6608 38.1696 65.024 52.3008 77.9776 47.0528z" fill="#FFD021" p-id="3291"></path><path d="M668.8256 525.4912a76.8 76.8 0 1 1-57.5488-142.3872 76.8 76.8 0 0 1 57.5488 142.3872zM840.9088 233.2928a38.4 38.4 0 1 1-50.176-58.1376l172.544-148.8896a38.4 38.4 0 1 1 50.1504 58.1376l-172.544 148.8896zM951.04 575.1552a38.4 38.4 0 0 1-3.712-76.7232l256.9472-12.3648a38.4 38.4 0 0 1 3.6864 76.7232l-256.9472 12.3648zM902.4 407.9872a38.4 38.4 0 1 1-31.9488-69.8368l370.0736-169.344a38.4 38.4 0 1 1 31.9488 69.8368L902.4 407.9872zM201.3696 637.8496a25.6 25.6 0 1 1-12.1856-49.7152c14.08-3.456 24.576-6.144 31.488-8.0128a25.6 25.6 0 1 1 13.5936 49.3312c-7.4752 2.0736-18.4064 4.864-32.896 8.3968z m111.1552-35.4048a25.6 25.6 0 1 1-20.864-46.7712c40.2688-17.9712 84.7872-42.5216 133.4272-73.6256a25.6 25.6 0 1 1 27.5712 43.136c-50.688 32.4096-97.3568 58.1632-140.1344 77.2608z" fill="#222222" p-id="3292"></path></svg>
           <div class="txt-box">
             <p class="txt">{{receiveAnnounce}}</p>
           </div>
-          <span class="close" @click='announceShow = false'>×</span>
+          <i class="iconfont icon-close" @click='announceShow = false'></i>
         </div>
       </transition>
     </div>
-    <div class="send-box clearfix" v-if='type === "LIVE" && isLogin'>
-      <div class="top">
-        <i class='icon-emoji' @click='faceOpen = true' title='表情'></i>
-        <div class="face-box" v-if='faceOpen'>
-            <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`" @click.stop="inFace(index)" v-for="(item,index) in faceArr" :key="index">
-        </div>
-        <div class="fr">
-          <i class='icon-swap' title='切换发送聊天/公告' @click='swapAnnounce ? swapAnnounce = false : swapAnnounce = true'></i>
-          <i class='mute-all' @click='muteAll' title='全体禁言'></i>
-        </div>
-      </div>
-      <div class="bottom">
-        <template v-if='swapAnnounce'>
-          <template v-if='mute || allMuted'>
-            <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
+    <div class="v-send-box-bg" v-if='type === "live" && isLogin && sendBoxShow'>
+      <div class="send-box clearfix" id="sendBox">
+        <div class="top">
+          <template v-if='swapAnnounce'>
+            <com-input :value.sync="value" :placeholder="chatPlaceholder" :max-length="140" class='inp' type="textarea"></com-input>
           </template>
           <template v-else>
-            <textarea name="" class='inp' v-model.sync="value" @keydown.prevent.13='sendAction' :placeholder="chatPlaceholder"></textarea>
-            <span @click='sendAction' class='send-btn'>发送</span>
+            <com-input :value.sync="valueAnnounce" :placeholder="announcePlaceholder" :max-length="140" class='inp' type="textarea"></com-input>
           </template>
-        </template>
-        <template v-else>
-          <textarea name="" class='inp' v-model.sync="valueAnnounce" @keydown.prevent.13='sendAnnounce' :placeholder="announcePlaceholder"></textarea>
-          <span @click='sendAnnounce' class='send-btn'>发送</span>
-        </template>
+        </div>
+        <div class="bottom clearfix">
+          <i class='icon-emoji' @click='faceOpen = !faceOpen' title='表情'></i>
+          <div class="face-box" v-if="faceOpen">
+              <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`" @click.stop="inFace(index)" v-for="(item,index) in faceArr" :key="index">
+          </div>
+          <template v-if='swapAnnounce'>
+            <template v-if='(mute || allMuted) && isWatch'>
+              <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
+            </template>
+            <template v-else>
+              <span @click='sendAction' class='send-btn fr'>发送</span>
+            </template>
+          </template>
+          <template v-else>
+            <span @click='sendAnnounce' class='send-btn fr'>发送</span>
+          </template>
+          <div class="fr" v-if="joinInfo.roleName === 'HOST' && !isWatch">
+            <i class='icon-swap' title='切换发送聊天/公告' @click='swapAnnounce ? swapAnnounce = false : swapAnnounce = true'></i>
+            <div class='switch-box'>
+              <span>全体禁言</span><el-switch  class='switch' v-model="allMuted" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="muteAll"></el-switch>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class='send-box not-login' v-else>
+    <!-- <div class='send-box not-login' v-else-if='type === "live" && !isLogin'>
       需要登录才能参与聊天 <span @click='loginHandler'>登录</span>
-    </div>
+    </div> -->
 
   </div>
 </template>
 
 <script>
-import LiveHttp from 'src/api/Live-manage.js'
+import LiveHttp from '../../api/Live-manage.js'
 import ChatService from './ChatService.js'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
-import authManage from 'src/api/auth-manage'
 import BScroll from 'better-scroll'
 export default {
-  inject: ['chat/getHistroychat'],
   name: 'chat',
   data () {
     return {
@@ -102,8 +108,10 @@ export default {
       tipsCount: 0,
       timer: null,
       isLogin: false,
+      stopScroll: false,
       chatPlaceholder: '请输入聊天内容',
       announcePlaceholder: '请输入公告内容',
+      aBScroll: null,
       // imgHost: process.env.IMGHOST + '/'
       imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
       /* 表情数组 */
@@ -384,9 +392,13 @@ export default {
   props: {
     type: { // 活动状态 LIVE直播 VOD回放
       type: String,
-      default: 'LIVE'
+      default: 'live'
     },
     isWatch: { // 是否是观看端
+      type: Boolean,
+      default: false
+    },
+    sendBoxShow: {
       type: Boolean,
       default: false
     }
@@ -394,41 +406,51 @@ export default {
   computed: {
     ...mapState('liveMager', {
       roomPaas: state => state.roomPaas,
-      liveInfo: state => state.liveInfo, // 活动信息
+      activityInfo: state => state.activityInfo, // 活动信息
       joinInfo: state => state.joinInfo // 参会信息
+    }),
+    ...mapState('tokenMager', {
+      chatParams: state => state.chatParams
     }),
     ...mapState('login', {
       loginInfo: (state) => state.loginInfo
     })
   },
   mounted () {
+    if (!this.isWatch) {
+      this.isLogin = true
+    }
     // 拉取最近聊天纪律
-    this.getHistroy()
-
+    // this.getHistroy()
     // this.initSdk()
-
+    // const _that = this
+    // setTimeout(function () {
+    //   _that.initInfo()
+    // }, 500)
     // this.service.regHandler('BEGIN_LIVE', this.listenAnnounce)
     // this.service.regHandler('FINISH_LIVE', this.listenAnnounce)
     // this.service.regHandler('INCREMENT_ONLINE', this.listenIncrease)
   },
   methods: {
+    ...mapMutations('tokenMager', {
+      setChatParams: types.CHAT_PARAMS
+    }),
     ...mapMutations('liveMager', {
       storeJoinInfo: types.JOIN_INFO
     }),
     initSdk () {
-      this.service = new ChatService()
+      // ChatService.OBJ = new ChatService()
       let obj = { channelId: this.roomPaas.channelRoom }
       Object.assign(this.roomPaas, obj)
-      this.service.init(this.roomPaas)
-
-      this.service.regHandler('chat', this.listenChat)
-      this.service.regHandler('ANNOUNCEMENT', this.listenAnnounce)
-      this.service.regHandler('KICK', this.listenKick)
-      this.service.regHandler('DISABLE_KICK', this.listenCancelkick)
-      this.service.regHandler('GAG', this.listenMute)
-      this.service.regHandler('DISABLE_GAG', this.listenCancelmute)
-      this.service.regHandler('GAG_ALL', this.listenAllmute)
-      this.service.regHandler('DISABLE_GAG_ALL', this.listenCancelallmute)
+      ChatService.OBJ.init(this.roomPaas)
+      ChatService.OBJ.regHandler('chat', this.listenChat)
+      ChatService.OBJ.regHandler('ANNOUNCEMENT', this.listenAnnounce)
+      ChatService.OBJ.regHandler('KICK', this.listenKick)
+      ChatService.OBJ.regHandler('DISABLE_KICK', this.listenCancelkick)
+      ChatService.OBJ.regHandler('GAG', this.listenMute)
+      ChatService.OBJ.regHandler('DISABLE_GAG', this.listenCancelmute)
+      ChatService.OBJ.regHandler('GAG_ALL', this.listenAllmute)
+      ChatService.OBJ.regHandler('DISABLE_GAG_ALL', this.listenCancelallmute)
     },
     sendAction () {
       if (!this.value.replace(/\n/g, '').length) {
@@ -436,19 +458,17 @@ export default {
         return false
       }
       const role = this.joinInfo.roleName === 'HOST' ? '主持人' : '' // 主持人发送
-      this.service.activityId = this.activityId
+      ChatService.OBJ.activityId = this.activityId
       const obj = {
         // avatar: this.joinInfo.avatar, // 头像
         role: role, // 角色
         txt: this.value // 输入内容
       }
-      this.service.sendChat(JSON.stringify(obj))
+      ChatService.OBJ.sendChat(JSON.stringify(obj))
       this.value = ''
       this.chatPlaceholder = '请输入聊天内容'
       this.faceOpen = false
-    },
-    sendCustom () {
-      // 调用接口 发公告
+      this.$emit('closeChatBox', true)
     },
     handleKicked (flag, id) {
       const data = {
@@ -490,10 +510,8 @@ export default {
     listenAnnounce (msg) {
       console.log('接收 公告消息', msg)
       // 如果是发起端 则弹窗公告
-      if (!this.isWatch) {
-        this.announceShow = true
-        this.receiveAnnounce = msg.content
-      }
+      this.announceShow = true
+      this.receiveAnnounce = msg.content
       const _that = this
       clearTimeout(_that.timer)
       _that.timer = setTimeout(function () {
@@ -506,15 +524,14 @@ export default {
       console.log('接收 踢出消息', msg)
       this.refreshList(msg.activityUserId, 'isKick', 'Y')
       if (this.isSelf(msg.activityUserId)) {
-        alert('您已被踢出')
+        this.$router.push({
+          path: `/kicked`
+        })
       }
     },
     listenCancelkick (msg) {
       console.log('接收 取消踢出消息' + msg)
       this.refreshList(msg.activityUserId, 'isKick', 'N')
-      // if (this.isSelf(msg.activityUserId)) {
-
-      // }
     },
     listenMute (msg) {
       console.log('接收 禁言消息', msg)
@@ -539,13 +556,13 @@ export default {
       console.log('接收 取消全体禁言消息', msg)
       this.allMuted = false
     },
-    // isSelf (id) {
-    //   if (this.joinInfo.activityUserId === id) {
-    //     return true
-    //   } else {
-    //     return false
-    //   }
-    // },
+    isSelf (id) {
+      if (this.joinInfo.activityUserId === id) {
+        return true
+      } else {
+        return false
+      }
+    },
     refreshList (id, type, status) {
       this.chatData.forEach(item => {
         if (item.id * 1 === id * 1) {
@@ -583,11 +600,14 @@ export default {
       }
 
       this.chatData.push(obj)
-      if (!this.tipsShow) {
+      if (!this.tipsShow && !this.stopScroll) {
         const _that = this
         setTimeout(function () {
           _that.scrollBtm()
         }, 200)
+      }
+      if (this.stopScroll) {
+        this.tipsShow = true
       }
     },
     sendAnnounce () {
@@ -605,13 +625,13 @@ export default {
         })
         this.valueAnnounce = ''
         this.announcePlaceholder = '请输入公告内容'
+        this.$emit('closeChatBox', true)
       })
     },
     scrollBtm () {
-      const _that = this
-      _that.aBScroll.scrollTo(0, _that.aBScroll.maxScrollY, 500, 'bounce')
+      this.aBScroll.scrollTo(0, this.aBScroll.maxScrollY, 500, 'bounce')
       setTimeout(() => {
-        _that.tipsCount = 0
+        this.tipsCount = 0
       }, 500)
     },
     /* 选择表情 */
@@ -626,7 +646,7 @@ export default {
       }
     },
     getHistroy () {
-      this['chat/getHistroychat'](this.activityId).then((res) => {
+      LiveHttp.getHistroychat(this.activityId).then((res) => {
         res.data.reverse().forEach(item => {
           this.reArrange(item)
         })
@@ -635,7 +655,7 @@ export default {
     muteAll () {
       const data = {
         'activityId': this.activityId,
-        'cancel': this.allMuted ? 'Y' : 'N'
+        'cancel': this.allMuted ? 'N' : 'Y'
       }
       LiveHttp.muteAll(data).then((res) => {
         if (res.code === 200) {
@@ -647,7 +667,11 @@ export default {
     },
     /* 初始化，获取权限 */
     initToken () {
-      return LiveHttp.getLiveTtoken(this.activityId)
+      if (!this.isWatch) { // 发起端
+        return LiveHttp.getLiveTtoken(this.activityId)
+      } else { // 观看端
+        return this.roomPaas
+      }
     },
     initScroll () {
       this.$nextTick(() => {
@@ -673,29 +697,45 @@ export default {
       })
     },
     async initInfo () {
-      this.isLogin = true
-      // joininfo是否有
-      if (this.joinInfo) {
-        this.initSdk()
-        this.initScroll()
-      } else {
-        // 初始才会权限
-        await this.initToken()
-        /* 获取参会信息 */
-        authManage.getMasterInfo().then((res) => {
-          // 存储到vuex
-          this.storeJoinInfo(res.data)
-          this.initSdk()
-          this.initScroll()
-        })
-      }
+      this.initSdk()
     },
     loginHandler () {
       this.$emit('showLogin')
     }
   },
   watch: {
-    liveInfo: {
+    'loginInfo.consumerUserId': {// 观看端 是否已登陆
+      handler (newValue) {
+        if (newValue && this.isWatch) {
+          this.isLogin = true
+        }
+      },
+      deep: true,
+      immediate: true
+    },
+    allMuted: {
+      handler (newValue) {
+        // 是否全体禁言
+        if (newValue) {
+          this.$emit('isMute', { isMute: true, type: 'allMuted' })
+        } else {
+          this.$emit('isMute', { isMute: false, type: 'allMuted' })
+        }
+      },
+      deep: true
+    },
+    mute: {
+      handler (newValue) {
+        // 是否全体禁言
+        if (newValue) {
+          this.$emit('isMute', { isMute: true, type: 'mute' })
+        } else {
+          this.$emit('isMute', { isMute: false, type: 'mute' })
+        }
+      },
+      deep: true
+    },
+    activityInfo: {
       handler (newValue) {
         // 是否全体禁言
         if (newValue.setting.gag === 'Y') {
@@ -706,12 +746,35 @@ export default {
       },
       deep: true
     },
-    loginInfo: {
-      handler () {
-        this.initInfo()
+    'roomPaas.channelId': { // 发起端
+      handler (val) {
+        if (val) {
+          console.log(val)
+          this.initInfo()
+        }
       },
       immediate: true,
       deep: true
+    },
+    'joinInfo.isGag': {
+      handler (newValue) {
+        if (newValue === 'Y' && this.isWatch) {
+          this.mute = true
+        }
+      },
+      deep: true,
+      immediate: true
+    },
+    'joinInfo.isKick': {
+      handler (newValue) {
+        if (newValue === 'Y' && this.isWatch) {
+          this.$router.push({
+            path: `/kicked`
+          })
+        }
+      },
+      deep: true,
+      immediate: true
     }
   }
 }

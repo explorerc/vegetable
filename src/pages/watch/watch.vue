@@ -8,29 +8,8 @@
       <a href="javascript:;" class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
       <a href="javascript:;" class="fr" @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
-    <component :is="currentView" :paasParams="vhallParams" ></component>
-    <div v-if="domShow" class="v-function-box">
-      <div class="v-nav">
-        <com-tabs :value.sync="tabValue" >
-          <com-tab label="活动简介" :index="1">
-            <div class="v-introduction" v-html="activityInfo.description"></div>
-          </com-tab>
-          <com-tab label="互动聊天" :index="2">
-            <div class="chat-content">
-              <chating :type="playType"></chating>
-            </div>
-            <div class="v-chat-control" @click="chatClick()">
-              <i class="v-showpsd iconfont icon-biaoqing"></i>
-              <span class="v-chat-clickbox">
-                输入文字聊天
-              </span>
-            </div>
-          </com-tab>
-        </com-tabs>
-        <a class="v-subscribe" href="javascript:;"><i class="iconfont icon-dingyue"></i> 关注</a>
-      </div>
-    </div>
-    <message-box v-show="subscribeShow" @handleClick="subscribeClick">
+    <component :is="currentView" :paasParams="vhallParams" :domShow="domShow"></component>
+    <message-box v-show="subscribeShow" @handleClick="subscribeClick($event)">
       <div slot="header"></div>
       <img src="../../assets/image/qq.png" alt="" class="v-logo">
       <p class="v-title">
@@ -50,19 +29,19 @@
         恭喜您，订阅成功！
       </p>
     </message-box>
+    <com-login></com-login>
   </div>
 </template>
 <script>
+import { mapMutations, mapState } from 'vuex'
 import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
 import Empty from './empty'
-import activityManage from 'api/activity-manage.js'
-import sdkManage from 'api/sdk-manage.js'
-import { mapMutations, mapState } from 'vuex'
 import * as types from '../../store/mutation-types'
-import ChatConfig from 'src/api/chat-config'
-import Chating from '../../components/chat' // 聊天
-import ChatService from '../../components/common/chat/ChatService.js'
+import LiveHttp from '../../api/Live-manage.js'
+import loginMixin from 'components/login-mixin'
+import activityManage from 'api/activity-manage.js'
+import wxShareFunction from '../../assets/js/wx-share.js'
 const playTypes = {
   'PREPARE': 'pre',
   'LIVING': 'live',
@@ -76,12 +55,12 @@ const playStatuTypes = {
   'PLAYBACK': '回放'
 }
 export default {
-  components: { Playback, Chating },
+  mixins: [loginMixin],
   data () {
     return {
       activityData: {
       },
-      playType: '',
+      playType: 'live', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
       currentView: Empty,
       vhallParams: {
@@ -90,25 +69,46 @@ export default {
         channelId: '',
         accountId: ''
       },
+      subscribeShow: false, // 订阅弹框是否显示
       businessUserId: '', // 企业账户id
       domShow: true, // 控制横竖屏元素是否显示
-      tabValue: 1,
-      subscribeShow: false, // 订阅弹框是否显示
+      autoClose: 0,
       email: '', // 订阅邮箱
       errorTips: '', // 邮箱验证错误提示
       successShow: false, // 订阅成功显示框
-      autoClose: 0
+      wxShare: { // 微信分享数据
+        wxShareData: {
+          appId: '',
+          timestamp: '',
+          nonceStr: '',
+          signature: ''
+        },
+        shareData: {
+          title: '', // 分享标题
+          desc: '', // 分享简介
+          link: '', // 分享链接
+          imgUrl: '' // 分享图片
+        },
+        shareUser: {
+          shareId: '' // 分享者id
+        }
+      }
     }
   },
   mounted () {
+    this.storeLoginInfo(this.getLoginInfo())
   },
   computed: {
     ...mapState('liveMager', {
       activityInfo: state => state.activityInfo,
+      joinInfo: state => state.joinInfo,
       roomPaas: state => state.roomPaas
     }),
     ...mapState('tokenMager', {
       chatParams: state => state.chatParams
+    }),
+    ...mapState('login', {
+      loginInfo: state => state.loginInfo
     })
   },
   created () {
@@ -142,18 +142,78 @@ export default {
     }),
     ...mapMutations('liveMager', {
       storeActivityInfo: types.ACTIVITY_INFO,
-      storeRoomPaas: types.ROOM_PAAS
+      storeRoomPaas: types.ROOM_PAAS,
+      storeJoinInfo: types.JOIN_INFO
     }),
+    ...mapMutations('login', {
+      storeLoginInfo: types.LOGIN_INFO
+    }),
+    subscribe () {
+      if (this.loginInfo) {
+        if (this.loginInfo.email) {
+          this.sendSubScribe()
+        } else {
+          this.subScribeShow = true
+        }
+      } else {
+        this.doLogin()
+      }
+    },
+    emailFocus () {
+      this.errorTips = ''
+    },
+    /* 进行订阅 */
+    sendSubScribe () {
+      LiveHttp.sendSubscribe({
+        businessUserId: this.activityInfo.userId,
+        email: this.loginInfo.email
+      }).then(res => {
+        if (res.code !== 200) {
+          this.errorTips = res.msg
+        } else {
+          this.autoClose = 3
+          this.subscribeShow = false
+          this.successShow = true
+          let tempLoginInfo = JSON.parse(JSON.stringify(this.loginInfo))
+          tempLoginInfo.email = this.emailInput
+          this.updateLoginInfo(tempLoginInfo)
+          this.storeLoginInfo(tempLoginInfo)
+        }
+      })
+    },
+    subscribeClick (e) {
+      // 发送订阅=
+      if (e.action === 'cancel') {
+        this.subscribeShow = false
+      } else if (e.action === 'confirm') {
+        let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+        if (!reg.test(this.email)) {
+          this.errorTips = '邮箱格式不正确'
+          return false
+        } else {
+          this.errorTips = ''
+        }
+        this.sendSubScribe()
+      }
+    },
+    successClick (e) {
+      // 订阅发送成功
+      if (e.action === 'cancel') {
+        this.successShow = false
+      } else if (e.action === 'confirm') {
+        this.successShow = false
+      }
+    },
     async initPage () {
       await this.initRoomPaas()
+      this.share()
       /* 查询详情 */
       let data = {
         activityId: this.$route.params.id,
         __errHandler: true
       }
       let activityInfo = null
-      debugger
-      await activityManage.getLiveInfo(data).then((res) => {
+      await activityManage.getWebinarinfo(data).then((res) => {
         if (res.code === 200) {
           activityInfo = res.data.activity
           activityInfo.setting = res.data.setting
@@ -186,119 +246,84 @@ export default {
       this.storeActivityInfo(this.activityInfo)
     },
     initSdk () {
-      this.service = new ChatService()
-      this.service.init(this.vhallParams)
+      // this.service = new ChatService()
+      // this.service.init(this.vhallParams)
       // window.Vhall.ready(() => {
       // })
     },
     initRoomPaas () {
+      const shareId = this.$route.query.shareid
+      let data = {
+        activityId: this.activityId,
+        __errHandler: true
+      }
+      if (shareId) {
+        data.shareId = shareId
+      }
       return new Promise((resolve, reject) => {
         if (this.roomPaas.token) {
           resolve(this.roomPaas)
         }
-        // debugger
-        // activityManage.getRegactivity({
-        //   activityId: this.$route.params.id,
-        //   __errHandler: true
-        // }).then((res) => {
-        //   debugger
-        //   if (res.code === 200) {
-        //     sdkManage.getSdkparams({
-        //       activityId: this.$route.params.id,
-        //       activityUserId: res.data.activityUserId,
-        //       __errHandler: true
-        //     }).then((res) => {
-        //       debugger
-        //       if (res.code === 200) {
-        //         resolve(res.data)
-        //         this.storeRoomPaas(res.data)
-        //       }
-        //     })
-        //   }
-        // })
-
-        if (!this.chatParams.token) {
-        // 当前vuex中没有聊天token 需要获取
-          activityManage.getRegactivity({
-            activityId: this.$route.params.id,
-            __errHandler: true
-          }).then((res) => {
-            if (res.code === 200) {
-              sdkManage.getSdkparams({
-                activityId: this.$route.params.id,
-                activityUserId: res.data.activityUserId,
-                __errHandler: true
-              }).then((res) => {
-                if (res.code === 200) {
-                  this.vhallParams.token = res.data.token
-                  this.vhallParams.appId = res.data.appId
-                  this.vhallParams.channelId = res.data.channelRoom
-                  this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
-                  this.setChatParams(this.vhallParams)
-                  this.$nextTick(() => {
-                    this.initSdk()
-                    this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleUpdateOnlineNum)
-                  })
-
-                  resolve(res.data)
-                  this.storeRoomPaas(res.data)
-                }
-              })
-            }
-          })
-        } else {
-          this.vhallParams = this.chatParams
-          this.$nextTick(() => {
-            this.initSdk()
-            this.service.regHandler(ChatConfig.INCREMENT_ONLINE, this.handleUpdateOnlineNum)
-          })
-        }
-      })
-    },
-    subscribe () {
-      this.subscribeShow = true
-    },
-    emailFocus () {
-      this.errorTips = ''
-    },
-    subscribeClick (e) {
-      // 发送订阅=
-      if (e.action === 'cancel') {
-        this.subscribeShow = false
-      } else if (e.action === 'confirm') {
-        let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
-        if (!reg.test(this.email)) {
-          this.errorTips = '邮箱格式不正确'
-          return false
-        } else {
-          this.errorTips = ''
-        }
-        activityManage.emailSubscribe({
-          businessUserId: this.businessUserId,
-          email: this.email,
-          __errHandler: true
-        }).then((res) => {
+        activityManage.getRegactivity(data).then(res => {
           if (res.code === 200) {
-            this.autoClose = 3
-            this.subscribeShow = false
-            this.successShow = true
+            this.storeJoinInfo(res.data)
+            LiveHttp.getSdkparams({
+              activityId: this.activityId,
+              activityUserId: res.data.activityUserId
+            }).then(res => {
+              if (res.code === 200 && res.data) {
+                resolve(res.data)
+                this.storeRoomPaas(res.data)
+              }
+            })
           } else {
-            this.errorTips = res.msg
+            this.$router.replace('/kicked')
           }
         })
-      }
+      })
     },
-    successClick (e) {
-      // 订阅发送成功
-      if (e.action === 'cancel') {
-        this.successShow = false
-      } else if (e.action === 'confirm') {
-        this.successShow = false
-      }
+    initMsgServe () {
+      // this.msgService = new ChatService()
+      // this.msgService.init({
+      //   token: this.roomPaas.token,
+      //   appId: this.roomPaas.appId,
+      //   channelId: this.roomPaas.channelRoom
+      // })
+      // /* 监听在线人数 */
+      // this.msgService.regHandler(ChatConfig.onLineNum, (msg) => {
+      //   const temp = JSON.parse(JSON.stringify(this.liveInfo))
+      //   temp.showOnlineNum = parseInt(temp.setting.initOnlineNum) + parseInt(msg.num)
+      //   this.storeLiveInfo(temp)
+      // })
+      // /* 监听公告消息 */
+      // this.msgService.regHandler(ChatConfig.announcement, (msg) => {
+      //   console.log(msg)
+      // })
     },
-    chatClick () {
-      // 点击弹出聊天窗口
-      alert(1)
+    async share () { // 微信分享
+      let _url = window.location.href
+      if (this.joinInfo.activityUserId) {
+        _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
+      }
+      this.wxShare.shareData.link = _url
+      await activityManage.getShareSign(_url).then((res) => { // 获取微信分享签名等信息
+        if (res.code === 200) {
+          this.wxShare.wxShareData.appId = res.data.appId
+          this.wxShare.wxShareData.timestamp = res.data.timestamp
+          this.wxShare.wxShareData.nonceStr = res.data.nonceStr
+          this.wxShare.wxShareData.signature = res.data.signature
+        }
+      })
+      await activityManage.getShareInfo({ // 获取分享标题等信息
+        route: 'guide_route'
+      }).then((res) => {
+        if (res.code === 200 && res.data) {
+          this.wxShare.shareData.title = res.data.title ? res.data.title : ''
+          this.wxShare.shareData.desc = res.data.description ? res.data.description : ''
+          this.wxShare.shareData.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+        }
+      })
+      wxShareFunction(this.wxShare)
     }
   }
 }
@@ -414,6 +439,16 @@ export default {
             color: #888888;
             margin-left: 20px;
           }
+          .icon-biaoqing{
+            font-size: 30px;
+            display: inline-block;
+          }
+          &.v-noLogin{
+            text-align: center;
+            span{
+              color: #4b5afe;
+            }
+          }
         }
       }
       .v-introduction {
@@ -422,10 +457,10 @@ export default {
       }
       .chat-content {
         width: 100%;
-        padding: 40px;
+        // padding: 0 40px;
         position: absolute;
         top: 0;
-        bottom: 91px;
+        bottom: 100px;
         word-break: break-all;
         overflow-x: hidden;
         overflow-y: auto;

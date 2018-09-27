@@ -1,7 +1,3 @@
-import {
-  broadcast
-} from '../../api/chat'
-
 const msgHandler = Symbol('msgHandler')
 const dispatchHandler = Symbol('dispatchHandler')
 /**
@@ -13,24 +9,41 @@ const dispatchHandler = Symbol('dispatchHandler')
  */
 export default class ChatService {
   constructor () {
+    if (this._instance) {
+      throw new Error('ChatService is singlton')
+    }
+    this._instance = this
     this._activityId = ''
     this.handlerMap = {}
   }
 
+  static get OBJ () {
+    if (!this._instance) {
+      this._instance = new ChatService()
+    }
+
+    return this._instance
+  }
+
   init (opts) {
+    if (this.service || window.vhallChat) {
+      return
+    }
+
     window.Vhall.ready(() => {
       this.service = VhallChat({
         channelId: opts.channelId
       })
       window.vhallChat = this.service
       this[msgHandler]()
+      console.log('初始化成功')
     })
     window.Vhall.config({
       appId: opts.appId,
       accountId: opts.accountId,
       token: opts.token
     })
-
+    // debugger
     console.log(JSON.stringify(opts))
   }
 
@@ -40,13 +53,6 @@ export default class ChatService {
 
   get activityId () {
     return this._activityId
-  }
-
-  send (type, content) {
-    if (this.activityId === '') {
-      return false
-    }
-    broadcast(this.activityId, type, content)
   }
 
   sendChat (msg) {
@@ -63,10 +69,7 @@ export default class ChatService {
   [msgHandler] () {
     console.log('[chat]listening...')
     window.vhallChat.onCustomMsg(res => {
-      let {
-        type,
-        body
-      } = JSON.parse(res)
+      let { type, body } = JSON.parse(res)
       this[dispatchHandler](type, body)
     })
 

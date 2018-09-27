@@ -1,3 +1,7 @@
+import {
+  broadcast
+} from '../../../api/chat'
+
 const msgHandler = Symbol('msgHandler')
 const dispatchHandler = Symbol('dispatchHandler')
 /**
@@ -38,6 +42,13 @@ export default class ChatService {
     return this._activityId
   }
 
+  send (type, content) {
+    if (this.activityId === '') {
+      return false
+    }
+    broadcast(this.activityId, type, content)
+  }
+
   sendChat (msg) {
     this.service.emit(msg)
   }
@@ -60,6 +71,7 @@ export default class ChatService {
     })
 
     window.vhallChat.on(res => {
+      console.log('aaaaaaaaaaaaaaa', res)
       this[dispatchHandler]('chat', res)
     })
   }

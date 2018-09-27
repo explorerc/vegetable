@@ -3,21 +3,6 @@ import utils from 'src/utils'
 let token = ''
 /* 直播互动 */
 const VideoManage = {
-  // 获取参会id
-  getActivityUserId (data) {
-    return utils.ajax({
-      method: 'get',
-      url: '/frontend/user/reg-activity',
-      params: data
-    })
-  },
-  getSdkToken (data) { // 获取观看端token
-    return utils.ajax({
-      method: 'post',
-      url: '/frontend/live/sdk-token',
-      params: data
-    })
-  },
   /* paas token获取接口 */
   getPaasParam (activityId) {
     return utils.ajax({

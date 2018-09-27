@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-import authManage from 'src/api/auth-manage'
+import activityManage from 'api/activity-manage.js'
 
 Vue.use(Router)
 const router = new Router({
@@ -13,7 +13,7 @@ router.beforeResolve((to, from, next) => {
   if (sessionStorage.getItem('login')) {
     auth(to, next)
   } else {
-    authManage.getLoginInfo({
+    activityManage.getUserinfo({
       __errHandler: true
     }).then(res => {
       if (res.code === 200) {

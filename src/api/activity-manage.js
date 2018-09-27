@@ -1,17 +1,68 @@
 import utils from 'src/utils'
 
 const ActivityManage = {
-  getLiveInfo (data) { // 获取活动信息
+  getJoininfo (id) { // 获取用户信息
+    return this.$ajax({
+      method: 'post',
+      url: '/frontend/user/join-info',
+      params: {
+        activityId: id
+      }
+    })
+  },
+  subScribe (data) { // 提交预约活动
+    return utils.ajax({
+      method: 'post',
+      url: '/frontend/user/order-activity',
+      params: data
+    })
+  },
+  getUserinfo (data) { // 获取用户信息
+    return utils.ajax({
+      method: 'get',
+      url: '/user/consumer-user/info',
+      params: data
+    })
+  },
+  getWebinarinfo (data) { // 获取活动信息
     return utils.ajax({
       method: 'post',
       url: '/frontend/live/info',
       params: data
     })
   },
-  getShareInfo (data) { // 获取报名表单
+  getShareInfo (data) { // 获取分享信息
     return utils.ajax({
       method: 'post',
       url: '/frontend/share/info',
+      params: data
+    })
+  },
+  async getRegactivity (data) { // 获取参会信息
+    const promsObj = await new Promise((resolve, reject) => {
+      utils.ajax({
+        method: 'get',
+        url: '/frontend/user/reg-activity',
+        params: data
+      }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+    return promsObj
+  },
+  getForm (data) { // 获取报名表单
+    return utils.ajax({
+      method: 'post',
+      url: '/frontend/question/info',
+      params: data
+    })
+  },
+  saveForm (data) { // 提交报名表单
+    return utils.ajax({
+      method: 'post',
+      url: '/frontend/user/apply-activity',
       params: data
     })
   },
@@ -22,12 +73,6 @@ const ActivityManage = {
       params: {}
     })
   },
-  getRegactivity (data) { // 获取参会信息
-    return utils.ajax({
-      url: '/frontend/user/reg-activity',
-      params: data
-    })
-  },
   /* 获取真实在线人数 */
   queryOnlineNum (data) {
     return utils.ajax({
@@ -36,12 +81,10 @@ const ActivityManage = {
       params: data
     })
   },
-  /* 订阅 */
-  emailSubscribe (data) {
+  getShareSign (url) { // 获取微信分享所需token，appid等数据
     return utils.ajax({
-      method: 'post',
-      url: '/frontend/user/email-subscribe',
-      params: data
+      method: 'get',
+      url: '/common/wechat/get-share-sign?url=' + url
     })
   }
 }

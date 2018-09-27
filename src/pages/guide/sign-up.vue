@@ -33,7 +33,6 @@
   import ComInput from '../../components/common/signup/com-input.vue'
   import ComVerificationCode from '../../components/common/signup/com-code.vue'
   import ComSelect from '../../components/common/signup/com-select.vue'
-  import GuidManage from '../../api/guid-manage.js'
   import activityManage from '../../api/activity-manage.js'
   import loginMixin from 'components/login-mixin'
   import authManage from 'src/api/auth-manage'
@@ -145,7 +144,7 @@
               data.answer.push(obj)
             }
           }
-          GuidManage.applyActivity(data).then((res) => {
+          activityManage.saveForm(data).then((res) => {
             if (res.code === 200) {
               this.$router.replace('/Success/' + this.$route.params.id)
             }
@@ -153,7 +152,7 @@
         }
       },
       getActivity () { // 获取活动信息
-        activityManage.getLiveInfo({
+        activityManage.getWebinarinfo({
           activityId: this.$route.params.id,
           __errHandler: true
         }).then((res) => {
@@ -168,8 +167,8 @@
           }
         })
       },
-      orderActivity () { // 预约活动
-        GuidManage.orderActivity({
+      subScribe () { // 预约活动
+        activityManage.subScribe({
           activityId: this.$route.params.id,
           __errHandler: true
         }).then((res) => {
@@ -201,7 +200,7 @@
           }
         }
         if (this.user.isOrder || this.user.isDisabled) {
-          this.orderActivity()
+          this.subScribe()
         } else {
           authManage.login({
             mobile: this.user.phone,
@@ -212,7 +211,7 @@
             if (res.code === 200) {
               if (res.data) {
                 sessionStorage.setItem('login', JSON.stringify(res.data))
-                activityManage.getLiveInfo({
+                activityManage.getWebinarinfo({
                   activityId: this.$route.params.id,
                   __errHandler: true
                 }).then((res) => {
@@ -220,7 +219,7 @@
                     if (res.data.joinInfo.isOrder) {
                       this.$router.replace('/Success/' + this.$route.params.id)
                     } else {
-                      this.orderActivity()
+                      this.subScribe()
                     }
                   } else {
                     this.$messageBox({
@@ -258,7 +257,7 @@
           activityId: this.$route.params.id,
           __errHandler: true
         }
-        GuidManage.getQuestionInfo(data).then((res) => {
+        activityManage.getForm(data).then((res) => {
           if (res.code === 200) {
             this.questionList = res.data.questionList.map((item) => {
               item.val = ''

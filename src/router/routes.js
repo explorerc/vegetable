@@ -27,6 +27,8 @@ const Test = () =>
 // 活动官网
 const SiteTemplate = () =>
   import('src/pages/site/template.vue')
+const kicked = () =>
+import('src/pages/watch/kicked')
 
 export default [{
   path: '/',
@@ -77,5 +79,10 @@ export default [{
   path: '/test',
   name: 'Test',
   component: Test
+},
+{
+  path: '/kicked',
+  name: 'kicked',
+  component: kicked
 }
 ]
