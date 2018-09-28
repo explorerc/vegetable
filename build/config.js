@@ -2,7 +2,7 @@ const config = {
   buildDetail: false,
   local: {
     BUILD_ENV: 'local',
-    API_PATH: '/api',
+    API_PATH: '/m/api',
     SUB_DIR: '',
     PUBLIC_PATH: '/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
@@ -26,7 +26,7 @@ const config = {
   },
   test: {
     BUILD_ENV: 'test',
-    API_PATH: '/watch/api',
+    API_PATH: '/m/api',
     SUB_DIR: 'static',
     PUBLIC_PATH: '//test-zhike.vhall.com/m/',
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com'
