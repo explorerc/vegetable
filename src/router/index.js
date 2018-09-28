@@ -5,6 +5,7 @@ import activityManage from 'api/activity-manage.js'
 
 Vue.use(Router)
 const router = new Router({
+  base: '/m/',
   routes,
   mode: 'history'
 })
@@ -13,16 +14,19 @@ router.beforeResolve((to, from, next) => {
   if (sessionStorage.getItem('login')) {
     auth(to, next)
   } else {
-    activityManage.getUserinfo({
-      __errHandler: true
-    }).then(res => {
-      if (res.code === 200) {
-        sessionStorage.setItem('login', JSON.stringify(res.data))
-      }
-      auth(to, next)
-    }).catch(() => {
-      auth(to, next)
-    })
+    activityManage
+      .getUserinfo({
+        __errHandler: true
+      })
+      .then(res => {
+        if (res.code === 200) {
+          sessionStorage.setItem('login', JSON.stringify(res.data))
+        }
+        auth(to, next)
+      })
+      .catch(() => {
+        auth(to, next)
+      })
   }
 })
 
