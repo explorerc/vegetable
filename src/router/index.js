@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-import activityManage from 'api/activity-manage.js'
+import userService from 'src/api/user-service'
 
 Vue.use(Router)
 const router = new Router({
@@ -9,20 +9,21 @@ const router = new Router({
   mode: 'history'
 })
 
+const vue = new Vue()
 router.beforeResolve((to, from, next) => {
   if (sessionStorage.getItem('login')) {
     auth(to, next)
   } else {
-    activityManage.getUserinfo({
-      __errHandler: true
-    }).then(res => {
-      if (res.code === 200) {
+    vue
+      .$config({ loading: true, handlers: true })
+      .$get(userService.GET_CONSUMERINFO)
+      .then(res => {
         sessionStorage.setItem('login', JSON.stringify(res.data))
-      }
-      auth(to, next)
-    }).catch(() => {
-      auth(to, next)
-    })
+        auth(to, next)
+      })
+      .catch(() => {
+        auth(to, next)
+      })
   }
 })
 

@@ -7,7 +7,7 @@
             <dt v-if="item.avatar !== ''"><img :src="`${imgHost}/${item.avatar}`"></dt>
             <dt class='avatar' v-else >{{item.name.substr(0,1)}}</dt>
             <dd>
-              <div class="name" v-if='type === "live"'>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em> <i class='handle' v-if='!isWatch && item.detail.role !== "主持人"'>
+              <!-- <div class="name" v-if='type === "live"'>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em> <i class='handle' v-if='!isWatch && item.detail.role !== "主持人"'>
                 <ol>
                   <li class='mute' v-if="item.isGag === 'N'" @click='handleMuted(0,item.id)'><i></i>禁言</li>
                   <li class='mute' v-else @click='handleMuted(1,item.id)'><i></i>取消禁言</li>
@@ -15,8 +15,9 @@
                   <li class='kick' v-else @click='handleKicked(1,item.id)'><i></i>允许参会</li>
                 </ol>
               </i>
-              </div>
-              <div class="name" v-else>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em></div>
+              </div> -->
+              <!-- <div class="name" v-else>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em></div> -->
+              <div class="name">{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em></div>
               <div class="txt" v-html="item.detail.txt"></div>
             </dd>
           </dl>
@@ -78,11 +79,12 @@
 </template>
 
 <script>
-import LiveHttp from '../../api/Live-manage.js'
+// import LiveHttp from '../../api/Live-manage.js'
 import ChatService from './ChatService.js'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 import BScroll from 'better-scroll'
+import activityService from 'src/api/activity-service'
 export default {
   name: 'chat',
   data () {
@@ -470,36 +472,30 @@ export default {
       this.faceOpen = false
       this.$emit('closeChatBox', true)
     },
-    handleKicked (flag, id) {
-      const data = {
-        activityId: this.activityId,
-        userId: id,
-        cancel: flag ? 'Y' : 'N' // 取消
-      }
-      LiveHttp.kickMember(data).then((res) => {
-        // console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            content: flag ? '允许参会成功' : '踢出成功'
-          })
-        }
-      })
-    },
-    handleMuted (flag, id) {
-      const data = {
-        activityId: this.activityId,
-        userId: id,
-        cancel: flag ? 'Y' : 'N' // 取消
-      }
-      LiveHttp.muteMember(data).then((res) => {
-        // console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            content: flag ? '取消禁言成功' : '禁言成功'
-          })
-        }
-      })
-    },
+    // handleKicked (flag, id) {
+    //   const data = {
+    //     activityId: this.activityId,
+    //     userId: id,
+    //     cancel: flag ? 'Y' : 'N' // 取消
+    //   }
+    //   this.$post(activityService.POST_KICK, data).then((res) => {
+    //     this.$toast({
+    //       content: flag ? '允许参会成功' : '踢出成功'
+    //     })
+    //   })
+    // },
+    // handleMuted (flag, id) {
+    //   const data = {
+    //     activityId: this.activityId,
+    //     userId: id,
+    //     cancel: flag ? 'Y' : 'N' // 取消
+    //   }
+    //   this.$post(activityService.POST_GAG, data).then((res) => {
+    //     this.$toast({
+    //       content: flag ? '取消禁言成功' : '禁言成功'
+    //     })
+    //   })
+    // },
     listenChat (msg) {
       console.log('接收 聊天消息', msg)
       this.reArrange(msg)
@@ -619,7 +615,7 @@ export default {
         activityId: this.activityId,
         message: this.valueAnnounce
       }
-      LiveHttp.sendAnn(data).then((res) => {
+      this.$get(activityService.GET_SENDANNOUNCEMENT, data).then((res) => {
         this.$toast({
           'content': '公告发送成功'
         })
@@ -646,7 +642,9 @@ export default {
       }
     },
     getHistroy () {
-      LiveHttp.getHistroychat(this.activityId).then((res) => {
+      this.$get(activityService.GET_MESSAGELIST, {
+        activityId: this.activityId
+      }).then((res) => {
         res.data.reverse().forEach(item => {
           this.reArrange(item)
         })
@@ -657,18 +655,16 @@ export default {
         'activityId': this.activityId,
         'cancel': this.allMuted ? 'N' : 'Y'
       }
-      LiveHttp.muteAll(data).then((res) => {
-        if (res.code === 200) {
-          this.$toast({
-            content: data.cancel === 'Y' ? '已取消全体禁言' : '已开启全体禁言'
-          })
-        }
+      this.$post(activityService.POST_GAGALL, data).then((res) => {
+        this.$toast({
+          content: data.cancel === 'Y' ? '已取消全体禁言' : '已开启全体禁言'
+        })
       })
     },
     /* 初始化，获取权限 */
     initToken () {
       if (!this.isWatch) { // 发起端
-        return LiveHttp.getLiveTtoken(this.activityId)
+        // return LiveHttp.getLiveTtoken(this.activityId)
       } else { // 观看端
         return this.roomPaas
       }

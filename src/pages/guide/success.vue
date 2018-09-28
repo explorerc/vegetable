@@ -16,13 +16,13 @@
   </div>
 </template>
 <script>
-  import activityManage from '../../api/activity-manage.js'
   import loginMixin from 'components/login-mixin'
   import ChatService from '../../components/common/chat/ChatService.js'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import ChatConfig from 'src/api/chat-config'
-  import LiveHttp from '../../api/Live-manage.js'
+  import activityService from 'src/api/activity-service'
+  import userService from 'src/api/user-service'
   export default {
     mixins: [loginMixin],
     data () {
@@ -75,25 +75,22 @@
         this.activity.countDown = 1799
       },
       async getInfo () {
-        await activityManage.getWebinarinfo({
-          activityId: this.$route.params.id,
-          __errHandler: true
+        await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+          activityId: this.$route.params.id
         }).then((res) => {
-          if (res.code === 200) {
-            this.activity.viewCondition = res.data.activity.viewCondition
-            this.activity.status = res.data.activity.status
-            this.activity.startTime = res.data.activity.startTime
-            this.activity.countDown = res.data.activity.countDown
-            this.user.isApplay = res.data.joinInfo.isApplay
-            this.user.isOrder = res.data.joinInfo.isOrder
-            if (this.activity.status === 'LIVING' || this.activity.countDown <= 1799) {
-              if (this.activity.viewCondition === 'APPOINT') {
-                if (res.data.joinInfo.isApplay) {
-                  this.doAuth('/live/' + this.$route.params.id)
-                }
-              } else if (res.data.joinInfo.isOrder && this.activity.viewCondition === 'NONE') {
+          this.activity.viewCondition = res.data.activity.viewCondition
+          this.activity.status = res.data.activity.status
+          this.activity.startTime = res.data.activity.startTime
+          this.activity.countDown = res.data.activity.countDown
+          this.user.isApplay = res.data.joinInfo.isApplay
+          this.user.isOrder = res.data.joinInfo.isOrder
+          if (this.activity.status === 'LIVING' || this.activity.countDown <= 1799) {
+            if (this.activity.viewCondition === 'APPOINT') {
+              if (res.data.joinInfo.isApplay) {
                 this.doAuth('/live/' + this.$route.params.id)
               }
+            } else if (res.data.joinInfo.isOrder && this.activity.viewCondition === 'NONE') {
+              this.doAuth('/live/' + this.$route.params.id)
             }
           }
         })
@@ -104,29 +101,23 @@
           // 报名活动在已报名状态下和预约活动所有状态下可收到消息
           if (!this.chatParams.token) {
             // 当前vuex中没有聊天token 需要获取
-            activityManage.getRegactivity({
-              activityId: this.$route.params.id,
-              __errHandler: true
+            this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, { // 获取参会信息
+              activityId: this.$route.params.id
             }).then((res) => {
-              if (res.code === 200) {
-                LiveHttp.getSdkparams({
-                  activityId: this.$route.params.id,
-                  activityUserId: res.data.activityUserId,
-                  __errHandler: true
-                }).then((res) => {
-                  if (res.code === 200) {
-                    this.vhallParams.token = res.data.token
-                    this.vhallParams.appId = res.data.appId
-                    this.vhallParams.channelId = res.data.channelRoom
-                    this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
-                    this.setChatParams(this.vhallParams)
-                    this.$nextTick(() => {
-                      this.initSdk()
-                      this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
-                    })
-                  }
+              this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
+                activityId: this.$route.params.id,
+                activityUserId: res.data.activityUserId
+              }).then((res) => {
+                this.vhallParams.token = res.data.token
+                this.vhallParams.appId = res.data.appId
+                this.vhallParams.channelId = res.data.channelRoom
+                this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
+                this.setChatParams(this.vhallParams)
+                this.$nextTick(() => {
+                  this.initSdk()
+                  this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
                 })
-              }
+              })
             })
           } else {
             this.vhallParams = this.chatParams
