@@ -74,7 +74,7 @@ export default class ChatService {
     })
 
     window.vhallChat.on(res => {
-      console.log('aaaaaaaaaaaaaaa', res)
+      // console.log('aaaaaaaaaaaaaaa', res)
       this[dispatchHandler]('chat', res)
     })
   }

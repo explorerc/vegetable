@@ -5,14 +5,12 @@
 </template>
 
 <script>
-import siteService from 'src/api/site-manage'
-import activityManage from 'src/api/activity-manage.js'
 import { mapState } from 'vuex'
-
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
 import temp4 from './template4.vue'
 import wxShareFunction from '../../assets/js/wx-share.js'
+import activityService from 'src/api/activity-service'
 
 export default {
   components: {
@@ -61,26 +59,25 @@ export default {
     })
   },
   methods: {
-    init () {
-      activityManage.getWebinarinfo({
+    async init () {
+      await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.tid
-      }).then(res => {
+      }).then((res) => {
         this.share.title = res.data.activity.title
         this.share.des = res.data.activity.description
         this.share.imgUrl = res.data.activity.imgUrl
-        activityManage.getShareInfo({
+        this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
           route: 'officia_route'
         }).then((res) => {
-          if (res.data && res.data.title) {
+          if (res.data) {
             this.share.title = res.data.title
             this.share.des = res.data.description
             this.share.imgUrl = res.data.imgUrl
           }
         })
-        siteService.getSiteData({
-          __loading: true,
+        this.$config({ loading: true }).$get(activityService.GET_TEMPLATE, {
           activityId: this.tid
-        }).then(res => {
+        }).then((res) => {
           let data = JSON.parse(res.data.value)
           this.com = `t${data.tid}`
           data.editAble = true
@@ -98,18 +95,18 @@ export default {
         _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       }
       this.wxShare.shareData.link = _url
-      await activityManage.getShareSign(_url).then((res) => { // 获取微信分享签名等信息
-        if (res.code === 200) {
-          this.wxShare.wxShareData.appId = res.data.appId
-          this.wxShare.wxShareData.timestamp = res.data.timestamp
-          this.wxShare.wxShareData.nonceStr = res.data.nonceStr
-          this.wxShare.wxShareData.signature = res.data.signature
-        }
-      })
-      await activityManage.getShareInfo({ // 获取分享标题等信息
-        route: 'guide_route'
+      await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
+        url: _url
       }).then((res) => {
-        if (res.code === 200 && res.data) {
+        this.wxShare.wxShareData.appId = res.data.appId
+        this.wxShare.wxShareData.timestamp = res.data.timestamp
+        this.wxShare.wxShareData.nonceStr = res.data.nonceStr
+        this.wxShare.wxShareData.signature = res.data.signature
+      })
+      await this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
+        route: 'officia_route'
+      }).then((res) => {
+        if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.desc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''

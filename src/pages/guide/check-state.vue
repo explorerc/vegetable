@@ -9,8 +9,8 @@
 <script>
   import ComInput from '../../components/common/signup/com-input.vue'
   import ComVerificationCode from '../../components/common/signup/com-code.vue'
-  import activityManage from '../../api/activity-manage.js'
-  import authManage from 'src/api/auth-manage'
+  import activityService from 'src/api/activity-service'
+  import userService from 'src/api/user-service'
   export default {
     data () {
       return {
@@ -53,24 +53,22 @@
         this.code = val
       },
       subScribe () { // 预约活动
-        activityManage.subScribe({
-          activityId: this.$route.params.id,
-          __errHandler: true
-        }).then((res) => {
-          if (res.code === 200) {
-            this.$router.replace('/guid/' + this.$route.params.id)
-          } else {
-            this.$messageBox({
-              header: '提示',
-              content: res.msg,
-              confirmText: '确定',
-              handleClick: (e) => {
-                if (e.action === 'cancel') {
-                } else if (e.action === 'confirm') {
-                }
+        let data = {
+          activityId: this.$route.params.id
+        }
+        this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
+          this.$router.replace('/guid/' + this.$route.params.id)
+        }).catch((err) => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
               }
-            })
-          }
+            }
+          })
         })
       },
       submit () { // 提交验证信息
@@ -87,42 +85,25 @@
         if (this.user.isOrder || this.user.isDisabled) {
           this.subScribe()
         } else {
-          authManage.login({
+          this.$config({ handlers: true }).$post(userService.POST_MOBILELOGIN, {
             mobile: this.user.phone,
             code: this.code,
-            wechatAuth: sessionStorage.getItem('wechatAuth'),
-            __errHandler: true
+            wechatAuth: sessionStorage.getItem('wechatAuth')
           }).then((res) => {
-            if (res.code === 200) {
-              if (res.data) {
-                sessionStorage.setItem('login', JSON.stringify(res.data))
-                activityManage.getWebinarinfo({
-                  activityId: this.$route.params.id,
-                  __errHandler: true
-                }).then((res) => {
-                  if (res.code === 200) {
-                    if (res.data.joinInfo.isOrder) {
-                      this.$router.replace('/guid/' + this.$route.params.id)
-                    } else {
-                      this.subScribe()
-                    }
-                  } else {
-                    this.$messageBox({
-                      header: '提示',
-                      content: res.msg,
-                      confirmText: '确定',
-                      handleClick: (e) => {
-                        if (e.action === 'cancel') {
-                        } else if (e.action === 'confirm') {
-                        }
-                      }
-                    })
-                  }
-                })
-              } else {
+            if (res.data) {
+              sessionStorage.setItem('login', JSON.stringify(res.data))
+              this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+                activityId: this.$route.params.id
+              }).then((res) => {
+                if (res.data.joinInfo.isOrder) {
+                  this.$router.replace('/guid/' + this.$route.params.id)
+                } else {
+                  this.subScribe()
+                }
+              }).catch((err) => {
                 this.$messageBox({
                   header: '提示',
-                  content: res.msg,
+                  content: err.msg,
                   confirmText: '确定',
                   handleClick: (e) => {
                     if (e.action === 'cancel') {
@@ -130,9 +111,20 @@
                     }
                   }
                 })
-                sessionStorage.removeItem('login')
-                sessionStorage.removeItem('wechatAuth')
-              }
+              })
+            } else {
+              this.$messageBox({
+                header: '提示',
+                content: res.msg,
+                confirmText: '确定',
+                handleClick: (e) => {
+                  if (e.action === 'cancel') {
+                  } else if (e.action === 'confirm') {
+                  }
+                }
+              })
+              sessionStorage.removeItem('login')
+              sessionStorage.removeItem('wechatAuth')
             }
           })
         }
@@ -160,16 +152,13 @@
         return true
       },
       getActivity () { // 获取活动信息
-        activityManage.getWebinarinfo({
-          activityId: this.$route.params.id,
-          __errHandler: true
+        this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+          activityId: this.$route.params.id
         }).then((res) => {
-          if (res.code === 200) {
-            this.activity.viewCondition = res.data.activity.viewCondition
-            this.activity.status = res.data.activity.status
-            this.user.isApplay = res.data.joinInfo.isApplay
-            this.user.isOrder = res.data.joinInfo.isOrder
-          }
+          this.activity.viewCondition = res.data.activity.viewCondition
+          this.activity.status = res.data.activity.status
+          this.user.isApplay = res.data.joinInfo.isApplay
+          this.user.isOrder = res.data.joinInfo.isOrder
         })
       }
     }

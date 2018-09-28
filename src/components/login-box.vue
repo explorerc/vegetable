@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import identifyingcodeManage from 'src/api/identifyingcode-manage'
-import authManage from 'src/api/auth-manage'
+import activityService from 'src/api/activity-service'
+import userService from 'src/api/user-service'
 
 export default {
   name: 'ComLogin',
@@ -39,68 +39,62 @@ export default {
     }
   },
   mounted () {
-    identifyingcodeManage.getCodeId().then((res) => {
-      if (res.code === 200) {
-        this.key = res.data
-        window.initNECaptcha({
-          element: '#captcha',
-          mode: 'float',
-          width: '100%',
-          captchaId: this.key,
-          onVerify: (err, data) => {
-            if (err) {
-              console.log(err)
-            } else {
-              this.verify = true
-              this.captchaKey = data.validate
-            }
+    this.$get(activityService.GET_CAPTCHAID).then((res) => {
+      this.key = res.data
+      window.initNECaptcha({
+        element: '#captcha',
+        mode: 'float',
+        width: '100%',
+        captchaId: this.key,
+        onVerify: (err, data) => {
+          if (err) {
+            console.log(err)
+          } else {
+            this.verify = true
+            this.captchaKey = data.validate
           }
-        }, (instance) => {
-          this.captchaIns = instance
-        }, (err) => {
-          console.log(err)
-        })
-      }
+        }
+      }, (instance) => {
+        this.captchaIns = instance
+      }, (err) => {
+        console.log(err)
+      })
     })
   },
   methods: {
     getCode () {
-      authManage.getCode({
+      this.$config({ handlers: true }).$get(activityService.GET_CODE, {
         mobile: this.mobile,
         type: 'CONSUMER_USER_LOGIN',
         captcha: this.captchaKey,
         __errHandler: true
       }).then((res) => {
-        if (res.code === 200) {
+        this.time--
+        this.timer = setInterval(() => {
           this.time--
-          this.timer = setInterval(() => {
-            this.time--
-            if (this.time === 0) {
-              clearInterval(this.timer)
-              this.time = 60
-            }
-          }, 1000)
-          console.log(res)
-        }
+          if (this.time === 0) {
+            clearInterval(this.timer)
+            this.time = 60
+          }
+        }, 1000)
+        console.log(res)
       })
     },
     doLogin () {
-      authManage.login({
+      this.$config({ handlers: true }).$post(userService.POST_MOBILELOGIN, {
         mobile: this.mobile,
         code: this.code,
         wechatAuth: sessionStorage.getItem('wechatAuth'),
         __errHandler: true
       }).then((res) => {
-        if (res.code === 200) {
-          this.$parent.updateLoginInfo(res.data)
-          this.visible = false
-          this.closed()
-          this.$emit('login', res.data)
-        } else {
-          this.verify = false
-          this.captchaKey = ''
-          this.captchaIns.refresh()
-        }
+        this.$parent.updateLoginInfo(res.data)
+        this.visible = false
+        this.closed()
+        this.$emit('login', res.data)
+      }).catch(() => {
+        this.verify = false
+        this.captchaKey = ''
+        this.captchaIns.refresh()
       })
     },
     closed () {

@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-  import identifyingcodeManage from 'src/api/identifyingcode-manage'
+  import activityService from 'src/api/activity-service'
   export default {
     props: {
       code: String,
@@ -38,34 +38,28 @@
     components: {
     },
     created () {
-      identifyingcodeManage.getCodeId({
-        __errHandler: true
-      }).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
-        } else {
-          let _self = this
-          this.key = res.data
-          window.initNECaptcha({
-            captchaId: _self.key,
-            element: '#captcha',
-            mode: 'float',
-            width: '100%',
-            onReady: function (instance) {},
-            onVerify: function (err, data) {
-              if (data) {
-                _self.phoneKey = data.validate
-                _self.isImg = true
-              }
-              if (err) {
-                console.log(err)
-              }
-            },
-            onError: function () {}
-          }, function onload (instance) {
-            _self.cap = instance
-          })
-        }
+      this.$get(activityService.GET_CAPTCHAID).then((res) => {
+        let _self = this
+        this.key = res.data
+        window.initNECaptcha({
+          captchaId: _self.key,
+          element: '#captcha',
+          mode: 'float',
+          width: '100%',
+          onReady: function (instance) {},
+          onVerify: function (err, data) {
+            if (data) {
+              _self.phoneKey = data.validate
+              _self.isImg = true
+            }
+            if (err) {
+              console.log(err)
+            }
+          },
+          onError: function () {}
+        }, function onload (instance) {
+          _self.cap = instance
+        })
       })
     },
     destroyed () {
@@ -109,27 +103,27 @@
           captcha: this.phoneKey,
           __errHandler: true
         }
-        identifyingcodeManage.getCode(data).then((res) => {
-          if (res.code === 10050) {
+        this.$config({ handlers: true }).$get(activityService.GET_CODE, data).then((res) => {
+          this.isSend = true
+          this.isProhibit = true
+          clearInterval(this.timerr)
+          this.timerr = setInterval(() => {
+            this.second--
+            if (this.second <= 0) {
+              clearInterval(this.timerr)
+              this.isSend = false
+              this.isProhibit = true
+              this.second = 60
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }, 1000)
+        }).catch((err) => {
+          if (err.code === 10050) {
             this.$emit('update:errorMsg', '验证码输入过于频繁')
-          } else if (res.code !== 200) {
-            this.$emit('update:errorMsg', res.msg)
-          } else {
-            this.isSend = true
-            this.isProhibit = true
-            clearInterval(this.timerr)
-            this.timerr = setInterval(() => {
-              this.second--
-              if (this.second <= 0) {
-                clearInterval(this.timerr)
-                this.isSend = false
-                this.isProhibit = true
-                this.second = 60
-                this.isImg = false
-                this.phoneKey = ''
-                this.cap.refresh()
-              }
-            }, 1000)
+          } else if (err.code !== 200) {
+            this.$emit('update:errorMsg', err.msg)
           }
         })
       },
