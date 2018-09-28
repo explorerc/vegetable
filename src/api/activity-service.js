@@ -1,10 +1,7 @@
 export default {
-  GET_JOININFO: '/frontend/user/join-info', // 获取参会信息
   POST_SUBSCRIBE: '/frontend/user/order-activity', // 提交预约活动
-  GET_CONSUMERINFO: '/user/consumer-user/info', // 获取用户信息
   GET_LIVEINFO: '/frontend/live/info', // 获取活动信息
   GET_SHAREINFO: '/frontend/share/info', // 获取分享信息
-  GET_USERREGACTIVITY: '/frontend/user/reg-activity', // 获取参会信息
   GET_QUESTIONINFO: '/frontend/question/info', // 获取报名表单
   POST_QUESTIONINFO: '/frontend/user/apply-activity', // 提交报名表单
   GET_CREATEACCESSTOKEN: '/common/paas/create-access-token', // 获取签名
