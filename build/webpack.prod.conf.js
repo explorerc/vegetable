@@ -72,7 +72,6 @@ const webpackConfig = merge(baseConfig, {
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        cache: true,
         parallel: true,
         sourceMap: true,
         uglifyOptions: {

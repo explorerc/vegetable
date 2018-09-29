@@ -696,9 +696,9 @@ export default {
     },
     /* 选择表情 */
     inFace (index) {
-      for (let key in this.faceArr[index]) {
-        this.value += key
-      }
+      // for (let key in this.faceArr[index]) {
+      //   this.value += key
+      // }
     },
     boxClick (e) {
       if (e.target.className !== 'icon-emoji') {
