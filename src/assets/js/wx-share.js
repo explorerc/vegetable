@@ -1,21 +1,21 @@
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
 export default function wxShare (wxShare) {
-  wx.config({
-    debug: true,
-    appId: wxShare.wxShareData.appId,
-    timestamp: wxShare.wxShareData.timestamp,
-    nonceStr: wxShare.wxShareData.nonceStr,
-    signature: wxShare.wxShareData.signature,
-    jsApiList: [
-      // 所有要调用的 API 都要加到这个列表中
-      'checkJsApi',
-      'onMenuShareTimeline',
-      'onMenuShareAppMessage',
-      'onMenuShareQQ',
-      'onMenuShareWeibo',
-      'onMenuShareQZone'
-    ]
-  })
+  // wx.config({
+  //   debug: true,
+  //   appId: wxShare.wxShareData.appId,
+  //   timestamp: wxShare.wxShareData.timestamp,
+  //   nonceStr: wxShare.wxShareData.nonceStr,
+  //   signature: wxShare.wxShareData.signature,
+  //   jsApiList: [
+  //     // 所有要调用的 API 都要加到这个列表中
+  //     'checkJsApi',
+  //     'onMenuShareTimeline',
+  //     'onMenuShareAppMessage',
+  //     'onMenuShareQQ',
+  //     'onMenuShareWeibo',
+  //     'onMenuShareQZone'
+  //   ]
+  // })
   // wx.ready(function () {
   //   wx.checkJsApi({
   //     jsApiList: [

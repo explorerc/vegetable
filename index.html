@@ -26,6 +26,14 @@
 
   <!--依赖的播放器资源-->
   <!-- 观看-->
+  <script>
+    window.onerror = function (msg, url, row, col, error) {
+      alert(JSON.stringify({
+        msg, url, row, col, error
+      }))
+      return true;
+    };
+  </script>
   <script src="https://static.vhallyun.com/jssdk/vhall-jssdk-chat-1.0.0.js"></script>
   <link rel="stylesheet" href="//t-static01-open.e.vhall.com/jssdk/videojs.min.css?v=1.0.0">
   <!-- 观看-->
