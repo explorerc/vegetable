@@ -1,6 +1,11 @@
 <template>
   <div class="iskicked">
-    您已被踢出
+    <img src="../../assets/image/kicied@2x.png" alt="">
+    <p>
+      抱歉，您已被主持人提出房间
+      <br/>
+      如有疑问请联系活动主办方
+    </p>
   </div>
 </template>
 
@@ -10,5 +15,18 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.iskicked{
+  img{
+    width: 218px;
+    display: block;
+    margin: 280px auto 0;
+  }
+  p{
+    font-size: 32px;
+    color: #222222;
+    text-align: center;
+    margin: 60px auto;
+  }
+}
 </style>

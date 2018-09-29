@@ -39,18 +39,10 @@
     <div class="v-send-box-bg" v-if='type === "live" && isLogin && sendBoxShow'>
       <div class="send-box clearfix" id="sendBox">
         <div class="top">
-          <template v-if='swapAnnounce'>
-            <com-input :value.sync="value" :placeholder="chatPlaceholder" :max-length="140" class='inp' type="textarea"></com-input>
-          </template>
-          <template v-else>
-            <com-input :value.sync="valueAnnounce" :placeholder="announcePlaceholder" :max-length="140" class='inp' type="textarea"></com-input>
-          </template>
-        </div>
-        <div class="bottom clearfix">
-          <i class='icon-emoji' @click='faceOpen = !faceOpen' title='表情'></i>
-          <div class="face-box" v-if="faceOpen">
-              <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`" @click.stop="inFace(index)" v-for="(item,index) in faceArr" :key="index">
-          </div>
+          <span @click="cancelClick" class="cancel-btn fl">取消</span>
+          <span class="v-title">
+            聊天
+          </span>
           <template v-if='swapAnnounce'>
             <template v-if='(mute || allMuted) && isWatch'>
               <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
@@ -66,6 +58,20 @@
             <i class='icon-swap' title='切换发送聊天/公告' @click='swapAnnounce ? swapAnnounce = false : swapAnnounce = true'></i>
             <div class='switch-box'>
               <span>全体禁言</span><el-switch  class='switch' v-model="allMuted" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="muteAll"></el-switch>
+            </div>
+          </div>
+        </div>
+        <div class="bottom clearfix">
+          <template v-if='swapAnnounce'>
+            <com-input :value.sync="value" :placeholder="chatPlaceholder" :max-length="140" class='inp' type="textarea" ></com-input>
+          </template>
+          <template v-else>
+            <com-input :value.sync="valueAnnounce" :placeholder="announcePlaceholder" :max-length="140" class='inp' type="textarea"></com-input>
+          </template>
+          <div class="v-emoji">
+            <i class='iconfont icon-biaoqing' @click='faceOpen = !faceOpen' title='表情'></i>
+            <div class="face-box" v-if="faceOpen">
+                <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`" @click.stop="inFace(index)" v-for="(item,index) in faceArr" :key="index">
             </div>
           </div>
         </div>
@@ -111,7 +117,7 @@ export default {
       timer: null,
       isLogin: false,
       stopScroll: false,
-      chatPlaceholder: '请输入聊天内容',
+      chatPlaceholder: '输入想说的话…',
       announcePlaceholder: '请输入公告内容',
       aBScroll: null,
       // imgHost: process.env.IMGHOST + '/'
@@ -468,7 +474,7 @@ export default {
       }
       ChatService.OBJ.sendChat(JSON.stringify(obj))
       this.value = ''
-      this.chatPlaceholder = '请输入聊天内容'
+      this.chatPlaceholder = '输入想说的话…'
       this.faceOpen = false
       this.$emit('closeChatBox', true)
     },
@@ -623,6 +629,9 @@ export default {
         this.announcePlaceholder = '请输入公告内容'
         this.$emit('closeChatBox', true)
       })
+    },
+    cancelClick () {
+      this.$emit('closeChatBox', true)
     },
     scrollBtm () {
       this.aBScroll.scrollTo(0, this.aBScroll.maxScrollY, 500, 'bounce')

@@ -16,7 +16,7 @@
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
-    <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()" :style="{ color: limitColor }">0</i>/<i>{{maxLength}}</i></span>
     <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
   </div>
   <div class="com-input area"  v-else>
@@ -26,9 +26,8 @@
     :class="{error:errorMsg}"
     :placeholder="placeholder"
     :rows="rows"
-  placeholder="请输入内容"
     ></textarea>
-    <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()" :style="{ color: limitColor }">0</i>/<i>{{maxLength}}</i></span>
     <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
   </div>
 </template>
@@ -58,7 +57,8 @@ export default {
       showDelete: false,
       inputType: '',
       offsetHeight: 0,
-      errorMsg: ''
+      errorMsg: '',
+      limitColor: '#555' // 文字字数颜色，0为#555,大于0为#4b5afe
     }
   },
   created () {
@@ -116,6 +116,11 @@ export default {
       if (this.type === 'textarea' && this.autosize) {
         this.$refs.tarea.style.height = 'auto'
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
+      }
+      if (value.gbLength() === 0) {
+        this.limitColor = '#555'
+      } else {
+        this.limitColor = '#4b5afe'
       }
       this.$emit('update:value', this.innerValue)
       this.$emit('input', this.innerValue)
@@ -209,7 +214,7 @@ export default {
   }
   .limit {
     font-size: 14px;
-    color: #999999;
+    color: #555555;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -224,14 +229,14 @@ export default {
     }
   }
   .icon-search {
-    color: #999999;
+    color: #555555;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 12px;
   }
   .icon-right-center {
-    color: #999999;
+    color: #555555;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

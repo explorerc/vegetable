@@ -293,40 +293,13 @@
     border-radius:8px;
     overflow: hidden;
     z-index: 6;
-    .bottom {
+    .top {
       width:100%;
       height:80px;
       line-height: 80px;
-      background:rgba(245,245,245,1);
+      background:#EFEFEF;
       padding: 0 36px;
-      .icon-emoji {
-        vertical-align: middle;
-        background:url('~assets/image/face.png') no-repeat center;
-        background-size:contain;
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        border-radius:100px;
-        display: inline-block;
-        &:hover {
-          background-image: url('~assets/image/face-hover.png');
-        }
-      }
-      .icon-swap {
-        position: absolute;
-        cursor: pointer;
-        right:16px;
-        top:50%;
-        margin-top:-10px;
-        width: 20px;
-        height:20px;
-        border-radius:100px;
-        background:url('~assets/image/broadcast.png') no-repeat center;
-        background-size:contain;
-        &:hover {
-          background-image: url('~assets/image/broadcast-hover.png');
-        }
-      }
+      text-align: center;
       .mute-all {
         position: absolute;
         cursor: pointer;
@@ -344,25 +317,20 @@
       }
       .send-btn {
         color:#4B5AFE;
-        font-size:32px;
+        font-size:28px;
         cursor: pointer;
       }
-      .face-box {
-        position: absolute;
-        bottom: 85px;
-        left: 0px;
-        width: 98%;
-        background: #fff;
-        z-index: 10;
-        img {
-          width: 30px;
-          height: 30px;
-          float: left;
-          cursor: pointer;
-        }
+      .cancel-btn {
+        color: #555555;
+        font-size:28px;
+        cursor: pointer;
+      }
+      .v-title{
+        color: #222222;
+        font-size: 32px;
       }
     }
-    .top {
+    .bottom {
       width:100%;
       height:360px;
       left:50%;
@@ -373,20 +341,60 @@
         width:100%;
         height:100%;
       }
+      .v-emoji{
+        position: absolute;
+        left: 30px;
+        bottom: 20px;
+        .icon-biaoqing {
+          vertical-align: middle;
+          cursor: pointer;
+          display: inline-block;
+          color: #888;
+        }
+        .icon-swap {
+          position: absolute;
+          cursor: pointer;
+          right:16px;
+          top:50%;
+          margin-top:-10px;
+          width: 20px;
+          height:20px;
+          border-radius:100px;
+          background:url('~assets/image/broadcast.png') no-repeat center;
+          background-size:contain;
+          &:hover {
+            background-image: url('~assets/image/broadcast-hover.png');
+          }
+        }
+        .face-box {
+          position: absolute;
+          bottom: 85px;
+          left: 0px;
+          width: 98%;
+          background: #fff;
+          z-index: 10;
+          img {
+            width: 30px;
+            height: 30px;
+            float: left;
+            cursor: pointer;
+          }
+        }
+      }
     }
     .inp {
       width:100%;
       height:100%;
-      padding:35px;
+      padding:28px 30px 100px;
       border:none;
       textarea {
         border:none;
       }
       .limit{
-        bottom: -55px;
+        bottom: 20px;
         z-index: 9;
         font-size: 28px;
-        right: 145px;
+        right: 30px;
       }
     }
   }

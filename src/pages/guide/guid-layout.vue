@@ -1,6 +1,11 @@
 <template>
   <div class="container">
-    <img src="../../assets/image/1.png" alt="" class="v-guid-img">
+    <template v-if="defaultImg">
+      <img :src="defaultImg" alt="" class="v-guid-img">
+    </template>
+    <template v-else>
+      <img src="../../assets/image/guid.png" alt="" class="v-guid-img">
+    </template>
     <router-view class="app-view"></router-view>
   </div>
 </template>
@@ -29,21 +34,38 @@ export default {
         shareUser: {
           shareId: '' // 分享者id
         }
-      }
+      },
+      imgUrl: ''
     }
   },
   created: function () {
     this.share()
+    this.getInfo()
   },
-  components: {
-    // 'com-menu': menu
+  computed: {
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+    }
   },
-  // computed: {
-  //   ...mapState('liveMager', {
-  //     joinInfo: state => state.joinInfo
-  //   })
-  // },
   methods: {
+    getInfo () {
+      this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        this.imgUrl = res.data.guide.imgUrl
+      }).catch((err) => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
+    },
     async share () { // 微信分享
       let _url = window.location.href
       // if (this.joinInfo.activityUserId) {
