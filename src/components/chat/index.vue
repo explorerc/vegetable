@@ -630,14 +630,14 @@ export default {
         }
       })
     },
-    reArrange (msg) {
+    reArrange (msg2333) {
       const obj = {}
-      obj.id = msg.third_party_user_id
-      obj.avatar = msg.avatar
-      obj.name = msg.nick_name
-      obj.isGag = msg.isGag
-      obj.isKick = msg.isKick
-      obj.detail = JSON.parse(msg.data)
+      obj.id = msg2333.third_party_user_id
+      obj.avatar = msg2333.avatar
+      obj.name = msg2333.nick_name
+      obj.isGag = msg2333.isGag
+      obj.isKick = msg2333.isKick
+      obj.detail = JSON.parse(msg2333.data)
 
       // if (this.joinInfo && this.joinInfo.activityUserId * 1 === msg.third_party_user_id * 1) { // 如果消息里参会id是自己的id
       //   obj.isSelf = true
