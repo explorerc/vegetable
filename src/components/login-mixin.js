@@ -84,7 +84,7 @@ export default {
               sessionStorage.setItem('master', JSON.stringify(res.data))
               resolve(res.data)
             })
-            .catch(err => {
+            .catch((err) => {
               reject(err)
             })
         }
