@@ -5,6 +5,7 @@ import userService from 'src/api/user-service'
 
 Vue.use(Router)
 const router = new Router({
+  base: '/m/',
   routes,
   mode: 'history'
 })
