@@ -37,7 +37,9 @@ export default {
       }
       if (!sessionStorage.getItem('wechatAuth')) {
         console.log(_url)
-        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(_url)}`
+        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
+          _url
+        )}`
         // location.href = `${_url}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
       } else {
         location.href = _url
@@ -46,17 +48,18 @@ export default {
     doLogin (url) {
       if (!sessionStorage.getItem('wechatAuth')) {
         let _url = location.href
-        if (url) {
+        if (typeof url === 'string') {
           _url = url
         }
-        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(url)}`
         // _url = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
         if (_url.indexOf('?') === -1) {
           _url += '?_pop=true'
         } else {
           _url += '&_pop=true'
         }
-        location.href = _url
+        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
+          _url
+        )}`
       } else {
         this.login.visible = true
       }
@@ -81,7 +84,7 @@ export default {
               sessionStorage.setItem('master', JSON.stringify(res.data))
               resolve(res.data)
             })
-            .catch((err) => {
+            .catch(err => {
               reject(err)
             })
         }
