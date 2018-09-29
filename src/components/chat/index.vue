@@ -630,14 +630,14 @@ export default {
         }
       })
     },
-    reArrange (msg2333) {
+    reArrange (msg) {
       const obj = {}
-      obj.id = msg2333.third_party_user_id
-      obj.avatar = msg2333.avatar
-      obj.name = msg2333.nick_name
-      obj.isGag = msg2333.isGag
-      obj.isKick = msg2333.isKick
-      obj.detail = JSON.parse(msg2333.data)
+      obj.id = msg.third_party_user_id
+      obj.avatar = msg.avatar
+      obj.name = msg.nick_name
+      obj.isGag = msg.isGag
+      obj.isKick = msg.isKick
+      obj.detail = JSON.parse(msg.data)
 
       // if (this.joinInfo && this.joinInfo.activityUserId * 1 === msg.third_party_user_id * 1) { // 如果消息里参会id是自己的id
       //   obj.isSelf = true
@@ -646,18 +646,18 @@ export default {
       // }
 
       /* 替换表情图片 */
-      for (let i = 0; i < this.faceArr.length; i++) {
-        for (let key in this.faceArr[i]) {
+      this.faceArr.forEach((index, item) => {
+        for (let key in item) {
           let test = key.replace(/\[/, '\\[').replace(/\]/, '\\]')
           let reg = new RegExp(test, 'g')
           obj.detail.txt = obj.detail.txt.replace(
             reg,
             "<img src='//cnstatic01.e.vhall.com/static/img/arclist/Expression_" +
-            this.faceArr[i][key] +
+            item[key] +
             "@2x.png'>"
           )
         }
-      }
+      })
 
       this.chatData.push(obj)
       if (!this.tipsShow && !this.stopScroll) {
