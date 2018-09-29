@@ -67,13 +67,13 @@
 </template>
 <script>
   import comCountdown from 'components/common/countdown/countdown'
-  import activityManage from 'api/activity-manage.js'
   import loginMixin from 'components/login-mixin'
   import ChatService from 'components/common/chat/ChatService.js'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import ChatConfig from 'src/api/chat-config'
-  import LiveHttp from '../../api/Live-manage.js'
+  import activityService from 'src/api/activity-service'
+  import userService from 'src/api/user-service'
   export default {
     mixins: [loginMixin],
     data () {
@@ -139,56 +139,63 @@
         this.activity.countDown = 1799
       },
       async getInfo () {
-        let data = {
-          activityId: this.$route.params.id,
-          __errHandler: true
-        }
         let userInfo = JSON.parse(sessionStorage.getItem('login'))
         if (userInfo) {
           this.user.phone = userInfo.mobile
         }
-        await activityManage.getWebinarinfo(data).then((res) => {
-          if (res.code === 200) {
-            this.activity.viewCondition = res.data.activity.viewCondition
-            this.activity.status = res.data.activity.status
-            this.activity.title = res.data.activity.title
-            this.activity.countDown = res.data.activity.countDown
-            this.activity.description = res.data.activity.description
-            this.activity.isCountdown = res.data.guide.showType === 'COUNTDOWN'
-            this.user.isApplay = res.data.joinInfo.isApplay
-            this.user.isOrder = res.data.joinInfo.isOrder
-            if (res.data.viewLimit.canAppoint) {
-              this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
-              this.viewLimit.finishTime = res.data.viewLimit.finishTime
-            }
-            if (this.activity.countDown < 1800) {
-              if (this.activity.viewCondition === 'APPOINT') {
-                if (this.user.isApplay) {
-                  this.doAuth('/live/' + this.$route.params.id)
-                }
-              } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+        await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          this.activity.viewCondition = res.data.activity.viewCondition
+          this.activity.status = res.data.activity.status
+          this.activity.title = res.data.activity.title
+          this.activity.countDown = res.data.activity.countDown
+          this.activity.description = res.data.activity.description
+          this.activity.isCountdown = res.data.guide.showType === 'COUNTDOWN'
+          this.user.isApplay = res.data.joinInfo.isApplay
+          this.user.isOrder = res.data.joinInfo.isOrder
+          if (res.data.viewLimit.canAppoint) {
+            this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
+            this.viewLimit.finishTime = res.data.viewLimit.finishTime
+          }
+          if (this.activity.countDown < 1800) {
+            if (this.activity.viewCondition === 'APPOINT') {
+              if (this.user.isApplay) {
                 this.doAuth('/live/' + this.$route.params.id)
               }
-            } else {
-              let time = this.activity.countDown
-              let interval = setInterval(i => {
-                time--
-                if (time < 30 * 60) {
-                  this.activity.countDown = 1799
-                  clearInterval(interval)
-                }
-              }, 1000)
+            } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+              this.doAuth('/live/' + this.$route.params.id)
             }
-            if (this.activity.status === 'LIVING') {
-              if (this.activity.viewCondition === 'APPOINT') {
-                if (this.user.isApplay) {
-                  this.doAuth('/live/' + this.$route.params.id)
-                }
-              } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+          } else {
+            let time = this.activity.countDown
+            let interval = setInterval(i => {
+              time--
+              if (time < 30 * 60) {
+                this.activity.countDown = 1799
+                clearInterval(interval)
+              }
+            }, 1000)
+          }
+          if (this.activity.status === 'LIVING') {
+            if (this.activity.viewCondition === 'APPOINT') {
+              if (this.user.isApplay) {
                 this.doAuth('/live/' + this.$route.params.id)
               }
+            } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+              this.doAuth('/live/' + this.$route.params.id)
             }
           }
+        }).catch((err) => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
         })
         this.getToken()
       },
@@ -197,29 +204,23 @@
           // 报名活动在已报名状态下和预约活动所有状态下可收到消息
           if (!this.chatParams.token) {
             // 当前vuex中没有聊天token 需要获取
-            activityManage.getRegactivity({
-              activityId: this.$route.params.id,
-              __errHandler: true
+            this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, { // 获取参会信息
+              activityId: this.$route.params.id
             }).then((res) => {
-              if (res.code === 200) {
-                LiveHttp.getSdkparams({
-                  activityId: this.$route.params.id,
-                  activityUserId: res.data.activityUserId,
-                  __errHandler: true
-                }).then((res) => {
-                  if (res.code === 200) {
-                    this.vhallParams.token = res.data.token
-                    this.vhallParams.appId = res.data.appId
-                    this.vhallParams.channelId = res.data.channelRoom
-                    this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
-                    this.setChatParams(this.vhallParams)
-                    this.$nextTick(() => {
-                      this.initSdk()
-                      this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
-                    })
-                  }
+              this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
+                activityId: this.$route.params.id,
+                activityUserId: res.data.activityUserId
+              }).then((res) => {
+                this.vhallParams.token = res.data.token
+                this.vhallParams.appId = res.data.appId
+                this.vhallParams.channelId = res.data.channelRoom
+                this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
+                this.setChatParams(this.vhallParams)
+                this.$nextTick(() => {
+                  this.initSdk()
+                  this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
                 })
-              }
+              })
             })
           } else {
             this.vhallParams = this.chatParams

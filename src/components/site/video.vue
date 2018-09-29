@@ -9,7 +9,7 @@
 
 <script>
 import editMixin from './mixin'
-import LiveHttp from 'src/api/activity-manage'
+import activityService from 'src/api/activity-service'
 export default {
   mixins: [editMixin],
   data () {
@@ -89,7 +89,7 @@ export default {
     }
   },
   mounted () {
-    LiveHttp.queryPassSdkInfo().then((res) => {
+    this.$get(activityService.GET_CREATEACCESSTOKEN, {}).then((res) => {
       this.vhallParams = res.data
       if (this.value.videoType === 'upload' && this.value.recordId) {
         this.initVideo()

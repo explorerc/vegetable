@@ -1,6 +1,10 @@
+import Vue from 'vue'
+import Router from 'vue-router'
 import ComLogin from './login-box.vue'
-import authManage from 'src/api/auth-manage'
+import userService from 'src/api/user-service'
 
+Vue.use(Router)
+const vue = new Vue()
 export default {
   components: {
     ComLogin
@@ -70,16 +74,16 @@ export default {
         if (sessionStorage.getItem('master')) {
           resolve(JSON.parse(sessionStorage.getItem('master')))
         } else {
-          authManage.getJoinInfo({
-            __errHandler: true
-          }).then(res => {
-            if (res.code === 200) {
+          vue
+            .$config({ loading: true, handlers: true })
+            .$get(userService.GET_JOININFO)
+            .then(res => {
               sessionStorage.setItem('master', JSON.stringify(res.data))
               resolve(res.data)
-            }
-          }).catch((err) => {
-            reject(err)
-          })
+            })
+            .catch((err) => {
+              reject(err)
+            })
         }
       })
     }

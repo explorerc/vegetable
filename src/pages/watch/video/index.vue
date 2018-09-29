@@ -21,11 +21,11 @@
 </template>
 
 <script>
-  import VideoHttp from 'src/api/video-manage'
   import LivePuller from 'src/components/common/video/pull/LivePuller'
   import { mapMutations, mapState } from 'vuex'
   import VideoControl from './control'
   import * as types from '../../../store/mutation-types'
+  import activityService from 'src/api/activity-service'
   // import HostPusher from 'src/components/common/video/push/HostPusher'
 
   export default {
@@ -173,16 +173,20 @@
         }
       },
       initPlayBack () {
-        VideoHttp.queryPlayBackInfoById(this.$route.params.id).then(res => {
-          if (!(res.code === 200 && res.data)) return
-          this.imageUrl = res.data.cover
-          if (res.data.replay.type === 'LINK') { // 外链
-            this.outLineLink = res.data.replay.link
-          } else if (res.data.replay.type === 'VIDEO' || res.data.replay.type === 'SLICE') { // 回放视频
-            this.recordId = res.data.replay.video
-            this.totalTime = res.data.replay.duration
-            this.playBackVideo()
+        this.$config({ handlers: true }).$get(activityService.GET_DEFAULEREPLAY, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          if (res.data) {
+            this.imageUrl = res.data.cover
+            if (res.data.replay.type === 'LINK') { // 外链
+              this.outLineLink = res.data.replay.link
+            } else if (res.data.replay.type === 'VIDEO' || res.data.replay.type === 'SLICE') { // 回放视频
+              this.recordId = res.data.replay.video
+              this.totalTime = res.data.replay.duration
+              this.playBackVideo()
+            }
           }
+        }).catch(() => {
         })
       },
       /* 播放暖场视频 */
@@ -221,12 +225,17 @@
         }, 1000)
       },
       queryWarmInfo () {
-        VideoHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
-          this.imageUrl = res.data.imgUrl
-          this.recordId = res.data.recordId
-          this.playBtnShow = true
-          this.totalTime = parseInt(res.data.record.duration)
-          this.playBackVideo()
+        this.$config({ handlers: true }).$get(activityService.GET_WARMINFO, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          if (res.data) {
+            this.imageUrl = res.data.imgUrl
+            this.recordId = res.data.recordId
+            this.playBtnShow = true
+            this.totalTime = parseInt(res.data.record.duration)
+            this.playBackVideo()
+          }
+        }).catch(() => {
         })
       },
       /* 初始拉流播放插件 */

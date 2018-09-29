@@ -38,10 +38,10 @@ import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
 import Empty from './empty'
 import * as types from '../../store/mutation-types'
-import LiveHttp from '../../api/Live-manage.js'
 import loginMixin from 'components/login-mixin'
-import activityManage from 'api/activity-manage.js'
 import wxShareFunction from '../../assets/js/wx-share.js'
+import activityService from 'src/api/activity-service'
+import userService from 'src/api/user-service'
 const playTypes = {
   'PREPARE': 'pre',
   'LIVING': 'live',
@@ -164,21 +164,19 @@ export default {
     },
     /* 进行订阅 */
     sendSubScribe () {
-      LiveHttp.sendSubscribe({
+      this.$config({ handlers: true }).$post(activityService.POST_EMAILSUBSCRIBE, {
         businessUserId: this.activityInfo.userId,
         email: this.loginInfo.email
-      }).then(res => {
-        if (res.code !== 200) {
-          this.errorTips = res.msg
-        } else {
-          this.autoClose = 3
-          this.subscribeShow = false
-          this.successShow = true
-          let tempLoginInfo = JSON.parse(JSON.stringify(this.loginInfo))
-          tempLoginInfo.email = this.emailInput
-          this.updateLoginInfo(tempLoginInfo)
-          this.storeLoginInfo(tempLoginInfo)
-        }
+      }).then((res) => {
+        this.autoClose = 3
+        this.subscribeShow = false
+        this.successShow = true
+        let tempLoginInfo = JSON.parse(JSON.stringify(this.loginInfo))
+        tempLoginInfo.email = this.emailInput
+        this.updateLoginInfo(tempLoginInfo)
+        this.storeLoginInfo(tempLoginInfo)
+      }).catch((err) => {
+        this.errorTips = err.msg
       })
     },
     subscribeClick (e) {
@@ -208,37 +206,31 @@ export default {
       await this.initRoomPaas()
       this.share()
       /* 查询详情 */
-      let data = {
-        activityId: this.$route.params.id,
-        __errHandler: true
-      }
       let activityInfo = null
-      await activityManage.getWebinarinfo(data).then((res) => {
-        if (res.code === 200) {
-          activityInfo = res.data.activity
-          activityInfo.setting = res.data.setting
-          activityInfo.statusName = playStatuTypes[activityInfo.status]
-          activityInfo.description = res.data.activity.description
-          // this.storeActivityInfo(activityInfo)
-          this.playType = playTypes[activityInfo.status]
-          this.playStatus = playStatuTypes[activityInfo.status]
-          this.businessUserId = res.data.activity.userId
+      await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        activityInfo = res.data.activity
+        activityInfo.setting = res.data.setting
+        activityInfo.statusName = playStatuTypes[activityInfo.status]
+        activityInfo.description = res.data.activity.description
+        // this.storeActivityInfo(activityInfo)
+        this.playType = playTypes[activityInfo.status]
+        this.playStatus = playStatuTypes[activityInfo.status]
+        this.businessUserId = res.data.activity.userId
+        this.currentView = Playback
+        if (this.playType === 'vod') {
           this.currentView = Playback
-          if (this.playType === 'vod') {
-            this.currentView = Playback
-          } else {
-            this.currentView = Live
-          }
-          /* 查询真实在线人数 */
-          activityManage.queryOnlineNum({
-            activityId: this.$route.params.id
-          }).then((res) => {
-            if (res.code === 200) {
-              activityInfo.onlineNum = res.data.onlineNum
-              this.storeActivityInfo(activityInfo)
-            }
-          })
+        } else {
+          this.currentView = Live
         }
+        /* 查询真实在线人数 */
+        this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          activityInfo.onlineNum = res.data.onlineNum
+          this.storeActivityInfo(activityInfo)
+        })
       })
     },
     handleUpdateOnlineNum (msg) {
@@ -264,41 +256,21 @@ export default {
         if (this.roomPaas.token) {
           resolve(this.roomPaas)
         }
-        activityManage.getRegactivity(data).then(res => {
-          if (res.code === 200) {
-            this.storeJoinInfo(res.data)
-            LiveHttp.getSdkparams({
-              activityId: this.activityId,
-              activityUserId: res.data.activityUserId
-            }).then(res => {
-              if (res.code === 200 && res.data) {
-                resolve(res.data)
-                this.storeRoomPaas(res.data)
-              }
-            })
-          } else {
+        this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, data).then((res) => { // 获取参会信息
+          this.storeJoinInfo(res.data)
+          this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
+            activityId: this.activityId,
+            activityUserId: res.data.activityUserId
+          }).then((res) => {
+            if (res.data) {
+              resolve(res.data)
+              this.storeRoomPaas(res.data)
+            }
+          }).catch(() => {
             this.$router.replace('/kicked')
-          }
+          })
         })
       })
-    },
-    initMsgServe () {
-      // this.msgService = new ChatService()
-      // this.msgService.init({
-      //   token: this.roomPaas.token,
-      //   appId: this.roomPaas.appId,
-      //   channelId: this.roomPaas.channelRoom
-      // })
-      // /* 监听在线人数 */
-      // this.msgService.regHandler(ChatConfig.onLineNum, (msg) => {
-      //   const temp = JSON.parse(JSON.stringify(this.liveInfo))
-      //   temp.showOnlineNum = parseInt(temp.setting.initOnlineNum) + parseInt(msg.num)
-      //   this.storeLiveInfo(temp)
-      // })
-      // /* 监听公告消息 */
-      // this.msgService.regHandler(ChatConfig.announcement, (msg) => {
-      //   console.log(msg)
-      // })
     },
     async share () { // 微信分享
       let _url = window.location.href
@@ -306,18 +278,18 @@ export default {
         _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       }
       this.wxShare.shareData.link = _url
-      await activityManage.getShareSign(_url).then((res) => { // 获取微信分享签名等信息
-        if (res.code === 200) {
-          this.wxShare.wxShareData.appId = res.data.appId
-          this.wxShare.wxShareData.timestamp = res.data.timestamp
-          this.wxShare.wxShareData.nonceStr = res.data.nonceStr
-          this.wxShare.wxShareData.signature = res.data.signature
-        }
-      })
-      await activityManage.getShareInfo({ // 获取分享标题等信息
-        route: 'guide_route'
+      await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
+        url: _url
       }).then((res) => {
-        if (res.code === 200 && res.data) {
+        this.wxShare.wxShareData.appId = res.data.appId
+        this.wxShare.wxShareData.timestamp = res.data.timestamp
+        this.wxShare.wxShareData.nonceStr = res.data.nonceStr
+        this.wxShare.wxShareData.signature = res.data.signature
+      })
+      await this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
+        route: 'live_route'
+      }).then((res) => {
+        if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.desc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''

@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[11],{223:function(t,n,i){},292:function(t,n,i){"use strict";var e=i(223);i.n(e).a},301:function(t,n,i){"use strict";i.r(n);var e=function(){var t=this.$createElement;return(this._self._c||t)("div",{staticClass:"iskicked"},[this._v("\n  您已被踢出\n")])};e._withStripped=!0;var s={},c=(i(292),i(1)),a=Object(c.a)(s,e,[],!1,null,null,null);a.options.__file="src/pages/watch/kicked.vue";n.default=a.exports}}]);
-//# sourceMappingURL=11.1cc0afde.js.map

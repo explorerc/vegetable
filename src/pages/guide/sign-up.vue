@@ -33,9 +33,9 @@
   import ComInput from '../../components/common/signup/com-input.vue'
   import ComVerificationCode from '../../components/common/signup/com-code.vue'
   import ComSelect from '../../components/common/signup/com-select.vue'
-  import activityManage from '../../api/activity-manage.js'
   import loginMixin from 'components/login-mixin'
-  import authManage from 'src/api/auth-manage'
+  import activityService from 'src/api/activity-service'
+  import userService from 'src/api/user-service'
   export default {
     mixins: [loginMixin],
     data () {
@@ -144,48 +144,42 @@
               data.answer.push(obj)
             }
           }
-          activityManage.saveForm(data).then((res) => {
-            if (res.code === 200) {
-              this.$router.replace('/Success/' + this.$route.params.id)
-            }
+
+          this.$post(activityService.POST_QUESTIONINFO, data).then((res) => {
+            this.$router.replace('/Success/' + this.$route.params.id)
           })
         }
       },
       getActivity () { // 获取活动信息
-        activityManage.getWebinarinfo({
-          activityId: this.$route.params.id,
-          __errHandler: true
+        this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+          activityId: this.$route.params.id
         }).then((res) => {
-          if (res.code === 200) {
-            this.activity.viewCondition = res.data.activity.viewCondition
-            this.activity.status = res.data.activity.status
-            this.user.isApplay = res.data.joinInfo.isApplay
-            this.user.isOrder = res.data.joinInfo.isOrder
-            if (this.activity.viewCondition === 'APPOINT') {
-              this.getQuestionLists()
-            }
+          this.activity.viewCondition = res.data.activity.viewCondition
+          this.activity.status = res.data.activity.status
+          this.user.isApplay = res.data.joinInfo.isApplay
+          this.user.isOrder = res.data.joinInfo.isOrder
+          if (this.activity.viewCondition === 'APPOINT') {
+            this.getQuestionLists()
           }
         })
       },
       subScribe () { // 预约活动
-        activityManage.subScribe({
-          activityId: this.$route.params.id,
-          __errHandler: true
-        }).then((res) => {
-          if (res.code === 200) {
-            this.$router.replace('/Success/' + this.$route.params.id)
-          } else {
-            this.$messageBox({
-              header: '提示',
-              content: res.msg,
-              confirmText: '确定',
-              handleClick: (e) => {
-                if (e.action === 'cancel') {
-                } else if (e.action === 'confirm') {
-                }
+        let data = {
+          activityId: this.$route.params.id
+        }
+        this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
+          this.$router.replace('/Success/' + this.$route.params.id)
+        }).catch((err) => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
               }
-            })
-          }
+            }
+          })
         })
       },
       submit () {
@@ -202,37 +196,33 @@
         if (this.user.isOrder || this.user.isDisabled) {
           this.subScribe()
         } else {
-          authManage.login({
+          this.$config({ handlers: true }).$post(userService.POST_MOBILELOGIN, {
             mobile: this.user.phone,
             code: this.code,
-            wechatAuth: sessionStorage.getItem('wechatAuth'),
-            __errHandler: true
+            wechatAuth: sessionStorage.getItem('wechatAuth')
           }).then((res) => {
             if (res.code === 200) {
               if (res.data) {
                 sessionStorage.setItem('login', JSON.stringify(res.data))
-                activityManage.getWebinarinfo({
-                  activityId: this.$route.params.id,
-                  __errHandler: true
+                this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+                  activityId: this.$route.params.id
                 }).then((res) => {
-                  if (res.code === 200) {
-                    if (res.data.joinInfo.isOrder) {
-                      this.$router.replace('/Success/' + this.$route.params.id)
-                    } else {
-                      this.subScribe()
-                    }
+                  if (res.data.joinInfo.isOrder) {
+                    this.$router.replace('/Success/' + this.$route.params.id)
                   } else {
-                    this.$messageBox({
-                      header: '提示',
-                      content: res.msg,
-                      confirmText: '确定',
-                      handleClick: (e) => {
-                        if (e.action === 'cancel') {
-                        } else if (e.action === 'confirm') {
-                        }
-                      }
-                    })
+                    this.subScribe()
                   }
+                }).catch((err) => {
+                  this.$messageBox({
+                    header: '提示',
+                    content: err.msg,
+                    confirmText: '确定',
+                    handleClick: (e) => {
+                      if (e.action === 'cancel') {
+                      } else if (e.action === 'confirm') {
+                      }
+                    }
+                  })
                 })
               } else {
                 this.$messageBox({
@@ -253,18 +243,14 @@
         }
       },
       getQuestionLists () {
-        let data = {
-          activityId: this.$route.params.id,
-          __errHandler: true
-        }
-        activityManage.getForm(data).then((res) => {
-          if (res.code === 200) {
-            this.questionList = res.data.questionList.map((item) => {
-              item.val = ''
-              item.errorMsg = ''
-              return item
-            })
-          }
+        this.$get(activityService.GET_QUESTIONINFO, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          this.questionList = res.data.questionList.map((item) => {
+            item.val = ''
+            item.errorMsg = ''
+            return item
+          })
         })
       },
       verification (val, isRequired, type) {

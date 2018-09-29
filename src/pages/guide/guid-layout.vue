@@ -7,7 +7,7 @@
 
 <script>
 import wxShareFunction from '../../assets/js/wx-share.js'
-import activityManage from 'api/activity-manage.js'
+import activityService from 'src/api/activity-service'
 // import { mapState } from 'vuex'
 export default {
   data () {
@@ -50,18 +50,18 @@ export default {
       //   _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       // }
       this.wxShare.shareData.link = _url
-      await activityManage.getShareSign(_url).then((res) => { // 获取微信分享签名等信息
-        if (res.code === 200) {
-          this.wxShare.wxShareData.appId = res.data.appId
-          this.wxShare.wxShareData.timestamp = res.data.timestamp
-          this.wxShare.wxShareData.nonceStr = res.data.nonceStr
-          this.wxShare.wxShareData.signature = res.data.signature
-        }
+      await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
+        url: _url
+      }).then((res) => {
+        this.wxShare.wxShareData.appId = res.data.appId
+        this.wxShare.wxShareData.timestamp = res.data.timestamp
+        this.wxShare.wxShareData.nonceStr = res.data.nonceStr
+        this.wxShare.wxShareData.signature = res.data.signature
       })
-      await activityManage.getShareInfo({ // 获取分享标题等信息
+      await this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
         route: 'guide_route'
       }).then((res) => {
-        if (res.code === 200 && res.data) {
+        if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.desc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''

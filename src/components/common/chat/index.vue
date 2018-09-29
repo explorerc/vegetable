@@ -8,8 +8,9 @@
 
 <script>
 import ChatService from './ChatService.js'
+import activityService from 'src/api/activity-service'
+import userService from 'src/api/user-service'
 export default {
-  inject: ['chat/getSdkparams', 'activity/getRegactivity'],
   name: 'com-chat',
   data () {
     return {
@@ -30,10 +31,15 @@ export default {
     }
   },
   created () {
-    this['activity/getRegactivity']('506465732').then((res) => {
+    this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, { // 获取参会信息
+      activityId: this.$route.params.id
+    }).then((res) => {
       console.log(res)
       this.vhallParams.accountId = res.data.activityUserId
-      this['chat/getSdkparams']('506465732', this.vhallParams.accountId).then((res) => {
+      this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
+        activityId: this.$route.params.id,
+        activityUserId: this.vhallParams.accountId
+      }).then((res) => {
         this.vhallParams.token = res.data.token
         this.vhallParams.appId = res.data.appId
         this.vhallParams.channelId = res.data.channelRoom

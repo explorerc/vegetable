@@ -1,7 +1,6 @@
-import {
-  broadcast
-} from '../../../api/chat'
-
+import Vue from 'vue'
+import activityService from 'src/api/activity-service'
+const vue = new Vue()
 const msgHandler = Symbol('msgHandler')
 const dispatchHandler = Symbol('dispatchHandler')
 /**
@@ -46,7 +45,15 @@ export default class ChatService {
     if (this.activityId === '') {
       return false
     }
-    broadcast(this.activityId, type, content)
+    vue
+      .$config({ handlers: true })
+      .$get(activityService.GET_SEND, {
+        activityId: this.activityId,
+        type: type,
+        content: content
+      }).then(res => {
+        // console.log(res)
+      })
   }
 
   sendChat (msg) {
@@ -71,7 +78,7 @@ export default class ChatService {
     })
 
     window.vhallChat.on(res => {
-      console.log('aaaaaaaaaaaaaaa', res)
+      // console.log('aaaaaaaaaaaaaaa', res)
       this[dispatchHandler]('chat', res)
     })
   }
