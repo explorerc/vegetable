@@ -5,7 +5,7 @@
         <i v-if="activityInfo.statusName === '直播中'"></i>{{activityInfo.statusName}}
       </span>
       <span class="v-onlineNum"  v-if="activityInfo.statusName === '直播中'">{{activityInfo.onlineNum}}人在线</span>
-      <a href="javascript:;" class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
+      <a :href="`/site/${activityId}`" class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
       <a href="javascript:;" class="fr" @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
     <component :is="currentView" :paasParams="vhallParams" :domShow="domShow"></component>
@@ -58,8 +58,7 @@ export default {
   mixins: [loginMixin],
   data () {
     return {
-      activityData: {
-      },
+      activityId: '',
       playType: 'live', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
       currentView: Empty,
@@ -164,7 +163,7 @@ export default {
     },
     /* 进行订阅 */
     sendSubScribe () {
-      this.$config({ handlers: true }).$post(activityService.POST_EMAILSUBSCRIBE, {
+      this.$post(activityService.POST_EMAILSUBSCRIBE, {
         businessUserId: this.activityInfo.userId,
         email: this.loginInfo.email
       }).then((res) => {
