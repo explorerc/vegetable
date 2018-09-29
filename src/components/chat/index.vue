@@ -646,18 +646,18 @@ export default {
       // }
 
       /* 替换表情图片 */
-      // for (let i = 0; i < this.faceArr.length; i++) {
-      //   for (let key in this.faceArr[i]) {
-      //     let test = key.replace(/\[/, '\\[').replace(/\]/, '\\]')
-      //     let reg = new RegExp(test, 'g')
-      //     obj.detail.txt = obj.detail.txt.replace(
-      //       reg,
-      //       "<img src='//cnstatic01.e.vhall.com/static/img/arclist/Expression_" +
-      //           this.faceArr[i][key] +
-      //           "@2x.png'>"
-      //     )
-      //   }
-      // }
+      for (let i = 0; i < this.faceArr.length; i++) {
+        for (let key in this.faceArr[i]) {
+          let test = key.replace(/\[/, '\\[').replace(/\]/, '\\]')
+          let reg = new RegExp(test, 'g')
+          obj.detail.txt = obj.detail.txt.replace(
+            reg,
+            "<img src='//cnstatic01.e.vhall.com/static/img/arclist/Expression_" +
+            this.faceArr[i][key] +
+            "@2x.png'>"
+          )
+        }
+      }
 
       this.chatData.push(obj)
       if (!this.tipsShow && !this.stopScroll) {
@@ -696,9 +696,9 @@ export default {
     },
     /* 选择表情 */
     inFace (index) {
-      // for (let key in this.faceArr[index]) {
-      //   this.value += key
-      // }
+      for (let key in this.faceArr[index]) {
+        this.value += key
+      }
     },
     boxClick (e) {
       if (e.target.className !== 'icon-emoji') {
