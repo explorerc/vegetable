@@ -86,12 +86,11 @@
           <span class="v-title">
             聊天
           </span>
-          <template v-if='swapAnnounce'>
             <template v-if='(mute || allMuted) && isWatch'>
               <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
             </template>
             <template v-else>
-              <span @click='sendAnnounce'
+              <span @click='sendAction'
                     class='send-btn fr'>发送</span>
             </template>
             <div class="fr"
@@ -110,7 +109,6 @@
               </div>
             </div>
         </div>
-      </div>
       <div class="bottom clearfix">
         <template v-if='swapAnnounce'>
           <com-input :value.sync="value"
@@ -136,6 +134,7 @@
             </div>
           </div>
         </div>
+      </div>
       </div>
       <!-- <div class='send-box not-login' v-else-if='type === "live" && !isLogin'>
       需要登录才能参与聊天 <span @click='loginHandler'>登录</span>
