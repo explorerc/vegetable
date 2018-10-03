@@ -524,6 +524,7 @@ export default {
         this.chatPlaceholder = '聊天内容不能为空'
         return false
       }
+      debugger
       const role = this.joinInfo.roleName === 'HOST' ? '主持人' : '' // 主持人发送
       ChatService.OBJ.activityId = this.activityId
       const obj = {
@@ -562,6 +563,7 @@ export default {
     //   })
     // },
     listenChat (msg) {
+      debugger
       console.log('接收 聊天消息', msg)
       this.reArrange(msg)
       if (this.tipsShow) {

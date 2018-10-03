@@ -71,7 +71,8 @@ export default {
   computed: {
     ...mapState('liveMager', {
       activityInfo: state => state.activityInfo,
-      roomPaas: state => state.roomPaas
+      roomPaas: state => state.roomPaas,
+      joinInfo: state => state.joinInfo
     }),
     ...mapState('login', {
       loginInfo: state => state.loginInfo
@@ -114,6 +115,9 @@ export default {
   methods: {
     ...mapMutations('login', {
       storeLoginInfo: types.LOGIN_INFO
+    }),
+    ...mapMutations('liveMager', {
+      storeJoinInfo: types.JOIN_INFO
     }),
     tabChange () {
       if (this.tabValue === 2) {
@@ -181,8 +185,8 @@ export default {
     },
     loginSuccess (res) {
       this.storeLoginInfo(res)
-      alert('success')
       this.isLogin = true
+      this.$router.go(0)
     },
     loginHandler () {
       this.$emit('showLogin')
