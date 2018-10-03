@@ -4,9 +4,12 @@ const GuidLayout = () =>
 // 直播引导页（有观看限制）
 const SignUp = () =>
   import('src/pages/guide/sign-up')
-// 直播引导页首页
-const Guid = () =>
-  import('src/pages/guide')
+// // 直播引导页首页
+// const Subscribe = () =>
+//   import('src/pages/subscribe/subscribe')
+// // 直播引导页首页
+const Guide = () =>
+  import('src/pages/Guide')
 // 报名成功页
 const Success = () =>
   import('src/pages/guide/success')
@@ -39,10 +42,15 @@ export default [{
     name: 'signUp',
     component: SignUp
   },
+  // {
+  //   path: '/subscribe/:id',
+  //   name: 'subscribe',
+  //   component: Subscribe
+  // },
   {
-    path: '/guid/:id',
-    name: 'guid',
-    component: Guid
+    path: '/guide/:id',
+    name: 'guide',
+    component: Guide
   },
   {
     path: '/success/:id',

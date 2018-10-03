@@ -1,8 +1,5 @@
 <template>
-  <div class="v-guid">
-    <p class="v-title">
-      {{activity.title}}
-    </p>
+  <div>
     <div class="v-summary" v-if="!activity.isCountdown || (activity.viewCondition === 'NONE' && activity.countDown < 1800) || viewLimit.canAppoint !== 'Y'">
       <div v-html="activity.description"></div>
     </div>
@@ -78,6 +75,7 @@
     mixins: [loginMixin],
     data () {
       return {
+        currentView: 'comInit', // 当前渲染页面
         goUrl: '',
         goRegisteredUrl: '', // 已报名检验页面
         activity: {
@@ -125,8 +123,11 @@
       ...mapMutations('tokenMager', {
         setChatParams: types.CHAT_PARAMS
       }),
-      jumpPage (url) {
+      changeView (res) {
         debugger
+        this.currentView = res
+      },
+      jumpPage (url) {
         let jumpUrl = url + this.$route.params.id
         this.doAuth(jumpUrl)
       },
