@@ -9,7 +9,7 @@ const SignUp = () =>
 //   import('src/pages/subscribe/subscribe')
 // // 直播引导页首页
 const Guide = () =>
-  import('src/pages/Guide')
+  import('src/pages/Guide/index')
 // 报名成功页
 const Success = () =>
   import('src/pages/guide/success')
