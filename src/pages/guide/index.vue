@@ -126,7 +126,6 @@
         setChatParams: types.CHAT_PARAMS
       }),
       jumpPage (url) {
-        debugger
         let jumpUrl = url + this.$route.params.id
         this.doAuth(jumpUrl)
       },
