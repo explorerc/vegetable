@@ -59,7 +59,7 @@
       </template>
       <!-- 无限制活动 -->
       <template v-else>
-        <button class="primary-button" @click="jumpPage('/live/')">进入直播</button>
+        <button class="primary-button" @click="jumpPage('/watch/')">进入直播</button>
       </template>
       <!-- ！！！跳转观看页面 -->
     </div>
@@ -161,10 +161,10 @@
           if (this.activity.countDown < 1800) {
             if (this.activity.viewCondition === 'APPOINT') {
               if (this.user.isApplay) {
-                this.doAuth('/live/' + this.$route.params.id)
+                this.doAuth('/watch/' + this.$route.params.id)
               }
             } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
-              this.doAuth('/live/' + this.$route.params.id)
+              this.doAuth('/watch/' + this.$route.params.id)
             }
           } else {
             let time = this.activity.countDown
@@ -179,10 +179,10 @@
           if (this.activity.status === 'LIVING') {
             if (this.activity.viewCondition === 'APPOINT') {
               if (this.user.isApplay) {
-                this.doAuth('/live/' + this.$route.params.id)
+                this.doAuth('/watch/' + this.$route.params.id)
               }
             } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
-              this.doAuth('/live/' + this.$route.params.id)
+              this.doAuth('/watch/' + this.$route.params.id)
             }
           }
         }).catch((err) => {
