@@ -181,6 +181,7 @@ export default {
     },
     loginSuccess (res) {
       this.storeLoginInfo(res)
+      alert('success')
       this.isLogin = true
     },
     loginHandler () {
