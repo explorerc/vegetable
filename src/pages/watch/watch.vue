@@ -266,7 +266,7 @@ export default {
               this.storeRoomPaas(res.data)
             }
           }).catch(() => {
-            this.$router.replace('/kicked')
+            // this.$router.replace('/kicked')
           })
         })
       })

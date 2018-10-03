@@ -181,6 +181,7 @@ export default {
     },
     loginSuccess (res) {
       this.storeLoginInfo(res)
+      this.isLogin = true
     },
     loginHandler () {
       this.$emit('showLogin')
