@@ -63,7 +63,7 @@
         setChatParams: types.CHAT_PARAMS
       }),
       accountSubmit () {
-        this.doAuth('/live/' + this.$route.params.id)
+        this.doAuth('/watch/' + this.$route.params.id)
       },
       initSdk () {
         this.service = new ChatService()
@@ -87,10 +87,10 @@
           if (this.activity.status === 'LIVING' || this.activity.countDown <= 1799) {
             if (this.activity.viewCondition === 'APPOINT') {
               if (res.data.joinInfo.isApplay) {
-                this.doAuth('/live/' + this.$route.params.id)
+                this.doAuth('/watch/' + this.$route.params.id)
               }
             } else if (res.data.joinInfo.isOrder && this.activity.viewCondition === 'NONE') {
-              this.doAuth('/live/' + this.$route.params.id)
+              this.doAuth('/watch/' + this.$route.params.id)
             }
           }
         })

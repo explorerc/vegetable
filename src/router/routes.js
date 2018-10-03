@@ -16,12 +16,12 @@ const CheckState = () =>
 // 观看页面
 const Watch = () =>
   import('src/pages/watch/Watch')
-// 直播页面
-const Live = () =>
-  import('src/pages/watch/live')
-// 回放页面
-const Playback = () =>
-  import('src/pages/watch/playback')
+// // 直播页面
+// const Live = () =>
+//   import('src/pages/watch/live')
+// // 回放页面
+// const Playback = () =>
+//   import('src/pages/watch/playback')
 const Test = () =>
   import('src/pages/test-login')
 // 活动官网
@@ -65,16 +65,16 @@ export default [{
   name: 'watch',
   component: Watch
 },
-{
-  path: '/live/:id',
-  name: 'live',
-  component: Live
-},
-{
-  path: '/playback/:id',
-  name: 'playback',
-  component: Playback
-},
+// {
+//   path: '/live/:id',
+//   name: 'live',
+//   component: Live
+// },
+// {
+//   path: '/playback/:id',
+//   name: 'playback',
+//   component: Playback
+// },
 {
   path: '/test',
   name: 'Test',
