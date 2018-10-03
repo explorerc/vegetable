@@ -8,7 +8,7 @@ const SignUp = () =>
 // const Subscribe = () =>
 //   import('src/pages/subscribe/subscribe')
 // // 直播引导页首页
-const Guide = () =>
+const Guid = () =>
   import('src/pages/guide/index')
 // 报名成功页
 const Success = () =>
@@ -49,8 +49,8 @@ export default [{
   // },
   {
     path: '/guide/:id',
-    name: 'guide',
-    component: Guide
+    name: 'guid',
+    component: Guid
   },
   {
     path: '/success/:id',
