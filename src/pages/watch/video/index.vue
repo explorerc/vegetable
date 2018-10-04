@@ -158,7 +158,6 @@ export default {
     }),
     /* 初始组件 */
     initComponent () {
-      alert(this.playType)
       if (this.playType === 'live') { // 直播
         this.initLivePlay()
       } else if (this.playType === 'pre') {
