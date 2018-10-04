@@ -100,7 +100,7 @@ export default {
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
     if (this.activityInfo.status === 'PREPARE' && 1) {
-      this.playType = 'prepare'
+      this.playType = 'pre'
     } else if (this.activityInfo.status === 'PREPARE' && 2) {
       this.playType = 'warm'
     } else if (this.activityInfo.status === 'FINISH') {
