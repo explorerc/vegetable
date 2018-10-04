@@ -4,7 +4,7 @@
       <span class="v-status">
         <i v-if="activityInfo.statusName === '直播中'"></i>{{activityInfo.statusName}}
       </span>
-      <span class="v-onlineNum"  v-if="activityInfo.statusName === '直播中'">{{activityInfo.onlineNum}}人在线</span>
+      <span class="v-onlineNum"  v-if="activityInfo.statusName === '直播中'">{{showPersonCount}}人在线</span>
       <a :href="`/site/${activityId}`" class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
       <a href="javascript:;" class="fr" @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
@@ -108,7 +108,11 @@ export default {
     }),
     ...mapState('login', {
       loginInfo: state => state.loginInfo
-    })
+    }),
+    showPersonCount: function () {
+      debugger
+      return parseInt(this.activityInfo.setting.initOnlineNum ? this.activityInfo.setting.initOnlineNum : 0) + parseInt(this.activityInfo.onlineNum ? this.activityInfo.onlineNum : 0)
+    }
   },
   created () {
     const queryId = this.$route.params.id
@@ -213,7 +217,6 @@ export default {
         activityInfo.setting = res.data.setting
         activityInfo.statusName = playStatuTypes[activityInfo.status]
         activityInfo.description = res.data.activity.description
-        // this.storeActivityInfo(activityInfo)
         this.playType = playTypes[activityInfo.status]
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
@@ -223,18 +226,14 @@ export default {
         } else {
           this.currentView = Live
         }
-        /* 查询真实在线人数 */
-        this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
-          activityId: this.$route.params.id
-        }).then((res) => {
-          activityInfo.onlineNum = res.data.onlineNum
-          this.storeActivityInfo(activityInfo)
-        })
       })
-    },
-    handleUpdateOnlineNum (msg) {
-      this.activityInfo.onlineNum = msg
-      this.storeActivityInfo(this.activityInfo)
+      /* 查询真实在线人数 */
+      await this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        activityInfo.onlineNum = res.data.onlineNum
+      })
+      this.storeActivityInfo(activityInfo)
     },
     initSdk () {
       // this.service = new ChatService()

@@ -57,7 +57,7 @@ export default {
   components: { PlayVideo, Chating },
   data () {
     return {
-      playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+      playType: '', // 直播(live), 回放(vod), 暖场(warm)
       startInit: false,
       tabValue: 1,
       isWatch: true, // 是否是观看端
@@ -149,6 +149,7 @@ export default {
       })
       /* 监听在线人数 */
       ChatService.OBJ.regHandler(ChatConfig.onLineNum, (msg) => {
+        debugger
         const temp = JSON.parse(JSON.stringify(this.liveInfo))
         temp.showOnlineNum = parseInt(temp.setting.initOnlineNum) + parseInt(msg.num)
         this.storeLiveInfo(temp)
@@ -163,7 +164,6 @@ export default {
       })
       /* 监听直播结束 */
       ChatService.OBJ.regHandler(ChatConfig.endLive, (msg) => {
-        debugger
         this.playType = 'end'
         const temp = JSON.parse(JSON.stringify(this.activityInfo))
         temp.status = 'FINISH'

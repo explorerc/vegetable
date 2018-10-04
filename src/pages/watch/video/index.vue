@@ -113,6 +113,11 @@
           this.stopPlay()
         }
       },
+      playType: {
+        handler () {
+          this.changePlayType()
+        }
+      },
       liveDevices () {
         this.changeLiveDevice()
       }
@@ -141,6 +146,15 @@
           this.initPlayBack()
         } else if (this.playType === 'end') { // 结束
           this.playEnd()
+        }
+      },
+      /* 改版播放类型 */
+      changePlayType () {
+        if (!this.startInit) return
+        if ('live|warm|vod|end|pre'.indexOf(this.playType) !== -1) {
+          this.isAutoPlay = false
+          this.destoryComs()
+          this.initComponent()
         }
       },
       playEnd () {
@@ -193,7 +207,6 @@
       playBackVideo () {
         this.$nextTick(() => {
           if (!this.recordId) return
-
           window.Vhall.ready(() => {
             window.VhallPlayer.init({
               recordId: this.recordId,
@@ -363,6 +376,15 @@
         if (window.VhallPlayer) {
           window.VhallPlayer.seek(this.totalTime * progress / 100)
         }
+      },
+      destoryComs () {
+        clearInterval(this.setIntervalHandler)
+        // 发起端直播
+        if (window.hostPusher) window.hostPusher.destroy()
+        // 观看端直播
+        if (window.playComps) window.playComps.destroy()
+        // 回放和暖场视频
+        if (window.VhallPlayer) window.VhallPlayer.destroy()
       }
     }
   }
