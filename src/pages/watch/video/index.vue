@@ -51,6 +51,7 @@
         totalTime: 10000,
         stInterval: '',
         isPlay: false,
+        isAutoPlay: false,
         controlPsoition: '1.333vw',
         qualitys: [] // 视频质量
       }
@@ -235,8 +236,12 @@
         clearInterval(this.setIntervalHandler)
         this.setIntervalHandler = setInterval(() => {
           this.currentTime = window.VhallPlayer.getCurrentTime()
-          if (this.totalTime === this.currentTime) {
+          if (this.totalTime <= this.currentTime) {
             clearInterval(this.setIntervalHandler)
+            if (this.isAutoPlay) {
+              window.VhallPlayer.play()
+              this.dealWithVideo()
+            }
           }
         }, 1000)
       },
@@ -247,6 +252,7 @@
           if (res.data) {
             this.imageUrl = res.data.imgUrl
             this.recordId = res.data.recordId
+            this.isAutoPlay = res.data.playType === 'AUTO'
             this.playBtnShow = true
             this.totalTime = parseInt(res.data.record.duration)
             this.playBackVideo()
