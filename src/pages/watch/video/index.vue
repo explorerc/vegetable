@@ -2,7 +2,7 @@
   <div class="play-container">
     <div class="play-video-box"
          :id="playBoxId"
-         v-if="playType=='prepare'">
+         v-if="playType=='pre'">
       <img v-if="imageSrc"
            :src="imageSrc">
     </div>
@@ -160,7 +160,7 @@ export default {
     initComponent () {
       if (this.playType === 'live') { // 直播
         this.initLivePlay()
-      } else if (this.playType === 'prepare') {
+      } else if (this.playType === 'pre') {
         this.imageUrl = this.activityInfo.imgUrl
       } else if (this.playType === 'warm') { // 暖场
         this.queryWarmInfo()
