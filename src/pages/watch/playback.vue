@@ -57,7 +57,6 @@ export default {
   components: { PlayVideo, Chating },
   data () {
     return {
-      playType: '', // 直播(live), 回放(vod), 暖场(warm)
       startInit: false,
       tabValue: 1,
       isWatch: true, // 是否是观看端
@@ -80,9 +79,7 @@ export default {
   },
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
-    if (this.activityInfo.status === 'PLAYBACK') {
-      this.playType = 'vod'
-    }
+    this.playType = 'vod'
     this.startInit = true
   },
   created () {
@@ -105,6 +102,9 @@ export default {
         }
       },
       deep: true
+    },
+    activityInfo: {
+
     }
   },
   methods: {
@@ -112,6 +112,7 @@ export default {
       storeLoginInfo: types.LOGIN_INFO
     }),
     ...mapMutations('liveMager', {
+      storeActivityInfo: types.ACTIVITY_INFO,
       storeJoinInfo: types.JOIN_INFO
     }),
     tabChange () {

@@ -2,9 +2,9 @@
   <div class="v-watch">
     <div v-if="domShow" class="v-hearder clearfix" @orientationchange="orientationchange($event)">
       <span class="v-status">
-        <i v-if="activityInfo.statusName === '直播中'"></i>{{activityInfo.statusName}}
+        <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
-      <span class="v-onlineNum"  v-if="activityInfo.statusName === '直播中'">{{showPersonCount}}人在线</span>
+      <span class="v-onlineNum"  v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
       <a :href="`/site/${activityId}`" class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
       <a href="javascript:;" class="fr" @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
@@ -59,7 +59,7 @@ export default {
   data () {
     return {
       activityId: '',
-      playType: 'live', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
+      playType: '', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
       currentView: Empty,
       vhallParams: {
@@ -110,8 +110,10 @@ export default {
       loginInfo: state => state.loginInfo
     }),
     showPersonCount: function () {
-      debugger
       return parseInt(this.activityInfo.setting.initOnlineNum ? this.activityInfo.setting.initOnlineNum : 0) + parseInt(this.activityInfo.onlineNum ? this.activityInfo.onlineNum : 0)
+    },
+    activityStatus: function () {
+      return this.activityInfo.statusName
     }
   },
   created () {
@@ -220,12 +222,6 @@ export default {
         this.playType = playTypes[activityInfo.status]
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
-        this.currentView = Playback
-        if (this.playType === 'vod') {
-          this.currentView = Playback
-        } else {
-          this.currentView = Live
-        }
       })
       /* 查询真实在线人数 */
       await this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
@@ -234,6 +230,11 @@ export default {
         activityInfo.onlineNum = res.data.onlineNum
       })
       this.storeActivityInfo(activityInfo)
+      if (this.playType === 'vod') {
+        this.currentView = Playback
+      } else {
+        this.currentView = Live
+      }
     },
     initSdk () {
       // this.service = new ChatService()
