@@ -179,6 +179,7 @@ export default {
     }),
     subscribe () {
       if (this.loginInfo) {
+        alert(this.loginInfo.email)
         if (this.loginInfo.email) {
           this.sendSubScribe()
         } else {
@@ -195,7 +196,7 @@ export default {
     sendSubScribe () {
       this.$post(activityService.POST_EMAILSUBSCRIBE, {
         businessUserId: this.activityInfo.userId,
-        email: this.loginInfo.email
+        email: this.loginInfo.email ? this.loginInfo.email : this.email
       }).then((res) => {
         this.autoClose = 3
         this.subscribeShow = false
@@ -214,7 +215,7 @@ export default {
         this.subscribeShow = false
       } else if (e.action === 'confirm') {
         let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
-        if (!reg.test(this.email)) {
+        if (this.email && !reg.test(this.email)) {
           this.errorTips = '邮箱格式不正确'
           return false
         } else {
