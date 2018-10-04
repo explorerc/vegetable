@@ -8,9 +8,16 @@
       </span>
       <span class="v-onlineNum"
             v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
-      <a :href="`/site/${activityId}`"
+      <a v-if="loginInfo"
+         :href="`/m/site/${activityId}`"
          class="fr v-my">
-        <i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
+        <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
+      <a v-else
+         href="javascript:;"
+         @click="doLogin()"
+         class="fr v-my">
+        <i class="v-showpsd iconfont icon-wode_icon"></i>登录</a>
+
       <a href="javascript:;"
          class="fr"
          @click="subscribe">
