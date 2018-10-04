@@ -257,10 +257,9 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         document.title = res.data.activity.title
-        activityInfo = res.data.activity
+        activityInfo = { ...activityInfo, ...res.data.activity }
         activityInfo.setting = res.data.setting
         activityInfo.statusName = playStatuTypes[activityInfo.status]
-        activityInfo.description = res.data.activity.description
         this.playType = playTypes[activityInfo.status]
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
