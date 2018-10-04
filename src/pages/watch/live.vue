@@ -52,9 +52,9 @@
             </template>
           </com-tab>
         </com-tabs>
-        <a class="v-subscribe"
+        <!-- <a class="v-subscribe"
            href="javascript:;">
-          <i class="iconfont icon-dingyue"></i> 关注</a>
+          <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
     </div>
     <com-login @login="loginSuccess"></com-login>

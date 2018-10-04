@@ -392,7 +392,7 @@ export default {
     .com-tabs {
       height: 100%;
       .tab-header {
-        padding-right: 160px;
+        // padding-right: 160px; //关注开放时再打开
         border-bottom: 1px solid #f5f5f5;
         margin: 0;
         .tab-item {
