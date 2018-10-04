@@ -78,16 +78,20 @@ export default {
       this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
         this.$router.replace('/guide/' + this.$route.params.id)
       }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+        if (err.code === 12001) {
+          this.$router.replace('/success/' + this.$route.params.id)
+        } else {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
             }
-          }
-        })
+          })
+        }
       })
     },
     submit () { // 提交验证信息
