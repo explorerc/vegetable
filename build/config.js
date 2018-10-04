@@ -6,6 +6,7 @@ const config = {
     SUB_DIR: '',
     PUBLIC_PATH: '/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
+    MOBILE_HOST: '//localhost:8866/m/',
     proxyTable: {
       '/api': {
         target: 'http://dev-api-zhike.vhall.domain',
@@ -29,7 +30,8 @@ const config = {
     API_PATH: '/m/api',
     SUB_DIR: 'static',
     PUBLIC_PATH: '//test-zhike.vhall.com/m/',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com'
+    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
+    MOBILE_HOST: '//test-zhike.vhall.com/m/'
   },
   prod: {
     BUILD_ENV: 'prod',
