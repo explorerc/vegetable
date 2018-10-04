@@ -1,26 +1,41 @@
 <template>
   <div>
     <div class="v-video">
-      <play-video role="watcher" :play-type="playType" :startInit="startInit"></play-video>
+      <play-video role="watcher"
+                  :play-type="playType"
+                  :startInit="startInit"></play-video>
     </div>
-    <div v-if="domShow" class="v-function-box">
+    <div v-if="domShow"
+         class="v-function-box">
       <div class="v-nav">
-        <com-tabs :value.sync="tabValue" @change="tabChange">
-          <com-tab label="活动简介" :index="1">
-            <div class="v-introduction" v-html="activityInfo.description"></div>
+        <com-tabs :value.sync="tabValue"
+                  @change="tabChange">
+          <com-tab label="活动简介"
+                   :index="1">
+            <div class="v-introduction"
+                 v-html="activityInfo.description"></div>
           </com-tab>
-          <com-tab label="互动聊天" :index="2">
+          <com-tab label="互动聊天"
+                   :index="2">
             <div class="chat-content">
-              <chating ref="chatbox" :type="playType" :isWatch="isWatch" :sendBoxShow="sendBoxShow" @closeChatBox="closeChatBox" @isMute="isMute($event)"></chating>
+              <chating ref="chatbox"
+                       :type="playType"
+                       :isWatch="isWatch"
+                       :sendBoxShow="sendBoxShow"
+                       @closeChatBox="closeChatBox"
+                       @isMute="isMute($event)"></chating>
             </div>
             <template v-if='playType === "live" && isLogin'>
               <template v-if='isMuteShow'>
-                <div class="v-chat-control v-noLogin" id="sendBoxBtn">
+                <div class="v-chat-control v-noLogin"
+                     id="sendBoxBtn">
                   {{allMuted ? '已开启全体禁言' : '您已被禁言'}}
                 </div>
               </template>
               <template v-else>
-                <div class="v-chat-control" @click="chatClick()" id="sendBoxBtn">
+                <div class="v-chat-control"
+                     @click="chatClick()"
+                     id="sendBoxBtn">
                   <i class="iconfont icon-biaoqing"></i>
                   <span class="v-chat-clickbox">
                     输入文字聊天
@@ -29,13 +44,15 @@
               </template>
             </template>
             <template v-else-if='playType === "live" && !isLogin'>
-              <div class="v-chat-control v-noLogin" id="sendBoxBtn">
-                需要登录才能参与聊天 <span  @click="doLogin">登录</span>
+              <div class="v-chat-control v-noLogin"
+                   id="sendBoxBtn">
+                需要登录才能参与聊天
+                <span @click="doLogin">登录</span>
               </div>
             </template>
           </com-tab>
         </com-tabs>
-        <a class="v-subscribe" href="javascript:;"><i class="iconfont icon-dingyue"></i> 关注</a>
+        <!-- <a class="v-subscribe" href="javascript:;"><i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
     </div>
     <com-login @login="loginSuccess"></com-login>
