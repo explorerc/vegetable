@@ -179,7 +179,6 @@ export default {
     }),
     subscribe () {
       if (this.loginInfo) {
-        alert(this.loginInfo.email)
         if (this.loginInfo.email) {
           this.sendSubScribe()
         } else {
@@ -250,6 +249,7 @@ export default {
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
+        document.title = res.data.activity.title
         activityInfo = res.data.activity
         activityInfo.setting = res.data.setting
         activityInfo.statusName = playStatuTypes[activityInfo.status]

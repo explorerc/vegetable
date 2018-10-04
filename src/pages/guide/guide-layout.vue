@@ -1,10 +1,14 @@
 <template>
   <div class="container">
     <template v-if="defaultImg">
-      <img :src="defaultImg" alt="" class="v-guid-img">
+      <img :src="defaultImg"
+           alt=""
+           class="v-guid-img">
     </template>
     <template v-else>
-      <img src="../../assets/image/guid.png" alt="" class="v-guid-img">
+      <img src="../../assets/image/guid.png"
+           alt=""
+           class="v-guid-img">
     </template>
     <router-view class="app-view"></router-view>
   </div>
@@ -52,6 +56,7 @@ export default {
       this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
+        document.title = res.data.guide.title
         this.imgUrl = res.data.guide.imgUrl
       }).catch((err) => {
         this.$messageBox({
