@@ -1,15 +1,24 @@
 <template>
   <div class="v-watch">
-    <div v-if="domShow" class="v-hearder clearfix" @orientationchange="orientationchange($event)">
+    <div v-if="domShow"
+         class="v-hearder clearfix"
+         @orientationchange="orientationchange($event)">
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
-      <span class="v-onlineNum"  v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
-      <a :href="`/site/${activityId}`" class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
-      <a href="javascript:;" class="fr" @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
+      <span class="v-onlineNum"
+            v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
+      <a :href="`/site/${activityId}`"
+         class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
+      <a href="javascript:;"
+         class="fr"
+         @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
-    <component :is="currentView" :paasParams="vhallParams" :domShow="domShow"></component>
-    <message-box v-show="subscribeShow" @handleClick="subscribeClick($event)">
+    <component :is="currentView"
+               :paasParams="vhallParams"
+               :domShow="domShow"></component>
+    <message-box v-show="subscribeShow"
+                 @handleClick="subscribeClick($event)">
       <div slot="header"></div>
       <img src="../../assets/image/qq.png" alt="" class="v-logo">
       <p class="v-title">
@@ -19,10 +28,16 @@
         <p class="v-explain">
           请留下您的邮箱，我们会将更多的活动推送给您
         </p>
-        <com-input :value.sync="email" placeholder="请输入邮箱" :max-length="11" :errorTips="errorTips" @focus="emailFocus()"></com-input>
+        <com-input :value.sync="email"
+                   placeholder="请输入邮箱"
+                   :max-length="11"
+                   :errorTips="errorTips"
+                   @focus="emailFocus()"></com-input>
       </div>
     </message-box>
-    <message-box v-show="successShow" @handleClick="successClick" :autoClose="autoClose">
+    <message-box v-show="successShow"
+                 @handleClick="successClick"
+                 :autoClose="autoClose">
       <div slot="header"></div>
       <img src="../../assets/image/success@2x.png" alt="" class="v-success">
       <p class="v-title v-success-title">
@@ -33,6 +48,7 @@
   </div>
 </template>
 <script>
+import VConsole from 'vconsole/dist/vconsole.min.js' // 初始化
 import { mapMutations, mapState } from 'vuex'
 import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
@@ -41,7 +57,8 @@ import * as types from '../../store/mutation-types'
 import loginMixin from 'components/login-mixin'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
-import userService from 'src/api/user-service'
+import userService from 'src/api/user-service' // import vconsole
+let vConsole = new VConsole()
 const playTypes = {
   'PREPARE': 'pre',
   'LIVING': 'live',
@@ -95,6 +112,7 @@ export default {
     }
   },
   mounted () {
+    console.log(vConsole)
     this.storeLoginInfo(this.getLoginInfo())
   },
   computed: {
@@ -410,13 +428,13 @@ export default {
             color: #888888;
             margin-left: 20px;
           }
-          .icon-biaoqing{
+          .icon-biaoqing {
             font-size: 30px;
             display: inline-block;
           }
-          &.v-noLogin{
+          &.v-noLogin {
             text-align: center;
-            span{
+            span {
               color: #4b5afe;
             }
           }
