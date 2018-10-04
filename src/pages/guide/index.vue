@@ -24,6 +24,7 @@
           </template>
           <template v-else>
             <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button" v-else>报名已截止</button>
           </template>
         </template>
       </template>
@@ -54,6 +55,7 @@
           </template>
           <template v-else>
             <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button" v-else>报名已截止</button>
           </template>
         </template>
       </template>
