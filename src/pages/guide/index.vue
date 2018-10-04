@@ -14,8 +14,8 @@
             <button class="primary-button">已报名</button>
           </template>
           <template v-else> <!-- 未报名 -->
-            <button class="primary-button" @click="jumpPage( MOBILE_HOST + '/SignUp/')">立即报名</button>
-            <a href="javascript:;" class="v-registered" @click="jumpPage( MOBILE_HOST + '/CheckState/')" v-if="!this.user.phone">已报名</a>
+            <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
+            <a href="javascript:;" class="v-registered" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">已报名</a>
           </template>
         </template>
         <template v-else> <!-- 报名已截止 -->
@@ -23,7 +23,7 @@
             <button class="primary-button">已报名</button>
           </template>
           <template v-else>
-            <button class="primary-button" @click="jumpPage( MOBILE_HOST + '/CheckState/')" v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">报名验证</button>
           </template>
         </template>
       </template>
@@ -31,8 +31,8 @@
         <com-countdown :time="activity.countDown" v-if="activity.isCountdown"></com-countdown>
         <button class="primary-button"  v-if="user.isOrder">已预约</button>
         <template v-else>
-          <button class="primary-button" @click="jumpPage( MOBILE_HOST + '/SignUp/')">预约</button>
-          <a href="javascript:;" class="v-registered" @click="jumpPage( MOBILE_HOST + '/CheckState/')" v-if="!this.user.phone">已预约</a>
+          <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'SignUp/')">预约</button>
+          <a href="javascript:;" class="v-registered" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">已预约</a>
         </template>
       </template>
     </div>
@@ -44,8 +44,8 @@
             <!-- ！！！跳转观看页面 -->
           </template>
           <template v-else>  <!-- 未报名 -->
-            <button class="primary-button" @click="jumpPage( MOBILE_HOST + '/SignUp/')">立即报名</button>
-            <a href="javascript:;" class="v-registered" @click="jumpPage( MOBILE_HOST + '/CheckState/')" v-if="!this.user.phone">已报名</a>
+            <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
+            <a href="javascript:;" class="v-registered" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">已报名</a>
           </template>
         </template>
         <template v-else> <!-- 报名已截止 -->
@@ -53,13 +53,13 @@
             <!-- <a href="javascript:;" class="v-submit">已报名</a> -->
           </template>
           <template v-else>
-            <button class="primary-button" @click="jumpPage( MOBILE_HOST + '/CheckState/')" v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'CheckState/')" v-if="!this.user.phone">报名验证</button>
           </template>
         </template>
       </template>
       <!-- 无限制活动 -->
       <template v-else>
-        <button class="primary-button" @click="jumpPage( MOBILE_HOST + '/watch/')">进入直播</button>
+        <button class="primary-button" @click="jumpPage( MOBILE_HOST + 'watch/')">进入直播</button>
       </template>
       <!-- ！！！跳转观看页面 -->
     </div>
