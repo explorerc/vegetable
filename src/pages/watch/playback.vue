@@ -57,7 +57,7 @@ export default {
   components: { PlayVideo, Chating },
   data () {
     return {
-      playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+      playType: '', // 直播(live), 回放(vod), 暖场(warm)
       startInit: false,
       tabValue: 1,
       isWatch: true, // 是否是观看端
@@ -80,15 +80,10 @@ export default {
   },
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
-    if (this.activityInfo.status === 'PREPARE') {
-      this.playType = 'warm'
-    } else if (this.activityInfo.status === 'FINISH') {
-      this.playType = 'end'
-    } else {
-      this.playType = 'live'
+    if (this.activityInfo.status === 'PLAYBACK') {
+      this.playType = 'vod'
     }
     this.startInit = true
-    this.initMsgServe()
   },
   created () {
     this.initToken()
@@ -163,7 +158,6 @@ export default {
       })
       /* 监听直播结束 */
       ChatService.OBJ.regHandler(ChatConfig.endLive, (msg) => {
-        debugger
         this.playType = 'end'
         const temp = JSON.parse(JSON.stringify(this.activityInfo))
         temp.status = 'FINISH'

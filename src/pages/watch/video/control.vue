@@ -5,8 +5,8 @@
     <!--</div>-->
     <div class="auto-box" style="display:flex;">
       <div class="mode-item fl" @click="playEvent">
-        <i v-if="isPlay" class="iconfont icon-bofang1"></i>
-        <i v-else class="iconfont icon-zanting"></i>
+        <i v-if="isPlay" class="iconfont icon-zanting_icon"></i>
+        <i v-else class="iconfont icon-bofang_icon"></i>
       </div>
       <div class="mode-item time-box" >
         <span>{{currentDate}}</span><span>/{{allDate}}</span>
