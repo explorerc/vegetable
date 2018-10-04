@@ -57,7 +57,7 @@
         恭喜您，订阅成功！
       </p>
     </message-box>
-    <com-login></com-login>
+    <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
 <script>
