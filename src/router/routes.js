@@ -18,7 +18,7 @@ const CheckState = () =>
   import('src/pages/guide/check-state')
 // 观看页面
 const Watch = () =>
-  import('src/pages/watch/Watch')
+  import('src/pages/watch/watch')
 // // 直播页面
 // const Live = () =>
 //   import('src/pages/watch/live')
@@ -31,7 +31,7 @@ const Test = () =>
 const SiteTemplate = () =>
   import('src/pages/site/template.vue')
 const kicked = () =>
-import('src/pages/watch/kicked')
+  import('src/pages/watch/kicked')
 
 export default [{
   path: '/',

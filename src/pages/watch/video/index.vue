@@ -111,9 +111,7 @@
     },
     watch: {
       startInit (newVal) {
-        if (newVal) {
-          this.initComponent()
-        } else {
+        if (!newVal) {
           this.stopPlay()
         }
       },
@@ -219,7 +217,7 @@
               complete: () => {
                 this.playBtnShow = false
                 this.qualitys = window.VhallPlayer.getQualitys()
-                window.VhallPlayer.play()
+                // window.VhallPlayer.play()
                 this.dealWithVideo()
               }
             })

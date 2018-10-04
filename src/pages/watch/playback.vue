@@ -57,6 +57,7 @@ export default {
   components: { PlayVideo, Chating },
   data () {
     return {
+      playType: '', // 直播(live), 回放(vod), 暖场(warm)
       startInit: false,
       tabValue: 1,
       isWatch: true, // 是否是观看端
