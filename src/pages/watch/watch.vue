@@ -194,7 +194,7 @@ export default {
     },
     /* 进行订阅 */
     sendSubScribe () {
-      this.$post(activityService.POST_EMAILSUBSCRIBE, {
+      this.$config({ handlers: true }).$post(activityService.POST_EMAILSUBSCRIBE, {
         businessUserId: this.activityInfo.userId,
         email: this.loginInfo.email ? this.loginInfo.email : this.email
       }).then((res) => {
@@ -206,7 +206,17 @@ export default {
         this.updateLoginInfo(tempLoginInfo)
         this.storeLoginInfo(tempLoginInfo)
       }).catch((err) => {
-        this.errorTips = err.msg
+        this.subscribeShow = false
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
       })
     },
     subscribeClick (e) {
