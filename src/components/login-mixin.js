@@ -37,10 +37,10 @@ export default {
       }
       if (!sessionStorage.getItem('wechatAuth')) {
         console.log(_url)
-        // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
-        //   _url
-        // )}`
-        location.href = `${_url}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
+          _url
+        )}`
+        // location.href = `${_url}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
       } else {
         location.href = _url
       }
@@ -51,16 +51,16 @@ export default {
         if (typeof url === 'string') {
           _url = url
         }
-        _url = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
-        location.href = _url
-        // if (_url.indexOf('?') === -1) {
-        //   _url += '?_pop=true'
-        // } else {
-        //   _url += '&_pop=true'
-        // }
-        // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
-        //   _url
-        // )}`
+        // _url = `${location.href}?wechatAuth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbmlkIjoib1Y4WXkwbUpWVW90NTNkMmQxMGp4X1c5alVPZyJ9 .0e3 IszThWQZDZAn-Ycj_WeaLJ4MSvcg02f7NUqYmPcE`
+        // location.href = _url
+        if (_url.indexOf('?') === -1) {
+          _url += '?_pop=true'
+        } else {
+          _url += '&_pop=true'
+        }
+        location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
+          _url
+        )}`
       } else {
         this.login.visible = true
       }
@@ -79,7 +79,10 @@ export default {
           resolve(JSON.parse(sessionStorage.getItem('master')))
         } else {
           vue
-            .$config({ loading: true, handlers: true })
+            .$config({
+              loading: true,
+              handlers: true
+            })
             .$get(userService.GET_JOININFO)
             .then(res => {
               sessionStorage.setItem('master', JSON.stringify(res.data))
