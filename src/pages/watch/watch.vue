@@ -295,6 +295,10 @@ export default {
         }
       })
       wxShareFunction(this.wxShare)
+    },
+    loginSuccess (res) {
+      this.storeLoginInfo(res)
+      this.subscribe()
     }
   }
 }
