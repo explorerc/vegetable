@@ -9,10 +9,12 @@
       <span class="v-onlineNum"
             v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
       <a :href="`/site/${activityId}`"
-         class="fr v-my"><i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
+         class="fr v-my">
+        <i class="v-showpsd iconfont icon-wode_icon"></i>我的</a>
       <a href="javascript:;"
          class="fr"
-         @click="subscribe()"><i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
+         @click="subscribe">
+        <i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
     <component :is="currentView"
                :paasParams="vhallParams"
@@ -20,7 +22,9 @@
     <message-box v-show="subscribeShow"
                  @handleClick="subscribeClick($event)">
       <div slot="header"></div>
-      <img src="../../assets/image/qq.png" alt="" class="v-logo">
+      <img src="../../assets/image/qq.png"
+           alt=""
+           class="v-logo">
       <p class="v-title">
         北京微吼时代科技有限公司
       </p>
@@ -39,7 +43,9 @@
                  @handleClick="successClick"
                  :autoClose="autoClose">
       <div slot="header"></div>
-      <img src="../../assets/image/success@2x.png" alt="" class="v-success">
+      <img src="../../assets/image/success@2x.png"
+           alt=""
+           class="v-success">
       <p class="v-title v-success-title">
         恭喜您，订阅成功！
       </p>
@@ -176,7 +182,7 @@ export default {
         if (this.loginInfo.email) {
           this.sendSubScribe()
         } else {
-          this.subScribeShow = true
+          this.subscribeShow = true
         }
       } else {
         this.doLogin()
