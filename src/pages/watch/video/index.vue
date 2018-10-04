@@ -4,6 +4,9 @@
     <div class="play-video-box" :id="playBoxId" v-else-if="playType=='vod'">
       <div v-html="this.outLineLink" style="width:100%;height: 100%;"></div>
     </div>
+    <div class="play-video-box" :id="playBoxId" v-else-if="playType=='end'">
+      <span class="end-box">直播已结束</span>
+    </div>
     <div class="play-video-box" :id="playBoxId" v-else>
       <img v-if="imageSrc" :src="imageSrc">
     </div>
@@ -404,6 +407,14 @@
     }
     .vjs-big-play-button {
       display: none;
+    }
+    .end-box {
+      position: absolute;
+      display: block;
+      color: red;
+      text-align: center;
+      width: 100%;
+      top: 46%;
     }
   }
   .icon-bofang {

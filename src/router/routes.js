@@ -1,6 +1,6 @@
 // 直播引导页框架
 const GuidLayout = () =>
-  import(/* webpackChunkName: "pages_layout" */ 'src/pages/guide/guid-layout')
+  import(/* webpackChunkName: "pages_layout" */ 'src/pages/guide/guide-layout')
 // 直播引导页（有观看限制）
 const SignUp = () =>
   import('src/pages/guide/sign-up')

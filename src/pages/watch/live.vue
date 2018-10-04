@@ -117,6 +117,7 @@ export default {
       storeLoginInfo: types.LOGIN_INFO
     }),
     ...mapMutations('liveMager', {
+      storeActivityInfo: types.ACTIVITY_INFO,
       storeJoinInfo: types.JOIN_INFO
     }),
     tabChange () {
@@ -149,18 +150,20 @@ export default {
       })
       /* 监听在线人数 */
       ChatService.OBJ.regHandler(ChatConfig.onLineNum, (msg) => {
-        debugger
         const temp = JSON.parse(JSON.stringify(this.liveInfo))
         temp.showOnlineNum = parseInt(temp.setting.initOnlineNum) + parseInt(msg.num)
         this.storeLiveInfo(temp)
       })
       /* 监听开始直播 */
       ChatService.OBJ.regHandler(ChatConfig.beginLive, (msg) => {
+        console.log(this.activityInfo)
         this.playType = 'live'
         const temp = JSON.parse(JSON.stringify(this.activityInfo))
+        console.log(temp)
         temp.status = 'LIVING'
         temp.statusName = '直播中'
         this.storeActivityInfo(temp)
+        console.log(this.activityInfo)
       })
       /* 监听直播结束 */
       ChatService.OBJ.regHandler(ChatConfig.endLive, (msg) => {
