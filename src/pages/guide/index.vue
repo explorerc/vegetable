@@ -163,10 +163,10 @@
           if (this.activity.countDown < 1800) {
             if (this.activity.viewCondition === 'APPOINT') {
               if (this.user.isApplay) {
-                this.doAuth('/watch/' + this.$route.params.id)
+                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
               }
             } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
-              this.doAuth('/watch/' + this.$route.params.id)
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
           } else {
             let time = this.activity.countDown
@@ -181,10 +181,10 @@
           if (this.activity.status === 'LIVING') {
             if (this.activity.viewCondition === 'APPOINT') {
               if (this.user.isApplay) {
-                this.doAuth('/watch/' + this.$route.params.id)
+                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
               }
             } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
-              this.doAuth('/watch/' + this.$route.params.id)
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
           }
         }).catch((err) => {
