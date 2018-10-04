@@ -2,7 +2,13 @@
   <div class="play-container">
     <div class="play-video-box"
          :id="playBoxId"
-         v-if="playType=='live'"></div>
+         v-if="playType=='prepare'">
+      <img v-if="imageSrc"
+           :src="imageSrc">
+    </div>
+    <div class="play-video-box"
+         :id="playBoxId"
+         v-else-if="playType=='live'"></div>
     <div class="play-video-box"
          :id="playBoxId"
          v-else-if="playType=='vod'">
@@ -154,6 +160,8 @@ export default {
     initComponent () {
       if (this.playType === 'live') { // 直播
         this.initLivePlay()
+      } else if (this.playType === 'prepare') {
+        this.imageUrl = this.activityInfo.imgUrl
       } else if (this.playType === 'warm') { // 暖场
         this.queryWarmInfo()
       } else if (this.playType === 'vod') { // 回放
@@ -260,7 +268,6 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         if (res.data) {
-          debugger
           this.imageUrl = res.data.imgUrl
           this.recordId = res.data.recordId
           this.isAutoPlay = res.data.playType === 'AUTO'
