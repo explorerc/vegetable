@@ -340,7 +340,7 @@ export default {
     },
     loginSuccess (res) {
       this.storeLoginInfo(res)
-      this.subscribe()
+      this.$router.go(0)
     }
   }
 }
