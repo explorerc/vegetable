@@ -323,13 +323,13 @@ export default {
               resolve(res.data)
               this.storeRoomPaas(res.data)
             }
-          }).catch((err) => {
-            if (err.code === 12004) {
-              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-            } else if (err.code === 12031) {
-              this.$router.replace('/kicked')
-            }
           })
+        }).catch((err) => {
+          if (err.code === 12004 || err.code === 11030) {
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          } else if (err.code === 12031) {
+            this.$router.replace('/kicked')
+          }
         })
       })
     },
