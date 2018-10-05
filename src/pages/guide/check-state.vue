@@ -100,7 +100,7 @@ export default {
         return false
       }
       if (!this.user.isDisabled) {
-        if (!this.verification(this.code, 'Y', 'integer')) {
+        if (!this.verification(this.code, 'Y', 'code')) {
           this.codeError = '请输入正确验证码'
           return false
         }
@@ -149,6 +149,23 @@ export default {
             sessionStorage.removeItem('login')
             sessionStorage.removeItem('wechatAuth')
           }
+        }).catch((err) => {
+          if (err.code === 10020) {
+            this.codeError = '请输入正确验证码'
+          } else if (err.code === 12002) {
+            this.$router.replace('/Success/' + this.$route.params.id)
+          } else {
+            this.$messageBox({
+              header: '提示',
+              content: err.msg,
+              confirmText: '确定',
+              handleClick: (e) => {
+                if (e.action === 'cancel') {
+                } else if (e.action === 'confirm') {
+                }
+              }
+            })
+          }
         })
       }
     },
@@ -156,9 +173,13 @@ export default {
       let phoneReg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
       let emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
       let integerReg = /^[0-9]*$/
+      let codeReg = /^\d{6}$/
 
       if (type === 'mobile') {
         val = this.user.phone === '' ? val : this.user.phone
+      }
+      if (type === 'code') {
+        return codeReg.test(val)
       }
       if (val === '') {
         if (isRequired === 'Y') {
