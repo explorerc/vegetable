@@ -15,7 +15,8 @@
                      isDisabled="disabled"></com-input>
           <com-input :inputVal.sync="item.val"
                      :placeholder='item.placeholder'
-                     :errorMsg.sync="item.errorMsg"
+                     type="mobile"
+                     :errorMsg.sync="item.errorMsg+'123'"
                      :maxLength="11"
                      v-else></com-input>
           <com-verification-code :inputVal.sync="code"
@@ -58,6 +59,7 @@
                  :errorMsg.sync="phoneError"></com-input>
       <com-input :inputVal.sync="user.phone"
                  placeholder='请输入手机号'
+                 type="mobile"
                  :maxLength="11"
                  v-else
                  :errorMsg.sync="phoneError"></com-input>

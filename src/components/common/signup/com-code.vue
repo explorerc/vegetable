@@ -6,7 +6,7 @@
                  @blur="pushCode"
                  :placeholder="placeholder"
                  :class="{warning: errorMsg}"
-                 type="input"
+                 type="mobile"
                  :max-length="maxLength"
                  :error-tips="errorMsg"
                  @focus="inputFocus"
