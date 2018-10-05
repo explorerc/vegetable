@@ -16,7 +16,7 @@
           <com-input :inputVal.sync="item.val"
                      :placeholder='item.placeholder'
                      type="mobile"
-                     :errorMsg.sync="item.errorMsg+'123'"
+                     :errorMsg.sync="item.errorMsg"
                      :maxLength="11"
                      v-else></com-input>
           <com-verification-code :inputVal.sync="code"

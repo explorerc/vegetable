@@ -35,7 +35,7 @@ export default {
       if (url) {
         _url = url
       }
-      if (!sessionStorage.getItem('wechatAuth')) {
+      if (!sessionStorage.getItem('wechatAuth') && this.isWx()) {
         console.log(_url)
         // location.href = `/api/frontend/user/wechat-login?backUrl=${encodeURIComponent(
         //   _url
@@ -46,7 +46,7 @@ export default {
       }
     },
     doLogin (url) {
-      if (!sessionStorage.getItem('wechatAuth')) {
+      if (!sessionStorage.getItem('wechatAuth') && this.isWx()) {
         let _url = location.href
         if (typeof url === 'string') {
           _url = url
@@ -93,6 +93,15 @@ export default {
             })
         }
       })
+    },
+    isWx () {
+      var ua = navigator.userAgent.toLowerCase()
+      var isWeixin = ua.indexOf('micromessenger') !== -1
+      alert(isWeixin)
+      if (isWeixin) {
+        return true
+      }
+      return false
     }
   }
 }
