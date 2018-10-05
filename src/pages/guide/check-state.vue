@@ -46,7 +46,8 @@ export default {
         isDisabled: false // 手机框是否可输入
       },
       codeError: '', // 验证码错误提示
-      phoneError: ''
+      phoneError: '',
+      isClick: true // 无条件是否可点击
     }
   },
   mounted () {
@@ -81,6 +82,7 @@ export default {
         if (err.code === 12001) {
           this.$router.replace('/success/' + this.$route.params.id)
         } else {
+          this.isClick = false
           this.$messageBox({
             header: '提示',
             content: err.msg,
@@ -95,6 +97,9 @@ export default {
       })
     },
     submit () { // 提交验证信息
+      if (!this.isClick) {
+        return false
+      }
       if (!this.verification(this.user.phone, 'Y', 'mobile')) {
         this.phoneError = '请正确填写手机号'
         return false
@@ -105,6 +110,7 @@ export default {
           return false
         }
       }
+      this.isClick = false
       if (this.user.isOrder || this.user.isDisabled) {
         this.subScribe()
       } else {
@@ -124,6 +130,7 @@ export default {
                 this.subScribe()
               }
             }).catch((err) => {
+              this.isClick = true
               this.$messageBox({
                 header: '提示',
                 content: err.msg,

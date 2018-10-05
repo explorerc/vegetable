@@ -115,7 +115,9 @@ export default {
         isDisabled: false // 手机框是否可输入
       },
       selectVal: [], // 下拉
-      agreementShow: false // 用户协议是否显示
+      agreementShow: false, // 用户协议是否显示
+      appointIsClick: true, // 报名是否可点击
+      isClick: true // 无条件是否可点击
     }
   },
   mounted () {
@@ -164,6 +166,9 @@ export default {
         answer: [],
         __errHandler: true
       }
+      if (!this.appointIsClick) {
+        return false
+      }
       this.questionList.forEach(element => {
         if (isVerification && !this.verification(element.val, element.required, element.type)) {
           switch (element.type) {
@@ -205,14 +210,17 @@ export default {
             data.answer.push(obj)
           }
         }
+        this.appointIsClick = false
         this.$config({ handlers: true }).$post(activityService.POST_QUESTIONINFO, data).then((res) => {
           this.$router.replace('/Success/' + this.$route.params.id)
         }).catch((err) => {
           if (err.code === 10020) {
+            this.appointIsClick = true
             this.codeError = '请输入正确验证码'
           } else if (err.code === 12002) {
             this.$router.replace('/Success/' + this.$route.params.id)
           } else {
+            this.appointIsClick = true
             this.$messageBox({
               header: '提示',
               content: err.msg,
@@ -247,6 +255,7 @@ export default {
       this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
         this.$router.replace('/Success/' + this.$route.params.id)
       }).catch((err) => {
+        this.isClick = true
         this.$messageBox({
           header: '提示',
           content: err.msg,
@@ -260,6 +269,9 @@ export default {
       })
     },
     submit () {
+      if (!this.isClick) {
+        return false
+      }
       if (!this.verification(this.user.phone, 'Y', 'mobile')) {
         this.phoneError = '请正确填写手机号'
         return false
@@ -270,6 +282,7 @@ export default {
           return false
         }
       }
+      this.isClick = false
       if (this.user.isOrder || this.user.isDisabled) {
         this.subScribe()
       } else {
@@ -290,6 +303,7 @@ export default {
                   this.subScribe()
                 }
               }).catch((err) => {
+                this.isClick = true
                 this.$messageBox({
                   header: '提示',
                   content: err.msg,
