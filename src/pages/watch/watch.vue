@@ -273,6 +273,7 @@ export default {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
         } else {
+          alert(1)
           if (!activityData.joinInfo.isOrder) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
