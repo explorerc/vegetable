@@ -326,8 +326,9 @@ export default {
           }).catch((err) => {
             if (err.code === 12004) {
               this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+            } else if (err.code === 12031) {
+              this.$router.replace('/kicked')
             }
-            // this.$router.replace('/kicked')
           })
         })
       })
