@@ -9,7 +9,7 @@ const config = {
     MOBILE_HOST: '//localhost:8866/m/',
     proxyTable: {
       '/api': {
-        target: 'http://test-api-zhike.vhall.com',
+        target: 'http://dev-api-zhike.vhall.domain',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

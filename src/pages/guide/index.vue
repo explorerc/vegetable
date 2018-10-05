@@ -94,8 +94,12 @@
       </template>
       <!-- 无限制活动 -->
       <template v-else>
-        <button class="primary-button"
-                @click="jumpPage( MOBILE_HOST + 'watch/')">进入直播</button>
+        <button v-if="user.isOrder"
+                class="primary-button"
+                @click="toWatch">进入直播</button>
+        <button v-else
+                class="primary-button"
+                @click="jumpPage( MOBILE_HOST + 'SignUp/')">预约</button>
       </template>
       <!-- ！！！跳转观看页面 -->
     </div>

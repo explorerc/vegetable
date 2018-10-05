@@ -3,30 +3,46 @@
     <!--<div class="time-box">-->
     <!--<span>{{currentDate}}</span>/<span>{{allDate}}</span>-->
     <!--</div>-->
-    <div class="auto-box" style="display:flex;">
-      <div class="mode-item fl" @click="playEvent">
-        <i v-if="isPlay" class="iconfont icon-zanting_icon"></i>
-        <i v-else class="iconfont icon-bofang_icon"></i>
+    <div class="auto-box"
+         style="display:flex;">
+      <div class="mode-item fl">
+        <i v-if="!isPlay"
+           @click="playEvent(true)"
+           class="iconfont icon-bofang_icon"
+           title="暂停"></i>
+        <i v-else
+           @click="playEvent(false)"
+           class="iconfont icon-zanting_icon"
+           title="播放"></i>
       </div>
-      <div class="mode-item time-box" >
-        <span>{{currentDate}}</span><span>/{{allDate}}</span>
+      <div class="mode-item time-box">
+        <span>{{currentDate}}</span>
+        <span>/{{allDate}}</span>
       </div>
-    <div class="mode-item" style="flex:1;">
-      <div class="progress-box">
-      <el-slider v-model="progress" :format-tooltip="formatTooltip" @change="changeVal"></el-slider>
-    </div>
-    </div>
-      <div class="mode-item fr" @mouseover.stop="overEvent" @mouseout.stop="outEvent">
+      <div class="mode-item"
+           style="flex:1;">
+        <div class="progress-box">
+          <el-slider v-model="progress"
+                     :format-tooltip="formatTooltip"
+                     @change="changeVal"></el-slider>
+        </div>
+      </div>
+      <div class="mode-item fr"
+           @mouseover.stop="overEvent"
+           @mouseout.stop="outEvent">
         <span class="quality-info">画质</span>
         <transition name="fade">
-          <div class="qualitys-box" v-if="showQualityBlock">
-          <span :class="{'quality-item':true,active:selectQuality==idx}" v-for="(item,idx) in qualitys"
-                @click="selectQuality=idx">{{item}}</span>
+          <div class="qualitys-box"
+               v-if="showQualityBlock">
+            <span :class="{'quality-item':true,active:selectQuality==idx}"
+                  v-for="(item,idx) in qualitys"
+                  @click="selectQuality=idx">{{item}}</span>
           </div>
         </transition>
       </div>
       <div class="mode-item fr">
-        <i @click="fullScreeEvent" class="iconfont icon-zuidahua_icon"></i>
+        <i @click="fullScreeEvent"
+           class="iconfont icon-zuidahua_icon"></i>
       </div>
       <!-- <div class="mode-item fr" @click.stop="fullBrowser">
         <i v-if="isFullBrowser" class="iconfont icon-wangyequanping_tuichu"></i>
@@ -47,126 +63,126 @@
 </template>
 
 <script>
-  const controlTypes = {
-    mute: 'mute',
-    play: 'play',
-    volumeSize: 'volumeSize',
-    fullScree: 'fullScree',
-    selectQuality: 'selectQuality',
-    fullBrowser: 'fullBrowser',
-    progress: 'progress'
-  }
-  const controlTypeValues = {
-    mute: '声音控制',
-    play: '播放控制',
-    volumeSize: '声音大小',
-    fullScree: '全屏控制',
-    selectQuality: '画质量',
-    fullBrowser: '浏览器-全屏',
-    progress: '播放进度'
-  }
-  export default {
-    name: 'control',
-    data () {
-      return {
-        mute: false, // 是否禁音
-        isPlay: true,
-        volumeSize: 100,
-        fullScree: false,
-        isFullBrowser: false,
-        showQualityBlock: false,
-        selectQuality: 0,
-        current: 0,
-        progress: 0
-      }
+const controlTypes = {
+  mute: 'mute',
+  play: 'play',
+  volumeSize: 'volumeSize',
+  fullScree: 'fullScree',
+  selectQuality: 'selectQuality',
+  fullBrowser: 'fullBrowser',
+  progress: 'progress'
+}
+const controlTypeValues = {
+  mute: '声音控制',
+  play: '播放控制',
+  volumeSize: '声音大小',
+  fullScree: '全屏控制',
+  selectQuality: '画质量',
+  fullBrowser: '浏览器-全屏',
+  progress: '播放进度'
+}
+export default {
+  name: 'control',
+  data () {
+    return {
+      mute: false, // 是否禁音
+      isPlay: true,
+      volumeSize: 100,
+      fullScree: false,
+      isFullBrowser: false,
+      showQualityBlock: false,
+      selectQuality: 0,
+      current: 0,
+      progress: 0
+    }
+  },
+  computed: {
+    allDate () {
+      return this.formatDate(this.totalTime)
     },
-    computed: {
-      allDate () {
-        return this.formatDate(this.totalTime)
-      },
-      currentDate () {
-        return this.formatDate(this.currentTime)
-      },
-      rate () {
-        return parseInt(100 * this.currentTime / this.totalTime)
-      }
+    currentDate () {
+      return this.formatDate(this.currentTime)
     },
-    props: {
-      currentTime: {
-        type: Number,
-        default: 0
-      },
-      totalTime: {
-        type: Number,
-        default: 1000
-      },
-      qualitys: {
-        type: Array,
-        default: ['same']
-      }
+    rate () {
+      return parseInt(100 * this.currentTime / this.totalTime)
+    }
+  },
+  props: {
+    currentTime: {
+      type: Number,
+      default: 0
     },
-    watch: {
-      currentTime: {
-        handler (newVal) {
-          this.current = newVal
-        },
-        immediate: true
-      },
-      rate: {
-        handler (newVal) {
-          this.progress = newVal
-        },
-        immediate: true
-      },
-      volumeSize (newVal) {
-        this.changeControl(controlTypes.volumeSize, newVal)
-      }
+    totalTime: {
+      type: Number,
+      default: 1000
     },
-    methods: {
-      changeControl (type, value) {
-        this.$emit('control', {
-          type: type,
-          value: value,
-          msg: controlTypeValues[type]
-        })
+    qualitys: {
+      type: Array,
+      default: ['same']
+    }
+  },
+  watch: {
+    currentTime: {
+      handler (newVal) {
+        this.current = newVal
       },
-      formatTooltip (val) {
-        return val + '%'
+      immediate: true
+    },
+    rate: {
+      handler (newVal) {
+        this.progress = newVal
       },
-      changeVal () {
-        // this.$emit('change', this.progress)
-        this.changeControl(controlTypes.progress, this.progress)
-      },
-      muteEvent () {
-        this.mute = !this.mute
-        // this.$emit('mute', this.mute)
-        this.changeControl(controlTypes.mute, this.mute)
-      },
-      overEvent () {
-        this.showQualityBlock = true
-      },
-      outEvent () {
-        this.showQualityBlock = false
-      },
-      playEvent () {
-        this.isPlay = !this.isPlay
-        this.changeControl(controlTypes.play, this.isPlay)
-      },
-      fullScreeEvent () {
-        alert('请把手机横评放置')
-      },
-      fullBrowser () {
-        this.isFullBrowser = !this.isFullBrowser
-        this.changeControl(controlTypes.fullBrowser, this.isFullBrowser)
-      },
-      formatDate (cTime) {
-        let h = ((cTime / 3600 >> 0) + '')
-        let m = ((cTime / 60 % 60 >> 0) + '').padStart(2, 0)
-        let s = ((cTime % 60 >> 0) + '').padStart(2, 0)
-        return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
-      }
+      immediate: true
+    },
+    volumeSize (newVal) {
+      this.changeControl(controlTypes.volumeSize, newVal)
+    }
+  },
+  methods: {
+    changeControl (type, value) {
+      this.$emit('control', {
+        type: type,
+        value: value,
+        msg: controlTypeValues[type]
+      })
+    },
+    formatTooltip (val) {
+      return val + '%'
+    },
+    changeVal () {
+      // this.$emit('change', this.progress)
+      this.changeControl(controlTypes.progress, this.progress)
+    },
+    muteEvent () {
+      this.mute = !this.mute
+      // this.$emit('mute', this.mute)
+      this.changeControl(controlTypes.mute, this.mute)
+    },
+    overEvent () {
+      this.showQualityBlock = true
+    },
+    outEvent () {
+      this.showQualityBlock = false
+    },
+    playEvent (type) {
+      this.isPlay = type
+      this.changeControl(controlTypes.play, this.isPlay)
+    },
+    fullScreeEvent () {
+      alert('请把手机横评放置')
+    },
+    fullBrowser () {
+      this.isFullBrowser = !this.isFullBrowser
+      this.changeControl(controlTypes.fullBrowser, this.isFullBrowser)
+    },
+    formatDate (cTime) {
+      let h = ((cTime / 3600 >> 0) + '')
+      let m = ((cTime / 60 % 60 >> 0) + '').padStart(2, 0)
+      let s = ((cTime % 60 >> 0) + '').padStart(2, 0)
+      return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
     }
   }
+}
 </script>
 
 <style scoped lang="scss">
