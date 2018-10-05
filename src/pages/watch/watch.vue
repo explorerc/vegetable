@@ -268,6 +268,7 @@ export default {
         activityData = res.data
       })
       if (activityData.activity.countDown < 1800) {
+        alert(1)
         if (activityData.activity.viewCondition === 'APPOINT') {
           if (!activityData.joinInfo.isApplay) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
