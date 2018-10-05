@@ -9,6 +9,7 @@
     <com-input :inputVal.sync="user.phone"
                placeholder='请输入手机号'
                :maxLength="11"
+               type="mobile"
                v-else
                :errorMsg.sync="phoneError"></com-input>
     <com-verification-code :phone='user.phone'

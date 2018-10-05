@@ -1,34 +1,50 @@
 <template>
-  <div
-  class="com-input"
-  v-if="type!=='textarea'"
-  >
-    <i v-if="type==='search'" class="iconfont icon-search"></i>
-    <input
-    :type="inputType"
-    :style="style"
-    :class="{error:errorMsg}"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    v-model="innerValue"
-    @focus="focusHandle"
-    @blur="blurHandle"
-    >
-    <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
-    <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
-    <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()" :style="{ color: limitColor }">0</i>/<i>{{maxLength}}</i></span>
-    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
+  <div class="com-input"
+       v-if="type!=='textarea'">
+    <i v-if="type==='search'"
+       class="iconfont icon-search"></i>
+    <input :type="inputType"
+           :style="style"
+           :class="{error:errorMsg}"
+           :placeholder="placeholder"
+           :disabled="disabled"
+           v-model="innerValue"
+           @focus="focusHandle"
+           @blur="blurHandle">
+    <i v-if="type==='search'"
+       v-show="showDelete"
+       class="iconfont icon-delete"
+       @click="empty"></i>
+    <i v-if="type==='password'||(type==='password'&&inputType==='text')"
+       class="iconfont"
+       :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}"
+       @click="toggleShow"></i>
+    <span class="limit"
+          v-if="maxLength&&type==='input'">
+      <i class="length"
+         v-text="innerValue.gbLength()"
+         :style="{ color: limitColor }">0</i>/
+      <i>{{maxLength}}</i>
+    </span>
+    <span class="error-msg"
+          v-if="errorMsg">{{errorMsg}}</span>
   </div>
-  <div class="com-input area"  v-else>
-    <textarea
-    ref="tarea"
-    v-model="innerValue"
-    :class="{error:errorMsg}"
-    :placeholder="placeholder"
-    :rows="rows"
-    ></textarea>
-    <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()" :style="{ color: limitColor }">0</i>/<i>{{maxLength}}</i></span>
-    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
+  <div class="com-input area"
+       v-else>
+    <textarea ref="tarea"
+              v-model="innerValue"
+              :class="{error:errorMsg}"
+              :placeholder="placeholder"
+              :rows="rows"></textarea>
+    <span class="limit area"
+          v-if="maxLength&&type==='textarea'">
+      <i class="length"
+         v-text="innerValue.gbLength()"
+         :style="{ color: limitColor }">0</i>/
+      <i>{{maxLength}}</i>
+    </span>
+    <span class="error-msg"
+          v-if="errorMsg">{{errorMsg}}</span>
   </div>
 </template>
 
@@ -53,6 +69,7 @@ export default {
   },
   data () {
     return {
+      isMobile: false,
       innerValue: '',
       showDelete: false,
       inputType: '',
@@ -101,6 +118,10 @@ export default {
         case 'password':
           type = 'password'
           break
+        case 'mobile':
+          this.isMobile = true
+          type = 'text'
+          break
         default:
           type = 'text'
           break
@@ -110,6 +131,9 @@ export default {
   },
   watch: {
     innerValue (value) {
+      if (this.isMobile) {
+        this.innerValue = value.replace(/\D/g, '')
+      }
       if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }

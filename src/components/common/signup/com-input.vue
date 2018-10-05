@@ -3,50 +3,61 @@
     <label class="v-label">
       {{label}}
     </label>
-    <com-input :value.sync="val" :placeholder="placeholder"  :class="{warning: errorMsg}" type="input" :max-length="maxLength"  :error-tips="errorMsg"  @focus="inputFocus" :disabled="isDisabled"></com-input>
+    <com-input :value.sync="val"
+               :placeholder="placeholder"
+               :class="{warning: errorMsg}"
+               :type="type"
+               :max-length="maxLength"
+               :error-tips="errorMsg"
+               @focus="inputFocus"
+               :disabled="isDisabled"></com-input>
   </div>
 </template>
 <script>
-  export default {
-    props: {
-      label: String,
-      inputVal: String,
-      placeholder: String,
-      errorMsg: String,
-      maxLength: Number,
-      isDisabled: String
-    },
-    data () {
-      return {
-        val: ''
-      }
-    },
-    mounted () {
-    },
-    components: {
-    },
-    created () {
-    },
-    watch: {
-      val: {
-        handler (n) {
-          this.$emit('update:inputVal', n)
-        },
-        immediate: true
+export default {
+  props: {
+    label: String,
+    inputVal: String,
+    placeholder: String,
+    errorMsg: String,
+    maxLength: Number,
+    isDisabled: String,
+    type: {
+      type: String,
+      default: 'input'
+    }
+  },
+  data () {
+    return {
+      val: ''
+    }
+  },
+  mounted () {
+  },
+  components: {
+  },
+  created () {
+  },
+  watch: {
+    val: {
+      handler (n) {
+        this.$emit('update:inputVal', n)
       },
-      inputVal: {
-        handler (n) {
-          this.val = n
-        },
-        immediate: true
-      }
+      immediate: true
     },
-    methods: {
-      inputFocus () {
-        this.$emit('update:errorMsg', '')
-      }
+    inputVal: {
+      handler (n) {
+        this.val = n
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    inputFocus () {
+      this.$emit('update:errorMsg', '')
     }
   }
+}
 </script>
 <style lang="scss" scoped>
 .input-form /deep/ {
