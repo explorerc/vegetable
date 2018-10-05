@@ -4,11 +4,11 @@ module.exports = {
     "postcss-url": {},
     "postcss-viewport-units": {}, //修复兼容bug需要的插件
     "postcss-cssnext": {}, //这里默认包含autoprefixer
-    "cssnano": {
-      preset: "advanced",
-      autoprefixer: false,
-      "postcss-zindex": false
-    },
+    // "cssnano": {
+    //   preset: "advanced",
+    //   autoprefixer: false,
+    //   zindex: false
+    // },
     "postcss-write-svg": {
       utf8: false
     },
