@@ -27,12 +27,13 @@
   <!--依赖的播放器资源-->
   <!-- 观看-->
   <script>
-    window.onerror = function (msg, url, row, col, error) {
-      alert(JSON.stringify({
-        msg, url, row, col, error
-      }))
-      return true;
-    };
+    // window.onerror = function (msg, url, row, col, error) {
+    //   alert(JSON.stringify({
+    //     msg, url, row, col, error
+    //   }))
+    //   return true;
+    // };
+
   </script>
   <% if(process.env.BUILD_ENV!='prod') { %>
   <script src="//cnstatic01.e.vhall.com/3rdlibs/vue/2.5.16/vue.js"></script>
