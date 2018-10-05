@@ -99,10 +99,12 @@ export default {
   },
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
-    if (this.activityInfo.status === 'PREPARE' && 1) {
-      this.playType = 'pre'
-    } else if (this.activityInfo.status === 'PREPARE' && 2) {
-      this.playType = 'warm'
+    if (this.activityInfo.status === 'PREPARE') {
+      if (this.activityInfo.warm && this.activityInfo.warm.enabled === 'Y') {
+        this.playType = 'warm'
+      } else {
+        this.playType = 'pre'
+      }
     } else if (this.activityInfo.status === 'FINISH') {
       this.playType = 'end'
     } else {

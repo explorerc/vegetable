@@ -38,6 +38,11 @@
                        @control="playControl"></video-control>
       </div>
     </div>
+
+    <img v-if="imageSrc && !isPlay"
+         :src="imageSrc"
+         class="v-mark"
+         @click="startPlay">
   </div>
 </template>
 
@@ -104,7 +109,7 @@ export default {
       activityInfo: state => state.activityInfo
     }),
     imageSrc () {
-      return `${this.$imgHost}/${this.imageUrl}`
+      return this.imageUrl ? `${this.$imgHost}/${this.imageUrl}` : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
     }
   },
   mounted () {
@@ -186,6 +191,11 @@ export default {
         this.playBackVideo()
       }
     },
+    startPlay () {
+      this.isPlay = !this.isPlay
+      window.VhallPlayer.play()
+      this.dealWithVideo()
+    },
     /* 改变直播使用设备 */
     changeLiveDevice () {
       if (window.hostPusher) {
@@ -238,7 +248,7 @@ export default {
               this.playBtnShow = false
               this.qualitys = window.VhallPlayer.getQualitys()
               // window.VhallPlayer.play()
-              this.dealWithVideo()
+              // this.dealWithVideo()
             }
           })
         })
@@ -264,19 +274,15 @@ export default {
       }, 1000)
     },
     queryWarmInfo () {
-      this.$config({ handlers: true }).$get(activityService.GET_WARMINFO, {
-        activityId: this.$route.params.id
-      }).then((res) => {
-        if (res.data) {
-          this.imageUrl = res.data.imgUrl
-          this.recordId = res.data.recordId
-          this.isAutoPlay = res.data.playType === 'AUTO'
-          this.playBtnShow = true
-          this.totalTime = parseInt(res.data.record.duration)
-          this.playBackVideo()
-        }
-      }).catch(() => {
-      })
+      const warm = this.activityInfo.warm
+      this.imageUrl = warm.imgUrl
+      this.playBtnShow = true
+      this.filename = warm.filename
+      this.recordId = warm.recordId
+      this.isAutoPlay = warm.playType === 'AUTO'
+      this.isPlayState = this.isAutoPlay
+      this.totalTime = parseInt(warm.record.duration)
+      this.playBackVideo()
     },
     /* 初始拉流播放插件 */
     initPuller () {
@@ -490,6 +496,14 @@ export default {
 
   .vjs-control-bar {
     display: none;
+  }
+  .v-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
   }
 }
 </style>

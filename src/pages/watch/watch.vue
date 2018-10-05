@@ -61,7 +61,7 @@
   </div>
 </template>
 <script>
-import VConsole from 'vconsole/dist/vconsole.min.js' // 初始化
+// import VConsole from 'vconsole/dist/vconsole.min.js' // 初始化
 import { mapMutations, mapState } from 'vuex'
 import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
@@ -71,7 +71,7 @@ import loginMixin from 'components/login-mixin'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service' // import vconsole
-let vConsole = new VConsole()
+// let vConsole = new VConsole()
 const playTypes = {
   'PREPARE': 'pre',
   'LIVING': 'live',
@@ -88,6 +88,7 @@ export default {
   mixins: [loginMixin],
   data () {
     return {
+      MOBILE_HOST: process.env.MOBILE_HOST,
       activityId: '',
       playType: '', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
@@ -125,7 +126,6 @@ export default {
     }
   },
   mounted () {
-    console.log(vConsole)
     this.storeLoginInfo(this.getLoginInfo())
   },
   computed: {
@@ -253,17 +253,34 @@ export default {
       this.share()
       /* 查询详情 */
       let activityInfo = null
+      let activityData = null
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
         document.title = res.data.activity.title
         activityInfo = { ...activityInfo, ...res.data.activity }
         activityInfo.setting = res.data.setting
+        activityInfo.warm = res.data.warm
         activityInfo.statusName = playStatuTypes[activityInfo.status]
         this.playType = playTypes[activityInfo.status]
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
+        activityData = res.data
       })
+      debugger
+      if (activityData.activity.countDown < 1800) {
+        if (activityData.activity.viewCondition === 'APPOINT') {
+          if (!activityData.joinInfo.isApplay) {
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          }
+        } else {
+          if (!activityData.joinInfo.isOrder) {
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          }
+        }
+      } else {
+        this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+      }
       /* 查询真实在线人数 */
       await this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
         activityId: this.$route.params.id
