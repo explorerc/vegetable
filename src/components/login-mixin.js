@@ -97,7 +97,6 @@ export default {
     isWx () {
       var ua = navigator.userAgent.toLowerCase()
       var isWeixin = ua.indexOf('micromessenger') !== -1
-      alert(isWeixin)
       if (isWeixin) {
         return true
       }
