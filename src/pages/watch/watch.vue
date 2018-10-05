@@ -272,11 +272,12 @@ export default {
           if (!activityData.joinInfo.isApplay) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
-        } else {
-          if (!activityData.joinInfo.isOrder) {
-            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-          }
         }
+        // else {
+        //   if (!activityData.joinInfo.isOrder) {
+        //     this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+        //   }
+        // }
       } else {
         this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
       }
