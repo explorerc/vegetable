@@ -133,8 +133,10 @@ export default {
     innerValue (value) {
       if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
-      }
-      if (this.maxLength && value.gbLength() > this.maxLength) {
+        if (this.maxLength && value.length() > this.maxLength) {
+          this.innerValue = value.substring(0, value.length(this.maxLength) + 1)
+        }
+      } else if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
       if (this.type === 'textarea' && this.autosize) {
