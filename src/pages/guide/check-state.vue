@@ -31,13 +31,17 @@ import ComInput from '../../components/common/signup/com-input.vue'
 import ComVerificationCode from '../../components/common/signup/com-code.vue'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service'
+import loginMixin from 'components/login-mixin'
 export default {
+  mixins: [loginMixin],
   data () {
     return {
+      MOBILE_HOST: process.env.MOBILE_HOST,
       code: '',
       isGetCode: true, // 控制验证码
       activity: {
-        viewCondition: 'APPOINT', // 活动类型 APPOINT报名观看 NONE 无条件
+        viewCondition: '', // APPOINT是报名活动 ''是无限制活动
+        countDown: '', // 距离活动开始时间（秒）
         status: '' // 当前活动状态
       },
       user: {
@@ -211,6 +215,28 @@ export default {
         this.activity.status = res.data.activity.status
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
+        if (this.activity.countDown < 1800) {
+          if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else if (this.activity.viewCondition === 'NONE') {
+            if (this.user.isOrder) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+            }
+          }
+        }
+        if (this.activity.status === 'LIVING') {
+          if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else if (this.activity.viewCondition === 'NONE') {
+            if (this.user.isOrder) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+            }
+          }
+        }
       })
     }
   }
