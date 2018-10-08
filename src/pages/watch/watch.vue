@@ -253,7 +253,6 @@ export default {
       /* 查询详情 */
       let activityInfo = null
       let joinInfo = null
-      debugger
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
@@ -266,7 +265,11 @@ export default {
         this.playType = playTypes[activityInfo.status]
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
-        if (activityInfo.countDown < 1800) {
+        if (activityInfo.status === 'LIVING') {
+          if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          }
+        } else if (activityInfo.countDown < 1800) {
           if (activityInfo.viewCondition === 'APPOINT') {
             if (!joinInfo.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
