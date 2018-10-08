@@ -149,11 +149,12 @@ export default {
       this.code = val
     },
     async getInfo () {
-      debugger
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
         this.activity.status = res.data.activity.status
+        this.activity.countDown = res.data.activity.countDown
+        this.activity.viewCondition = res.data.activity.viewCondition
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
         if (this.activity.countDown < 1800) {
