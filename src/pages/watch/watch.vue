@@ -252,22 +252,22 @@ export default {
       this.share()
       /* 查询详情 */
       let activityInfo = null
-      let activityData = null
+      let joinInfo = null
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
         document.title = res.data.activity.title
         activityInfo = { ...activityInfo, ...res.data.activity }
+        joinInfo = res.data.joinInfo
         activityInfo.setting = res.data.setting
         activityInfo.warm = res.data.warm
         activityInfo.statusName = playStatuTypes[activityInfo.status]
         this.playType = playTypes[activityInfo.status]
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
-        activityData = res.data
-        if (activityData.activity.countDown < 1800) {
-          if (activityData.activity.viewCondition === 'APPOINT') {
-            if (!activityData.joinInfo.isApplay) {
+        if (activityInfo.countDown < 1800) {
+          if (activityInfo.viewCondition === 'APPOINT') {
+            if (!joinInfo.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
             }
           }
