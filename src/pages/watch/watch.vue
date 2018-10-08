@@ -147,6 +147,7 @@ export default {
     }
   },
   created () {
+    debugger
     const queryId = this.$route.params.id
     if (!queryId) {
       this.$router.go(-1)
