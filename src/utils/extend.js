@@ -42,9 +42,9 @@ String.prototype.gbIndex = function (length) {
   let index = 0
   for (let i = 0; i < l; i++) {
     if ((this.charCodeAt(i) & 0xff00) !== 0) {
-      blen += 2
-    } else {
       blen += 1
+    } else {
+      blen += 0.5
     }
     if (blen === length) {
       index = i
