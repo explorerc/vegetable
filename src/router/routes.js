@@ -5,8 +5,8 @@ const GuidLayout = () =>
 const SignUp = () =>
   import('src/pages/guide/sign-up')
 // // 直播引导页首页
-// const Subscribe = () =>
-//   import('src/pages/subscribe/subscribe')
+const Subscribe = () =>
+  import('src/pages/guide/index')
 // // 直播引导页首页
 const Guide = () =>
   import('src/pages/guide/index')
@@ -42,11 +42,11 @@ export default [{
     name: 'signUp',
     component: SignUp
   },
-  // {
-  //   path: '/subscribe/:id',
-  //   name: 'subscribe',
-  //   component: Subscribe
-  // },
+  {
+    path: '/subscribe/:id',
+    name: 'subscribe',
+    component: Subscribe
+  },
   {
     path: '/guide/:id',
     name: 'guide',
