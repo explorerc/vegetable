@@ -270,6 +270,7 @@ export default {
             window.VhallPlayer.play()
             this.dealWithVideo()
           } else {
+            this.isPlay = false
             if (window.VhallPlayer) window.VhallPlayer.destroy()
           }
         }

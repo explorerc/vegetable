@@ -101,10 +101,12 @@ export default {
   mixins: [loginMixin],
   data () {
     return {
+      MOBILE_HOST: process.env.MOBILE_HOST,
       code: '',
       isGetCode: true, // 控制验证码
       activity: {
-        viewCondition: 'APPOINT', // 活动类型 APPOINT报名观看 NONE 无条件
+        viewCondition: '', // APPOINT是报名活动 ''是无限制活动
+        countDown: '', // 距离活动开始时间（秒）
         status: '' // 当前活动状态
       },
       questionList: [], // 报名表单
@@ -123,6 +125,7 @@ export default {
     }
   },
   mounted () {
+    this.getInfo()
   },
   components: {
     'com-input': ComInput,
@@ -144,6 +147,49 @@ export default {
   methods: {
     getCode (val) {
       this.code = val
+    },
+    async getInfo () {
+      await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        this.activity.status = res.data.activity.status
+        this.user.isApplay = res.data.joinInfo.isApplay
+        this.user.isOrder = res.data.joinInfo.isOrder
+        debugger
+        if (this.activity.countDown < 1800) {
+          if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else if (this.activity.viewCondition === 'NONE') {
+            if (this.user.isOrder) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+            }
+          }
+        }
+        if (this.activity.status === 'LIVING') {
+          if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else if (this.activity.viewCondition === 'NONE') {
+            if (this.user.isOrder) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+            }
+          }
+        }
+      }).catch((err) => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
     },
     selected (val, id) {
       let isCz = false
