@@ -147,7 +147,6 @@ export default {
     }
   },
   created () {
-    debugger
     const queryId = this.$route.params.id
     if (!queryId) {
       this.$router.go(-1)
@@ -266,22 +265,21 @@ export default {
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
         activityData = res.data
-      })
-      debugger
-      if (activityData.activity.countDown < 1800) {
-        if (activityData.activity.viewCondition === 'APPOINT') {
-          if (!activityData.joinInfo.isApplay) {
-            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+        if (activityData.activity.countDown < 1800) {
+          if (activityData.activity.viewCondition === 'APPOINT') {
+            if (!activityData.joinInfo.isApplay) {
+              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+            }
           }
+          // else {
+          //   if (!activityData.joinInfo.isOrder) {
+          //     this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          //   }
+          // }
+        } else {
+          this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
         }
-        // else {
-        //   if (!activityData.joinInfo.isOrder) {
-        //     this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-        //   }
-        // }
-      } else {
-        this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-      }
+      })
       /* 查询真实在线人数 */
       await this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
         activityId: this.$route.params.id
