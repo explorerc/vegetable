@@ -60,7 +60,7 @@
   </div>
 </template>
 <script>
-// import VConsole from 'vconsole/dist/vconsole.min.js' // 初始化
+import VConsole from 'vconsole/dist/vconsole.min.js' // 初始化
 import { mapMutations, mapState } from 'vuex'
 import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
@@ -70,7 +70,7 @@ import loginMixin from 'components/login-mixin'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service' // import vconsole
-// let vConsole = new VConsole()
+let vConsole = new VConsole()
 const playTypes = {
   'PREPARE': 'pre',
   'LIVING': 'live',
@@ -147,6 +147,7 @@ export default {
     }
   },
   created () {
+    console.log(vConsole)
     const queryId = this.$route.params.id
     if (!queryId) {
       this.$router.go(-1)
