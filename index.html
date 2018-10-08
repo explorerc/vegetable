@@ -28,16 +28,12 @@
   <!--依赖的播放器资源-->
   <!-- 观看-->
   <script>
-    window.onerror = function (msg, url, row, col, error) {
-      alert(JSON.stringify({
-        msg,
-        url,
-        row,
-        col,
-        error
-      }))
-      return true;
-    };
+    // window.onerror = function (msg, url, row, col, error) {
+    //   alert(JSON.stringify({
+    //     msg, url, row, col, error
+    //   }))
+    //   return true;
+    // };
 
   </script>
   <% if(process.env.BUILD_ENV!='prod') { %>
