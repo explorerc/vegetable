@@ -41,7 +41,6 @@
         </p>
         <com-input :value.sync="email"
                    placeholder="请输入邮箱"
-                   :max-length="11"
                    :errorTips="errorTips"
                    @focus="emailFocus()"></com-input>
       </div>

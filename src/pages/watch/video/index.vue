@@ -269,6 +269,8 @@ export default {
           if (this.isAutoPlay) {
             window.VhallPlayer.play()
             this.dealWithVideo()
+          } else {
+            if (window.VhallPlayer) window.VhallPlayer.destroy()
           }
         }
       }, 1000)
