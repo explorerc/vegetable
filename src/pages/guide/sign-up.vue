@@ -149,6 +149,7 @@ export default {
       this.code = val
     },
     async getInfo () {
+      debugger
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
