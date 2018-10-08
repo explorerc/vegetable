@@ -253,6 +253,7 @@ export default {
       /* 查询详情 */
       let activityInfo = null
       let joinInfo = null
+      debugger
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
