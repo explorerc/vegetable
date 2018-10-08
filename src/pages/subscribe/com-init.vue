@@ -162,7 +162,6 @@ export default {
       setChatParams: types.CHAT_PARAMS
     }),
     changeView (res) {
-      debugger
       this.currentView = res
     },
     jumpPage (url) {

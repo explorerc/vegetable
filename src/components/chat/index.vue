@@ -25,7 +25,9 @@
               </i>
               </div> -->
               <!-- <div class="name" v-else>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em></div> -->
-              <div class="name">{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em></div>
+              <div class="name">{{item.name}}
+                <em v-if="item.detail.role">{{item.detail.role}}</em>
+              </div>
               <div class="txt"
                    v-html="item.detail.txt"></div>
             </dd>
@@ -34,7 +36,9 @@
       </ol>
       <transition v-if="tipsShow && tipsCount > 0">
         <span class="msg-tips"
-              @click='scrollBtm'>有{{tipsCount}}条新消息 <i class="iconfont icon-xiangxia"></i> </span>
+              @click='scrollBtm'>有{{tipsCount}}条新消息
+          <i class="iconfont icon-xiangxia"></i>
+        </span>
       </transition>
       <transition name="left-right"
                   mode="out-in">
@@ -86,61 +90,64 @@
           <span class="v-title">
             聊天
           </span>
-            <template v-if='(mute || allMuted) && isWatch'>
-              <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
-            </template>
-            <template v-else>
-              <span @click='sendAction'
-                    class='send-btn fr'>发送</span>
-            </template>
-            <div class="fr"
-                 v-if="joinInfo.roleName === 'HOST' && !isWatch">
-              <i class='icon-swap'
-                 title='切换发送聊天/公告'
-                 @click='swapAnnounce ? swapAnnounce = false : swapAnnounce = true'></i>
-              <div class='switch-box'>
-                <span>全体禁言</span>
-                <el-switch class='switch'
-                           v-model="allMuted"
-                           inactive-color="#DEE1FF"
-                           :width="32"
-                           active-color="#FFD021"
-                           @change="muteAll"></el-switch>
-              </div>
+          <template v-if='(mute || allMuted) && isWatch'>
+            <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
+          </template>
+          <template v-else>
+            <span @click='sendAction'
+                  class='send-btn fr'>发送</span>
+          </template>
+          <div class="fr"
+               v-if="joinInfo.roleName === 'HOST' && !isWatch">
+            <i class='icon-swap'
+               title='切换发送聊天/公告'
+               @click='swapAnnounce ? swapAnnounce = false : swapAnnounce = true'></i>
+            <div class='switch-box'>
+              <span>全体禁言</span>
+              <el-switch class='switch'
+                         v-model="allMuted"
+                         inactive-color="#DEE1FF"
+                         :width="32"
+                         active-color="#FFD021"
+                         @change="muteAll"></el-switch>
             </div>
+          </div>
         </div>
-      <div class="bottom clearfix">
-        <template v-if='swapAnnounce'>
-          <com-input :value.sync="value"
-                     :placeholder="chatPlaceholder"
-                     :max-length="140"
-                     class='inp'
-                     type="textarea"></com-input>
-        </template>
-        <template v-else>
-          <com-input :value.sync="valueAnnounce"
-                     :placeholder="announcePlaceholder"
-                     :max-length="140"
-                     class='inp'
-                     type="textarea"></com-input>
-        </template>
-        <div class="v-emoji">
-          <i class='iconfont icon-biaoqing'
-             @click='faceOpen = !faceOpen'
-             title='表情'></i>
-          <div class="face-box"
-               v-if="faceOpen">
-            <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`" @click.stop="inFace(index)" v-for="(item,index) in faceArr" :key="index">
+        <div class="bottom clearfix">
+          <template v-if='swapAnnounce'>
+            <com-input :value.sync="value"
+                       :placeholder="chatPlaceholder"
+                       :max-length="140"
+                       class='inp'
+                       type="textarea"></com-input>
+          </template>
+          <template v-else>
+            <com-input :value.sync="valueAnnounce"
+                       :placeholder="announcePlaceholder"
+                       :max-length="140"
+                       class='inp'
+                       type="textarea"></com-input>
+          </template>
+          <div class="v-emoji">
+            <i class='iconfont icon-biaoqing'
+               @click='faceOpen = !faceOpen'
+               title='表情'></i>
+            <div class="face-box"
+                 v-if="faceOpen">
+              <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`"
+                   @click.stop="inFace(index)"
+                   v-for="(item,index) in faceArr"
+                   :key="index">
             </div>
           </div>
         </div>
       </div>
-      </div>
-      <!-- <div class='send-box not-login' v-else-if='type === "live" && !isLogin'>
+    </div>
+    <!-- <div class='send-box not-login' v-else-if='type === "live" && !isLogin'>
       需要登录才能参与聊天 <span @click='loginHandler'>登录</span>
     </div> -->
 
-    </div>
+  </div>
 </template>
 
 <script>
@@ -524,7 +531,6 @@ export default {
         this.chatPlaceholder = '聊天内容不能为空'
         return false
       }
-      debugger
       const role = this.joinInfo.roleName === 'HOST' ? '主持人' : '' // 主持人发送
       ChatService.OBJ.activityId = this.activityId
       const obj = {
@@ -563,7 +569,6 @@ export default {
     //   })
     // },
     listenChat (msg) {
-      debugger
       console.log('接收 聊天消息', msg)
       this.reArrange(msg)
       if (this.tipsShow) {

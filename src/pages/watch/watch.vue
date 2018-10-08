@@ -266,6 +266,7 @@ export default {
         this.businessUserId = res.data.activity.userId
         activityData = res.data
       })
+      debugger
       if (activityData.activity.countDown < 1800) {
         if (activityData.activity.viewCondition === 'APPOINT') {
           if (!activityData.joinInfo.isApplay) {

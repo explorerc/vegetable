@@ -155,7 +155,6 @@ export default {
         this.activity.status = res.data.activity.status
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
-        debugger
         if (this.activity.countDown < 1800) {
           if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
