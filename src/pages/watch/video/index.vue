@@ -456,6 +456,7 @@ export default {
     img {
       width: 100%;
       height: 422px;
+      margin-top: 80px;
     }
     .vjs-big-play-button {
       display: none;
