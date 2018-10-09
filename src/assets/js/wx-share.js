@@ -33,12 +33,12 @@ export default function wxShare (wxShare) {
     })
     wx.onMenuShareTimeline({
       title: wxShare.shareData.title, // 分享标题
-      desc: wxShare.shareDatadesc,
-      link: wxShare.shareDatalink +
+      desc: wxShare.shareData.shareDatadesc,
+      link: wxShare.shareData.shareDatalink +
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-3'
           : ''), // 分享链接
-      imgUrl: wxShare.shareDataimgUrl, // 分享图标
+      imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
       },
