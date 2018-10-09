@@ -192,6 +192,7 @@ export default {
   height: 80px;
   line-height: 80px;
   animation: control-animation-hide 1s linear;
+  background-color: rgba(0, 0, 0, 0.75);
   text-align: left;
   color: #fff;
   .time-box {
@@ -206,7 +207,7 @@ export default {
     }
   }
   .auto-box {
-    margin: 24px 10px;
+    padding: 24px 10px;
     .mode-item {
       position: relative;
       display: inline-block;

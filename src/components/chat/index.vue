@@ -130,7 +130,7 @@
           </template>
           <div class="v-emoji">
             <i class='iconfont icon-biaoqing'
-               @click='faceOpen = !faceOpen'
+               @click.stop='changeFace'
                title='表情'></i>
             <div class="face-box"
                  v-if="faceOpen">
@@ -526,6 +526,9 @@ export default {
       ChatService.OBJ.regHandler('GAG_ALL', this.listenAllmute)
       ChatService.OBJ.regHandler('DISABLE_GAG_ALL', this.listenCancelallmute)
     },
+    changeFace () {
+      this.faceOpen = !this.faceOpen
+    },
     sendAction () {
       if (!this.value.replace(/\n/g, '').length) {
         this.chatPlaceholder = '聊天内容不能为空'
@@ -654,7 +657,7 @@ export default {
       // }
 
       /* 替换表情图片 */
-      this.faceArr.forEach((index, item) => {
+      this.faceArr.forEach((item, index) => {
         for (let key in item) {
           let test = key.replace(/\[/, '\\[').replace(/\]/, '\\]')
           let reg = new RegExp(test, 'g')

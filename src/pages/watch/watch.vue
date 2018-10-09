@@ -29,11 +29,12 @@
     <message-box v-show="subscribeShow"
                  @handleClick="subscribeClick($event)">
       <div slot="header"></div>
-      <img src="../../assets/image/qq.png"
+      <img v-if="defaultImg"
+           :src="defaultImg"
            alt=""
            class="v-logo">
       <p class="v-title">
-        北京微吼时代科技有限公司
+        {{companyName}}
       </p>
       <div class="v-from">
         <p class="v-explain">
@@ -89,8 +90,10 @@ export default {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
       activityId: '',
+      companyName: '',
       playType: '', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
+      imgUrl: '',
       currentView: Empty,
       vhallParams: {
         token: '',
@@ -144,6 +147,9 @@ export default {
     },
     activityStatus: function () {
       return this.activityInfo.statusName
+    },
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
     }
   },
   created () {
@@ -263,6 +269,8 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         document.title = res.data.activity.title
+        this.companyName = res.data.businessUserInfo.company
+        this.imgUrl = res.data.businessUserInfo.avatar
         activityInfo = { ...activityInfo, ...res.data.activity }
         joinInfo = res.data.joinInfo
         activityInfo.setting = res.data.setting

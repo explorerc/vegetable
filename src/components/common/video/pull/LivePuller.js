@@ -14,7 +14,6 @@ export default class LivePuller extends BasePuller {
   }
 
   initLivePlayer (autoplay = false, isAndroid = false, completionBK = null) {
-    alert(isAndroid)
     // let VhallSDK = window.Vhall
     // let VhallPlayer = window.VhallPlayer
     console.log('1调用初始化拉流器')

@@ -1,31 +1,35 @@
 @import "assets/css/mixin.scss";
 @import "assets/css/transitions.scss";
+
 .bscroll {
   position: relative;
   width: 100%;
   overflow: hidden;
-  height:calc(100%);
+  height: calc(100%);
+
   &.vod {
-    height:100%;
+    height: 100%;
   }
+
   .msg-tips {
-    bottom:10px;
-    left:50%;
+    bottom: 10px;
+    left: 50%;
     font-size: 26px;
-    margin-left:-140px;
+    margin-left: -140px;
     position: absolute;
-    width:280px;
-    height:70px;
+    width: 280px;
+    height: 70px;
     line-height: 68px;
     text-align: center;
-    background:rgba(233,235,255,0.9);
-    border-radius:45px;
-    border:1px solid rgba(129,140,254,1);
-    color:$color-blue;
+    background: rgba(233, 235, 255, 0.9);
+    border-radius: 45px;
+    border: 1px solid rgba(129, 140, 254, 1);
+    color: $color-blue;
     cursor: pointer;
-    .icon-xiangxia{
+
+    .icon-xiangxia {
       padding-top: 30px;
-      height:70px;
+      height: 70px;
       line-height: 68px;
       font-size: 30px;
       transform: scale(0.5);
@@ -34,113 +38,131 @@
       vertical-align: middle
     }
   }
+
   .announce-box {
     position: absolute;
     top: 0px;
     left: 0;
-    width:100%;
-    height:80px;
+    width: 100%;
+    height: 80px;
     line-height: 80px;
     text-align: center;
-    color:#fff;
-    font-size:26px;
-    background:rgba(75,90,254,1);
-    border-radius:4px;
-    padding:0 40px 0 70px;
+    color: #fff;
+    font-size: 26px;
+    background: rgba(75, 90, 254, 1);
+    border-radius: 4px;
+    padding: 0 40px 0 70px;
     overflow: hidden;
+
     svg {
       // background: url('~assets/image/auto_wechat.png') no-repeat;
       position: absolute;
-      width:50px;
-      height:50px;
-      top:50%;
-      margin-top:-25px;
-      left:10px;
+      width: 50px;
+      height: 50px;
+      top: 50%;
+      margin-top: -25px;
+      left: 10px;
       font-size: 30px;
     }
+
     .icon-close {
       cursor: pointer;
       position: absolute;
-      color:#fff;
+      color: #fff;
       font-size: 30px;
       width: 30px;
       height: 30px;
       right: 10px;
       top: 0px;
+
       &:hover {
-        opacity:0.8;
+        opacity: 0.8;
       }
     }
+
     .txt-box {
-      height:80px;
+      height: 80px;
       line-height: 80px;
       overflow: hidden;
       position: relative;
     }
+
     .txt {
       position: absolute;
       white-space: nowrap;
-      animation: marsquee 5s linear 1s infinite  ;
-      animation-fill-mode:backwards;
+      animation: marsquee 5s linear 1s infinite;
+      animation-fill-mode: backwards;
     }
   }
 }
+
 @keyframes marsquee {
   0% {
     transform: translateX(100%)
   }
+
   100% {
     transform: translateX(-100%)
   }
 }
+
 .bscroll-vertical-scrollbar {
   opacity: 1 !important;
 }
+
 .chat-wrap /deep/ {
   height: 100%;
   width: 100%;
   position: relative;
+
   .chat-list {
     // overflow-y: scroll;
-    padding:0px 40px;
+    padding: 0px 40px;
+
     dl {
       position: relative;
-      dt{
-        width:50px;
-        height:50px;
+
+      dt {
+        width: 50px;
+        height: 50px;
         border-radius: 50px;
         float: left;
-        background:$color-default;
-        margin-right:12px;
+        background: $color-default;
+        margin-right: 12px;
         overflow: hidden;
         border-radius: 200px;
         color: #fff;
         font-weight: bold;
+
         &.avatar {
           text-align: center;
-          line-height:50px;
+          line-height: 50px;
         }
+
         img {
-          width:100%;
-          height:100%;
+          width: 100%;
+          height: 100%;
         }
       }
+
       dd {
         float: left;
       }
+
       .name {
         display: block;
-        color:$color-font-sub;
+        color: $color-font-sub;
         margin-bottom: 8px;
-        width:240px;
+        width: 240px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         font-size: 24px;
         color: #888;
+
         .handle {
-          width:20px;
-          height:20px;
+          width: 20px;
+          height: 20px;
           cursor: pointer;
           display: none;
           font-size: 12px;
@@ -148,114 +170,133 @@
           top: 5px;
           right: 10px;
           background: url('~assets/image/more-hover.png') no-repeat center;
-          background-size:contain;
+          background-size: contain;
+
           ol {
             display: none;
-            width:130px;
-            background:rgba(255,255,255,1);
-            box-shadow:0px 2px 6px 0px rgba(0,0,0,0.2);
-            border-radius:4px;
+            width: 130px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
             position: absolute;
             top: 17px;
             right: -10px;
             z-index: 999;
             text-align: center;
-            padding:5px 0;
+            padding: 5px 0;
+
             li {
-              height:40px;
+              height: 40px;
               line-height: 40px;
               margin-top: 0;
+
               i {
-                width:20.5px;
-                height:16px;
+                width: 20.5px;
+                height: 16px;
                 display: inline-block;
                 // background: url('~assets/image/qq_s.png') no-repeat;
-                background:url('~assets/image/chat-kickout.png') no-repeat center;
+                background: url('~assets/image/chat-kickout.png') no-repeat center;
                 background-size: contain;
                 margin-right: 10px;
                 position: relative;
                 top: 2px;
+
                 &.kick {
-                  top:3px;
+                  top: 3px;
                 }
+
                 &.mute {
                   width: 17.5px;
-                  height:16px;
+                  height: 16px;
                 }
               }
-              &.kick i {
-              }
+
+              &.kick i {}
+
               &.mute i {
-                background-image:url('~assets/image/chat.png') ;
-                top:5px;
+                background-image: url('~assets/image/chat.png');
+                top: 5px;
               }
+
               &:hover {
-                color:$color-blue;
-                background:rgba(240,241,254,1);
+                color: $color-blue;
+                background: rgba(240, 241, 254, 1);
+
                 &.kick i {
-                  background-image:url('~assets/image/chat-kickout-hover.png') ;
+                  background-image: url('~assets/image/chat-kickout-hover.png');
                 }
+
                 &.mute i {
-                  background-image:url('~assets/image/chat-hover.png') ;
+                  background-image: url('~assets/image/chat-hover.png');
                 }
               }
             }
           }
+
           &:hover {
             ol {
               display: inline-block;
             }
           }
         }
+
         em {
           height: 30px;
-          padding:0 15px;
-          font-size:22px;
+          padding: 0 15px;
+          font-size: 22px;
           line-height: 30px;
-          color:$color-blue;
-          background:rgba(240,241,254,1);
-          border-radius:100px;
+          color: $color-blue;
+          background: rgba(240, 241, 254, 1);
+          border-radius: 100px;
           float: right;
         }
       }
-      .txt{
-        padding:7px 11px;
-        color:$color-font;
-        background:rgba(239,239,239,1);
-        border-radius:4px;
-        max-width:550px ;
+
+      .txt {
+        padding: 7px 11px;
+        color: $color-font;
+        background: rgba(239, 239, 239, 1);
+        border-radius: 4px;
+        max-width: 550px;
         word-break: break-all;
         display: inline-block;
+
         img {
-          width:26px;
-          height:26px;
+          width: 26px;
+          height: 26px;
           display: inline-block;
         }
       }
     }
+
     li {
-      margin-top:16px;
+      margin-top: 16px;
     }
-    li:not(.right){
+
+    li:not(.right) {
       :hover {
         .handle {
           display: inline-block;
         }
       }
     }
+
     li.right {
       dt {
         float: right;
-        margin-right:0px;
-        margin-left:12px;
+        margin-right: 0px;
+        margin-left: 12px;
         overflow: hidden;
       }
+
       dd {
         float: right;
       }
+
       .name {
         width: 100%;
         text-align: right;
+
         em {
           position: relative;
           top: 0px;
@@ -265,12 +306,14 @@
           top: 3px;
         }
       }
+
       .txt {
         float: right;
       }
     }
   }
-  .v-send-box-bg{
+
+  .v-send-box-bg {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -278,101 +321,116 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 2;
   }
+
   .send-box {
-    margin:0 auto;
-    width:620px;
+    margin: 0 auto;
+    width: 620px;
     height: 440px;
     position: fixed;
-    top:330px;
-    left:50%;
+    top: 330px;
+    left: 50%;
     margin-left: -310px;
     background-color: #fff;
-    border-radius:8px;
+    border-radius: 8px;
     overflow: hidden;
     z-index: 6;
+
     .top {
-      width:100%;
-      height:80px;
+      width: 100%;
+      height: 80px;
       line-height: 80px;
-      background:#EFEFEF;
+      background: #EFEFEF;
       padding: 0 36px;
       text-align: center;
+
       .mute-all {
         position: absolute;
         cursor: pointer;
-        right:60px;
-        top:50%;
-        margin-top:-10px;
+        right: 60px;
+        top: 50%;
+        margin-top: -10px;
         width: 20px;
-        height:20px;
-        border-radius:100px;
-        background:url('~assets/image/broadcast.png') no-repeat center;
-        background-size:contain;
+        height: 20px;
+        border-radius: 100px;
+        background: url('~assets/image/broadcast.png') no-repeat center;
+        background-size: contain;
+
         &:hover {
           background-image: url('~assets/image/broadcast-hover.png');
         }
       }
+
       .send-btn {
-        color:#4B5AFE;
-        font-size:28px;
+        color: #4B5AFE;
+        font-size: 28px;
         cursor: pointer;
       }
+
       .cancel-btn {
         color: #555555;
-        font-size:28px;
+        font-size: 28px;
         cursor: pointer;
       }
-      .v-title{
+
+      .v-title {
         color: #222222;
         font-size: 32px;
       }
     }
+
     .bottom {
-      width:100%;
-      height:360px;
-      left:50%;
+      width: 100%;
+      height: 360px;
+      left: 50%;
+
       .mute-box {
         cursor: not-allowed;
         line-height: 50px;
         text-align: center;
-        width:100%;
-        height:100%;
+        width: 100%;
+        height: 100%;
       }
-      .v-emoji{
+
+      .v-emoji {
         position: absolute;
         left: 30px;
         bottom: 20px;
+
         .icon-biaoqing {
           vertical-align: middle;
           cursor: pointer;
           display: inline-block;
           color: #888;
         }
+
         .icon-swap {
           position: absolute;
           cursor: pointer;
-          right:16px;
-          top:50%;
-          margin-top:-10px;
+          right: 16px;
+          top: 50%;
+          margin-top: -10px;
           width: 20px;
-          height:20px;
-          border-radius:100px;
-          background:url('~assets/image/broadcast.png') no-repeat center;
-          background-size:contain;
+          height: 20px;
+          border-radius: 100px;
+          background: url('~assets/image/broadcast.png') no-repeat center;
+          background-size: contain;
+
           &:hover {
             background-image: url('~assets/image/broadcast-hover.png');
           }
         }
+
         .face-box {
           position: absolute;
           bottom: 85px;
-          left: 0px;
-          width: 98%;
+          left: -15px;
+          width: 620px;
           background: #fff;
           z-index: 10;
+
           img {
             width: 30px;
             height: 30px;
@@ -382,15 +440,18 @@
         }
       }
     }
+
     .inp {
-      width:100%;
-      height:100%;
-      padding:28px 30px 100px;
-      border:none;
+      width: 100%;
+      height: 100%;
+      padding: 28px 30px 100px;
+      border: none;
+
       textarea {
-        border:none;
+        border: none;
       }
-      .limit{
+
+      .limit {
         bottom: 20px;
         z-index: 9;
         font-size: 28px;
@@ -398,15 +459,17 @@
       }
     }
   }
+
   .not-login {
-    margin:0 auto;
-    width:100%;
+    margin: 0 auto;
+    width: 100%;
     position: absolute;
-    bottom:95px;
-    left:0px;
-    color:$color-font;
+    bottom: 95px;
+    left: 0px;
+    color: $color-font;
+
     span {
-      color:$color-blue;
+      color: $color-blue;
       cursor: pointer;
     }
   }

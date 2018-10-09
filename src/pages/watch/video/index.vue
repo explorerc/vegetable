@@ -258,6 +258,9 @@ export default {
             complete: () => {
               this.playBtnShow = false
               this.qualitys = window.VhallPlayer.getQualitys()
+              document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
+                document.getElementsByClassName('icon-zanting_icon')[0].click()
+              })
               document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
               // window.VhallPlayer.play()
               // this.dealWithVideo()
@@ -307,6 +310,10 @@ export default {
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
         this.playComps.initLivePlayer(true, true, () => {
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
+          document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
+            document.getElementsByClassName('icon-zanting_icon')[0].click()
+          })
           console.log('----------开始播放----------')
         })
         this.playComps.accountId = this.roomPaas.accountId
@@ -482,7 +489,7 @@ export default {
     top: 422px;
     height: 80px;
     line-height: 80px;
-    background-color: rgba(0, 0, 0, 0.75);
+    // background-color: rgba(0, 0, 0, 0.75);
     z-index: 1;
     width: 100%;
     // font-size: 14px;
