@@ -2,11 +2,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const HappyPack = require('happypack')
-const os = require('os')
-const happyThreadPool = HappyPack.ThreadPool({
-  size: os.cpus().length
-})
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = require('./config')
 
@@ -38,7 +33,6 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
-    modules: [resolve('src'), resolve('node_modules')],
     alias: {
       src: resolve('src'),
       assets: resolve('src/assets'),
@@ -62,7 +56,7 @@ const webpackConfig = {
       },
       {
         test: /\.js[x]?$/,
-        loader: 'happypack/loader?id=happy-babel-js',
+        loader: 'babel-loader',
         include: resolve('src')
       },
       {
@@ -109,12 +103,12 @@ const webpackConfig = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        // common: {
-        //   name: 'common',
-        //   chunks: 'async',
-        //   minChunks: 2,
-        //   minSize: 0
-        // },
+        common: {
+          name: 'common',
+          chunks: 'async',
+          minChunks: 2,
+          minSize: 0
+        },
         vender: {
           name: 'vendor',
           test: resolve('node_modules'),
@@ -129,11 +123,6 @@ const webpackConfig = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new HappyPack({
-      id: 'happy-babel-js',
-      loaders: ['babel-loader?cacheDirectory=true'],
-      threadPool: happyThreadPool
-    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './index.html',
