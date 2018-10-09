@@ -1,26 +1,40 @@
 <template>
-  <transition name="fade" v-if="visible">
+  <transition name="fade"
+              v-if="visible">
     <div :class="['ve-message-box__wrapper']">
-      <div class="ve-message-box" :style="{width: width}" :type="type">
+      <div class="ve-message-box"
+           :style="{width: width}"
+           :type="type">
         <div class="ve-message-box__header">
-          <span v-if="type=='prompt'" class="prompt-title">{{header}}</span>
-          <button type="button" @click.prevent="handleClick(action.cancel)">
+          <span v-if="type=='prompt'"
+                class="prompt-title">{{header}}</span>
+          <button type="button"
+                  @click.prevent="handleClick(action.cancel)">
             <i class="iconfont icon-close"></i>
           </button>
         </div>
         <div class="ve-message-box__container">
-          <div class="ve-message-box__title" v-if="!this.$slots.header&&header&&type!=='prompt'">{{header}}</div>
+          <div class="ve-message-box__title"
+               v-if="!this.$slots.header&&header&&type!=='prompt'">{{header}}</div>
           <slot name="header"></slot>
-          <div class="ve-message-box__content" v-if="(!this.$slots.default||this.$slots.default.length==0)&&content">
+          <div class="ve-message-box__content"
+               v-if="(!this.$slots.default||this.$slots.default.length==0)&&content">
             {{content}}
           </div>
           <slot></slot>
           <div class="ve-message-box__btns">
             <div v-if="!this.$slots.bottom">
-              <button type="button" class="button--primary" :type="type" @click.prevent="handleClick(action.confirm)">
-                <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
+              <button type="button"
+                      class="button--primary"
+                      @click.prevent="handleClick(action.confirm)">
+                <span>{{confirmText}}
+                  <span v-if="autoClose"
+                        class="auto-close">({{closeTime}}s)</span>
+                </span>
               </button>
-              <button type="button" class="button--cancel" :type="type" @click.prevent="handleClick(action.cancel)"
+              <button type="button"
+                      class="button--cancel"
+                      @click.prevent="handleClick(action.cancel)"
                       v-if="cancelText">
                 <span>{{cancelText}}</span>
               </button>
@@ -29,85 +43,86 @@
           </div>
         </div>
       </div>
-      <div class="ve-modal" @click.prevent="handleClick(action.cancel)"></div>
+      <div class="ve-modal"
+           @click.prevent="handleClick(action.cancel)"></div>
     </div>
   </transition>
 </template>
 
 <script>
-  export default {
-    name: 'message-box',
-    data () {
-      return {
-        visible: true,
-        closeTime: 0,
-        intervalTime: 0,
-        action: {
-          cancel: 'cancel',
-          confirm: 'confirm'
-        }
-      }
-    },
-    props: {
-      header: {
-        type: String,
-        default: '提示'
-      },
-      content: {
-        type: String,
-        default: ''
-      },
-      confirmText: {
-        type: String,
-        default: '确定'
-      },
-      cancelText: {
-        type: String,
-        default: ''
-      },
-      autoClose: {
-        type: Number,
-        default: 0
-      },
-      width: {
-        type: String,
-        default: '300px'
-      },
-      type: { // prompt , error
-        type: String,
-        default: ''
-      }
-    },
-    watch: {
-      autoClose: {
-        handler (newVal) {
-          if (!newVal) return
-          this.closeTime = newVal
-          clearInterval(this.intervalTime)
-          this.intervalTime = setInterval(() => {
-            this.closeTime--
-            if (!this.closeTime) {
-              clearInterval(this.intervalTime)
-              this.$emit('handleClick', {
-                action: 'cancel'
-              })
-            }
-          }, 1000)
-        },
-        immediate: true
-      }
-    },
-    destroyed () {
-      clearInterval(this.intervalTime)
-    },
-    methods: {
-      handleClick (action) {
-        this.$emit('handleClick', {
-          action: action
-        })
+export default {
+  name: 'message-box',
+  data () {
+    return {
+      visible: true,
+      closeTime: 0,
+      intervalTime: 0,
+      action: {
+        cancel: 'cancel',
+        confirm: 'confirm'
       }
     }
+  },
+  props: {
+    header: {
+      type: String,
+      default: '提示'
+    },
+    content: {
+      type: String,
+      default: ''
+    },
+    confirmText: {
+      type: String,
+      default: '确定'
+    },
+    cancelText: {
+      type: String,
+      default: ''
+    },
+    autoClose: {
+      type: Number,
+      default: 0
+    },
+    width: {
+      type: String,
+      default: '300px'
+    },
+    type: { // prompt , error
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    autoClose: {
+      handler (newVal) {
+        if (!newVal) return
+        this.closeTime = newVal
+        clearInterval(this.intervalTime)
+        this.intervalTime = setInterval(() => {
+          this.closeTime--
+          if (!this.closeTime) {
+            clearInterval(this.intervalTime)
+            this.$emit('handleClick', {
+              action: 'cancel'
+            })
+          }
+        }, 1000)
+      },
+      immediate: true
+    }
+  },
+  destroyed () {
+    clearInterval(this.intervalTime)
+  },
+  methods: {
+    handleClick (action) {
+      this.$emit('handleClick', {
+        action: action
+      })
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
