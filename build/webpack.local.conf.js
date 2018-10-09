@@ -2,15 +2,16 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.conf')
-const config = require('./config');
+const config = require('./config')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 const webpackConfig = merge(baseConfig, {
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.scss/,
         use: [
           'vue-style-loader',
@@ -24,17 +25,11 @@ const webpackConfig = merge(baseConfig, {
       },
       {
         test: /\.css/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'postcss-loader'
-        ]
+        use: ['vue-style-loader', 'css-loader', 'postcss-loader']
       }
     ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     inline: true,
     hot: true,
@@ -53,4 +48,4 @@ const webpackConfig = merge(baseConfig, {
   }
 })
 
-module.exports = webpackConfig;
+module.exports = webpackConfig
