@@ -87,7 +87,8 @@ export default {
         this.wxShare.wxShareData.signature = res.data.signature
       })
       await this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
-        route: 'guide_route'
+        route: 'guide_route',
+        param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''

@@ -1,5 +1,6 @@
 import wx from 'weixin-js-sdk'
 export default function wxShare (wxShare) {
+  alert(1)
   wx.config({
     debug: true,
     appId: wxShare.wxShareData.appId,
@@ -17,6 +18,7 @@ export default function wxShare (wxShare) {
     ]
   })
   wx.ready(function () {
+    alert(2)
     wx.checkJsApi({
       jsApiList: [
         'onMenuShareTimeline',
@@ -55,6 +57,7 @@ export default function wxShare (wxShare) {
           : ''), // 分享链接
       imgUrl: wxShare.shareData.imgUrl, // 分享图标
       success: function () {
+        alert(3)
         // 用户确认分享后执行的回调函数
       },
       cancel: function () {
@@ -109,6 +112,5 @@ export default function wxShare (wxShare) {
   })
   wx.error(function (res) {
     // $("#chatlist").append("<p>"+JSON.stringify(res)+"</p>");
-    console.log(res, 6666)
   })
 }
