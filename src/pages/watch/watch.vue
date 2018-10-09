@@ -261,7 +261,9 @@ export default {
     },
     async initPage () {
       await this.initRoomPaas()
-      this.share()
+      if (this.isWx()) {
+        this.share()
+      }
       /* 查询详情 */
       let activityInfo = null
       let joinInfo = null
@@ -379,6 +381,14 @@ export default {
     loginSuccess (res) {
       this.storeLoginInfo(res)
       this.$router.go(0)
+    },
+    isWx () {
+      var ua = navigator.userAgent.toLowerCase()
+      var isWeixin = ua.indexOf('micromessenger') !== -1
+      if (isWeixin) {
+        return true
+      }
+      return false
     }
   }
 }
