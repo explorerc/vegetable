@@ -1,6 +1,9 @@
 <template>
   <div class="template-container">
-    <component class="template-content" :editAble="false" v-model="data" v-bind:is="com"></component>
+    <component class="template-content"
+               :editAble="false"
+               v-model="data"
+               v-bind:is="com"></component>
   </div>
 </template>
 
@@ -67,7 +70,8 @@ export default {
         this.share.des = res.data.activity.description
         this.share.imgUrl = res.data.activity.imgUrl
         this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
-          route: 'officia_route'
+          route: 'officia_route',
+          param: this.$route.params.id
         }).then((res) => {
           if (res.data) {
             this.share.title = res.data.title
@@ -104,7 +108,8 @@ export default {
         this.wxShare.wxShareData.signature = res.data.signature
       })
       await this.$config({ handlers: true }).$get(activityService.GET_SHAREINFO, { // 获取分享标题等信息
-        route: 'officia_route'
+        route: 'officia_route',
+        param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''

@@ -109,6 +109,5 @@ export default function wxShare (wxShare) {
   })
   wx.error(function (res) {
     // $("#chatlist").append("<p>"+JSON.stringify(res)+"</p>");
-    console.log(res, 6666)
   })
 }
