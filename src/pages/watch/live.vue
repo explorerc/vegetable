@@ -100,7 +100,7 @@ export default {
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
     if (this.activityInfo.status === 'PREPARE') {
-      if (this.activityInfo.warm && this.activityInfo.warm.enabled === 'Y') {
+      if (this.activityInfo.warm && this.activityInfo.warm.enabled === 'Y' && this.activityInfo.warm.record.list && this.activityInfo.warm.record.list[0].transcode_status === 1) {
         this.playType = 'warm'
       } else {
         this.playType = 'pre'
