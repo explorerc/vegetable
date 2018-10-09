@@ -29,7 +29,7 @@
     <i class="iconfont icon-bofang"
        v-if="playBtnShow"
        @click="playVideo"></i>
-    <div class="control-box">
+    <div class="control-box-div">
       <div class="control-video-box"
            v-if="(playType=='vod'&&!outLineLink)||playType=='warm'">
         <video-control :currentTime="currentTime"
@@ -239,14 +239,29 @@ export default {
     playBackVideo () {
       this.$nextTick(() => {
         if (!this.recordId) return
+        let u = navigator.userAgent
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+        let _videoAttr = {}
+        if (!isiOS) {
+          _videoAttr = {
+            'x5-video-player-type': 'h5',
+            'x5-video-orientation': 'portrait',
+            'x5-video-player-fullscreen': false
+          }
+        }
         window.Vhall.ready(() => {
           window.VhallPlayer.init({
             recordId: this.recordId,
             type: 'vod',
             videoNode: this.playBoxId,
+            videoAttr: _videoAttr,
             complete: () => {
               this.playBtnShow = false
               this.qualitys = window.VhallPlayer.getQualitys()
+              document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
+                document.getElementsByClassName('icon-zanting_icon')[0].click()
+              })
+              document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
               // window.VhallPlayer.play()
               // this.dealWithVideo()
             }
@@ -294,7 +309,11 @@ export default {
       }
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
-        this.playComps.initLivePlayer(true, () => {
+        this.playComps.initLivePlayer(true, true, () => {
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
+          document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
+            document.getElementsByClassName('icon-zanting_icon')[0].click()
+          })
           console.log('----------开始播放----------')
         })
         this.playComps.accountId = this.roomPaas.accountId
@@ -451,7 +470,7 @@ export default {
     }
   }
   .icon-bofang {
-    display: block;
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -464,10 +483,13 @@ export default {
       opacity: 0.8;
     }
   }
-  .control-box {
+  .control-box-div {
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 422px;
+    height: 80px;
+    line-height: 80px;
+    // background-color: rgba(0, 0, 0, 0.75);
     z-index: 1;
     width: 100%;
     // font-size: 14px;
@@ -502,10 +524,10 @@ export default {
   }
   .v-mark {
     position: absolute;
-    top: 0;
+    top: 80px;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 422px;
     z-index: 2;
   }
 }

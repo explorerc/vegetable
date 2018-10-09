@@ -14,8 +14,16 @@
         <!-- 报名活动 -->
         <template v-if="viewLimit.canAppoint === 'Y'">
           <!-- 报名未截止 -->
-          <com-countdown :time="activity.countDown"
-                         v-if="activity.isCountdown"></com-countdown>
+          <template v-if="activity.status === 'LIVING'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播中
+            </p>
+          </template>
+          <template v-else>
+            <com-countdown :time="activity.countDown"
+                           v-if="activity.isCountdown"></com-countdown>
+          </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
             <button class="primary-button">已报名</button>
@@ -44,8 +52,16 @@
       </template>
       <template v-else>
         <!-- 无限制活动 -->
-        <com-countdown :time="activity.countDown"
-                       v-if="activity.isCountdown"></com-countdown>
+        <template v-if="activity.status === 'LIVING'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播中
+          </p>
+        </template>
+        <template v-else>
+          <com-countdown :time="activity.countDown"
+                         v-if="activity.isCountdown"></com-countdown>
+        </template>
         <button class="primary-button"
                 v-if="user.isOrder">已预约</button>
         <template v-else>
@@ -64,8 +80,16 @@
       <template v-if="activity.viewCondition === 'APPOINT'">
         <!-- 报名活动 -->
         <template v-if="viewLimit.canAppoint === 'Y'">
-          <com-countdown :time="activity.countDown"
-                         v-if="activity.isCountdown"></com-countdown>
+          <template v-if="activity.status === 'LIVING'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播中
+            </p>
+          </template>
+          <template v-else>
+            <com-countdown :time="activity.countDown"
+                           v-if="activity.isCountdown"></com-countdown>
+          </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
             <!-- ！！！跳转观看页面 -->
@@ -185,17 +209,25 @@ export default {
       }).then((res) => {
         this.activity.viewCondition = res.data.activity.viewCondition
         this.activity.status = res.data.activity.status
-        this.activity.title = res.data.activity.title
+        this.activity.title = res.data.guide ? res.data.guide.title : ''
+        this.activity.description = res.data.guide ? res.data.guide.description : ''
         this.activity.countDown = res.data.activity.countDown
-        this.activity.description = res.data.activity.description
-        this.activity.isCountdown = res.data.guide.showType === 'COUNTDOWN'
+        this.activity.isCountdown = res.data.guide ? res.data.guide.showType === 'COUNTDOWN' : false
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
         if (res.data.viewLimit.canAppoint) {
           this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
           this.viewLimit.finishTime = res.data.viewLimit.finishTime
         }
-        if (this.activity.countDown < 1800) {
+        if (this.activity.status === 'LIVING') {
+          if (this.activity.viewCondition === 'APPOINT') {
+            if (this.user.isApplay) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            }
+          } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          }
+        } else if (this.activity.countDown < 1800) {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
@@ -212,15 +244,6 @@ export default {
               clearInterval(interval)
             }
           }, 1000)
-        }
-        if (this.activity.status === 'LIVING') {
-          if (this.activity.viewCondition === 'APPOINT') {
-            if (this.user.isApplay) {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            }
-          } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
-            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-          }
         }
       }).catch((err) => {
         this.$messageBox({
@@ -288,6 +311,10 @@ export default {
   }
   .v-operation {
     text-align: center;
+  }
+  .v-living {
+    font-size: 40px;
+    color: #fc5659;
   }
   img {
     display: block;

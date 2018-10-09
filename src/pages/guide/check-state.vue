@@ -216,18 +216,14 @@ export default {
         this.activity.viewCondition = res.data.activity.viewCondition
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
-        if (this.activity.countDown < 1800) {
+        if (this.activity.status === 'LIVING') {
           if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           } else if (this.activity.viewCondition === 'NONE') {
-            if (this.user.isOrder) {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else {
-              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-            }
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
         }
-        if (this.activity.status === 'LIVING') {
+        if (this.activity.countDown < 1800) {
           if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           } else if (this.activity.viewCondition === 'NONE') {

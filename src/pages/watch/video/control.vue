@@ -207,7 +207,7 @@ export default {
     }
   }
   .auto-box {
-    margin: 24px 10px;
+    padding: 24px 10px;
     .mode-item {
       position: relative;
       display: inline-block;

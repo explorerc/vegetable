@@ -56,20 +56,21 @@ export default {
       this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
-        document.title = res.data.guide.title
-        this.imgUrl = res.data.guide.imgUrl
-      }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-            }
-          }
-        })
+        document.title = res.data.guide ? res.data.guide.title : res.data.activity.title
+        this.imgUrl = res.data.guide ? res.data.guide.imgUrl : ''
       })
+      // .catch((err) => {
+      //   this.$messageBox({
+      //     header: '提示',
+      //     content: err.msg,
+      //     confirmText: '确定',
+      //     handleClick: (e) => {
+      //       if (e.action === 'cancel') {
+      //       } else if (e.action === 'confirm') {
+      //       }
+      //     }
+      //   })
+      // })
     },
     async share () { // 微信分享
       let _url = window.location.href

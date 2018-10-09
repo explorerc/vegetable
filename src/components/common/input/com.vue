@@ -206,7 +206,7 @@ export default {
     display: inline-block;
     width: 100%;
     height: 100%;
-    font-size: 14px;
+    font-size: 28px;
     line-height: 40px;
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;

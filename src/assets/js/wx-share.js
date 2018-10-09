@@ -1,7 +1,7 @@
 import wx from 'weixin-js-sdk'
 export default function wxShare (wxShare) {
   wx.config({
-    debug: false,
+    debug: true,
     appId: wxShare.wxShareData.appId,
     timestamp: wxShare.wxShareData.timestamp,
     nonceStr: wxShare.wxShareData.nonceStr,
@@ -34,8 +34,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareTimeline({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareDatadesc,
-      link:
-        wxShare.shareDatalink +
+      link: wxShare.shareDatalink +
         (wxShare.shareUser.share_id
           ? '?shareId=' + wxShare.shareUser.share_id + '-3'
           : ''), // 分享链接
@@ -50,8 +49,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareAppMessage({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.desc,
-      link:
-        wxShare.shareData.link +
+      link: wxShare.shareData.link +
         (wxShare.shareUser.share_id
           ? '?shareId=' + wxShare.shareUser.share_id + '-3'
           : ''), // 分享链接
@@ -66,8 +64,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareQQ({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.desc,
-      link:
-        wxShare.shareData.link +
+      link: wxShare.shareData.link +
         (wxShare.shareUser.share_id
           ? '?shareId=' + wxShare.shareUser.share_id + '-2'
           : ''), // 分享链接
@@ -82,8 +79,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareWeibo({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.desc,
-      link:
-        wxShare.shareData.link +
+      link: wxShare.shareData.link +
         (wxShare.shareUser.share_id
           ? '?shareId=' + wxShare.shareUser.share_id + '-1'
           : ''), // 分享链接
@@ -98,8 +94,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareQZone({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.desc,
-      link:
-        wxShare.shareData.link +
+      link: wxShare.shareData.link +
         (wxShare.shareUser.share_id
           ? '?shareId=' + wxShare.shareUser.share_id + '-2'
           : ''), // 分享链接

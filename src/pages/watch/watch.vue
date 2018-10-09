@@ -29,11 +29,12 @@
     <message-box v-show="subscribeShow"
                  @handleClick="subscribeClick($event)">
       <div slot="header"></div>
-      <img src="../../assets/image/qq.png"
+      <img v-if="defaultImg"
+           :src="defaultImg"
            alt=""
            class="v-logo">
       <p class="v-title">
-        北京微吼时代科技有限公司
+        {{companyName}}
       </p>
       <div class="v-from">
         <p class="v-explain">
@@ -89,8 +90,10 @@ export default {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
       activityId: '',
+      companyName: '',
       playType: '', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
+      imgUrl: '',
       currentView: Empty,
       vhallParams: {
         token: '',
@@ -144,6 +147,9 @@ export default {
     },
     activityStatus: function () {
       return this.activityInfo.statusName
+    },
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
     }
   },
   created () {
@@ -161,10 +167,16 @@ export default {
         if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
           that.domShow = false
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '50% 50%'
+          document.getElementsByClassName('control-box-div')[0].style['top'] = 'auto'
+          document.getElementsByClassName('control-box-div')[0].style['bottom'] = '0'
 
           // alert("123");仅alert纯文本可以正常运行
         } else {
           that.domShow = true
+          document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
+          document.getElementsByClassName('control-box-div')[0].style['bottom'] = 'auto'
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
         }
         // window.location.reload();
       },
@@ -257,6 +269,8 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         document.title = res.data.activity.title
+        this.companyName = res.data.businessUserInfo.company
+        this.imgUrl = res.data.businessUserInfo.avatar
         activityInfo = { ...activityInfo, ...res.data.activity }
         joinInfo = res.data.joinInfo
         activityInfo.setting = res.data.setting
@@ -370,7 +384,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-watch /deep/ {
+  position: relative;
+  height: 100%;
   .v-hearder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
     width: 100%;
     height: 80px;
     background-color: #fff;
@@ -408,6 +428,8 @@ export default {
     position: absolute;
     top: 502px;
     bottom: 0;
+    z-index: 3;
+    background-color: #fff;
     .v-nav {
       width: 100%;
       height: 100%;

@@ -253,7 +253,7 @@ export default {
   video {
     width: 100%;
     height: 422px;
-    object-fit: fill;
+    object-fit: contain;
   }
   p {
     color: red;
