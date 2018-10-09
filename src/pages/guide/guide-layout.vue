@@ -31,9 +31,9 @@ export default {
         },
         shareData: {
           title: '', // 分享标题
-          desc: '', // 分享简介
-          link: '', // 分享链接
-          imgUrl: '' // 分享图片
+          shareDatadesc: '', // 分享简介
+          shareDatalink: '', // 分享链接
+          shareDataimgUrl: '' // 分享图片
         },
         shareUser: {
           shareId: '' // 分享者id
@@ -77,7 +77,7 @@ export default {
       // if (this.joinInfo.activityUserId) {
       //   _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       // }
-      this.wxShare.shareData.link = _url
+      this.wxShare.shareData.shareDatalink = _url
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
         url: _url
       }).then((res) => {
@@ -92,8 +92,8 @@ export default {
       }).then((res) => {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
-          this.wxShare.shareData.desc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+          this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? res.data.imgUrl : ''
         }
       })
       wxShareFunction(this.wxShare)
