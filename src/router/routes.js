@@ -32,6 +32,8 @@ const SiteTemplate = () =>
   import('src/pages/site/template.vue')
 const kicked = () =>
   import('src/pages/watch/kicked')
+const userInfo = () =>
+  import('src/pages/user/info')
 
 export default [{
   path: '/',
@@ -92,5 +94,10 @@ export default [{
   path: '/kicked',
   name: 'kicked',
   component: kicked
+},
+{
+  path: '/userInfo',
+  name: 'userInfo',
+  component: userInfo
 }
 ]
