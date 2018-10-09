@@ -455,7 +455,7 @@ export default {
     background-color: #313131;
     img {
       width: 100%;
-      height: 100%;
+      height: 422px;
     }
     .vjs-big-play-button {
       display: none;
