@@ -35,8 +35,8 @@ export default function wxShare (wxShare) {
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareDatadesc,
       link: wxShare.shareDatalink +
-        (wxShare.shareUser.share_id
-          ? '?shareId=' + wxShare.shareUser.share_id + '-3'
+        (wxShare.shareUser.shareId
+          ? '?shareId=' + wxShare.shareUser.shareId + '-3'
           : ''), // 分享链接
       imgUrl: wxShare.shareDataimgUrl, // 分享图标
       success: function () {
@@ -48,12 +48,12 @@ export default function wxShare (wxShare) {
     })
     wx.onMenuShareAppMessage({
       title: wxShare.shareData.title, // 分享标题
-      desc: wxShare.shareData.desc,
-      link: wxShare.shareData.link +
-        (wxShare.shareUser.share_id
-          ? '?shareId=' + wxShare.shareUser.share_id + '-3'
+      desc: wxShare.shareData.shareDatadesc,
+      link: wxShare.shareData.shareDatalink +
+        (wxShare.shareUser.shareId
+          ? '?shareId=' + wxShare.shareUser.shareId + '-3'
           : ''), // 分享链接
-      imgUrl: wxShare.shareData.imgUrl, // 分享图标
+      imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
       },
@@ -63,12 +63,12 @@ export default function wxShare (wxShare) {
     })
     wx.onMenuShareQQ({
       title: wxShare.shareData.title, // 分享标题
-      desc: wxShare.shareData.desc,
-      link: wxShare.shareData.link +
-        (wxShare.shareUser.share_id
-          ? '?shareId=' + wxShare.shareUser.share_id + '-2'
+      desc: wxShare.shareData.shareDatadesc,
+      link: wxShare.shareData.shareDatalink +
+        (wxShare.shareUser.shareId
+          ? '?shareId=' + wxShare.shareUser.shareId + '-2'
           : ''), // 分享链接
-      imgUrl: wxShare.shareData.imgUrl, // 分享图标
+      imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
       },
@@ -78,12 +78,12 @@ export default function wxShare (wxShare) {
     })
     wx.onMenuShareWeibo({
       title: wxShare.shareData.title, // 分享标题
-      desc: wxShare.shareData.desc,
-      link: wxShare.shareData.link +
-        (wxShare.shareUser.share_id
-          ? '?shareId=' + wxShare.shareUser.share_id + '-1'
+      desc: wxShare.shareData.shareDatadesc,
+      link: wxShare.shareData.shareDatalink +
+        (wxShare.shareUser.shareId
+          ? '?shareId=' + wxShare.shareUser.shareId + '-1'
           : ''), // 分享链接
-      imgUrl: wxShare.shareData.imgUrl, // 分享图标
+      imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
       },
@@ -93,12 +93,12 @@ export default function wxShare (wxShare) {
     })
     wx.onMenuShareQZone({
       title: wxShare.shareData.title, // 分享标题
-      desc: wxShare.shareData.desc,
-      link: wxShare.shareData.link +
-        (wxShare.shareUser.share_id
-          ? '?shareId=' + wxShare.shareUser.share_id + '-2'
+      desc: wxShare.shareData.shareDatadesc,
+      link: wxShare.shareData.shareDatalink +
+        (wxShare.shareUser.shareId
+          ? '?shareId=' + wxShare.shareUser.shareId + '-2'
           : ''), // 分享链接
-      imgUrl: wxShare.shareData.imgUrl, // 分享图标
+      imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
       },
