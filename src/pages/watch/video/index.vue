@@ -31,7 +31,7 @@
        @click="playVideo"></i>
     <div class="control-box-div">
       <div class="control-video-box"
-           v-if="(playType=='vod'&&!outLineLink)||playType=='warm'">
+           v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || playType=='vod'">
         <video-control :currentTime="currentTime"
                        :totalTime="totalTime"
                        :qualitys="qualitys"
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <img v-if="imageSrc && !isPlay"
+    <img v-if="imageSrc && !isPlay && (playType=='live' || playType=='warm')"
          :src="imageSrc"
          class="v-mark"
          @click="startPlay">
