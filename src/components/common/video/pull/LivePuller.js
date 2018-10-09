@@ -18,12 +18,23 @@ export default class LivePuller extends BasePuller {
     // let VhallSDK = window.Vhall
     // let VhallPlayer = window.VhallPlayer
     console.log('1调用初始化拉流器')
+    let u = navigator.userAgent
+    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+    let _videoAttr = {}
+    if (!isiOS) {
+      _videoAttr = {
+        'x5-video-player-type': 'h5',
+        'x5-video-orientation': 'portrait',
+        'x5-video-player-fullscreen': false
+      }
+    }
     window.Vhall.ready(() => {
       console.log('2SDK初始化完成')
       window.VhallPlayer.init({
         roomId: this.roomId,
         type: 'live',
         videoNode: this.rootEleId,
+        videoAttr: _videoAttr,
         complete: () => {
           console.log('3播放器初始化完成')
           completionBK && completionBK()
