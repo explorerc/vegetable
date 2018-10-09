@@ -43,7 +43,9 @@ export default {
     }
   },
   created: function () {
-    this.share()
+    if (this.isWx()) {
+      this.share()
+    }
     this.getInfo()
   },
   computed: {
@@ -97,6 +99,14 @@ export default {
         }
       })
       wxShareFunction(this.wxShare)
+    },
+    isWx () {
+      var ua = navigator.userAgent.toLowerCase()
+      var isWeixin = ua.indexOf('micromessenger') !== -1
+      if (isWeixin) {
+        return true
+      }
+      return false
     }
   }
 }

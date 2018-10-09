@@ -54,7 +54,9 @@ export default {
   },
   mounted () {
     this.init()
-    this.shareFunction()
+    if (this.isWx()) {
+      this.shareFunction()
+    }
   },
   computed: {
     ...mapState('liveMager', {
@@ -118,6 +120,14 @@ export default {
         }
       })
       wxShareFunction(this.wxShare)
+    },
+    isWx () {
+      var ua = navigator.userAgent.toLowerCase()
+      var isWeixin = ua.indexOf('micromessenger') !== -1
+      if (isWeixin) {
+        return true
+      }
+      return false
     }
   }
 }
