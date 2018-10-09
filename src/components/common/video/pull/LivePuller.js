@@ -13,7 +13,8 @@ export default class LivePuller extends BasePuller {
     this.roomId = roomId
   }
 
-  initLivePlayer (autoplay = false, completionBK = null) {
+  initLivePlayer (autoplay = false, isAndroid = false, completionBK = null) {
+    alert(isAndroid)
     // let VhallSDK = window.Vhall
     // let VhallPlayer = window.VhallPlayer
     console.log('1调用初始化拉流器')

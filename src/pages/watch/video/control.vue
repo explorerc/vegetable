@@ -192,7 +192,6 @@ export default {
   height: 80px;
   line-height: 80px;
   animation: control-animation-hide 1s linear;
-  background-color: rgba(0, 0, 0, 0.75);
   text-align: left;
   color: #fff;
   .time-box {

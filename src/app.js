@@ -57,7 +57,8 @@ window.Vhall.ready = fn => {
 }
 
 ready(() => {
-  for (let i = 0, item; (item = callback[i++]);) {
+  for (let i = 0, item;
+    (item = callback[i++]);) {
     item()
   }
   callback = []

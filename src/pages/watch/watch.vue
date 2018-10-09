@@ -161,10 +161,16 @@ export default {
         if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
           that.domShow = false
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '50% 50%'
+          document.getElementsByClassName('control-box-div')[0].style['top'] = 'auto'
+          document.getElementsByClassName('control-box-div')[0].style['bottom'] = '0'
 
           // alert("123");仅alert纯文本可以正常运行
         } else {
           that.domShow = true
+          document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
+          document.getElementsByClassName('control-box-div')[0].style['bottom'] = 'auto'
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
         }
         // window.location.reload();
       },
@@ -370,7 +376,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-watch /deep/ {
+  position: relative;
+  height: 100%;
   .v-hearder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
     width: 100%;
     height: 80px;
     background-color: #fff;
@@ -408,6 +420,8 @@ export default {
     position: absolute;
     top: 502px;
     bottom: 0;
+    z-index: 3;
+    background-color: #fff;
     .v-nav {
       width: 100%;
       height: 100%;

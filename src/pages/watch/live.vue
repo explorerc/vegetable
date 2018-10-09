@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="v-video-box">
     <div class="v-video">
       <play-video role="watcher"
                   :play-type="playType"
@@ -219,9 +219,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.v-video-box {
+  width: 100%;
+  height: 100%;
+}
 .v-video /deep/ {
   width: 100%;
-  height: 422px;
+  height: 100%;
   position: relative;
   overflow: hidden;
   .v-text {
@@ -229,6 +233,10 @@ export default {
     top: 20px;
     left: 20px;
     z-index: 2;
+  }
+  video {
+    width: 100%;
+    height: 422px;
   }
   #my-puller {
     width: 100%;
@@ -264,7 +272,7 @@ export default {
   video {
     width: 100%;
     height: 422px;
-    object-fit: fill;
+    object-fit: contain;
   }
   p {
     color: red;
