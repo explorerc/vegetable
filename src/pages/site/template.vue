@@ -84,6 +84,19 @@ export default {
         this.$config({ loading: true }).$get(activityService.GET_TEMPLATE, {
           activityId: this.tid
         }).then((res) => {
+          if (!res.data.value || res.data.enabled === 'N') {
+            this.$messageBox({
+              header: '提示',
+              content: '官网暂未设定',
+              confirmText: '确定',
+              handleClick: (e) => {
+                if (e.action === 'cancel') {
+                } else if (e.action === 'confirm') {
+                }
+              }
+            })
+            return false
+          }
           let data = JSON.parse(res.data.value)
           this.com = `t${data.tid}`
           data.editAble = true

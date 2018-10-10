@@ -18,7 +18,8 @@
     <div class="play-video-box"
          :id="playBoxId"
          v-else-if="playType=='end'">
-      <span class="end-box">直播已结束</span>
+      <img v-if="imageSrc"
+           :src="imageSrc">
     </div>
     <div class="play-video-box"
          :id="playBoxId"

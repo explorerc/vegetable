@@ -108,6 +108,7 @@ export default {
       email: '', // 订阅邮箱
       errorTips: '', // 邮箱验证错误提示
       successShow: false, // 订阅成功显示框
+      isShowSite: '', // 是否开启官网
       wxShare: { // 微信分享数据
         wxShareData: {
           appId: '',
@@ -261,9 +262,10 @@ export default {
     },
     async initPage () {
       await this.initRoomPaas()
-      if (this.isWx()) {
-        this.share()
-      }
+      // if (this.isWx()) {
+      //   this.share()
+      // }
+      this.share()
       /* 查询详情 */
       let activityInfo = null
       let joinInfo = null
@@ -299,6 +301,17 @@ export default {
         } else {
           this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
         }
+      }).catch((err) => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
       })
       /* 查询真实在线人数 */
       await this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
