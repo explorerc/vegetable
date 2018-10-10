@@ -262,10 +262,9 @@ export default {
     },
     async initPage () {
       await this.initRoomPaas()
-      // if (this.isWx()) {
-      //   this.share()
-      // }
-      this.share()
+      if (this.isWx()) {
+        this.share()
+      }
       /* 查询详情 */
       let activityInfo = null
       let joinInfo = null
@@ -367,10 +366,6 @@ export default {
     },
     async share () { // 微信分享
       let _url = window.location.href
-      if (this.joinInfo.activityUserId) {
-        _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
-      }
-      this.wxShare.shareData.shareDatalink = _url
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
         url: _url
       }).then((res) => {
@@ -384,6 +379,11 @@ export default {
         param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
+          let _shareLink = _url
+          if (this.joinInfo.activityUserId) {
+            _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
+          }
+          this.wxShare.shareData.shareDatalink = _shareLink
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? this.$imgHost + '/' + res.data.imgUrl : ''
