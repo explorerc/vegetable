@@ -93,6 +93,7 @@ export default {
         this.activity.countDown = res.data.activity.countDown
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
+        debugger
         if ((this.activity.status === 'LIVING' || this.activity.countDown <= 1799) && !res.data.viewLimit.canAppoint) {
           if (this.activity.viewCondition === 'APPOINT') {
             if (res.data.joinInfo.isApplay) {
