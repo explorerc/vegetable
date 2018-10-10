@@ -134,6 +134,7 @@ export default {
       height: 90px;
       border-radius: 50px;
       margin: 35px auto;
+      font-size: 22px;
     }
     .v-registered {
       font-size: 22px;

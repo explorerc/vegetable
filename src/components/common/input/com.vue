@@ -194,7 +194,7 @@ export default {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 100%;
+  height: 90px;
   .error-msg {
     display: block;
     position: absolute;
@@ -205,7 +205,7 @@ export default {
   input {
     display: inline-block;
     width: 100%;
-    height: 100%;
+    height: 90px;
     font-size: 28px;
     line-height: 40px;
     color: rgba(0, 0, 0, 0.65);
