@@ -17,7 +17,7 @@
           <template v-if="activity.status === 'LIVING'">
             <p class="v-living"
                v-if="activity.isCountdown">
-              直播中
+              直播正在进行中
             </p>
           </template>
           <template v-else>
@@ -55,7 +55,7 @@
         <template v-if="activity.status === 'LIVING'">
           <p class="v-living"
              v-if="activity.isCountdown">
-            直播中
+            直播正在进行中
           </p>
         </template>
         <template v-else>
@@ -83,7 +83,7 @@
           <template v-if="activity.status === 'LIVING'">
             <p class="v-living"
                v-if="activity.isCountdown">
-              直播中
+              直播正在进行中
             </p>
           </template>
           <template v-else>

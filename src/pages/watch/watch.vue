@@ -262,9 +262,10 @@ export default {
     },
     async initPage () {
       await this.initRoomPaas()
-      if (this.isWx()) {
-        this.share()
-      }
+      this.share()
+      // if (this.isWx()) {
+      //   this.share()
+      // }
       /* 查询详情 */
       let activityInfo = null
       let joinInfo = null
