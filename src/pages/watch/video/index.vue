@@ -243,10 +243,8 @@ export default {
     playBackVideo () {
       this.$nextTick(() => {
         if (!this.recordId) return
-        let u = navigator.userAgent
-        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
         let _videoAttr = {}
-        if (!isiOS) {
+        if (!this.isX5()) {
           _videoAttr = {
             'x5-video-player-type': 'h5',
             'x5-video-orientation': 'portrait',
