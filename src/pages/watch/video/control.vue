@@ -5,8 +5,9 @@
     <!--<span>{{currentDate}}</span>/<span>{{allDate}}</span>-->
     <!--</div>-->
     <div class="auto-box"
-         style="display:flex;">
-      <div class="mode-item fl">
+         :style="{display:displayStatus}">
+      <div class="mode-item fl"
+           v-if="playType!='live'">
         <i v-if="!isPlay"
            @click="playEvent(true)"
            class="iconfont icon-bofang_icon"
@@ -16,12 +17,14 @@
            class="iconfont icon-zanting_icon"
            title="播放"></i>
       </div>
-      <div class="mode-item time-box">
+      <div class="mode-item time-box"
+           v-if="playType!='live'">
         <span>{{currentDate}}</span>
         <span>/{{allDate}}</span>
       </div>
       <div class="mode-item"
-           style="flex:1;">
+           style="flex:1;"
+           v-if="playType!='live'">
         <div class="progress-box">
           <el-slider v-model="progress"
                      :format-tooltip="formatTooltip"
@@ -29,7 +32,8 @@
         </div>
       </div>
       <div class="mode-item fr"
-           @click="overEvent">
+           @click="overEvent"
+           v-if="playType!='live'">
         <span class="quality-info">画质</span>
         <transition name="fade">
           <div class="qualitys-box"
@@ -95,7 +99,8 @@ export default {
       current: 0,
       progress: 0,
       controlBoxIsShow: true, // 是否显示控制条
-      interval: null // 倒计时
+      interval: null, // 倒计时
+      displayStatus: ''
     }
   },
   computed: {
@@ -121,6 +126,11 @@ export default {
     qualitys: {
       type: Array,
       default: ['same']
+    },
+    playType: {
+      type: String,
+      required: true,
+      default: '' // 直播(live), 回放(vod), 暖场(warm), 结束(end)
     }
   },
   watch: {
@@ -144,6 +154,9 @@ export default {
     },
     selectQuality (newVal) {
       this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
+    },
+    playType (newVal) {
+      this.displayStatus = newVal === 'live' ? 'block' : 'flex'
     }
   },
   methods: {
@@ -167,9 +180,11 @@ export default {
       this.changeControl(controlTypes.mute, this.mute)
     },
     overEvent () {
+      // debugger
       this.showQualityBlock = true
     },
     outEvent () {
+      // debugger
       this.showQualityBlock = false
     },
     playEvent (type) {
