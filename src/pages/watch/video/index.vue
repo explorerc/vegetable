@@ -244,7 +244,6 @@ export default {
       this.$nextTick(() => {
         if (!this.recordId) return
         let _videoAttr = {}
-        alert(this.isX5())
         if (this.isX5()) {
           _videoAttr = {
             'x5-video-player-type': 'h5',
@@ -261,10 +260,14 @@ export default {
             complete: () => {
               this.playBtnShow = false
               this.qualitys = window.VhallPlayer.getQualitys()
-              document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
-                document.getElementsByClassName('icon-zanting_icon')[0].click()
-              })
-              document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
+              if (this.isX5()) {
+                document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
+                document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
+                  document.getElementsByClassName('icon-zanting_icon')[0].click()
+                })
+              } else {
+                document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
+              }
               // window.VhallPlayer.play()
               // this.dealWithVideo()
             }
@@ -453,7 +456,6 @@ export default {
     },
     isX5 () {
       let u = navigator.userAgent
-      alert(u)
       let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
       if (!isiOS && (u.match(/MicroMessenger/i) === 'micromessenger' || u.match(/QQ/i) === 'qq')) {
         return true
