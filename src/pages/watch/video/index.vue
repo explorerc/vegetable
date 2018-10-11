@@ -34,10 +34,11 @@
          @click="modalClick"></div>
     <div class="control-box-div">
       <div class="control-video-box"
-           v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || playType=='vod'">
+           v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')">
         <video-control :currentTime="currentTime"
                        :totalTime="totalTime"
                        :qualitys="qualitys"
+                       :playType="playType"
                        ref="mychild"
                        @control="playControl"></video-control>
       </div>
