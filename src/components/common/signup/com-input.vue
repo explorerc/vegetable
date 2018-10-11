@@ -71,6 +71,7 @@ export default {
   }
   .v-input {
     display: block;
+    height: 90px;
     line-height: 88px;
     width: 100%;
     border: 1px solid #ccc;

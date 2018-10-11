@@ -222,6 +222,8 @@ export default {
 .v-video-box {
   width: 100%;
   height: 100%;
+  position: relative;
+  flex: 1;
 }
 .v-video /deep/ {
   width: 100%;

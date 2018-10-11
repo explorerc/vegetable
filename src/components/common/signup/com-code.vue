@@ -136,7 +136,7 @@ export default {
         }, 1000)
       }).catch((err) => {
         if (err.code === 10050) {
-          this.$emit('update:errorMsg', '验证码输入过于频繁')
+          this.$emit('update:errorMsg', '验证码发送过于频繁')
         } else if (err.code !== 200) {
           this.$emit('update:errorMsg', err.msg)
         }

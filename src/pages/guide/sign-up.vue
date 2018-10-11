@@ -256,13 +256,25 @@ export default {
         }
         this.appointIsClick = false
         this.$config({ handlers: true }).$post(activityService.POST_QUESTIONINFO, data).then((res) => {
-          this.$router.replace('/Success/' + this.$route.params.id)
+          if (this.activity.status === 'LIVING') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else if (this.activity.countDown < 1800) {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else {
+            this.$router.replace('/Success/' + this.$route.params.id)
+          }
         }).catch((err) => {
           if (err.code === 10020) {
             this.appointIsClick = true
             this.codeError = '请输入正确验证码'
           } else if (err.code === 12002) {
-            this.$router.replace('/Success/' + this.$route.params.id)
+            if (this.activity.status === 'LIVING') {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else if (this.activity.countDown < 1800) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.$router.replace('/Success/' + this.$route.params.id)
+            }
           } else {
             this.appointIsClick = true
             this.$messageBox({
@@ -297,7 +309,13 @@ export default {
         activityId: this.$route.params.id
       }
       this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
-        this.$router.replace('/Success/' + this.$route.params.id)
+        if (this.activity.status === 'LIVING') {
+          this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+        } else if (this.activity.countDown < 1800) {
+          this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+        } else {
+          this.$router.replace('/Success/' + this.$route.params.id)
+        }
       }).catch((err) => {
         this.isClick = true
         this.$messageBox({
@@ -342,7 +360,27 @@ export default {
                 activityId: this.$route.params.id
               }).then((res) => {
                 if (res.data.joinInfo.isOrder) {
-                  this.$router.replace('/Success/' + this.$route.params.id)
+                  this.user.isApplay = res.data.joinInfo.isApplay
+                  this.user.isOrder = res.data.joinInfo.isOrder
+                  if (this.activity.status === 'LIVING') {
+                    if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
+                      this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+                    } else if (this.activity.viewCondition === 'NONE') {
+                      this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+                    }
+                  } else if (this.activity.countDown < 1800) {
+                    if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
+                      this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+                    } else if (this.activity.viewCondition === 'NONE') {
+                      if (this.user.isOrder) {
+                        this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+                      } else {
+                        this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+                      }
+                    }
+                  } else {
+                    this.$router.replace('/Success/' + this.$route.params.id)
+                  }
                 } else {
                   this.subScribe()
                 }

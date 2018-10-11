@@ -8,10 +8,12 @@
       </span>
       <span class="v-onlineNum"
             v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
-      <a v-if="loginInfo"
-         :href="`/m/site/${activityId}`"
-         class="fr v-my">
-        <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
+      <template v-if="loginInfo">
+        <a v-if="isShowSite"
+           :href="`/m/site/${activityId}`"
+           class="fr v-my">
+          <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
+      </template>
       <a v-else
          href="javascript:;"
          @click="doLogin()"
@@ -177,7 +179,7 @@ export default {
           that.domShow = true
           document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
           document.getElementsByClassName('control-box-div')[0].style['bottom'] = 'auto'
-          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
+          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
         }
         // window.location.reload();
       },
@@ -274,6 +276,7 @@ export default {
         document.title = res.data.activity.title
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar
+        this.isShowSite = res.data.template
         activityInfo = { ...activityInfo, ...res.data.activity }
         joinInfo = res.data.joinInfo
         activityInfo.setting = res.data.setting
@@ -410,11 +413,9 @@ export default {
 .v-watch /deep/ {
   position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   .v-hearder {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
     width: 100%;
     height: 80px;
     background-color: #fff;
@@ -450,7 +451,7 @@ export default {
   .v-function-box {
     width: 100%;
     position: absolute;
-    top: 502px;
+    top: 422px;
     bottom: 0;
     z-index: 3;
     background-color: #fff;
@@ -591,8 +592,7 @@ export default {
       }
     }
     .v-from {
-      width: 528px;
-      margin: 60px auto 70px;
+      margin: 60px 15px 70px;
       .v-explain {
         text-align: left;
         word-break: break-all;
@@ -621,6 +621,7 @@ export default {
         height: 94px;
         line-height: 94px;
         border-radius: 8px;
+        font-size: 28px;
       }
     }
   }
