@@ -31,7 +31,8 @@
        v-if="playBtnShow"
        @click="playVideo"></i>
     <div class="v-click-modal"
-         @click="modalClick"></div>
+         @click="modalClick"
+         v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')"></div>
     <div class="control-box-div">
       <div class="control-video-box"
            v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')">

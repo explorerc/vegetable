@@ -167,9 +167,7 @@ export default {
     window.addEventListener(
       'onorientationchange' in window ? 'orientationchange' : 'resize',
       function () {
-        alert(1)
         if (window.orientation === 90 || window.orientation === -90) {
-          alert(2)
           // 想把下面的alert换成能够控制v-show的代码
           that.domShow = false
           document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '50% 50%'
@@ -178,7 +176,6 @@ export default {
 
           // alert("123");仅alert纯文本可以正常运行
         } else {
-          alert(3)
           that.domShow = true
           document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
           document.getElementsByClassName('control-box-div')[0].style['bottom'] = 'auto'
