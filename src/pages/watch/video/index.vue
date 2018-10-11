@@ -244,7 +244,7 @@ export default {
       this.$nextTick(() => {
         if (!this.recordId) return
         let _videoAttr = {}
-        if (!this.isX5()) {
+        if (this.isX5()) {
           _videoAttr = {
             'x5-video-player-type': 'h5',
             'x5-video-orientation': 'portrait',
@@ -473,7 +473,6 @@ export default {
     img {
       width: 100%;
       height: 422px;
-      margin-top: 80px;
     }
     .vjs-big-play-button {
       display: none;
