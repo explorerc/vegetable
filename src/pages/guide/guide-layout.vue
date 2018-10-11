@@ -134,10 +134,10 @@ export default {
       height: 90px;
       border-radius: 50px;
       margin: 35px auto;
-      font-size: 22px;
+      font-size: 32px;
     }
     .v-registered {
-      font-size: 22px;
+      font-size: 32px;
       text-align: center;
       display: block;
       margin: 15px auto 0;

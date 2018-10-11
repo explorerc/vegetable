@@ -30,12 +30,15 @@
     <i class="iconfont icon-bofang"
        v-if="playBtnShow"
        @click="playVideo"></i>
+    <div class="v-click-modal"
+         @click="modalClick"></div>
     <div class="control-box-div">
       <div class="control-video-box"
            v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || playType=='vod'">
         <video-control :currentTime="currentTime"
                        :totalTime="totalTime"
                        :qualitys="qualitys"
+                       ref="mychild"
                        @control="playControl"></video-control>
       </div>
     </div>
@@ -262,7 +265,7 @@ export default {
               document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
                 document.getElementsByClassName('icon-zanting_icon')[0].click()
               })
-              document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
+              document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
               // window.VhallPlayer.play()
               // this.dealWithVideo()
             }
@@ -311,10 +314,14 @@ export default {
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
         this.playComps.initLivePlayer(true, true, () => {
-          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0px 10.667vw'
-          document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
-            document.getElementsByClassName('icon-zanting_icon')[0].click()
-          })
+          if (this.isX5()) {
+            document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
+            document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
+              document.getElementsByClassName('icon-zanting_icon')[0].click()
+            })
+          } else {
+            document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
+          }
           console.log('----------开始播放----------')
         })
         this.playComps.accountId = this.roomPaas.accountId
@@ -441,6 +448,17 @@ export default {
       if (window.playComps) window.playComps.destroy()
       // 回放和暖场视频
       if (window.VhallPlayer) window.VhallPlayer.destroy()
+    },
+    modalClick () {
+      this.$refs.mychild.changeControlStatus()
+    },
+    isX5 () {
+      let u = navigator.userAgent
+      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+      if (!isiOS && (u.match(/MicroMessenger/i) === 'micromessenger' || u.match(/QQ/i) === 'qq')) {
+        return true
+      }
+      return false
     }
   }
 }
@@ -485,10 +503,18 @@ export default {
       opacity: 0.8;
     }
   }
+  .v-click-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 422px;
+    z-index: 2;
+  }
   .control-box-div {
     position: absolute;
     left: 0;
-    top: 422px;
+    top: 342px;
     height: 80px;
     line-height: 80px;
     // background-color: rgba(0, 0, 0, 0.75);
@@ -526,11 +552,11 @@ export default {
   }
   .v-mark {
     position: absolute;
-    top: 80px;
+    top: 0;
     left: 0;
     width: 100%;
     height: 422px;
-    z-index: 2;
+    z-index: 3;
   }
 }
 </style>

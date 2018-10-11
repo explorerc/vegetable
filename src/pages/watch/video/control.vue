@@ -1,5 +1,6 @@
 <template>
-  <div class="control-box">
+  <div class="control-box"
+       v-if="controlBoxIsShow">
     <!--<div class="time-box">-->
     <!--<span>{{currentDate}}</span>/<span>{{allDate}}</span>-->
     <!--</div>-->
@@ -28,15 +29,14 @@
         </div>
       </div>
       <div class="mode-item fr"
-           @mouseover.stop="overEvent"
-           @mouseout.stop="outEvent">
+           @click="overEvent">
         <span class="quality-info">画质</span>
         <transition name="fade">
           <div class="qualitys-box"
                v-if="showQualityBlock">
             <span :class="{'quality-item':true,active:selectQuality==idx}"
                   v-for="(item,idx) in qualitys"
-                  @click="selectQuality=idx">{{item}}</span>
+                  @click.stop="selectQualityFn(idx)">{{item}}</span>
           </div>
         </transition>
       </div>
@@ -93,7 +93,9 @@ export default {
       showQualityBlock: false,
       selectQuality: 0,
       current: 0,
-      progress: 0
+      progress: 0,
+      controlBoxIsShow: true, // 是否显示控制条
+      interval: null // 倒计时
     }
   },
   computed: {
@@ -125,6 +127,9 @@ export default {
     currentTime: {
       handler (newVal) {
         this.current = newVal
+        if (newVal > 5 && newVal < 6) {
+          this.controlBoxIsShow = false
+        }
       },
       immediate: true
     },
@@ -136,6 +141,9 @@ export default {
     },
     volumeSize (newVal) {
       this.changeControl(controlTypes.volumeSize, newVal)
+    },
+    selectQuality (newVal) {
+      this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
     }
   },
   methods: {
@@ -180,6 +188,18 @@ export default {
       let m = ((cTime / 60 % 60 >> 0) + '').padStart(2, 0)
       let s = ((cTime % 60 >> 0) + '').padStart(2, 0)
       return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
+    },
+    selectQualityFn (idx) {
+      this.selectQuality = idx
+      this.outEvent()
+    },
+    changeControlStatus () {
+      this.controlBoxIsShow = true
+      clearInterval(this.interval)
+      this.interval = setInterval(() => {
+        this.controlBoxIsShow = false
+        clearInterval(this.interval)
+      }, 5000)
     }
   }
 }
@@ -270,12 +290,11 @@ export default {
         position: absolute;
         top: 0px;
         right: 5px;
-        width: 60px;
+        width: 80px;
         padding: 5px 0;
         text-align: center;
         transform: translateY(-100%);
         background-color: rgba(20, 20, 20, 0.5);
-        border-bottom: 4px solid rgba(255, 255, 255, 0.5);
         .quality-item {
           display: block;
           line-height: 30px;

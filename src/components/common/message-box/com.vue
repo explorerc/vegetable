@@ -86,7 +86,7 @@ export default {
     },
     width: {
       type: String,
-      default: '300px'
+      default: '80%'
     },
     type: { // prompt , error
       type: String,

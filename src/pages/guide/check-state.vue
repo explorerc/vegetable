@@ -84,10 +84,16 @@ export default {
       this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
         this.$router.replace('/guide/' + this.$route.params.id)
       }).catch((err) => {
-        if (err.code === 12001) {
-          this.$router.replace('/success/' + this.$route.params.id)
+        this.isClick = false
+        if (err.code === 12001 || err.code === 12002) {
+          if (this.activity.status === 'LIVING') {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else if (this.activity.countDown < 1800) {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          } else {
+            this.$router.replace('/Success/' + this.$route.params.id)
+          }
         } else {
-          this.isClick = false
           this.$messageBox({
             header: '提示',
             content: err.msg,
@@ -165,7 +171,13 @@ export default {
           if (err.code === 10020) {
             this.codeError = '请输入正确验证码'
           } else if (err.code === 12002) {
-            this.$router.replace('/Success/' + this.$route.params.id)
+            if (this.activity.status === 'LIVING') {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else if (this.activity.countDown < 1800) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.$router.replace('/Success/' + this.$route.params.id)
+            }
           } else {
             this.$messageBox({
               header: '提示',

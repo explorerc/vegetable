@@ -20,7 +20,7 @@ export default class LivePuller extends BasePuller {
     let u = navigator.userAgent
     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
     let _videoAttr = {}
-    if (!isiOS) {
+    if (!isiOS && (u.match(/MicroMessenger/i) === 'micromessenger' || u.match(/QQ/i) === 'qq')) {
       _videoAttr = {
         'x5-video-player-type': 'h5',
         'x5-video-orientation': 'portrait',
