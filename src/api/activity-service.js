@@ -19,5 +19,6 @@ export default {
   GET_CODE: '/common/message/send-code', // 获取验证码
   GET_TEMPLATE: '/frontend/live/template', // 获取获取活动官网数据
   GET_DEFAULEREPLAY: '/frontend/replay/default-replay', // 查询默认回放信息
-  GET_WARMINFO: '/frontend/live/warm-up' // 通过id获取暖场信息
+  GET_WARMINFO: '/frontend/live/warm-up', // 通过id获取暖场信息
+  GET_REG_SDK_INFO: '/frontend/channel/create-channel-token' // 获取聊天平道token
 }

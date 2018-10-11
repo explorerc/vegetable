@@ -25,12 +25,12 @@
 </template>
 <script>
 import loginMixin from 'components/login-mixin'
-import ChatService from '../../components/common/chat/ChatService.js'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 import ChatConfig from 'src/api/chat-config'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service'
+import ChatService from 'src/components/chat/ChatService.js'
 export default {
   mixins: [loginMixin],
   data () {
@@ -40,7 +40,8 @@ export default {
         viewCondition: '', // APPOINT是报名活动 NONE是无限制活动
         status: '', // 当前活动状态 LIVING 直播中
         startTime: '', // 当前活动开始时间
-        countDown: ''
+        countDown: '',
+        extChannel: '' // sdk消息频道
       },
       user: {
         phone: '', // 无条件观看用户手机
@@ -52,7 +53,8 @@ export default {
         appId: '',
         channelId: '',
         accountId: ''
-      }
+      },
+      visitorObj: {} // 游客信息
     }
   },
   mounted () {
@@ -75,10 +77,32 @@ export default {
       this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
     },
     initSdk () {
-      this.service = new ChatService()
-      this.service.init(this.vhallParams)
+      this.initMsgServe()
       // window.Vhall.ready(() => {
       // })
+    },
+    async initMsgServe () {
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+        this.visitorObj.visitorId = res.data
+      })
+      if (!this.extChannel) return false
+      const roomInfo = await this.$config({ handlers: true }).$post(activityService.GET_REG_SDK_INFO, {
+        thirdUserId: `visitor_${this.visitorObj.visitorId}`,
+        channel: this.extChannel
+      }).then((res) => {
+        return res.data
+      })
+      ChatService.OBJ.init({
+        accountId: roomInfo.accountId,
+        token: roomInfo.token,
+        appId: roomInfo.appId,
+        channelId: roomInfo.channelRoom
+      })
+      /* 监听微信测试发送成功消息 */
+      ChatService.OBJ.regHandler(ChatConfig.beginLive, (msg) => {
+        console.log(msg)
+        this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+      })
     },
     handleActivityStart (msg) {
       this.activity.countDown = 1799
@@ -93,6 +117,7 @@ export default {
         this.activity.countDown = res.data.activity.countDown
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
+        this.extChannel = res.data.activity.extChannelRoom
         if ((this.activity.status === 'LIVING' || this.activity.countDown <= 1799) && !res.data.viewLimit.canAppoint) {
           if (this.activity.viewCondition === 'APPOINT') {
             if (res.data.joinInfo.isApplay) {
@@ -124,7 +149,6 @@ export default {
               this.setChatParams(this.vhallParams)
               this.$nextTick(() => {
                 this.initSdk()
-                this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
               })
             })
           })
@@ -132,7 +156,6 @@ export default {
           this.vhallParams = this.chatParams
           this.$nextTick(() => {
             this.initSdk()
-            this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
           })
         }
       }

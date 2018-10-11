@@ -4,7 +4,8 @@
     <!--<div class="time-box">-->
     <!--<span>{{currentDate}}</span>/<span>{{allDate}}</span>-->
     <!--</div>-->
-    <div class="auto-box">
+    <div class="auto-box"
+         :style="{display: displayVal}">
       <div class="mode-item fl"
            v-if="playType!='live'">
         <i v-if="!isPlay"
@@ -110,6 +111,9 @@ export default {
     },
     rate () {
       return parseInt(100 * this.currentTime / this.totalTime)
+    },
+    displayVal () {
+      return this.playType === 'live' ? 'block' : 'flex'
     }
   },
   props: {
@@ -238,7 +242,6 @@ export default {
   }
   .auto-box {
     padding: 24px 10px;
-    display: flex;
     .mode-item {
       position: relative;
       display: inline-block;

@@ -36,7 +36,6 @@ export default class ChatService {
       })
       window.vhallChat = this.service
       this[msgHandler]()
-      console.log('初始化成功')
     })
     window.Vhall.config({
       appId: opts.appId,
@@ -67,14 +66,23 @@ export default class ChatService {
   }
 
   [msgHandler] () {
-    console.log('[chat]listening...')
+    window.vhallChat.join(msg => {
+      this[dispatchHandler]('Join', msg)
+    })
+
+    window.vhallChat.leave(msg => {
+      this[dispatchHandler]('Leave', msg)
+    })
+
     window.vhallChat.onCustomMsg(res => {
-      let { type, body } = JSON.parse(res)
+      let {
+        type,
+        body
+      } = JSON.parse(res)
       this[dispatchHandler](type, body)
     })
 
     window.vhallChat.on(res => {
-      // console.log('aaaaaaaaaaaaaaa', res)
       this[dispatchHandler]('chat', res)
     })
   }
