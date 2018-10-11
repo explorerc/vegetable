@@ -167,7 +167,9 @@ export default {
     window.addEventListener(
       'onorientationchange' in window ? 'orientationchange' : 'resize',
       function () {
+        alert(1)
         if (window.orientation === 90 || window.orientation === -90) {
+          alert(2)
           // 想把下面的alert换成能够控制v-show的代码
           that.domShow = false
           document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '50% 50%'
@@ -176,6 +178,7 @@ export default {
 
           // alert("123");仅alert纯文本可以正常运行
         } else {
+          alert(3)
           that.domShow = true
           document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
           document.getElementsByClassName('control-box-div')[0].style['bottom'] = 'auto'
@@ -245,7 +248,10 @@ export default {
         this.subscribeShow = false
       } else if (e.action === 'confirm') {
         let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
-        if (this.email && !reg.test(this.email)) {
+        if (this.email === '') {
+          this.errorTips = '请输入邮箱'
+          return false
+        } else if (this.email && !reg.test(this.email)) {
           this.errorTips = '邮箱格式不正确'
           return false
         } else {
@@ -493,7 +499,7 @@ export default {
       .tab-container {
         position: absolute;
         top: 82px;
-        bottom: 0;
+        bottom: 80px;
         right: 0;
         left: 0;
         overflow-x: hidden;
