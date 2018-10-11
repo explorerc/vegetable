@@ -4,8 +4,7 @@
     <!--<div class="time-box">-->
     <!--<span>{{currentDate}}</span>/<span>{{allDate}}</span>-->
     <!--</div>-->
-    <div class="auto-box"
-         :style="{display:displayStatus}">
+    <div class="auto-box">
       <div class="mode-item fl"
            v-if="playType!='live'">
         <i v-if="!isPlay"
@@ -99,8 +98,7 @@ export default {
       current: 0,
       progress: 0,
       controlBoxIsShow: true, // 是否显示控制条
-      interval: null, // 倒计时
-      displayStatus: ''
+      interval: null // 倒计时
     }
   },
   computed: {
@@ -154,9 +152,6 @@ export default {
     },
     selectQuality (newVal) {
       this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
-    },
-    playType (newVal) {
-      this.displayStatus = newVal === 'live' ? 'block' : 'flex'
     }
   },
   methods: {
@@ -243,6 +238,7 @@ export default {
   }
   .auto-box {
     padding: 24px 10px;
+    display: flex;
     .mode-item {
       position: relative;
       display: inline-block;
