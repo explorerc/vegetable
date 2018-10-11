@@ -128,7 +128,7 @@
 <script>
 import comCountdown from 'components/common/countdown/countdown'
 import loginMixin from 'components/login-mixin'
-import ChatService from 'components/common/chat/ChatService.js'
+import ChatService from 'src/components/chat/ChatService.js'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 import ChatConfig from 'src/api/chat-config'
@@ -147,7 +147,8 @@ export default {
         description: '', // 活动简介
         isCountdown: false, // 是否显示倒计时
         countDown: '', // 距离活动开始时间（秒）
-        status: '' // 当前活动状态
+        status: '', // 当前活动状态
+        extChannel: '' // sdk消息频道
       },
       user: {
         phone: '', // 无条件观看用户手机
@@ -163,7 +164,8 @@ export default {
         appId: '',
         channelId: '',
         accountId: ''
-      }
+      },
+      visitorObj: {} // 游客信息
     }
   },
   mounted () {
@@ -191,10 +193,30 @@ export default {
       this.doAuth(jumpUrl)
     },
     initSdk () {
-      this.service = new ChatService()
-      this.service.init(this.vhallParams)
-      // window.Vhall.ready(() => {
-      // })
+      this.initMsgServe()
+    },
+    async initMsgServe () {
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+        this.visitorObj.visitorId = res.data
+      })
+      if (!this.extChannel) return false
+      const roomInfo = await this.$config({ handlers: true }).$post(activityService.GET_REG_SDK_INFO, {
+        thirdUserId: `visitor_${this.visitorObj.visitorId}`,
+        channel: this.extChannel
+      }).then((res) => {
+        return res.data
+      })
+      ChatService.OBJ.init({
+        accountId: roomInfo.accountId,
+        token: roomInfo.token,
+        appId: roomInfo.appId,
+        channelId: roomInfo.channelRoom
+      })
+      /* 监听微信测试发送成功消息 */
+      ChatService.OBJ.regHandler(ChatConfig.beginLive, (msg) => {
+        console.log(msg)
+        this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+      })
     },
     handleActivityStart (msg) {
       this.activity.countDown = 1799
@@ -217,6 +239,7 @@ export default {
         this.user.isOrder = res.data.joinInfo.isOrder
         this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
+        this.extChannel = res.data.activity.extChannelRoom
         if (this.activity.status === 'LIVING') {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
@@ -276,7 +299,6 @@ export default {
               this.setChatParams(this.vhallParams)
               this.$nextTick(() => {
                 this.initSdk()
-                this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
               })
             })
           })
@@ -284,7 +306,6 @@ export default {
           this.vhallParams = this.chatParams
           this.$nextTick(() => {
             this.initSdk()
-            this.service.regHandler(ChatConfig.BEGIN_LIVE, this.handleActivityStart)
           })
         }
       }

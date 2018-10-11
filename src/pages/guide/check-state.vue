@@ -5,6 +5,7 @@
                :maxLength="11"
                v-if="user.isDisabled"
                isDisabled="disabled"
+               type="mobile"
                :errorMsg.sync="phoneError"></com-input>
     <com-input :inputVal.sync="user.phone"
                placeholder='请输入手机号'

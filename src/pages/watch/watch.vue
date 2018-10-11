@@ -276,7 +276,21 @@ export default {
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
-        document.title = res.data.activity.title
+        setTimeout(function () {
+          // 利用iframe的onload事件刷新页面
+          document.title = res.data.activity.title
+          var iframe = document.createElement('iframe')
+          iframe.style.visibility = 'hidden'
+          iframe.style.width = '1px'
+          iframe.style.height = '1px'
+          iframe.onload = function () {
+            setTimeout(function () {
+              document.body.removeChild(iframe)
+            }, 0)
+          }
+          document.body.appendChild(iframe)
+        }, 0)
+
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar
         this.isShowSite = res.data.template
