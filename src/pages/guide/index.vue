@@ -156,7 +156,7 @@ export default {
       },
       viewLimit: {
         finishTime: '', // 报名截止时间
-        canAppoint: 'Y' // 是否可报名
+        canAppoint: '' // 是否可报名
       },
       vhallParams: {
         token: '',
@@ -215,10 +215,8 @@ export default {
         this.activity.isCountdown = res.data.guide ? res.data.guide.showType === 'COUNTDOWN' : false
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
-        if (res.data.viewLimit.canAppoint) {
-          this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
-          this.viewLimit.finishTime = res.data.viewLimit.finishTime
-        }
+        this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
+        this.viewLimit.finishTime = res.data.viewLimit.finishTime
         if (this.activity.status === 'LIVING') {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
