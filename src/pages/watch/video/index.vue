@@ -518,7 +518,7 @@ export default {
     height: 80px;
     line-height: 80px;
     // background-color: rgba(0, 0, 0, 0.75);
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     // font-size: 14px;
     .el-slider {
