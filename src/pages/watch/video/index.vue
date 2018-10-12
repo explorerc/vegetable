@@ -459,7 +459,7 @@ export default {
     isX5 () {
       let u = navigator.userAgent
       let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-      if (!isiOS && (u.match(/MicroMessenger/i) === 'micromessenger' || u.match(/QQ/i) === 'qq')) {
+      if (!isiOS && (u.match(/MicroMessenger/i) || u.match(/QQ/i))) {
         return true
       }
       return false

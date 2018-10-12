@@ -83,7 +83,6 @@ export default {
         activityId: this.$route.params.id
       }
       this.$config({ handlers: true }).$post(activityService.GET_LIVEINFO, data).then((res) => {
-        debugger
         if (res.data.viewLimit.canAppoint === 'N' && res.data.activity.viewCondition === 'APPOINT' && !res.data.joinInfo.isApplay) {
           this.phoneError = '您输入的手机号未参与报名'
         } else {

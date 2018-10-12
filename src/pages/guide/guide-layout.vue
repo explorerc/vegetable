@@ -59,6 +59,17 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         document.title = res.data.guide ? res.data.guide.title : res.data.activity.title
+        var iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.setAttribute('src', '/')
+        var d = function () {
+          setTimeout(function () {
+            iframe.removeEventListener('load', d)
+            document.body.removeChild(iframe)
+          }, 0)
+        }
+        iframe.addEventListener('load', d)
+        document.body.appendChild(iframe)
         this.imgUrl = res.data.guide ? res.data.guide.imgUrl : ''
       })
       // .catch((err) => {
