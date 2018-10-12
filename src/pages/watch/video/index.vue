@@ -4,7 +4,8 @@
          :id="playBoxId"
          v-if="playType=='pre'">
       <img v-if="imageSrc"
-           :src="imageSrc">
+           :src="imageSrc"
+           class="v-mark-img">
     </div>
     <div class="play-video-box"
          :id="playBoxId"
@@ -19,13 +20,15 @@
          :id="playBoxId"
          v-else-if="playType=='end'">
       <img v-if="imageSrc"
-           :src="imageSrc">
+           :src="imageSrc"
+           class="v-mark-img">
     </div>
     <div class="play-video-box"
          :id="playBoxId"
          v-else>
       <img v-if="imageSrc"
-           :src="imageSrc">
+           :src="imageSrc"
+           class="v-mark-img">
     </div>
     <i class="iconfont icon-bofang"
        v-if="playBtnShow"
@@ -58,6 +61,7 @@ import { mapMutations, mapState } from 'vuex'
 import VideoControl from './control'
 import * as types from '../../../store/mutation-types'
 import activityService from 'src/api/activity-service'
+import EventBus from 'src/utils/eventBus'
 // import HostPusher from 'src/components/common/video/push/HostPusher'
 
 export default {
@@ -117,6 +121,11 @@ export default {
     imageSrc () {
       return this.imageUrl ? `${this.$imgHost}/${this.imageUrl}` : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
     }
+  },
+  created () {
+    EventBus.$on('exitFullScreen', () => {
+      this.isPlay = false
+    })
   },
   mounted () {
     let that = this
@@ -249,8 +258,8 @@ export default {
         if (this.isX5()) {
           _videoAttr = {
             'x5-video-player-type': 'h5',
-            'x5-video-orientation': 'portrait',
-            'x5-video-player-fullscreen': false
+            'x5-video-orientation': 'landscape|portrait',
+            'x5-video-player-fullscreen': true
           }
         }
         window.Vhall.ready(() => {
@@ -263,12 +272,15 @@ export default {
               this.playBtnShow = false
               this.qualitys = window.VhallPlayer.getQualitys()
               if (this.isX5()) {
-                document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
-                document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
-                  document.getElementsByClassName('icon-zanting_icon')[0].click()
+                document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
+                  this.changeX5ExitFullScreen()
+                })
+                document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoenterfullscreen', () => {
+                  this.changeX5EnterFullScreen()
                 })
               } else {
                 document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
+                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '10.667vw'
               }
               // window.VhallPlayer.play()
               // this.dealWithVideo()
@@ -319,12 +331,15 @@ export default {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
         this.playComps.initLivePlayer(false, true, () => {
           if (this.isX5()) {
-            document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
-            document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', function () {
-              document.getElementsByClassName('icon-zanting_icon')[0].click()
+            document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
+              this.changeX5ExitFullScreen()
+            })
+            document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoenterfullscreen', () => {
+              this.changeX5EnterFullScreen()
             })
           } else {
             document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
+            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '10.667vw'
           }
           console.log('----------开始播放----------')
         })
@@ -463,6 +478,39 @@ export default {
         return true
       }
       return false
+    },
+    changeX5EnterFullScreen () {
+      // document.getElementsByClassName('v-x5-title')[0].style['display'] = 'block'
+      // document.getElementsByClassName('v-hearder')[0].style['top'] = '13.333vw'
+      EventBus.$emit('enterFullScreen', () => {
+      })
+      // document.getElementsByClassName('v-watch')[0].classList.add('v-x5-div')
+      // document.getElementsByClassName('v-watch')[0].classList.remove('v-close-x5-div')
+      // document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 24vw'
+      // document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '0'
+      // if (document.getElementsByClassName('v-mark-img')[0]) {
+      //   document.getElementsByClassName('v-mark-img')[0].style['top'] = '24vw'
+      // }
+      // document.getElementsByClassName('v-click-modal')[0].style['top'] = '24vw'
+      // document.getElementsByClassName('v-function-box')[0].style['top'] = '80.267vw'
+      // document.getElementsByClassName('control-box-div')[0].style['top'] = '69.6vw'
+    },
+    changeX5ExitFullScreen () {
+      EventBus.$emit('exitFullScreen', () => {
+      })
+      // document.getElementsByClassName('vjs-tech')[0].classList.add('v-x5')
+      // document.getElementsByClassName('v-x5-title')[0].style['display'] = 'none'
+      // document.getElementsByClassName('v-hearder')[0].style['top'] = '0'
+      // document.getElementsByClassName('v-watch')[0].classList.remove('v-x5-div')
+      // document.getElementsByClassName('v-watch')[0].classList.add('v-close-x5-div')
+      // document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 10.667vw'
+      // document.getElementsByClassName('v-mark')[0].style['top'] = '10.667vw'
+      // if (document.getElementsByClassName('v-mark-img')[0]) {
+      //   document.getElementsByClassName('v-mark-img')[0].style['top'] = '10.667vw'
+      // }
+      // document.getElementsByClassName('v-click-modal')[0].style['top'] = '10.667vw'
+      // document.getElementsByClassName('v-function-box')[0].style['top'] = '66.933vw'
+      // document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
     }
   }
 }
@@ -479,6 +527,7 @@ export default {
     img {
       width: 100%;
       height: 422px;
+      margin-top: 80px;
     }
     .vjs-big-play-button {
       display: none;
@@ -508,7 +557,7 @@ export default {
   }
   .v-click-modal {
     position: absolute;
-    top: 0;
+    top: 80px;
     left: 0;
     width: 100%;
     height: 422px;
@@ -517,7 +566,7 @@ export default {
   .control-box-div {
     position: absolute;
     left: 0;
-    top: 342px;
+    top: 422px;
     height: 80px;
     line-height: 80px;
     // background-color: rgba(0, 0, 0, 0.75);
@@ -555,7 +604,7 @@ export default {
   }
   .v-mark {
     position: absolute;
-    top: 0;
+    top: 80px;
     left: 0;
     width: 100%;
     height: 422px;

@@ -15,6 +15,7 @@ export default {
     }
   },
   mounted () {
+    debugger
     this.login = this.$children.find(child => {
       return child.$options.name === 'ComLogin'
     })

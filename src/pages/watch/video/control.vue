@@ -44,7 +44,8 @@
           </div>
         </transition>
       </div>
-      <div class="mode-item fr">
+      <div class="mode-item fr"
+           ref="setFullScreen">
         <i @click="fullScreeEvent"
            class="iconfont icon-zuidahua_icon"></i>
       </div>
@@ -190,8 +191,12 @@ export default {
       this.isPlay = type
       this.changeControl(controlTypes.play, this.isPlay)
     },
-    fullScreeEvent () {
-      alert('请把手机横评放置')
+    fullScreeEvent () { // 全屏
+      if (this.isX5()) {
+        alert('请把手机横屏放置')
+      } else {
+        window.VhallPlayer.setFullScreen(true)
+      }
     },
     fullBrowser () {
       this.isFullBrowser = !this.isFullBrowser
@@ -214,6 +219,14 @@ export default {
         this.controlBoxIsShow = false
         clearInterval(this.interval)
       }, 5000)
+    },
+    isX5 () {
+      let u = navigator.userAgent
+      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+      if (!isiOS && (u.match(/MicroMessenger/i) || u.match(/QQ/i))) {
+        return true
+      }
+      return false
     }
   }
 }

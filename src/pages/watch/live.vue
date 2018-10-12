@@ -114,16 +114,7 @@ export default {
     this.initMsgServe()
   },
   created () {
-    this.initToken()
-    // let body = document.querySelector('body')
-    // let _this = this
-    // body.addEventListener('click', (e) => {
-    //   if (e.target.id === 'sendBox' || e.target.className === 'v-chat-control' || e.target.className === 'v-showpsd' || e.target.className === 'v-chat-clickbox') {
-    //     _this.sendBoxShow = true
-    //   } else {
-    //     _this.sendBoxShow = false
-    //   }
-    // }, false)
+    // this.initToken()
   },
   watch: {
     'loginInfo.consumerUserId': {// 观看端 是否已登陆
@@ -157,12 +148,12 @@ export default {
         }
       }
     },
-    /* 初始化，获取权限 */
-    initToken () {
-      this.$nextTick(() => {
-        this.startInit = true
-      })
-    },
+    // /* 初始化，获取权限 */
+    // initToken () {
+    //   this.$nextTick(() => {
+    //     this.startInit = true
+    //   })
+    // },
     initMsgServe () {
       // ChatService.OBJ = new ChatService()
       ChatService.OBJ.init({
@@ -173,9 +164,9 @@ export default {
       })
       /* 监听在线人数 */
       ChatService.OBJ.regHandler(ChatConfig.onLineNum, (msg) => {
-        const temp = JSON.parse(JSON.stringify(this.liveInfo))
-        temp.showOnlineNum = parseInt(temp.setting.initOnlineNum) + parseInt(msg.num)
-        this.storeLiveInfo(temp)
+        let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        temp.setting.initOnlineNum = msg.num
+        this.storeActivityInfo(temp)
       })
       /* 监听开始直播 */
       ChatService.OBJ.regHandler(ChatConfig.beginLive, (msg) => {
@@ -192,6 +183,20 @@ export default {
         const temp = JSON.parse(JSON.stringify(this.activityInfo))
         temp.status = 'FINISH'
         temp.statusName = '结束'
+        this.storeActivityInfo(temp)
+      })
+      /* 监听真实人员进入直播间 */
+      ChatService.OBJ.regHandler(ChatConfig.joinLive, (msg) => {
+        console.log('--进入房间--消息--')
+        let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        temp.onlineNum = parseInt(temp.onlineNum) + 1
+        this.storeActivityInfo(temp)
+      })
+      /* 监听真实人员离开直播间 */
+      ChatService.OBJ.regHandler(ChatConfig.leaveLive, (msg) => {
+        console.log('--离开房间--消息--')
+        let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        temp.onlineNum = parseInt(temp.onlineNum) - 1
         this.storeActivityInfo(temp)
       })
     },
@@ -224,6 +229,7 @@ export default {
   height: 100%;
   position: relative;
   flex: 1;
+  background-color: #000000;
 }
 .v-video /deep/ {
   width: 100%;
@@ -274,7 +280,6 @@ export default {
   video {
     width: 100%;
     height: 422px;
-    object-fit: contain;
   }
   p {
     color: red;
