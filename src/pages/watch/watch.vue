@@ -10,7 +10,7 @@
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
-      <span class="v-onlineNum">{{showPersonCount}}人在线</span>{{activityInfo.setting}}
+      <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
         <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
@@ -134,7 +134,8 @@ export default {
       },
       vx5div: false, // x5中同层开启
       vclosex5div: false, // x5中同层关闭
-      votherdiv: false // 非x5横屏
+      votherdiv: false, // 非x5横屏
+      showPersonCount: 0
     }
   },
   mounted () {
@@ -152,9 +153,6 @@ export default {
     ...mapState('login', {
       loginInfo: state => state.loginInfo
     }),
-    showPersonCount: function () {
-      return parseInt(this.activityInfo.setting.initOnlineNum ? this.activityInfo.setting.initOnlineNum : 0) + parseInt(this.activityInfo.onlineNum ? this.activityInfo.onlineNum : 0)
-    },
     activityStatus: function () {
       return this.activityInfo.statusName
     },
@@ -198,6 +196,17 @@ export default {
       false
     )
   },
+  watch: {
+    activityInfo: {
+      handler (newVal) {
+        if (newVal && newVal.setting) {
+          this.showPersonCount = parseInt(newVal.setting.initOnlineNum ? newVal.setting.initOnlineNum : 0) + parseInt(newVal.onlineNum ? newVal.onlineNum : 0)
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
     ...mapMutations('tokenMager', {
       setChatParams: types.CHAT_PARAMS
@@ -211,6 +220,7 @@ export default {
       storeLoginInfo: types.LOGIN_INFO
     }),
     subscribe () {
+      debugger
       if (this.loginInfo) {
         if (this.loginInfo.email) {
           this.sendSubScribe()

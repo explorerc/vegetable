@@ -589,7 +589,7 @@ export default {
         _that.announceShow = false
         this.receiveAnnounce = ''
         clearTimeout(_that.timer)
-      }, 15000)
+      }, 30000)
     },
     listenKick (msg) {
       console.log('接收 踢出消息', msg)
