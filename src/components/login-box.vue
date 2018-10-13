@@ -177,6 +177,7 @@ export default {
     .dialog-body {
       padding: 30px 40px 10px;
       .rule {
+        font-size: 28px;
         a {
           color: #0000ff;
         }

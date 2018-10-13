@@ -321,6 +321,7 @@ export default {
     text-align: center;
     color: #222;
     padding-bottom: 20px;
+    word-break: break-all;
   }
   .v-summary {
     text-align: left;
