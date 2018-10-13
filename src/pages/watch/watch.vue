@@ -220,7 +220,6 @@ export default {
       storeLoginInfo: types.LOGIN_INFO
     }),
     subscribe () {
-      debugger
       if (this.loginInfo) {
         if (this.loginInfo.email) {
           this.sendSubScribe()

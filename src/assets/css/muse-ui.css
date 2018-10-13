@@ -261,6 +261,11 @@
   background-color: #FFF9E4 !important;
 }
 
+.yidun.yidun--light .yidun_tips .yidun_tips__text {
+  text-align: left;
+  margin-left: 55px;
+}
+
 .yidun.yidun--light.yidun--success.yidun--jigsaw .yidun_slide_indicator {
   border-color: #818CFE !important;
   background-color: #F0F1FE !important;

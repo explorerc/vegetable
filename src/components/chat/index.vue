@@ -11,7 +11,7 @@
             :data-joinId="item.id"
             :class="{'right': joinInfo.activityUserId*1 == item.id*1}">
           <dl class='clearfix'>
-            <dt v-if="item.avatar !== ''"><img :src="`${imgHost}${item.avatar}`"></dt>
+            <dt v-if="item.avatar !== ''"><img :src="`${$imgHost}/${item.avatar}`"></dt>
             <dt class='avatar'
                 v-else>{{item.name.substr(0,1)}}</dt>
             <dd>
@@ -187,7 +187,6 @@ export default {
       announcePlaceholder: '请输入公告内容',
       aBScroll: null,
       // imgHost: process.env.IMGHOST + '/'
-      imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
       /* 表情数组 */
       faceArr: [
         {
