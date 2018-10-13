@@ -125,7 +125,6 @@ export default {
     EventBus.$on('exitFullScreen', () => {
       this.isPlay = false
     })
-    alert(this.playType)
   },
   mounted () {
     let that = this
