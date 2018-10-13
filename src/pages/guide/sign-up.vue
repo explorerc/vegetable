@@ -167,11 +167,7 @@ export default {
           if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           } else if (this.activity.viewCondition === 'NONE') {
-            if (this.user.isOrder) {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else {
-              this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-            }
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         }
       }).catch((err) => {
@@ -372,11 +368,7 @@ export default {
                     if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
                       this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
                     } else if (this.activity.viewCondition === 'NONE') {
-                      if (this.user.isOrder) {
-                        this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-                      } else {
-                        this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
-                      }
+                      this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
                     }
                   } else {
                     this.$router.replace('/Success/' + this.$route.params.id)
