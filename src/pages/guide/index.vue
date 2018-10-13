@@ -253,7 +253,7 @@ export default {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
-          } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+          } else if (this.activity.viewCondition === 'NONE') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         } else {
@@ -327,6 +327,7 @@ export default {
     font-size: 28px;
     line-height: 40px;
     color: #555;
+    word-break: break-all;
   }
   .v-operation {
     text-align: center;
