@@ -23,8 +23,8 @@ export default class LivePuller extends BasePuller {
     if (!isiOS && (u.match(/MicroMessenger/i) || u.match(/QQ/i))) {
       _videoAttr = {
         'x5-video-player-type': 'h5',
-        'x5-video-orientation': 'portrait',
-        'x5-video-player-fullscreen': false
+        'x5-video-orientation': 'landscape|portrait',
+        'x5-video-player-fullscreen': true
       }
     }
     window.Vhall.ready(() => {

@@ -90,7 +90,7 @@
     .txt {
       position: absolute;
       white-space: nowrap;
-      animation: marsquee 5s linear 1s infinite;
+      animation: marsquee 8s linear 1s infinite;
       animation-fill-mode: backwards;
     }
   }
@@ -98,10 +98,12 @@
 
 @keyframes marsquee {
   0% {
+    right: -5px;
     transform: translateX(100%)
   }
 
   100% {
+    right: 100%;
     transform: translateX(-100%)
   }
 }

@@ -1,13 +1,16 @@
 <template>
-  <div class="v-watch">
+  <div class="v-watch"
+       :class="{'v-x5-div': vx5div,'v-close-x5-div': vclosex5div,'v-other-div': votherdiv}">
+    <div class="v-x5-title">
+      {{activityInfo.title}}
+    </div>
     <div v-if="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
-      <span class="v-onlineNum"
-            v-if="activityStatus === '直播中'">{{showPersonCount}}人在线</span>
+      <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
         <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
@@ -73,6 +76,7 @@ import loginMixin from 'components/login-mixin'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service' // import vconsole
+import EventBus from 'src/utils/eventBus'
 // let vConsole = new VConsole()
 const playTypes = {
   'PREPARE': 'pre',
@@ -127,7 +131,11 @@ export default {
         shareUser: {
           shareId: '' // 分享者id
         }
-      }
+      },
+      vx5div: false, // x5中同层开启
+      vclosex5div: false, // x5中同层关闭
+      votherdiv: false, // 非x5横屏
+      showPersonCount: 0
     }
   },
   mounted () {
@@ -145,9 +153,6 @@ export default {
     ...mapState('login', {
       loginInfo: state => state.loginInfo
     }),
-    showPersonCount: function () {
-      return parseInt(this.activityInfo.setting.initOnlineNum ? this.activityInfo.setting.initOnlineNum : 0) + parseInt(this.activityInfo.onlineNum ? this.activityInfo.onlineNum : 0)
-    },
     activityStatus: function () {
       return this.activityInfo.statusName
     },
@@ -156,6 +161,14 @@ export default {
     }
   },
   created () {
+    EventBus.$on('enterFullScreen', () => {
+      this.vx5div = true
+      this.vclosex5div = false
+    })
+    EventBus.$on('exitFullScreen', () => {
+      this.vx5div = false
+      this.vclosex5div = true
+    })
     const queryId = this.$route.params.id
     if (!queryId) {
       this.$router.go(-1)
@@ -163,28 +176,36 @@ export default {
     this.activityId = queryId
     this.initPage()
 
-    let that = this
+    let _this = this
     window.addEventListener(
       'onorientationchange' in window ? 'orientationchange' : 'resize',
       function () {
         if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
-          that.domShow = false
-          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '50% 50%'
-          document.getElementsByClassName('control-box-div')[0].style['top'] = 'auto'
-          document.getElementsByClassName('control-box-div')[0].style['bottom'] = '0'
-
-          // alert("123");仅alert纯文本可以正常运行
+          if (!_this.isX5()) {
+            _this.votherdiv = true
+            _this.domShow = false
+          }
         } else {
-          that.domShow = true
-          document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
-          document.getElementsByClassName('control-box-div')[0].style['bottom'] = 'auto'
-          document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 0'
+          if (!_this.isX5()) {
+            _this.votherdiv = false
+            _this.domShow = true
+          }
         }
-        // window.location.reload();
       },
       false
     )
+  },
+  watch: {
+    activityInfo: {
+      handler (newVal) {
+        if (newVal && newVal.setting) {
+          this.showPersonCount = parseInt(newVal.setting.initOnlineNum ? newVal.setting.initOnlineNum : 0) + parseInt(newVal.onlineNum ? newVal.onlineNum : 0)
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   },
   methods: {
     ...mapMutations('tokenMager', {
@@ -199,6 +220,7 @@ export default {
       storeLoginInfo: types.LOGIN_INFO
     }),
     subscribe () {
+      debugger
       if (this.loginInfo) {
         if (this.loginInfo.email) {
           this.sendSubScribe()
@@ -211,6 +233,14 @@ export default {
     },
     emailFocus () {
       this.errorTips = ''
+    },
+    isX5 () {
+      let u = navigator.userAgent
+      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+      if (!isiOS && (u.match(/MicroMessenger/i) || u.match(/QQ/i))) {
+        return true
+      }
+      return false
     },
     /* 进行订阅 */
     sendSubScribe () {
@@ -337,6 +367,7 @@ export default {
         activityInfo.onlineNum = res.data.onlineNum
       })
       this.storeActivityInfo(activityInfo)
+      console.log(activityInfo)
       if (this.playType === 'vod') {
         this.currentView = Playback
       } else {
@@ -425,218 +456,288 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.v-watch /deep/ {
-  position: relative;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  .v-hearder {
-    width: 100%;
-    height: 80px;
-    background-color: #fff;
-    padding: 20px 30px;
-    font-size: 24px;
-    .v-status {
-      color: #fff;
-      text-align: center;
+.v-watch {
+  /deep/ {
+    position: relative;
+    height: 100%;
+    &.v-x5-div {
+      .v-x5-title {
+        display: block !important;
+      }
+      .v-hearder {
+        top: 100px !important;
+      }
+      .v-click-modal {
+        top: 180px !important;
+      }
+      .v-function-box {
+        top: 602px !important;
+      }
+      .control-box-div {
+        top: 522px !important;
+      }
+      .v-video-box {
+        .v-mark-img {
+          top: 180px;
+        }
+        video {
+          object-position: 0 180px !important;
+          margin-top: 0 !important;
+        }
+      }
+    }
+    &.v-close-x5-div {
+      video {
+        object-position: 0 80px !important;
+      }
+    }
+    &.v-other-div {
+      .v-video-box {
+        .v-mark-img {
+          top: 180px;
+        }
+        video {
+          margin-top: 0 !important;
+          object-position: 50% 50% !important;
+        }
+      }
+      .control-box-div {
+        top: auto;
+        bottom: 0;
+      }
+      .v-click-modal {
+        top: 0;
+      }
+      .v-mark {
+        top: 0;
+      }
+    }
+    .v-x5-title {
+      display: none;
+      width: 100%;
+      height: 100px;
+      line-height: 100px;
       background-color: #000000;
-      border-radius: 50px;
-      padding: 8px 13px;
-      margin-right: 20px;
+      color: #fff;
+      font-size: 24px;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+    .v-hearder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 80px;
+      background-color: #fff;
+      padding: 20px 30px;
+      font-size: 24px;
+      .v-status {
+        color: #fff;
+        text-align: center;
+        background-color: #000000;
+        border-radius: 50px;
+        padding: 8px 13px;
+        margin-right: 20px;
+        i {
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          background-color: #fc5659;
+          border-radius: 50%;
+          margin-right: 10px;
+          vertical-align: middle;
+        }
+      }
+      .v-onlineNum {
+        padding: 8px 0;
+      }
+      .v-my {
+        margin-left: 36px;
+      }
       i {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        background-color: #fc5659;
-        border-radius: 50%;
-        margin-right: 10px;
         vertical-align: middle;
       }
     }
-    .v-onlineNum {
-      padding: 8px 0;
-    }
-    .v-my {
-      margin-left: 36px;
-    }
-    i {
-      vertical-align: middle;
-    }
-  }
-  .v-function-box {
-    width: 100%;
-    position: absolute;
-    top: 422px;
-    bottom: 0;
-    z-index: 3;
-    background-color: #fff;
-    .v-nav {
+    .v-function-box {
       width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    .com-tabs {
-      height: 100%;
-      .tab-header {
-        // padding-right: 160px; //关注开放时再打开
-        border-bottom: 1px solid #f5f5f5;
-        margin: 0;
-        .tab-item {
-          width: 50%;
-          height: 80px;
-          line-height: 80px;
-          text-align: center;
-          font-size: 30px;
-          position: relative;
-          &.active {
-            color: #4b5afe;
-            &::after {
-              content: '';
-              display: block;
-              width: 70px;
-              height: 3px;
-              background-color: #4b5afe;
-              border-radius: 3px;
-              position: absolute;
-              bottom: 0;
-              left: 50%;
-              margin-left: -35px;
-            }
-          }
-        }
-      }
-      .tab-container {
-        position: absolute;
-        top: 82px;
-        bottom: 80px;
-        right: 0;
-        left: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
-        background-color: #f5f5f5;
-        word-break: break-all;
-      }
-      .tab-content {
+      position: absolute;
+      top: 502px;
+      bottom: 0;
+      z-index: 3;
+      background-color: #fff;
+      .v-nav {
+        width: 100%;
         height: 100%;
-        &:last-child {
-          background-color: #fff;
-        }
-        .v-chat-control {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 90px;
-          line-height: 89px;
-          padding: 0 40px;
-          border-top: 1px solid #e2e2e2;
-          .v-chat-clickbox {
-            display: inline-block;
-            width: 610px;
-            height: 58px;
-            line-height: 58px;
-            padding: 0 20px;
-            border-radius: 8px;
-            background-color: #f5f5f5;
-            color: #888888;
-            margin-left: 20px;
-          }
-          .icon-biaoqing {
-            font-size: 30px;
-            display: inline-block;
-          }
-          &.v-noLogin {
+        position: relative;
+      }
+      .com-tabs {
+        height: 100%;
+        .tab-header {
+          // padding-right: 160px; //关注开放时再打开
+          border-bottom: 1px solid #f5f5f5;
+          margin: 0;
+          .tab-item {
+            width: 50%;
+            height: 80px;
+            line-height: 80px;
             text-align: center;
-            span {
+            font-size: 30px;
+            position: relative;
+            &.active {
               color: #4b5afe;
+              &::after {
+                content: '';
+                display: block;
+                width: 70px;
+                height: 3px;
+                background-color: #4b5afe;
+                border-radius: 3px;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                margin-left: -35px;
+              }
             }
           }
         }
+        .tab-container {
+          position: absolute;
+          top: 82px;
+          bottom: 0px;
+          right: 0;
+          left: 0;
+          overflow-x: hidden;
+          overflow-y: auto;
+          background-color: #f5f5f5;
+          word-break: break-all;
+        }
+        .tab-content {
+          height: 100%;
+          &:last-child {
+            background-color: #fff;
+          }
+          .v-chat-control {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            line-height: 89px;
+            padding: 0 40px;
+            border-top: 1px solid #e2e2e2;
+            .v-chat-clickbox {
+              display: inline-block;
+              width: 610px;
+              height: 58px;
+              line-height: 58px;
+              padding: 0 20px;
+              border-radius: 8px;
+              background-color: #f5f5f5;
+              color: #888888;
+              margin-left: 20px;
+            }
+            .icon-biaoqing {
+              font-size: 30px;
+              display: inline-block;
+            }
+            &.v-noLogin {
+              text-align: center;
+              span {
+                color: #4b5afe;
+              }
+            }
+          }
+        }
+        .v-introduction {
+          width: 100%;
+          padding: 40px;
+        }
+        .chat-content {
+          width: 100%;
+          // padding: 0 40px;
+          position: absolute;
+          top: 0;
+          bottom: 100px;
+          word-break: break-all;
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
       }
-      .v-introduction {
-        width: 100%;
-        padding: 40px;
-      }
-      .chat-content {
-        width: 100%;
-        // padding: 0 40px;
+      .v-subscribe {
+        display: inline-block;
+        width: 160px;
+        height: 80px;
+        background-color: #ffd021;
+        color: #222222;
+        text-align: center;
+        line-height: 80px;
         position: absolute;
         top: 0;
-        bottom: 100px;
-        word-break: break-all;
-        overflow-x: hidden;
-        overflow-y: auto;
+        right: 0;
       }
     }
-    .v-subscribe {
-      display: inline-block;
-      width: 160px;
-      height: 80px;
-      background-color: #ffd021;
-      color: #222222;
-      text-align: center;
-      line-height: 80px;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-  }
-  .ve-message-box {
-    &::before {
-      height: 0;
-    }
-    .v-logo {
-      display: block;
-      width: 130px;
-      height: 130px;
-      margin: 40px auto 0;
-    }
-    .v-success {
-      display: block;
-      width: 288px;
-      margin: 80px auto 0;
-    }
-    .v-title {
-      text-align: center;
-      word-break: break-all;
-      font-size: 32px;
-      color: #222;
-      margin-top: 8px;
-      &.v-success-title {
-        margin-bottom: 140px;
+    .ve-message-box {
+      &::before {
+        height: 0;
       }
-    }
-    .v-from {
-      margin: 60px 15px 70px;
-      .v-explain {
-        text-align: left;
-        word-break: break-all;
-        font-size: 24px;
-        color: #555;
-        margin-bottom: 20px;
-      }
-      .com-input {
-        input {
-          height: 70px;
-          line-height: 70px;
-        }
-        .limit {
-          display: none;
-        }
-      }
-    }
-    .ve-message-box__btns {
-      margin: 0 auto;
-      text-align: center;
-      width: 528px;
-      .button--primary {
-        margin: 0 auto;
+      .v-logo {
         display: block;
+        width: 130px;
+        height: 130px;
+        margin: 40px auto 0;
+      }
+      .v-success {
+        display: block;
+        width: 288px;
+        margin: 80px auto 0;
+      }
+      .v-title {
+        text-align: center;
+        word-break: break-all;
+        font-size: 32px;
+        color: #222;
+        margin-top: 8px;
+        &.v-success-title {
+          margin-bottom: 140px;
+        }
+      }
+      .v-from {
+        margin: 60px 15px 70px;
+        .v-explain {
+          text-align: left;
+          word-break: break-all;
+          font-size: 24px;
+          color: #555;
+          margin-bottom: 20px;
+        }
+        .com-input {
+          input {
+            height: 70px;
+            line-height: 70px;
+          }
+          .limit {
+            display: none;
+          }
+        }
+      }
+      .ve-message-box__btns {
+        margin: 0 auto;
+        text-align: center;
         width: 528px;
-        height: 94px;
-        line-height: 94px;
-        border-radius: 8px;
-        font-size: 28px;
+        .button--primary {
+          margin: 0 auto;
+          display: block;
+          width: 528px;
+          height: 94px;
+          line-height: 94px;
+          border-radius: 8px;
+          font-size: 28px;
+        }
       }
     }
   }

@@ -11,7 +11,7 @@
             :data-joinId="item.id"
             :class="{'right': joinInfo.activityUserId*1 == item.id*1}">
           <dl class='clearfix'>
-            <dt v-if="item.avatar !== ''"><img :src="`${imgHost}/${item.avatar}`"></dt>
+            <dt v-if="item.avatar !== ''"><img :src="`${imgHost}${item.avatar}`"></dt>
             <dt class='avatar'
                 v-else>{{item.name.substr(0,1)}}</dt>
             <dd>
@@ -589,7 +589,7 @@ export default {
         _that.announceShow = false
         this.receiveAnnounce = ''
         clearTimeout(_that.timer)
-      }, 15000)
+      }, 30000)
     },
     listenKick (msg) {
       console.log('接收 踢出消息', msg)

@@ -195,8 +195,9 @@ export default {
       }
       .codeBtn {
         width: 160px;
-        padding: 10px 0;
-        height: 80px;
+        height: 90px;
+        font-size: 20px;
+        text-align: center;
       }
     }
     .footer {
@@ -206,6 +207,7 @@ export default {
       button {
         width: 100%;
         height: 80px;
+        font-size: 28px;
       }
     }
   }

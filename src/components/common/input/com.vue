@@ -207,7 +207,7 @@ export default {
     width: 100%;
     height: 90px;
     font-size: 28px;
-    line-height: 40px;
+    line-height: 90px;
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;
     background-image: none;
