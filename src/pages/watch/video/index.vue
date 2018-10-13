@@ -19,9 +19,8 @@
     <div class="play-video-box"
          :id="playBoxId"
          v-else-if="playType=='end'">
-      <img v-if="imageSrc"
-           :src="imageSrc"
-           class="v-mark-img">
+      <span class="end-box"
+            v-if="role!=='master'">谢谢观看</span>
     </div>
     <div class="play-video-box"
          :id="playBoxId"
@@ -48,7 +47,7 @@
       </div>
     </div>
 
-    <img v-if="imageSrc && !isPlay && (playType=='live' || playType=='warm')"
+    <img v-if="imageSrc && !isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
          :src="imageSrc"
          class="v-mark"
          @click="startPlay">
@@ -126,6 +125,7 @@ export default {
     EventBus.$on('exitFullScreen', () => {
       this.isPlay = false
     })
+    alert(this.playType)
   },
   mounted () {
     let that = this
@@ -207,7 +207,23 @@ export default {
       }
     },
     startPlay () {
+      const warm = this.activityInfo.warm
+      if (this.playType === 'warm' && warm.record.list.length <= 0) { /* 未上传视频或者未转码完成 */
+        this.$messageBox({
+          header: '提示',
+          content: '此时没有暖场视频',
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+        return
+      }
       this.isPlay = !this.isPlay
+      this.imageUrl = ''
+      this.qualitys = window.VhallPlayer.getQualitys()
       window.VhallPlayer.play()
       this.dealWithVideo()
     },
