@@ -634,7 +634,7 @@ export default {
             border-top: 1px solid #e2e2e2;
             .v-chat-clickbox {
               display: inline-block;
-              width: 610px;
+              width: 600px;
               height: 58px;
               line-height: 58px;
               padding: 0 20px;
