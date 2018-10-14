@@ -11,8 +11,9 @@
             :data-joinId="item.id"
             :class="{'right': joinInfo.activityUserId*1 == item.id*1}">
           <dl class='clearfix'>
-           <dt v-if="item.avatar !== '' && item.avatar !== null"><img :src="`${imgHost}/${item.avatar}`"> </dt>
-            <dt class='avatar' v-else >{{item.name.substr(0,1)}}</dt>
+            <dt v-if="item.avatar !== '' && item.avatar !== null"><img :src="`${imgHost}/${item.avatar}`"> </dt>
+            <dt class='avatar'
+                v-else>{{item.name.substr(0,1)}}</dt>
             <dd>
               <!-- <div class="name" v-if='type === "live"'>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em> <i class='handle' v-if='!isWatch && item.detail.role !== "主持人"'>
                 <ol>
@@ -185,6 +186,7 @@ export default {
       chatPlaceholder: '输入想说的话…',
       announcePlaceholder: '请输入公告内容',
       aBScroll: null,
+      imgHost: process.env.IMGHOST + '/',
       // imgHost: process.env.IMGHOST + '/'
       /* 表情数组 */
       faceArr: [
