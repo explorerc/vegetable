@@ -13,7 +13,7 @@
           <dl class='clearfix'>
             <dt v-if="item.avatar !== '' && item.avatar !== null"><img :src="`${imgHost}/${item.avatar}`"> </dt>
             <dt class='avatar'
-                v-else>{{item.name.substr(0,1)}}</dt>
+                v-else>{{item.name&&item.name.substr(0,1)}}</dt>
             <dd>
               <!-- <div class="name" v-if='type === "live"'>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em> <i class='handle' v-if='!isWatch && item.detail.role !== "主持人"'>
                 <ol>
