@@ -298,7 +298,9 @@ export default {
     async initPage () {
       await this.initRoomPaas()
       if (this.isWx()) {
-        this.share()
+        setTimeout(function () {
+          this.share()
+        }, 1000)
       }
       /* 查询详情 */
       let activityInfo = null
