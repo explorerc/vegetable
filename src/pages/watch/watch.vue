@@ -1,8 +1,7 @@
 <template>
   <div class="v-watch"
        :class="{'v-x5-div': vx5div,'v-close-x5-div': vclosex5div,'v-other-div': votherdiv}">
-    <div v-if="domShow"
-         class="v-x5-title">
+    <div class="v-x5-title">
       {{activityInfo.title}}
     </div>
     <div v-if="domShow"
