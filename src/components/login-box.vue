@@ -7,13 +7,13 @@
         <div class="rule">登录参与直播互动</div>
         <com-input v-model="mobile"
                    class="mobile"
-                   type="input"
+                   type="mobile"
                    placeholder="请输入手机"
                    :error-tips="phoneErrorMsg"></com-input>
         <div id="captcha"></div>
         <com-input v-model="code"
                    class="code"
-                   type="input"
+                   type="mobile"
                    placeholder="请输入验证码"
                    :error-tips="codeErrorMsg"></com-input>
         <com-button class="codeBtn"
