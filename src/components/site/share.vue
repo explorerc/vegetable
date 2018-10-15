@@ -71,7 +71,7 @@ export default {
   data () {
     return {
       showDialog: false,
-      url: 'http://localhost:2333/template',
+      url: location.href,
       sina: true
     }
   },
