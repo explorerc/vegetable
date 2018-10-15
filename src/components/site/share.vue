@@ -5,7 +5,7 @@
         <div class="_dialog-header">分享到微信<i class="iconfont icon-close" @click="closeDialog"></i></div>
         <div class="_dialog-content">
           <div class="title">{{share.title}}</div>
-          <div  class="des">{{share.des}}</div>
+          <div  class="des"></div>
           <div  class="qr">
             <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.share.link}`" >
           </div>
