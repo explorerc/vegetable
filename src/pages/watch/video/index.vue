@@ -47,10 +47,11 @@
       </div>
     </div>
 
-    <img v-if="imageSrc && !isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
-         :src="imageSrc"
+    <div v-if="imageSrc && !isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
          class="v-mark"
          @click="startPlay">
+      <i class="iconfont icon-bofang_anniu"></i>
+    </div>
   </div>
 </template>
 
@@ -619,11 +620,30 @@ export default {
   }
   .v-mark {
     position: absolute;
+    background-color: #222;
     top: 80px;
     left: 0;
     width: 100%;
     height: 422px;
     z-index: 3;
+    text-align: center;
+    i {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -65px;
+      margin-left: -65px;
+      width: 130px;
+      height: 130px;
+      text-align: center;
+      padding-left: 8px;
+      border-radius: 50%;
+      background-color: #000;
+      line-height: 130px;
+      font-size: 75px;
+      color: #fff;
+    }
   }
 }
 </style>
