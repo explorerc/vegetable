@@ -34,6 +34,8 @@ const kicked = () =>
   import('src/pages/watch/kicked')
 const userInfo = () =>
   import('src/pages/user/info')
+const user = () =>
+  import('src/pages/user')
 
 export default [{
   path: '/',
@@ -96,8 +98,13 @@ export default [{
   component: kicked
 },
 {
-  path: '/userInfo',
+  path: '/userInfo/:id',
   name: 'userInfo',
   component: userInfo
+},
+{
+  path: '/user/:id',
+  name: 'user',
+  component: user
 }
 ]
