@@ -38,7 +38,7 @@ const config = {
     API_PATH: '/m/api',
     SUB_DIR: 'static',
     PUBLIC_PATH: '//zhike1.vhall.com/m/',
-    IMGHOST: '//zhike.oss-cn-beijing.aliyuncs.com',
+    IMGHOST: '//static.vhallyun.com',
     MOBILE_HOST: '//zhike1.vhall.com/m/'
   }
 }
