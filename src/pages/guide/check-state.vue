@@ -79,11 +79,16 @@ export default {
       this.code = val
     },
     subScribe () { // 预约活动
+      if (!this.isClick) {
+        return false
+      }
+      this.isClick = false
       let data = {
         activityId: this.$route.params.id
       }
       this.$config({ handlers: true }).$post(activityService.GET_LIVEINFO, data).then((res) => {
         if (res.data.viewLimit.canAppoint === 'N' && res.data.activity.viewCondition === 'APPOINT' && !res.data.joinInfo.isApplay) {
+          this.isClick = true
           this.phoneError = '您输入的手机号未参与报名'
         } else {
           if (res.data.activity.status === 'LIVING') {
@@ -115,7 +120,7 @@ export default {
           }
         }
       }).catch((err) => {
-        this.isClick = false
+        this.isClick = true
         this.$messageBox({
           header: '提示',
           content: err.msg,
@@ -159,6 +164,7 @@ export default {
               if (res.data.joinInfo.isOrder) {
                 this.$router.replace('/guide/' + this.$route.params.id)
               } else {
+                this.isClick = true
                 this.subScribe()
               }
             }).catch((err) => {
@@ -175,6 +181,7 @@ export default {
               })
             })
           } else {
+            this.isClick = true
             this.$messageBox({
               header: '提示',
               content: res.msg,
@@ -189,6 +196,7 @@ export default {
             sessionStorage.removeItem('wechatAuth')
           }
         }).catch((err) => {
+          this.isClick = true
           if (err.code === 10020) {
             this.codeError = '请输入正确验证码'
           } else if (err.code === 12002) {
@@ -200,6 +208,7 @@ export default {
               this.$router.replace('/Success/' + this.$route.params.id)
             }
           } else {
+            this.isClick = true
             this.$messageBox({
               header: '提示',
               content: err.msg,

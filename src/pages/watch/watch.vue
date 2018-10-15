@@ -1,7 +1,8 @@
 <template>
   <div class="v-watch"
        :class="{'v-x5-div': vx5div,'v-close-x5-div': vclosex5div,'v-other-div': votherdiv}">
-    <div class="v-x5-title">
+    <div v-if="domShow"
+         class="v-x5-title">
       {{activityInfo.title}}
     </div>
     <div v-if="domShow"
@@ -182,15 +183,15 @@ export default {
       function () {
         if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
-          if (!_this.isX5()) {
-            _this.votherdiv = true
-            _this.domShow = false
-          }
+          // if (!_this.isX5()) {
+          _this.votherdiv = true
+          _this.domShow = false
+          // }
         } else {
-          if (!_this.isX5()) {
-            _this.votherdiv = false
-            _this.domShow = true
-          }
+          // if (!_this.isX5()) {
+          _this.votherdiv = false
+          _this.domShow = true
+          // }
         }
       },
       false
