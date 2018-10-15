@@ -416,7 +416,7 @@ export default {
     async share () { // 微信分享
       let _url = window.location.href
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
-        url: encodeURIComponent(_url)
+        url: _url
       }).then((res) => {
         this.wxShare.wxShareData.appId = res.data.appId
         this.wxShare.wxShareData.timestamp = res.data.timestamp
