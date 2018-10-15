@@ -404,6 +404,32 @@ export default {
               sessionStorage.removeItem('wechatAuth')
             }
           }
+        }).catch((err) => {
+          this.isClick = true
+          if (err.code === 10020) {
+            this.appointIsClick = true
+            this.codeError = '请输入正确验证码'
+          } else if (err.code === 12002) {
+            if (this.activity.status === 'LIVING') {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else if (this.activity.countDown < 1800) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            } else {
+              this.$router.replace('/Success/' + this.$route.params.id)
+            }
+          } else {
+            this.appointIsClick = true
+            this.$messageBox({
+              header: '提示',
+              content: err.msg,
+              confirmText: '确定',
+              handleClick: (e) => {
+                if (e.action === 'cancel') {
+                } else if (e.action === 'confirm') {
+                }
+              }
+            })
+          }
         })
       }
     },
