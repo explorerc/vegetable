@@ -429,7 +429,7 @@ export default {
       }).then((res) => {
         if (res.data) {
           let _shareLink = window.location.href
-          this.wxShare.shareData.shareDatalink = encodeURIComponent(_shareLink)
+          this.wxShare.shareData.shareDatalink = _shareLink
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
