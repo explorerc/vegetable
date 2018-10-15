@@ -72,9 +72,11 @@
                   fill="#222222"
                   p-id="3292"></path>
           </svg>
-          <div class="txt-box">
+          <marquee class="txt-box"
+                   scrollamount="2"
+                   loop='loop'>
             <p class="txt">{{receiveAnnounce}}</p>
-          </div>
+          </marquee>
           <i class="iconfont icon-close"
              @click='announceShow = false'></i>
         </div>
@@ -186,6 +188,7 @@ export default {
       chatPlaceholder: '输入想说的话…',
       announcePlaceholder: '请输入公告内容',
       aBScroll: null,
+      isShowAnnounce: false, // 是否显示公告
       // imgHost: process.env.IMGHOST + '/'
       /* 表情数组 */
       faceArr: [
@@ -579,16 +582,15 @@ export default {
     },
     listenAnnounce (msg) {
       console.log('接收 公告消息', msg)
-      // 如果是发起端 则弹窗公告
       this.announceShow = true
       this.receiveAnnounce = msg.content
-      const _that = this
-      clearTimeout(_that.timer)
-      _that.timer = setTimeout(function () {
-        _that.announceShow = false
-        this.receiveAnnounce = ''
-        clearTimeout(_that.timer)
-      }, 30000)
+      // const _that = this
+      // clearTimeout(_that.timer)
+      // _that.timer = setTimeout(function () {
+      //   _that.announceShow = false
+      //   this.receiveAnnounce = ''
+      //   clearTimeout(_that.timer)
+      // }, 30000)
     },
     listenKick (msg) {
       console.log('接收 踢出消息', msg)
