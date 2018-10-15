@@ -1,8 +1,8 @@
 <template>
   <div class="v-watch"
        :class="{'v-x5-div': vx5div,'v-close-x5-div': vclosex5div,'v-other-div': votherdiv}">
-    <div v-if="domShow"
-         class="v-x5-title">
+    <div class="v-x5-title"
+         v-if="domShow">
       {{activityInfo.title}}
     </div>
     <div v-if="domShow"
@@ -418,7 +418,7 @@ export default {
     async share () { // 微信分享
       let _url = window.location.href
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
-        url: _url
+        url: encodeURIComponent(_url)
       }).then((res) => {
         this.wxShare.wxShareData.appId = res.data.appId
         this.wxShare.wxShareData.timestamp = res.data.timestamp
