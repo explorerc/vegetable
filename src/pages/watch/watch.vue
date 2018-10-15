@@ -428,11 +428,11 @@ export default {
         param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
-          let _shareLink = _url
+          let _shareLink = window.location.href
+          this.wxShare.shareData.shareDatalink = encodeURI(_shareLink)
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
-          this.wxShare.shareData.shareDatalink = _shareLink
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
