@@ -1,7 +1,7 @@
 import wx from 'weixin-js-sdk'
 export default function wxShare (wxShare) {
   wx.config({
-    debug: false,
+    debug: true,
     appId: wxShare.wxShareData.appId,
     timestamp: wxShare.wxShareData.timestamp,
     nonceStr: wxShare.wxShareData.nonceStr,
