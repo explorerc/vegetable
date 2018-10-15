@@ -99,17 +99,18 @@ export default {
   },
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
-    if (this.activityInfo.status === 'PREPARE') {
-      if (this.activityInfo.warm && this.activityInfo.warm.enabled === 'Y') {
-        this.playType = 'warm'
-      } else {
-        this.playType = 'pre'
-      }
-    } else if (this.activityInfo.status === 'FINISH') {
-      this.playType = 'end'
-    } else {
-      this.playType = 'live'
-    }
+    this.playType = 'vod'
+    // if (this.activityInfo.status === 'PREPARE') {
+    //   if (this.activityInfo.warm && this.activityInfo.warm.enabled === 'Y') {
+    //     this.playType = 'warm'
+    //   } else {
+    //     this.playType = 'pre'
+    //   }
+    // } else if (this.activityInfo.status === 'FINISH') {
+    //   this.playType = 'end'
+    // } else {
+    //   this.playType = 'live'
+    // }
     this.startInit = true
     this.initMsgServe()
   },
