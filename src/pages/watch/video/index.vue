@@ -20,7 +20,7 @@
          :id="playBoxId"
          v-else-if="playType=='end'">
       <span class="end-box"
-            v-if="role!=='master'">谢谢观看</span>
+            v-if="role!=='master'">直播已结束</span>
     </div>
     <div class="play-video-box"
          :id="playBoxId"
@@ -551,10 +551,10 @@ export default {
     .end-box {
       position: absolute;
       display: block;
-      color: red;
+      color: #fff;
       text-align: center;
       width: 100%;
-      top: 46%;
+      top: 20%;
     }
   }
   .icon-bofang {
