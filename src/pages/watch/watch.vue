@@ -298,7 +298,9 @@ export default {
     async initPage () {
       await this.initRoomPaas()
       if (this.isWx()) {
-        this.share()
+        setTimeout(function () {
+          this.share()
+        }, 1000)
       }
       /* 查询详情 */
       let activityInfo = null
@@ -429,7 +431,7 @@ export default {
       }).then((res) => {
         if (res.data) {
           let _shareLink = window.location.href
-          this.wxShare.shareData.shareDatalink = encodeURIComponent(_shareLink)
+          this.wxShare.shareData.shareDatalink = _shareLink
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
