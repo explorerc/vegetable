@@ -35,10 +35,11 @@ const config = {
   },
   prod: {
     BUILD_ENV: 'prod',
-    API_PATH: '//api-class.e.vhall.com',
+    API_PATH: '/m/api',
     SUB_DIR: 'static',
-    PUBLIC_PATH: '//static01-class.e.vhall.com/vhallclass/',
-    IMGHOST: 'http://test-zhike.oss-cn-beijing.aliyuncs.com'
+    PUBLIC_PATH: '//zhike.vhall.com/m/',
+    IMGHOST: '//zhike.oss-cn-beijing.aliyuncs.com',
+    MOBILE_HOST: '//zhike.vhall.com/m/'
   }
 }
 
