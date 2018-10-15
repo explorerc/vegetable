@@ -413,8 +413,7 @@ export default {
       })
     },
     async share () { // 微信分享
-      let _url = window.location.href.split('#')[0]
-      _url = _url.replace('&', '%26')
+      let _url = window.location.href
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
         url: _url
       }).then((res) => {
@@ -428,14 +427,11 @@ export default {
         param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
-          let _shareLink = window.location.href
-          alert(_shareLink)
-          this.wxShare.shareData.shareDatalink = _shareLink
-          alert(this.wxShare.shareData.shareDatalink)
+          let _shareLink = _url
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
-          alert(_shareLink)
+          this.wxShare.shareData.shareDatalink = _shareLink
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
