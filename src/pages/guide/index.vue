@@ -8,7 +8,7 @@
       <div v-html="activity.description"></div>
     </div>
     <div class="v-operation"
-         v-if="activity.countDown >= 1800&&activity.status!=='LIVING'">
+         v-if="activity.countDown >= 1800">
       <!-- 距离活动开始大于30min -->
       <template v-if="activity.viewCondition === 'APPOINT'">
         <!-- 报名活动 -->
@@ -245,7 +245,7 @@ export default {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
-          } else if (this.user.isOrder && this.activity.viewCondition === 'NONE') {
+          } else if (this.activity.viewCondition === 'NONE') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         } else if (this.activity.countDown < 1800) {
