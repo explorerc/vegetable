@@ -87,6 +87,7 @@ export default {
     },
     async share () { // 微信分享
       let _url = window.location.href
+      _url = _url.split('?wechatAuth')[0]
       // if (this.joinInfo.activityUserId) {
       //   _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       // }

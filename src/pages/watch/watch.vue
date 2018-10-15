@@ -428,6 +428,7 @@ export default {
       }).then((res) => {
         if (res.data) {
           let _shareLink = _url
+          _shareLink = _url.split('?wechatAuth')[0]
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
