@@ -84,7 +84,8 @@ export default {
         this.$config({ loading: true }).$get(activityService.GET_TEMPLATE, {
           activityId: this.tid
         }).then((res) => {
-          if (!res.data.value || res.data.enabled === 'N') {
+          let isPreview = window.location.href.indexOf('sitePreview')
+          if ((!res.data.value || res.data.enabled === 'N') && !isPreview) {
             this.$messageBox({
               header: '提示',
               content: '官网暂未设定',
@@ -110,6 +111,7 @@ export default {
     },
     async shareFunction () { // 微信分享
       let _url = window.location.href
+      _url = _url.split('?wechatAuth')[0]
       if (this.joinInfo.activityUserId) {
         _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       }
