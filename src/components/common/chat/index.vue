@@ -1,7 +1,7 @@
 <template>
   <div class="chat-wrap">
-    asdsad
-    <input type="text" v-model='value'>
+    <input type="text"
+           v-model='value'>
     <button @click='sendAction'>发</button>
   </div>
 </template>

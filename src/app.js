@@ -7,6 +7,7 @@ import 'assets/css/index.scss'
 
 import Notification from './components/common/notification'
 import Input from './components/common/input'
+import Marquee from './components/common/marquee'
 import MessageBox from './components/common/message-box'
 import Share from './components/common/share'
 import Upload from './components/common/upload'
@@ -19,6 +20,7 @@ import Ajax from './utils/_ajax'
 
 Vue.use(Notification)
 Vue.use(Input)
+Vue.use(Marquee)
 Vue.use(MessageBox)
 Vue.use(Share)
 Vue.use(Upload)
