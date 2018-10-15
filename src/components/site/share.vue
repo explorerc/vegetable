@@ -4,8 +4,8 @@
       <div class="_dialog" @click.stop="">
         <div class="_dialog-header">分享到微信<i class="iconfont icon-close" @click="closeDialog"></i></div>
         <div class="_dialog-content">
-          <div class="title">《易烊千玺缺席中戏开学原因曝光 参加亚运闭幕表演》</div>
-          <div  class="des">将视频分享给微信好友或微信好友圈</div>
+          <div class="title">{{share.title}}</div>
+          <div  class="des"></div>
           <div  class="qr">
             <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.share.link}`" >
           </div>
@@ -71,7 +71,7 @@ export default {
   data () {
     return {
       showDialog: false,
-      url: 'http://localhost:2333/template',
+      url: location.href,
       sina: true
     }
   },
@@ -103,6 +103,10 @@ export default {
     },
     doCopy () {
       this.url.copyClipboard()
+      this.$toast({
+        'content': '复制成功',
+        'position': 'center'
+      })
     },
     closeDialog () {
       this.showDialog = false

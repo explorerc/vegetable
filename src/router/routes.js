@@ -69,6 +69,10 @@ export default [{
   path: '/site/:id',
   name: 'SiteTemplate',
   component: SiteTemplate
+}, {
+  path: '/sitePreview/:id',
+  name: 'SiteTemplate',
+  component: SiteTemplate
 },
 {
   path: '/watch/:id',

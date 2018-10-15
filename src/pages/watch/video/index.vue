@@ -20,7 +20,7 @@
          :id="playBoxId"
          v-else-if="playType=='end'">
       <span class="end-box"
-            v-if="role!=='master'">谢谢观看</span>
+            v-if="role!=='master'">直播已结束</span>
     </div>
     <div class="play-video-box"
          :id="playBoxId"
@@ -47,10 +47,11 @@
       </div>
     </div>
 
-    <img v-if="imageSrc && !isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
-         :src="imageSrc"
+    <div v-if="!isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
          class="v-mark"
          @click="startPlay">
+      <i class="iconfont icon-bofang_anniu"></i>
+    </div>
   </div>
 </template>
 
@@ -199,6 +200,13 @@ export default {
       }
     },
     playEnd () {
+      clearInterval(this.setIntervalHandler)
+      // 发起端直播
+      if (window.hostPusher) window.hostPusher.destroy()
+      // 观看端直播
+      if (window.playComps) window.playComps.destroy()
+      // 回放和暖场视频
+      if (window.VhallPlayer) window.VhallPlayer.destroy()
     },
     playVideo () {
       if (this.playType === 'warm') { // 暖场
@@ -495,37 +503,12 @@ export default {
       return false
     },
     changeX5EnterFullScreen () {
-      // document.getElementsByClassName('v-x5-title')[0].style['display'] = 'block'
-      // document.getElementsByClassName('v-hearder')[0].style['top'] = '13.333vw'
       EventBus.$emit('enterFullScreen', () => {
       })
-      // document.getElementsByClassName('v-watch')[0].classList.add('v-x5-div')
-      // document.getElementsByClassName('v-watch')[0].classList.remove('v-close-x5-div')
-      // document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 24vw'
-      // document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '0'
-      // if (document.getElementsByClassName('v-mark-img')[0]) {
-      //   document.getElementsByClassName('v-mark-img')[0].style['top'] = '24vw'
-      // }
-      // document.getElementsByClassName('v-click-modal')[0].style['top'] = '24vw'
-      // document.getElementsByClassName('v-function-box')[0].style['top'] = '80.267vw'
-      // document.getElementsByClassName('control-box-div')[0].style['top'] = '69.6vw'
     },
     changeX5ExitFullScreen () {
       EventBus.$emit('exitFullScreen', () => {
       })
-      // document.getElementsByClassName('vjs-tech')[0].classList.add('v-x5')
-      // document.getElementsByClassName('v-x5-title')[0].style['display'] = 'none'
-      // document.getElementsByClassName('v-hearder')[0].style['top'] = '0'
-      // document.getElementsByClassName('v-watch')[0].classList.remove('v-x5-div')
-      // document.getElementsByClassName('v-watch')[0].classList.add('v-close-x5-div')
-      // document.getElementsByClassName('vjs-tech')[0].style['object-position'] = '0 10.667vw'
-      // document.getElementsByClassName('v-mark')[0].style['top'] = '10.667vw'
-      // if (document.getElementsByClassName('v-mark-img')[0]) {
-      //   document.getElementsByClassName('v-mark-img')[0].style['top'] = '10.667vw'
-      // }
-      // document.getElementsByClassName('v-click-modal')[0].style['top'] = '10.667vw'
-      // document.getElementsByClassName('v-function-box')[0].style['top'] = '66.933vw'
-      // document.getElementsByClassName('control-box-div')[0].style['top'] = '56.267vw'
     }
   }
 }
@@ -550,10 +533,10 @@ export default {
     .end-box {
       position: absolute;
       display: block;
-      color: red;
+      color: #fff;
       text-align: center;
       width: 100%;
-      top: 46%;
+      top: 20%;
     }
   }
   .icon-bofang {
@@ -619,11 +602,30 @@ export default {
   }
   .v-mark {
     position: absolute;
+    background-color: #222;
     top: 80px;
     left: 0;
     width: 100%;
     height: 422px;
     z-index: 3;
+    text-align: center;
+    i {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -65px;
+      margin-left: -65px;
+      width: 130px;
+      height: 130px;
+      text-align: center;
+      padding-left: 8px;
+      border-radius: 50%;
+      background-color: #000;
+      line-height: 130px;
+      font-size: 75px;
+      color: #fff;
+    }
   }
 }
 </style>

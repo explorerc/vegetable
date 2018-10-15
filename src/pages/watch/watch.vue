@@ -1,7 +1,8 @@
 <template>
   <div class="v-watch"
        :class="{'v-x5-div': vx5div,'v-close-x5-div': vclosex5div,'v-other-div': votherdiv}">
-    <div class="v-x5-title">
+    <div class="v-x5-title"
+         v-if="domShow">
       {{activityInfo.title}}
     </div>
     <div v-if="domShow"
@@ -182,15 +183,15 @@ export default {
       function () {
         if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
-          if (!_this.isX5()) {
-            _this.votherdiv = true
-            _this.domShow = false
-          }
+          // if (!_this.isX5()) {
+          _this.votherdiv = true
+          _this.domShow = false
+          // }
         } else {
-          if (!_this.isX5()) {
-            _this.votherdiv = false
-            _this.domShow = true
-          }
+          // if (!_this.isX5()) {
+          _this.votherdiv = false
+          _this.domShow = true
+          // }
         }
       },
       false
@@ -297,7 +298,9 @@ export default {
     async initPage () {
       await this.initRoomPaas()
       if (this.isWx()) {
-        this.share()
+        setTimeout(() => {
+          this.share()
+        }, 1000)
       }
       /* 查询详情 */
       let activityInfo = null
@@ -415,7 +418,7 @@ export default {
     async share () { // 微信分享
       let _url = window.location.href
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
-        url: _url
+        url: encodeURIComponent(_url)
       }).then((res) => {
         this.wxShare.wxShareData.appId = res.data.appId
         this.wxShare.wxShareData.timestamp = res.data.timestamp
@@ -427,11 +430,11 @@ export default {
         param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
-          let _shareLink = _url
+          let _shareLink = window.location.href
+          this.wxShare.shareData.shareDatalink = _shareLink
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
-          this.wxShare.shareData.shareDatalink = _shareLink
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
@@ -456,10 +459,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-watch {
-  * {
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
   /deep/ {
     position: relative;
     height: 100%;

@@ -16,7 +16,10 @@ router.beforeResolve((to, from, next) => {
     auth(to, next)
   } else {
     vue
-      .$config({ loading: true, handlers: true })
+      .$config({
+        loading: true,
+        handlers: true
+      })
       .$get(userService.GET_CONSUMERINFO)
       .then(res => {
         sessionStorage.setItem('login', JSON.stringify(res.data))
@@ -36,11 +39,7 @@ function auth (to, next) {
       delete to.query['_pop']
       to.meta.pop = true
     }
-    next({
-      path: to.path,
-      params: to.params,
-      query: to.query
-    })
+    location.replace(`/m${to.fullPath.replace(/\?*wechatAuth=.+(&|$)/g, '')}`)
   } else {
     next()
   }

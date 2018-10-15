@@ -3,7 +3,9 @@
     <component class="template-content"
                :editAble="false"
                v-model="data"
-               v-bind:is="com"></component>
+               v-bind:is="com"
+              :shareData='share'
+               ></component>
   </div>
 </template>
 
@@ -84,7 +86,8 @@ export default {
         this.$config({ loading: true }).$get(activityService.GET_TEMPLATE, {
           activityId: this.tid
         }).then((res) => {
-          if (!res.data.value || res.data.enabled === 'N') {
+          let isPreview = window.location.href.indexOf('sitePreview')
+          if (!res.data.value && !isPreview && res.data.enabled === 'N') {
             this.$messageBox({
               header: '提示',
               content: '官网暂未设定',
