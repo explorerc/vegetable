@@ -248,9 +248,9 @@ export default {
         box-sizing: border-box;
         outline: none;
         font-weight: 500;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
+        // -moz-user-select: none;
+        // -webkit-user-select: none;
+        // -ms-user-select: none;
         padding: 0 40px;
         margin: 0 20px;
         border-radius: 19px;

@@ -457,10 +457,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-watch {
-  * {
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
   /deep/ {
     position: relative;
     height: 100%;
