@@ -427,7 +427,7 @@ export default {
         param: this.$route.params.id
       }).then((res) => {
         if (res.data) {
-          let _shareLink = _url
+          let _shareLink = window.location.href
           alert(_shareLink)
           this.wxShare.shareData.shareDatalink = _shareLink
           alert(this.wxShare.shareData.shareDatalink)
