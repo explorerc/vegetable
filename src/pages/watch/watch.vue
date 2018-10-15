@@ -298,7 +298,7 @@ export default {
     async initPage () {
       await this.initRoomPaas()
       if (this.isWx()) {
-        setTimeout(function () {
+        setTimeout(() => {
           this.share()
         }, 1000)
       }
