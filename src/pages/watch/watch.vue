@@ -428,14 +428,10 @@ export default {
       }).then((res) => {
         if (res.data) {
           let _shareLink = _url
-          alert(_shareLink)
-          _shareLink = _url.split('?wechatAuth')[0]
-          alert(_shareLink)
+          this.wxShare.shareData.shareDatalink = _shareLink
           if (this.joinInfo.activityUserId) {
             _shareLink = this.joinInfo.activityUserId ? `${_shareLink}?shareId=${this.joinInfo.activityUserId}` : _shareLink
           }
-          alert(_shareLink)
-          this.wxShare.shareData.shareDatalink = _shareLink
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
           this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
