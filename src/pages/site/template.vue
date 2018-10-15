@@ -3,7 +3,9 @@
     <component class="template-content"
                :editAble="false"
                v-model="data"
-               v-bind:is="com"></component>
+               v-bind:is="com"
+              :shareData='share'
+               ></component>
   </div>
 </template>
 
@@ -85,7 +87,7 @@ export default {
           activityId: this.tid
         }).then((res) => {
           let isPreview = window.location.href.indexOf('sitePreview')
-          if ((!res.data.value || res.data.enabled === 'N') && !isPreview) {
+          if (!res.data.value && !isPreview && res.data.enabled === 'N') {
             this.$messageBox({
               header: '提示',
               content: '官网暂未设定',
@@ -111,7 +113,6 @@ export default {
     },
     async shareFunction () { // 微信分享
       let _url = window.location.href
-      _url = _url.split('?wechatAuth')[0]
       if (this.joinInfo.activityUserId) {
         _url = this.joinInfo.activityUserId ? `${_url}?shareId=${this.joinInfo.activityUserId}` : _url
       }
