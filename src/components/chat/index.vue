@@ -583,7 +583,6 @@ export default {
     },
     listenAnnounce (msg) {
       console.log('接收 公告消息', msg)
-      // 如果是发起端 则弹窗公告
       this.announceShow = true
       this.receiveAnnounce = msg.content
       // const _that = this

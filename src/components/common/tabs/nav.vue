@@ -91,7 +91,7 @@ export default {
       border-bottom: 1px solid transparent;
       border-left: 1px solid #e4e7ed;
       border-right: 1px solid #e4e7ed;
-      background-color: white;
+      // background-color: white;
       &:first-child {
         border-left: 0;
       }
