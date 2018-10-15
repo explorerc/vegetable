@@ -413,7 +413,8 @@ export default {
       })
     },
     async share () { // 微信分享
-      let _url = window.location.href
+      let _url = window.location.href.split('#')[0]
+      _url = _url.replace('&', '%26')
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
         url: _url
       }).then((res) => {
