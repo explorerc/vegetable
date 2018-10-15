@@ -252,7 +252,7 @@ export default {
         this.subscribeShow = false
         this.successShow = true
         let tempLoginInfo = JSON.parse(JSON.stringify(this.loginInfo))
-        tempLoginInfo.email = this.emailInput
+        tempLoginInfo.email = this.email
         this.updateLoginInfo(tempLoginInfo)
         this.storeLoginInfo(tempLoginInfo)
       }).catch((err) => {
