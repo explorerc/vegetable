@@ -3,7 +3,9 @@
     <component class="template-content"
                :editAble="false"
                v-model="data"
-               v-bind:is="com"></component>
+               v-bind:is="com"
+              :shareData='share'
+               ></component>
   </div>
 </template>
 
