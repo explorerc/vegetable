@@ -470,7 +470,7 @@ export default {
       } else if (controlType === 'volumeSize') { // 声音大小
         this.changeVolume(e.value)
       } else if (controlType === 'selectQuality') { // 画面质量
-        window.VhallPlayer.setQuality(e.value)
+        // window.VhallPlayer.setQuality(e.value)
       } else if (controlType === 'fullScree') { // 全屏控制
         this.fullScree(e.value)
       } else if (controlType === 'fullBrowser') { // 浏览器全屏
