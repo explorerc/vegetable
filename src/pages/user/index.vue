@@ -5,7 +5,7 @@
       <img src="../../assets/image/avatar@2x.png"
            alt="" v-else>
       <p v-if="isLogin">
-        {{loginInfo.nickName}}的直播间
+        {{loginInfo.nickName}}
       </p>
       <p v-else @click="doLogin()">
         未登录

@@ -36,6 +36,8 @@ const userInfo = () =>
   import('src/pages/user/info')
 const user = () =>
   import('src/pages/user')
+const userInfoEdit = () =>
+  import('src/pages/user/edit')
 const testSuccess = () =>
   import('src/pages/test/success')
 const testFail = () =>
@@ -113,6 +115,11 @@ export default [{
   path: '/userInfo',
   name: 'userInfo',
   component: userInfo
+},
+{
+  path: '/userInfoEdit/:type',
+  name: 'userInfoEdit',
+  component: userInfoEdit
 },
 {
   path: '/testFail',
