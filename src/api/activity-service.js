@@ -1,6 +1,6 @@
 export default {
   POST_SUBSCRIBE: '/frontend/user/order-activity', // 提交预约活动
-  POST_APPLYACTIVITY: '/frontend/user/apply-activity', // 验证是否报名
+  POST_CHECKAPPLY: '/frontend/user/check-apply', // 验证是否报名
   GET_LIVEINFO: '/frontend/live/info', // 获取活动信息
   GET_SHAREINFO: '/frontend/share/info', // 获取分享信息
   GET_QUESTIONINFO: '/frontend/question/info', // 获取报名表单

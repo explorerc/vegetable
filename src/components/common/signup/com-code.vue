@@ -181,6 +181,16 @@ export default {
         return true
       }
       return false
+    },
+    refreshCode () {
+      clearInterval(this.timerr)
+      this.isSend = false
+      this.isProhibit = true
+      this.second = 60
+      this.isImg = false
+      this.phoneKey = ''
+      this.cap.refresh()
+      this.val = ''
     }
   }
 }
