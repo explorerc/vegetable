@@ -1,12 +1,24 @@
 <template>
+  <div class="v-user">
+    <div class="header">
+      <img src="../../assets/image/avatar@2x.png"
+           alt="">
+      <p>
 
+      </p>
+    </div>
+  </div>
 </template>
 <script>
 
 export default {
   data () {
     return {
-      progress: 0
+      user: {
+        name: '', // 姓名
+        balance: '0', // 余额
+        activityQuantity: 0 // 活动数量
+      }
     }
   },
   created () {
@@ -22,4 +34,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.v-user /deep/ {
+}
 </style>
