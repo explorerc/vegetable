@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[13],{264:function(s,t,e){},334:function(s,t,e){"use strict";var n=e(264);e.n(n).a},343:function(s,t,e){"use strict";e.r(t);var n=function(){var s=this.$createElement;return(this._self._c||s)("div",{staticClass:"wrap"},[this._v("success")])};n._withStripped=!0;var c={},i=(e(334),e(1)),a=Object(i.a)(c,n,[],!1,null,"1b1f4b0a",null);a.options.__file="src/pages/test/success.vue";t.default=a.exports}}]);
-//# sourceMappingURL=13.237c6d7c.js.map
