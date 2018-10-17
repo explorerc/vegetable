@@ -3,11 +3,13 @@ const loginModules = {
   namespaced: true,
   state: {
     isLogin: false,
-    loginInfo: {}
+    loginInfo: {},
+    userInfo: {}
   },
   getters: {
     isLoginGetter: (state) => state.isLogin,
-    loginInfo: (state) => state.loginInfo
+    loginInfo: (state) => state.loginInfo,
+    userInfo: (state) => state.userInfo
   },
   mutations: {
     [types.UPDATE_IS_LOGIN] (state, status) {
@@ -15,6 +17,9 @@ const loginModules = {
     },
     [types.LOGIN_INFO] (state, status) {
       state.loginInfo = status
+    },
+    [types.USER_INFO] (state, status) {
+      state.userInfo = status
     }
   }
 }

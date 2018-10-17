@@ -105,12 +105,12 @@ export default [{
   component: kicked
 },
 {
-  path: '/user/:id',
+  path: '/user',
   name: 'user',
   component: user
 },
 {
-  path: '/userInfo/:id',
+  path: '/userInfo',
   name: 'userInfo',
   component: userInfo
 },
