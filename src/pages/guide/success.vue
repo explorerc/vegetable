@@ -118,7 +118,7 @@ export default {
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
         this.extChannel = res.data.activity.extChannelRoom
-        if ((this.activity.status === 'LIVING' || this.activity.countDown <= 1799) && !res.data.viewLimit.canAppoint) {
+        if ((this.activity.status === 'LIVING' || this.activity.countDown <= 1799 || this.activity.status === 'PLAYBACK')) {
           if (this.activity.viewCondition === 'APPOINT') {
             if (res.data.joinInfo.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
