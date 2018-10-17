@@ -240,7 +240,7 @@ export default {
         this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
-        if (this.activity.status === 'LIVING') {
+        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)

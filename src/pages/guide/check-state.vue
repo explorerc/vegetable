@@ -84,53 +84,35 @@ export default {
       }
       this.isClick = false
       let data = {
-        activityId: this.$route.params.id
+        activityId: this.$route.params.id,
+        wechatAuth: sessionStorage.getItem('wechatAuth'),
+        mobile: this.user.phone,
+        code: this.code
       }
-      this.$config({ handlers: true }).$post(activityService.GET_LIVEINFO, data).then((res) => {
-        if (res.data.viewLimit.canAppoint === 'N' && res.data.activity.viewCondition === 'APPOINT' && !res.data.joinInfo.isApplay) {
-          this.isClick = true
-          this.phoneError = '您输入的手机号未参与报名'
+      this.$config({ handlers: true }).$post(activityService.POST_APPLYACTIVITY, data).then((res) => {
+        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+          this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+        } else if (this.activity.countDown < 1800) {
+          this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
         } else {
-          if (res.data.activity.status === 'LIVING') {
-            if (res.data.activity.viewCondition === 'APPOINT') {
-              if (res.data.joinInfo.isApplay) {
-                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-              } else {
-                this.$router.replace('/Success/' + this.$route.params.id)
-              }
-            } else if (res.data.joinInfoisOrder && res.data.activity.viewCondition === 'NONE') {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else {
-              this.$router.replace('/Success/' + this.$route.params.id)
-            }
-          } else if (res.data.activity.countDown < 1800) {
-            if (res.data.activity.viewCondition === 'APPOINT') {
-              if (res.data.joinInfoisApplay) {
-                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-              } else {
-                this.$router.replace('/Success/' + this.$route.params.id)
-              }
-            } else if (res.data.joinInfoisOrder && res.data.activity.viewCondition === 'NONE') {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else {
-              this.$router.replace('/Success/' + this.$route.params.id)
-            }
-          } else {
-            this.$router.replace('/Success/' + this.$route.params.id)
-          }
+          this.$router.replace('/Success/' + this.$route.params.id)
         }
       }).catch((err) => {
         this.isClick = true
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+        if (err.code === 12004) {
+          this.phoneError = err.msg
+        } else {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
             }
-          }
-        })
+          })
+        }
       })
     },
     submit () { // 提交验证信息
@@ -148,27 +130,57 @@ export default {
         }
       }
       this.isClick = false
-      if (this.user.isOrder || this.user.isDisabled) {
-        this.subScribe()
-      } else {
-        this.$config({ handlers: true }).$post(userService.POST_MOBILELOGIN, {
-          mobile: this.user.phone,
-          code: this.code,
-          wechatAuth: sessionStorage.getItem('wechatAuth')
-        }).then((res) => {
-          if (res.data) {
-            sessionStorage.setItem('login', JSON.stringify(res.data))
-            this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
-              activityId: this.$route.params.id
-            }).then((res) => {
-              if (res.data.joinInfo.isOrder) {
-                this.$router.replace('/guide/' + this.$route.params.id)
+      let data = {
+        activityId: this.$route.params.id
+      }
+      let activityInfo = null
+      this.$config({ handlers: true }).$post(activityService.GET_LIVEINFO, data).then((res) => {
+        activityInfo = res.data
+        if (activityInfo.activity.viewCondition === 'APPOINT') {
+          this.subScribe()
+        } else if (activityInfo.activity.viewCondition === 'NONE') {
+          this.$config({ handlers: true }).$post(userService.POST_MOBILELOGIN, {
+            mobile: this.user.phone,
+            code: this.code,
+            wechatAuth: sessionStorage.getItem('wechatAuth')
+          }).then((res) => {
+            if (res.data) {
+              sessionStorage.setItem('login', JSON.stringify(res.data))
+              if (res.data.activity.status === 'LIVING') {
+                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+              } else if (res.data.activity.countDown < 1800) {
+                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
               } else {
-                this.isClick = true
-                this.subScribe()
+                this.$router.replace('/Success/' + this.$route.params.id)
               }
-            }).catch((err) => {
+            } else {
               this.isClick = true
+              this.$messageBox({
+                header: '提示',
+                content: res.msg,
+                confirmText: '确定',
+                handleClick: (e) => {
+                  if (e.action === 'cancel') {
+                  } else if (e.action === 'confirm') {
+                  }
+                }
+              })
+              sessionStorage.removeItem('login')
+              sessionStorage.removeItem('wechatAuth')
+            }
+          }).catch((err) => {
+            this.isClick = true
+            if (err.code === 10020) {
+              this.codeError = '请输入正确验证码'
+            } else if (err.code === 12002) {
+              if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+              } else if (this.activity.countDown < 1800) {
+                this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+              } else {
+                this.$router.replace('/Success/' + this.$route.params.id)
+              }
+            } else {
               this.$messageBox({
                 header: '提示',
                 content: err.msg,
@@ -179,48 +191,27 @@ export default {
                   }
                 }
               })
-            })
-          } else {
-            this.isClick = true
-            this.$messageBox({
-              header: '提示',
-              content: res.msg,
-              confirmText: '确定',
-              handleClick: (e) => {
-                if (e.action === 'cancel') {
-                } else if (e.action === 'confirm') {
-                }
-              }
-            })
-            sessionStorage.removeItem('login')
-            sessionStorage.removeItem('wechatAuth')
-          }
-        }).catch((err) => {
-          this.isClick = true
-          if (err.code === 10020) {
-            this.codeError = '请输入正确验证码'
-          } else if (err.code === 12002) {
-            if (this.activity.status === 'LIVING') {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else if (this.activity.countDown < 1800) {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else {
-              this.$router.replace('/Success/' + this.$route.params.id)
             }
-          } else {
-            this.isClick = true
-            this.$messageBox({
-              header: '提示',
-              content: err.msg,
-              confirmText: '确定',
-              handleClick: (e) => {
-                if (e.action === 'cancel') {
-                } else if (e.action === 'confirm') {
-                }
-              }
-            })
+          })
+        }
+      }).catch((err) => {
+        this.isClick = true
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
           }
         })
+      })
+
+      if (this.user.isOrder || this.user.isDisabled) {
+        this.subScribe()
+      } else {
+
       }
     },
     verification (val, isRequired, type) {
@@ -258,7 +249,7 @@ export default {
         this.activity.viewCondition = res.data.activity.viewCondition
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
-        if (this.activity.status === 'LIVING') {
+        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           } else if (this.activity.viewCondition === 'NONE') {
