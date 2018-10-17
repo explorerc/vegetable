@@ -166,12 +166,13 @@ export default {
       text-align: center;
     }
     .mask {
-      height: 380px;
+      // height: 380px;
       position: absolute;
       bottom: 0;
       width: 100%;
       padding: 0 46px;
       background-color: rgba(0, 0, 0, 0.8);
+      padding-bottom: 20px;
     }
     .font-content {
       margin-top: 26px;

@@ -36,7 +36,10 @@ const userInfo = () =>
   import('src/pages/user/info')
 const user = () =>
   import('src/pages/user')
-
+const testSuccess = () =>
+  import('src/pages/test/success')
+const testFail = () =>
+  import('src/pages/test/fail')
 export default [{
   path: '/',
   name: 'Layout',
@@ -71,6 +74,10 @@ export default [{
   path: '/site/:id',
   name: 'SiteTemplate',
   component: SiteTemplate
+}, {
+  path: '/sitePreview/:id',
+  name: 'SiteTemplate',
+  component: SiteTemplate
 },
 {
   path: '/watch/:id',
@@ -98,13 +105,28 @@ export default [{
   component: kicked
 },
 {
+  path: '/user/:id',
+  name: 'user',
+  component: user
+},
+{
   path: '/userInfo/:id',
   name: 'userInfo',
   component: userInfo
 },
 {
-  path: '/user/:id',
-  name: 'user',
-  component: user
+  path: '/testFail',
+  name: 'testFail',
+  component: testFail
+},
+{
+  path: '/testSuccess',
+  name: 'testSuccess',
+  component: testSuccess
+},
+{
+  path: '/testFail',
+  name: 'testFail',
+  component: testFail
 }
 ]
