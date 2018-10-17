@@ -79,17 +79,15 @@ export default {
       this.code = val
     },
     subScribe () { // 预约活动
-      if (!this.isClick) {
-        return false
-      }
-      this.isClick = false
       let data = {
         activityId: this.$route.params.id,
         wechatAuth: sessionStorage.getItem('wechatAuth'),
         mobile: this.user.phone,
         code: this.code
       }
+      debugger
       this.$config({ handlers: true }).$post(activityService.POST_APPLYACTIVITY, data).then((res) => {
+        debugger
         if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
         } else if (this.activity.countDown < 1800) {
@@ -98,6 +96,7 @@ export default {
           this.$router.replace('/Success/' + this.$route.params.id)
         }
       }).catch((err) => {
+        debugger
         this.isClick = true
         if (err.code === 12004) {
           this.phoneError = err.msg
@@ -134,8 +133,10 @@ export default {
         activityId: this.$route.params.id
       }
       let activityInfo = null
+      debugger
       this.$config({ handlers: true }).$post(activityService.GET_LIVEINFO, data).then((res) => {
         activityInfo = res.data
+        debugger
         if (activityInfo.activity.viewCondition === 'APPOINT') {
           this.subScribe()
         } else if (activityInfo.activity.viewCondition === 'NONE') {
