@@ -5,13 +5,13 @@
       <img src="../../assets/image/avatar@2x.png"
            alt="" v-else>
       <p v-if="isLogin">
-        {{user.name}}的直播间
+        {{loginInfo.nickName}}的直播间
       </p>
       <p v-else @click="doLogin()">
         未登录
       </p>
     </div>
-    <div class="v-from" v-if="isLogin">
+    <div class="v-list" v-if="isLogin">
       <div class="v-item">
         <a :href="MOBILE_HOST+'userInfo'"
            class="v-block">
@@ -93,6 +93,7 @@ export default {
   },
   mounted () {
     if (this.getLoginInfo()) {
+      this.storeLoginInfo(this.getLoginInfo())
       this.isLogin = true
       if (!this.userInfo) {
         // let data = {
@@ -195,7 +196,7 @@ export default {
       margin-left: 20px;
     }
   }
-  .v-from {
+  .v-list {
     width: 100%;
     background-color: #fff;
     margin-top: 20px;
