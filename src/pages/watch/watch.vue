@@ -252,7 +252,7 @@ export default {
         this.subscribeShow = false
         this.successShow = true
         let tempLoginInfo = JSON.parse(JSON.stringify(this.loginInfo))
-        tempLoginInfo.email = this.emailInput
+        tempLoginInfo.email = this.email
         this.updateLoginInfo(tempLoginInfo)
         this.storeLoginInfo(tempLoginInfo)
       }).catch((err) => {
@@ -333,6 +333,10 @@ export default {
         this.playStatus = playStatuTypes[activityInfo.status]
         this.businessUserId = res.data.activity.userId
         if (activityInfo.status === 'LIVING') {
+          if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          }
+        } else if (activityInfo.status === 'PLAYBACK') {
           if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }

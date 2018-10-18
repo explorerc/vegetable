@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="v-video-box">
     <div class="v-video">
       <play-video role="watcher"
                   :play-type="playType"
@@ -52,7 +52,9 @@
             </template>
           </com-tab>
         </com-tabs>
-        <!-- <a class="v-subscribe" href="javascript:;"><i class="iconfont icon-dingyue"></i> 关注</a> -->
+        <!-- <a class="v-subscribe"
+           href="javascript:;">
+          <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
     </div>
     <com-login @login="loginSuccess"></com-login>
@@ -98,19 +100,22 @@ export default {
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
     this.playType = 'vod'
+    // if (this.activityInfo.status === 'PREPARE') {
+    //   if (this.activityInfo.warm && this.activityInfo.warm.enabled === 'Y') {
+    //     this.playType = 'warm'
+    //   } else {
+    //     this.playType = 'pre'
+    //   }
+    // } else if (this.activityInfo.status === 'FINISH') {
+    //   this.playType = 'end'
+    // } else {
+    //   this.playType = 'live'
+    // }
     this.startInit = true
+    this.initMsgServe()
   },
   created () {
-    this.initToken()
-    // let body = document.querySelector('body')
-    // let _this = this
-    // body.addEventListener('click', (e) => {
-    //   if (e.target.id === 'sendBox' || e.target.className === 'v-chat-control' || e.target.className === 'v-showpsd' || e.target.className === 'v-chat-clickbox') {
-    //     _this.sendBoxShow = true
-    //   } else {
-    //     _this.sendBoxShow = false
-    //   }
-    // }, false)
+    // this.initToken()
   },
   watch: {
     'loginInfo.consumerUserId': {// 观看端 是否已登陆
@@ -120,9 +125,6 @@ export default {
         }
       },
       deep: true
-    },
-    activityInfo: {
-
     }
   },
   methods: {
@@ -147,12 +149,12 @@ export default {
         }
       }
     },
-    /* 初始化，获取权限 */
-    initToken () {
-      this.$nextTick(() => {
-        this.startInit = true
-      })
-    },
+    // /* 初始化，获取权限 */
+    // initToken () {
+    //   this.$nextTick(() => {
+    //     this.startInit = true
+    //   })
+    // },
     initMsgServe () {
       // ChatService.OBJ = new ChatService()
       ChatService.OBJ.init({
@@ -163,14 +165,15 @@ export default {
       })
       /* 监听在线人数 */
       ChatService.OBJ.regHandler(ChatConfig.onLineNum, (msg) => {
-        const temp = JSON.parse(JSON.stringify(this.liveInfo))
-        temp.showOnlineNum = parseInt(temp.setting.initOnlineNum) + parseInt(msg.num)
-        this.storeLiveInfo(temp)
+        let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        temp.setting.initOnlineNum = msg.num
+        this.storeActivityInfo(temp)
       })
       /* 监听开始直播 */
       ChatService.OBJ.regHandler(ChatConfig.beginLive, (msg) => {
         this.playType = 'live'
         const temp = JSON.parse(JSON.stringify(this.activityInfo))
+        console.log(temp)
         temp.status = 'LIVING'
         temp.statusName = '直播中'
         this.storeActivityInfo(temp)
@@ -181,6 +184,20 @@ export default {
         const temp = JSON.parse(JSON.stringify(this.activityInfo))
         temp.status = 'FINISH'
         temp.statusName = '结束'
+        this.storeActivityInfo(temp)
+      })
+      /* 监听真实人员进入直播间 */
+      ChatService.OBJ.regHandler(ChatConfig.joinLive, (msg) => {
+        console.log('--进入房间--消息--')
+        let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        temp.onlineNum = parseInt(temp.onlineNum) + 1
+        this.storeActivityInfo(temp)
+      })
+      /* 监听真实人员离开直播间 */
+      ChatService.OBJ.regHandler(ChatConfig.leaveLive, (msg) => {
+        console.log('--离开房间--消息--')
+        let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        temp.onlineNum = parseInt(temp.onlineNum) - 1
         this.storeActivityInfo(temp)
       })
     },
@@ -208,9 +225,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.v-video-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  flex: 1;
+  background-color: #000000;
+}
 .v-video /deep/ {
   width: 100%;
-  height: 422px;
+  height: 100%;
   position: relative;
   overflow: hidden;
   .v-text {
@@ -218,6 +242,10 @@ export default {
     top: 20px;
     left: 20px;
     z-index: 2;
+  }
+  video {
+    width: 100%;
+    height: 422px;
   }
   #my-puller {
     width: 100%;
@@ -253,7 +281,6 @@ export default {
   video {
     width: 100%;
     height: 422px;
-    object-fit: contain;
   }
   p {
     color: red;

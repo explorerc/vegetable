@@ -35,6 +35,10 @@ const kicked = () =>
 const userInfo = () =>
   import('src/pages/user/info')
 
+const testSuccess = () =>
+  import('src/pages/test/success')
+const testFail = () =>
+  import('src/pages/test/fail')
 export default [{
   path: '/',
   name: 'Layout',
@@ -103,5 +107,15 @@ export default [{
   path: '/userInfo',
   name: 'userInfo',
   component: userInfo
+},
+{
+  path: '/testSuccess',
+  name: 'testSuccess',
+  component: testSuccess
+},
+{
+  path: '/testFail',
+  name: 'testFail',
+  component: testFail
 }
 ]
