@@ -1,7 +1,7 @@
 <template>
   <div class="video-container" v-if="value.enable">
     <div ref="target" class="video-content">
-      <div v-if="value.videoType==='upload'" id="myVideo" class="video-wrap"></div>
+      <div v-if="value.videoType==='upload'" :id="videoId" class="video-wrap"></div>
       <div v-if="value.videoType==='url'" v-html="value.url" class="iframe-wrap"></div>
     </div>
   </div>
@@ -16,7 +16,11 @@ export default {
     return {
       vhallParams: {},
       percentVideo: 0,
-      uploadErrorMsg: ''
+      uploadErrorMsg: '',
+      uploadId: `vid_upload_${Math.floor(Math.random() * 10000)}`,
+      videoId: `vid_${Math.floor(Math.random() * 10000)}`,
+      confirmId: `vid_confirm_${Math.floor(Math.random() * 10000)}`,
+      nameId: `vid_name_${Math.floor(Math.random() * 10000)}`
     }
   },
   methods: {
@@ -26,8 +30,8 @@ export default {
     initVhallUpload () {
       window.vhallCloudDemandSDK('#upload', {
         params: {
-          confirmBtn: '#confirmUpload', // 保存按钮的ID
-          name: '#rename',
+          confirmBtn: `#${this.confirmId}`, // 保存按钮的ID
+          name: `#${this.nameId}`,
           sign: this.vhallParams.sign,
           signed_at: this.vhallParams.signedAt,
           app_id: this.vhallParams.appId
@@ -71,7 +75,7 @@ export default {
         window.VhallPlayer.init({
           recordId: this.value.recordId, // 回放Id，点播必填，直播不写
           type: 'vod', // 播放类型,必填，live 直播, vod 为点播
-          videoNode: 'myVideo', // 推流视频回显节点id，必填
+          videoNode: this.videoId, // 推流视频回显节点id，必填
           complete: function () {
             // window.VhallPlayer.play()
           },
@@ -121,6 +125,17 @@ export default {
     .link-input {
       width: 400px;
     }
+  }
+  .video-js .vjs-big-play-button {
+    width: 54px;
+    height: 54px;
+    border-radius: 500px;
+    top: 50%;
+    left: 50%;
+    margin-top: -27px;
+    margin-left: -27px;
+    line-height: 51px;
+    font-size: 30px;
   }
 }
 </style>

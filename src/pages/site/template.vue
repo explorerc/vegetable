@@ -13,6 +13,7 @@
 import { mapState } from 'vuex'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
+import temp3 from './template3.vue'
 import temp4 from './template4.vue'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
@@ -21,6 +22,7 @@ export default {
   components: {
     't0478320': temp1,
     't0478321': temp2,
+    't0478322': temp3,
     't0478323': temp4
   },
   data () {
