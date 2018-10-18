@@ -545,6 +545,9 @@ export default {
         txt: this.value // 输入内容
       }
       ChatService.OBJ.sendChat(JSON.stringify(obj))
+      _log.track(Vhall_User_Actions.CHAT, {
+        event: encodeURIComponent(this.value)
+      })
       this.value = ''
       this.chatPlaceholder = '输入想说的话…'
       this.faceOpen = false

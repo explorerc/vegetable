@@ -379,6 +379,25 @@ export default {
       } else {
         this.currentView = Live
       }
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+        _log.set('visitor_id', res.data.visitorId)
+      })
+      let login = this.getLoginInfo()
+      _log.set('business_uid', activityInfo.userId)
+      if (login) {
+        _log.set('consumer_uid', login.consumerUserId)
+      }
+      _log.set('activity_id', activityInfo.id)
+      // 1 直播
+      // 2 点播
+      let status = 0
+      if (activityInfo.status === 'LIVING') {
+        status = 1
+      } else if (activityInfo.status === 'PLAYBACK') {
+        status = 2
+      }
+      _log.set('service_names', status)
+      _log.track(Vhall_User_Actions.ENTER)
     },
     initSdk () {
       // this.service = new ChatService()
@@ -447,6 +466,7 @@ export default {
       wxShareFunction(this.wxShare)
     },
     loginSuccess (res) {
+      _log.set('consumer_uid', res.consumerUserId)
       this.storeLoginInfo(res)
       this.$router.go(0)
     },
