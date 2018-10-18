@@ -25,7 +25,7 @@
         </a>
       </div>
       <div class="v-item">
-        <a href=""
+        <a :href="MOBILE_HOST+'activityList'"
            class="v-block">
           <i class="iconfont icon-Loading v-left-icon"></i>
           <div class="v-item-right">
