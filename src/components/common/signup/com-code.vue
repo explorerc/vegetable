@@ -135,6 +135,13 @@ export default {
           }
         }, 1000)
       }).catch((err) => {
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
         if (err.code === 10050) {
           this.$emit('update:errorMsg', '验证码发送过于频繁')
         } else if (err.code !== 200) {
@@ -174,6 +181,16 @@ export default {
         return true
       }
       return false
+    },
+    refreshCode () {
+      clearInterval(this.timerr)
+      this.isSend = false
+      this.isProhibit = true
+      this.second = 60
+      this.isImg = false
+      this.phoneKey = ''
+      this.cap.refresh()
+      this.val = ''
     }
   }
 }
