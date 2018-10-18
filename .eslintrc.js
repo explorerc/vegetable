@@ -7,27 +7,24 @@ module.exports = {
       jsx: true
     }
   },
-  plugins: [
-    'html'
-  ],
+  plugins: ['html'],
   parser: 'babel-eslint',
   env: {
-    browser: true,
-  },
-  globals: {
-    initNECaptcha: true
+    browser: true
   },
   rules: {
     'no-extend-native': 'off',
     'no-new': 'off',
-    "no-alert": 0,
-    "no-spaced-func": 2,
-    "no-var": 0,
-    "no-debugger": 0,
+    'no-alert': 0,
+    'no-spaced-func': 2,
+    'no-var': 0,
+    'no-debugger': 0
   },
   globals: {
+    initNECaptcha: true,
+    _log: true,
+    Vhall_User_Actions: true,
     Vhall: true,
     VhallChat: true
   }
-
 }

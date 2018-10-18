@@ -197,7 +197,15 @@ export default {
     },
     async initMsgServe () {
       await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
-        this.visitorObj.visitorId = res.data
+        let login = this.getLoginInfo()
+        _log.set('business_uid', this.activity.userId)
+        if (login) {
+          _log.set('consumer_uid', login.consumerUserId)
+        }
+        _log.set('activity_id', this.$route.params.id)
+        _log.set('visitor_id', res.data.visitorId)
+        _log.track(Vhall_User_Actions.ENTER)
+        this.visitorObj.visitorId = res.data.visitorId
       })
       if (!this.extChannel) return false
       const roomInfo = await this.$config({ handlers: true }).$post(activityService.GET_REG_SDK_INFO, {
@@ -230,6 +238,7 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         this.activity.viewCondition = res.data.activity.viewCondition
+        this.activity.userId = res.data.activity.userId
         this.activity.status = res.data.activity.status
         this.activity.title = res.data.guide ? res.data.guide.title : ''
         this.activity.description = res.data.guide ? res.data.guide.description : ''
