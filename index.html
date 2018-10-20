@@ -39,9 +39,9 @@
 
   </script>
   <% if(process.env.BUILD_ENV!='prod') { %>
-  <script src="<%=process.env.PUBLIC_PATH%><%=process.env.SUB_DIR%>/log/1.0.0/test/log_sdk.js"></script>
+  <script src="<%=process.env.PUBLIC_PATH%><%=process.env.SUB_DIR%>/log/1.0.1/test/log_sdk.js"></script>
   <% } else { %>
-  <script src="<%=process.env.PUBLIC_PATH%><%=process.env.SUB_DIR%>/log/1.0.0/log_sdk.js"></script>
+  <script src="<%=process.env.PUBLIC_PATH%><%=process.env.SUB_DIR%>/log/1.0.1/log_sdk.js"></script>
   <% } %>
   <% if(process.env.BUILD_ENV!='prod') { %>
   <script src="//cnstatic01.e.vhall.com/3rdlibs/vue/2.5.16/vue.js"></script>

@@ -204,7 +204,15 @@ export default {
         }
         _log.set('activity_id', this.$route.params.id)
         _log.set('visitor_id', res.data.visitorId)
-        _log.track(Vhall_User_Actions.ENTER)
+        let refer = this.$route.query.refer
+        if (refer !== undefined) {
+          localStorage.setItem(`refer_${this.activityId}`, refer)
+          _log.track(Vhall_User_Actions.ENTER, {
+            event: parseInt(refer)
+          })
+        } else {
+          _log.track(Vhall_User_Actions.ENTER)
+        }
         this.visitorObj.visitorId = res.data.visitorId
       })
       if (!this.extChannel) return false
