@@ -397,7 +397,13 @@ export default {
         status = 2
       }
       _log.set('service_names', status)
-      _log.track(Vhall_User_Actions.ENTER)
+      if (localStorage.getItem(`refer_${activityInfo.id}`)) {
+        _log.track(Vhall_User_Actions.ENTER, {
+          event: parseInt(localStorage.getItem(`refer_${activityInfo.id}`))
+        })
+      } else {
+        _log.track(Vhall_User_Actions.ENTER)
+      }
     },
     initSdk () {
       // this.service = new ChatService()
