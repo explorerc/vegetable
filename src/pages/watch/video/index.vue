@@ -43,6 +43,7 @@
                        :qualitys="qualitys"
                        :playType="playType"
                        ref="mychild"
+                       :currentQuality="currentQuality"
                        @control="playControl"></video-control>
       </div>
     </div>
@@ -86,7 +87,8 @@ export default {
       isPlay: false,
       isAutoPlay: false,
       controlPsoition: '1.333vw',
-      qualitys: [] // 视频质量
+      qualitys: [], // 视频质量
+      currentQuality: ''
     }
   },
   props: {
@@ -332,6 +334,9 @@ export default {
             if (window.VhallPlayer) window.VhallPlayer.destroy()
           }
         }
+        if (this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
+          this.currentQuality = window.VhallPlayer.getCurrentQuality()
+        }
       }, 1000)
     },
     queryWarmInfo () {
@@ -470,7 +475,7 @@ export default {
       } else if (controlType === 'volumeSize') { // 声音大小
         this.changeVolume(e.value)
       } else if (controlType === 'selectQuality') { // 画面质量
-        // window.VhallPlayer.setQuality(e.value)
+        window.VhallPlayer.setQuality(e.value)
       } else if (controlType === 'fullScree') { // 全屏控制
         this.fullScree(e.value)
       } else if (controlType === 'fullBrowser') { // 浏览器全屏
