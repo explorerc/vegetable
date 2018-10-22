@@ -146,6 +146,10 @@ export default {
       border-radius: 50px;
       margin: 35px auto;
       font-size: 32px;
+      &.v-disabled {
+        background-color: #555;
+        color: #fff;
+      }
     }
     .v-registered {
       font-size: 32px;

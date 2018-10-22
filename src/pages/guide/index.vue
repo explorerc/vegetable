@@ -26,7 +26,7 @@
           </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
-            <button class="primary-button">已报名</button>
+            <button class="primary-button v-disabled">已报名</button>
           </template>
           <template v-else>
             <!-- 未报名 -->
@@ -42,13 +42,13 @@
           <!-- 报名已截止 -->
           <template v-if="user.isApplay">
             <!-- 已报名 -->
-            <button class="primary-button">已报名</button>
+            <button class="primary-button v-disabled">已报名</button>
           </template>
           <template v-else>
             <button class="primary-button"
                     @click="jumpPage( MOBILE_HOST + 'CheckState/')"
                     v-if="!this.user.phone">报名验证</button>
-            <button class="primary-button"
+            <button class="primary-button v-disabled"
                     v-else>报名已截止</button>
           </template>
         </template>
@@ -119,7 +119,7 @@
             <button class="primary-button"
                     @click="jumpPage( MOBILE_HOST + 'CheckState/')"
                     v-if="!this.user.phone">报名验证</button>
-            <button class="primary-button"
+            <button class="primary-button v-disabled"
                     v-else>报名已截止</button>
           </template>
         </template>
@@ -266,8 +266,6 @@ export default {
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
         let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
-        console.log(user)
-        debugger
         if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
