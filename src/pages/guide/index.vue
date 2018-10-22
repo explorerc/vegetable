@@ -46,7 +46,10 @@
           </template>
           <template v-else>
             <button class="primary-button"
-                    @click="jumpPage( MOBILE_HOST + 'CheckState/')">报名验证</button>
+                    @click="jumpPage( MOBILE_HOST + 'CheckState/')"
+                    v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button"
+                    v-else>报名已截止</button>
           </template>
         </template>
       </template>
@@ -57,11 +60,12 @@
              v-if="activity.isCountdown">
             直播正在进行中
           </p>
+        <button class="primary-button"
+                @click="joinWebinar()">进入直播</button>
         </template>
         <template v-else>
           <com-countdown :time="activity.countDown"
                          v-if="activity.isCountdown"></com-countdown>
-        </template>
         <button class="primary-button"
                 v-if="user.isOrder">已预约</button>
         <template v-else>
@@ -71,6 +75,7 @@
              class="v-registered"
              @click="jumpPage( MOBILE_HOST + 'CheckState/')"
              v-if="!this.user.phone">已预约</a>
+        </template>
         </template>
       </template>
     </div>
@@ -112,14 +117,17 @@
           </template>
           <template v-else>
             <button class="primary-button"
-                    @click="jumpPage( MOBILE_HOST + 'CheckState/')">报名验证</button>
+                    @click="jumpPage( MOBILE_HOST + 'CheckState/')"
+                    v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button"
+                    v-else>报名已截止</button>
           </template>
         </template>
       </template>
       <!-- 无限制活动 -->
       <template v-else>
         <button class="primary-button"
-                @click="jumpPage( MOBILE_HOST + 'watch/')">进入直播</button>
+                @click="joinWebinar()">进入直播</button>
       </template>
       <!-- ！！！跳转观看页面 -->
     </div>
@@ -257,12 +265,15 @@ export default {
         this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
+        let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
+        console.log(user)
+        debugger
         if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
-          } else if (this.activity.viewCondition === 'NONE') {
+          } else if (this.activity.viewCondition === 'NONE' && user) {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         } else if (this.activity.countDown < 1800) {
@@ -270,7 +281,7 @@ export default {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
-          } else if (this.activity.viewCondition === 'NONE') {
+          } else if (this.activity.viewCondition === 'NONE' && user) {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         } else {
@@ -326,6 +337,10 @@ export default {
           })
         }
       }
+    },
+    joinWebinar () {
+      window.localStorage.setItem(this.visitorObj.visitorId + '_' + this.$route.params.id, true)
+      this.jumpPage(this.MOBILE_HOST + 'watch/')
     }
   }
 }
