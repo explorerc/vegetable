@@ -330,21 +330,17 @@ export default {
       clearInterval(this.setIntervalHandler)
       let _this = this
       _this.setIntervalHandler = setInterval(() => {
-        debugger
         _this.currentTime = window.VhallPlayer.getCurrentTime()
         if (_this.totalTime <= _this.currentTime) {
           clearInterval(_this.setIntervalHandler)
           if (_this.isAutoPlay) {
             window.VhallPlayer.play()
             _this.dealWithVideo()
+          } else {
+            _this.isPlay = false
+            _this.currentTime = 0
+            // if (window.VhallPlayer) window.VhallPlayer.destroy()
           }
-          // else {
-          //   this.isPlay = false
-          //   if (window.VhallPlayer) window.VhallPlayer.destroy()
-          // }
-        } else {
-          _this.isPlay = false
-          _this.currentTime = 0
         }
         if (_this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
           _this.currentQuality = window.VhallPlayer.getCurrentQuality()
