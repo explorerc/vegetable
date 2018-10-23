@@ -357,7 +357,7 @@ export default {
       }
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
-        this.playComps.initLivePlayer(false, true, () => {
+        this.playComps.initLivePlayer(true, true, () => {
           if (this.isX5()) {
             document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
               this.changeX5ExitFullScreen()
