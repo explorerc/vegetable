@@ -134,15 +134,13 @@ export default {
       type: String,
       required: true,
       default: '' // 直播(live), 回放(vod), 暖场(warm), 结束(end)
-    }
+    },
+    currentQuality: String // 当前清晰度
   },
   watch: {
     currentTime: {
       handler (newVal) {
         this.current = newVal
-        if (newVal > 5 && newVal < 6) {
-          this.controlBoxIsShow = false
-        }
       },
       immediate: true
     },
@@ -155,8 +153,14 @@ export default {
     volumeSize (newVal) {
       this.changeControl(controlTypes.volumeSize, newVal)
     },
-    selectQuality (newVal) {
-      this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
+    // selectQuality (newVal) {
+    //   debugger
+    //   this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
+    // },
+    currentQuality: {
+      handler (newVal) {
+        this.selectQuality = this.qualitys.indexOf(newVal)
+      }
     }
   },
   methods: {
@@ -209,8 +213,10 @@ export default {
       return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
     },
     selectQualityFn (idx) {
+      if (this.selectQuality === idx) return
       this.selectQuality = idx
-      this.outEvent()
+      this.changeControl(controlTypes.selectQuality, this.qualitys[idx])
+      this.showQualityBlock = false
     },
     changeControlStatus () {
       this.controlBoxIsShow = true
@@ -266,10 +272,6 @@ export default {
       color: #fff;
       &.time-box {
         margin-right: 10px;
-      }
-      .iconfont {
-        font-size: 14px;
-        color: #ccc;
       }
       .el-slider {
         left: 0;
@@ -379,7 +381,7 @@ export default {
   }
   .iconfont {
     vertical-align: middle;
-    font-size: 20px;
+    font-size: 30px;
     color: #f5f5f5;
     &:hover {
       cursor: pointer;

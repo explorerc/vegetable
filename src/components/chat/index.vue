@@ -94,7 +94,7 @@
             聊天
           </span>
           <template v-if='(mute || allMuted) && isWatch'>
-            <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div>
+            <!-- <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div> -->
           </template>
           <template v-else>
             <span @click='sendAction'
@@ -545,6 +545,9 @@ export default {
         txt: this.value // 输入内容
       }
       ChatService.OBJ.sendChat(JSON.stringify(obj))
+      _log.track(Vhall_User_Actions.CHAT, {
+        event: encodeURIComponent(this.value)
+      })
       this.value = ''
       this.chatPlaceholder = '输入想说的话…'
       this.faceOpen = false

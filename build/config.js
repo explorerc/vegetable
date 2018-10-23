@@ -3,10 +3,10 @@ const config = {
   local: {
     BUILD_ENV: 'local',
     API_PATH: '/api',
-    SUB_DIR: '',
+    SUB_DIR: 'static',
     PUBLIC_PATH: '/',
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    MOBILE_HOST: '//localhost:8866/m/',
+    MOBILE_HOST: '//172.16.11.28:8866/m/',
     proxyTable: {
       '/api': {
         target: 'http://test-api-zhike.vhall.com',

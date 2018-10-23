@@ -35,11 +35,23 @@ export default class LivePuller extends BasePuller {
         videoNode: this.rootEleId,
         videoAttr: _videoAttr,
         complete: () => {
+          // console.log('3播放器初始化完成')
+          // completionBK && completionBK()
+          // alert(autoplay)
+          // if (autoplay) {
+          //   window.VhallPlayer.play()
+          // }
+        },
+        ready: () => {
+          alert(autoplay)
           console.log('3播放器初始化完成')
           completionBK && completionBK()
           if (autoplay) {
             window.VhallPlayer.play()
           }
+        },
+        error: (err) => {
+          console.log(err)
         }
       })
 
