@@ -199,6 +199,7 @@ export default {
       width: 100%;
       height: auto;
       float: none;
+      padding-bottom: 20px;
     }
     .block1-bg {
       width: 100%;
