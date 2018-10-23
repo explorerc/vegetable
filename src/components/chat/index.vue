@@ -814,10 +814,10 @@ export default {
       },
       deep: true
     },
-    'activityInfo.setting': {
+    'activityInfo.setting.gag': {
       handler (newValue) {
         // 是否全体禁言
-        if (newValue.gag === 'Y') {
+        if (newValue === 'Y') {
           this.allMuted = true
         } else {
           this.allMuted = false
