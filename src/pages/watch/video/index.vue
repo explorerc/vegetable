@@ -329,6 +329,7 @@ export default {
     dealWithVideo () {
       clearInterval(this.setIntervalHandler)
       this.setIntervalHandler = setInterval(() => {
+        debugger
         this.currentTime = window.VhallPlayer.getCurrentTime()
         if (this.totalTime <= this.currentTime) {
           clearInterval(this.setIntervalHandler)
