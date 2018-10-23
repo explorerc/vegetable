@@ -49,6 +49,9 @@ export default class LivePuller extends BasePuller {
           if (autoplay) {
             window.VhallPlayer.play()
           }
+        },
+        error: (err) => {
+          console.log(err)
         }
       })
 

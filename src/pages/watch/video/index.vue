@@ -42,6 +42,7 @@
                        :totalTime="totalTime"
                        :qualitys="qualitys"
                        :playType="playType"
+                       :playState="isPlayState"
                        ref="mychild"
                        :currentQuality="currentQuality"
                        @control="playControl"></video-control>
@@ -88,7 +89,8 @@ export default {
       isAutoPlay: false,
       controlPsoition: '1.333vw',
       qualitys: [], // 视频质量
-      currentQuality: ''
+      currentQuality: '',
+      isPlayState: false
     }
   },
   props: {
@@ -180,6 +182,8 @@ export default {
     }),
     /* 初始组件 */
     initComponent () {
+      this.isPlayState = false
+      this.destoryComs()
       if (this.playType === 'live') { // 直播
         this.initLivePlay()
       } else if (this.playType === 'pre') {
@@ -234,7 +238,9 @@ export default {
       this.imageUrl = ''
       this.qualitys = window.VhallPlayer.getQualitys()
       window.VhallPlayer.play()
-      this.dealWithVideo()
+      if (this.playType !== 'live') {
+        this.dealWithVideo()
+      }
     },
     /* 改变直播使用设备 */
     changeLiveDevice () {
