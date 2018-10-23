@@ -141,9 +141,6 @@ export default {
     currentTime: {
       handler (newVal) {
         this.current = newVal
-        if (newVal > 5 && newVal < 6) {
-          this.controlBoxIsShow = false
-        }
       },
       immediate: true
     },
@@ -156,9 +153,10 @@ export default {
     volumeSize (newVal) {
       this.changeControl(controlTypes.volumeSize, newVal)
     },
-    selectQuality (newVal) {
-      this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
-    },
+    // selectQuality (newVal) {
+    //   debugger
+    //   this.changeControl(controlTypes.selectQuality, this.qualitys[newVal])
+    // },
     currentQuality: {
       handler (newVal) {
         this.selectQuality = this.qualitys.indexOf(newVal)
@@ -215,7 +213,6 @@ export default {
       return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
     },
     selectQualityFn (idx) {
-      debugger
       if (this.selectQuality === idx) return
       this.selectQuality = idx
       this.changeControl(controlTypes.selectQuality, this.qualitys[idx])
