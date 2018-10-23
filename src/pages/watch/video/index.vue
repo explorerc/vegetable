@@ -335,10 +335,11 @@ export default {
           if (this.isAutoPlay) {
             window.VhallPlayer.play()
             this.dealWithVideo()
-          } else {
-            this.isPlay = false
-            if (window.VhallPlayer) window.VhallPlayer.destroy()
           }
+          // else {
+          //   this.isPlay = false
+          //   if (window.VhallPlayer) window.VhallPlayer.destroy()
+          // }
         }
         if (this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
           this.currentQuality = window.VhallPlayer.getCurrentQuality()
