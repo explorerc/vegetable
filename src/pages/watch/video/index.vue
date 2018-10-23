@@ -328,25 +328,26 @@ export default {
     },
     dealWithVideo () {
       clearInterval(this.setIntervalHandler)
-      this.setIntervalHandler = setInterval(() => {
+      let _this = this
+      _this.setIntervalHandler = setInterval(() => {
         debugger
-        this.currentTime = window.VhallPlayer.getCurrentTime()
-        if (this.totalTime <= this.currentTime) {
-          clearInterval(this.setIntervalHandler)
-          if (this.isAutoPlay) {
+        _this.currentTime = window.VhallPlayer.getCurrentTime()
+        if (_this.totalTime <= _this.currentTime) {
+          clearInterval(_this.setIntervalHandler)
+          if (_this.isAutoPlay) {
             window.VhallPlayer.play()
-            this.dealWithVideo()
+            _this.dealWithVideo()
           }
           // else {
           //   this.isPlay = false
           //   if (window.VhallPlayer) window.VhallPlayer.destroy()
           // }
         } else {
-          this.isPlay = false
-          this.currentTime = 0
+          _this.isPlay = false
+          _this.currentTime = 0
         }
-        if (this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
-          this.currentQuality = window.VhallPlayer.getCurrentQuality()
+        if (_this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
+          _this.currentQuality = window.VhallPlayer.getCurrentQuality()
         }
       }, 1000)
     },
