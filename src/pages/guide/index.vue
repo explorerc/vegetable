@@ -92,11 +92,15 @@
             </p>
           </template>
           <template v-else>
-            <com-countdown :time="activity.countDown"
-                           v-if="activity.isCountdown"></com-countdown>
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播即将开始
+            </p>
           </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
+            <button class="primary-button"
+                @click="joinWebinar()">进入直播</button>
             <!-- ！！！跳转观看页面 -->
           </template>
           <template v-else>
@@ -111,8 +115,22 @@
         </template>
         <template v-else>
           <!-- 报名已截止 -->
+          <template v-if="activity.status === 'LIVING'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播正在进行中
+            </p>
+          </template>
+          <template v-else>
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播即将开始
+            </p>
+          </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
+            <button class="primary-button"
+                @click="joinWebinar()">进入直播</button>
             <!-- <a href="javascript:;" class="v-submit">已报名</a> -->
           </template>
           <template v-else>

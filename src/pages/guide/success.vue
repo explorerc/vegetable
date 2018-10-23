@@ -4,7 +4,10 @@
     <img src="../../assets/image/success@2x.png"
          alt=""
          class="v-img">
-    <p class="v-start-title">
+    <p class="v-start-title" v-if="activity.status === 'LIVING'">
+      <span>直播正在进行中</span>
+    </p>
+    <p class="v-start-title" v-else>
       <span>直播将要开始啦</span>
     </p>
     <button class="primary-button"
@@ -126,6 +129,16 @@ export default {
           } else if (res.data.joinInfo.isOrder && this.activity.viewCondition === 'NONE') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
+        }
+        if (this.activity.countDown > 1800) {
+          let time = this.activity.countDown
+          let interval = setInterval(i => {
+            time--
+            if (time < 30 * 60) {
+              this.activity.countDown = 1799
+              clearInterval(interval)
+            }
+          }, 1000)
         }
       })
       this.getToken()
