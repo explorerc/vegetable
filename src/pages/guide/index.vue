@@ -144,6 +144,18 @@
       </template>
       <!-- 无限制活动 -->
       <template v-else>
+        <template v-if="activity.status === 'LIVING'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播正在进行中
+          </p>
+        </template>
+        <template v-else>
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播即将开始
+          </p>
+        </template>
         <button class="primary-button"
                 @click="joinWebinar()">进入直播</button>
       </template>
