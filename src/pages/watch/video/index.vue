@@ -340,6 +340,9 @@ export default {
           //   this.isPlay = false
           //   if (window.VhallPlayer) window.VhallPlayer.destroy()
           // }
+        } else {
+          this.isPlay = false
+          this.currentTime = 0
         }
         if (this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
           this.currentQuality = window.VhallPlayer.getCurrentQuality()
