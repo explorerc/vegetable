@@ -340,7 +340,7 @@ export default {
           if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
-        } else if (activityInfo.status === 'END') {
+        } else if (activityInfo.status === 'FINISH') {
           if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
