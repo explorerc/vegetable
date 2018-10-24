@@ -340,6 +340,10 @@ export default {
           if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           }
+        } else if (activityInfo.status === 'END') {
+          if (activityInfo.viewCondition === 'APPOINT' && !joinInfo.isApplay) {
+            this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
+          }
         } else if (activityInfo.countDown < 1800) {
           if (activityInfo.viewCondition === 'APPOINT') {
             if (!joinInfo.isApplay) {
