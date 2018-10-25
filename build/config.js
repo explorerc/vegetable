@@ -19,11 +19,11 @@ const config = {
   },
   dev: {
     BUILD_ENV: 'dev',
-    API_PATH: '/api',
+    API_PATH: '/m/api',
     SUB_DIR: 'static',
-    PUBLIC_PATH: '//dev-zhike.vhall.domain/',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com'
-    // PUBLIC_PATH: '//127.0.0.1:8088/'
+    PUBLIC_PATH: '//dev-zhike.vhall.com/m/',
+    IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
+    MOBILE_HOST: '//dev-zhike.vhall.com/m/'
   },
   test: {
     BUILD_ENV: 'test',
