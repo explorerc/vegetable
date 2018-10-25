@@ -1167,6 +1167,17 @@ var Log = function () {
     }
     /**
      *
+     * @param {string} key 环境参数key
+     * @param {string} value 环境参数值
+     */
+
+  }, {
+    key: 'setEnv',
+    value: function setEnv(key, value) {
+      this.baseParams[key] = value;
+    }
+    /**
+     *
      * @param {string} key 上报参数key
      * @param {string} value 上报参数值
      */
@@ -1282,7 +1293,7 @@ var env = {
   url: document.URL,
   // title: document.title,
   ua: navigator.userAgent,
-  refer: document.referrer,
+  refer: document.referrer || localStorage.getItem('prev'),
   width: window.screen.width,
   height: window.screen.height,
   language: navigator.language
@@ -1429,7 +1440,9 @@ exports.default = function () {
   if (!history.onstatechange) {
     var url = location.href;
     history.onstatechange = function (e) {
+      localStorage.setItem('prev', location.href);
       _this.track(_type_maps.actions.LEAVE);
+      _this.setEnv('refer', location.href);
       _this.updateSid();
       _this.recoverReportParams();
     };
