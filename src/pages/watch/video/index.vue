@@ -42,7 +42,9 @@
                        :totalTime="totalTime"
                        :qualitys="qualitys"
                        :playType="playType"
+                       :playState="isPlayState"
                        ref="mychild"
+                       :currentQuality="currentQuality"
                        @control="playControl"></video-control>
       </div>
     </div>
@@ -86,7 +88,9 @@ export default {
       isPlay: false,
       isAutoPlay: false,
       controlPsoition: '1.333vw',
-      qualitys: [] // 视频质量
+      qualitys: [], // 视频质量
+      currentQuality: '',
+      isPlayState: false
     }
   },
   props: {
@@ -178,6 +182,8 @@ export default {
     }),
     /* 初始组件 */
     initComponent () {
+      this.isPlayState = false
+      this.destoryComs()
       if (this.playType === 'live') { // 直播
         this.initLivePlay()
       } else if (this.playType === 'pre') {
@@ -232,7 +238,9 @@ export default {
       this.imageUrl = ''
       this.qualitys = window.VhallPlayer.getQualitys()
       window.VhallPlayer.play()
-      this.dealWithVideo()
+      if (this.playType !== 'live') {
+        this.dealWithVideo()
+      }
     },
     /* 改变直播使用设备 */
     changeLiveDevice () {
@@ -320,17 +328,22 @@ export default {
     },
     dealWithVideo () {
       clearInterval(this.setIntervalHandler)
-      this.setIntervalHandler = setInterval(() => {
-        this.currentTime = window.VhallPlayer.getCurrentTime()
-        if (this.totalTime <= this.currentTime) {
-          clearInterval(this.setIntervalHandler)
-          if (this.isAutoPlay) {
+      let _this = this
+      _this.setIntervalHandler = setInterval(() => {
+        _this.currentTime = window.VhallPlayer.getCurrentTime()
+        if (_this.totalTime <= _this.currentTime) {
+          clearInterval(_this.setIntervalHandler)
+          if (_this.isAutoPlay) {
             window.VhallPlayer.play()
-            this.dealWithVideo()
+            _this.dealWithVideo()
           } else {
-            this.isPlay = false
-            if (window.VhallPlayer) window.VhallPlayer.destroy()
+            _this.isPlay = false
+            _this.currentTime = 0
+            // if (window.VhallPlayer) window.VhallPlayer.destroy()
           }
+        }
+        if (_this.playType !== 'live' && window.VhallPlayer.getCurrentQuality) {
+          _this.currentQuality = window.VhallPlayer.getCurrentQuality()
         }
       }, 1000)
     },
@@ -352,7 +365,7 @@ export default {
       }
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
-        this.playComps.initLivePlayer(false, true, () => {
+        this.playComps.initLivePlayer(true, true, () => {
           if (this.isX5()) {
             document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
               this.changeX5ExitFullScreen()
@@ -470,7 +483,7 @@ export default {
       } else if (controlType === 'volumeSize') { // 声音大小
         this.changeVolume(e.value)
       } else if (controlType === 'selectQuality') { // 画面质量
-        // window.VhallPlayer.setQuality(e.value)
+        window.VhallPlayer.setQuality(e.value)
       } else if (controlType === 'fullScree') { // 全屏控制
         this.fullScree(e.value)
       } else if (controlType === 'fullBrowser') { // 浏览器全屏

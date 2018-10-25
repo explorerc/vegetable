@@ -1,30 +1,45 @@
 <template>
-  <div class="template2-container">
+  <div class="template3-container" :class="{isEdit:editAble}">
     <com-panel class="section1" :edit="editAble" v-model="data.section1Data.panel">
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
-       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
+      <span class="iconfont" :class="[{'icon-nav-open':!menuOpen},{'icon-close':menuOpen}]" @click="()=>{menuOpen=!menuOpen}"></span>
+      <com-nav class="nav" v-show="menuOpen" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
-    <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
-      <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
-      <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
-      <com-video :edit="editAble" v-model="data.section2Data.video"></com-video>
-    </com-panel>
-    <com-block2 class="section3" :edit="editAble" height="556px" v-model="data.section3Data.block2"></com-block2>
-    <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
-      <com-font class="section4-font" :edit="editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
-    </com-panel>
+    <div class="section2" :edit="editAble" >
+      <com-panel :edit="editAble" v-model="data.section2Data.panel">
+      </com-panel>
+      <com-block1 :edit="editAble" :max="1" v-model="data.section2Data.block1"></com-block1>
+    </div>
+    <div class="section3" :edit="editAble" >
+      <com-block1 :edit="editAble" :max="5" v-model="data.section3Data.block1"></com-block1>
+    </div>
+    <div class="section4" :edit="editAble" >
+      <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
+      <div class="video-list clearfix">
+        <div class="video-item" v-for="(item, idx) in data.section4Data.list" :key='idx'>
+          <com-video :edit="editAble" v-model="item.video"></com-video>
+          <com-font :edit="editAble" v-model="item.video.font"></com-font>
+        </div>
+      </div>
+    </div>
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
-      <com-share :edit="editAble" :share="shareData" v-model="data.section5Data.share"></com-share>
+      <div class='bg' :style="{backgroundImage:'url('+data.section5Data.panel.img+')'}"></div>
+      <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
+      <com-btn class="btn" :edit="editAble" v-model="data.section5Data.btn"></com-btn>
+    </com-panel>
+    <com-panel class="section8" :edit="editAble" v-model="data.section8Data.panel">
+      <com-font :edit="editAble" v-model="data.section8Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="8" v-model="data.section8Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
-      <com-font class="section6-font" :edit="editAble" v-model="data.section6Data.font"></com-font>
-      <com-block1 :max="15" :edit="editAble" v-model="data.section6Data.block1"></com-block1>
+      <com-font :edit="editAble" v-model="data.section6Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="10" v-model="data.section6Data.block1"></com-block1>
     </com-panel>
-     <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
+    <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
-      <div class="support">微吼提供技术支持</div>
+      <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
+    <div class="support">微吼直播提供技术支持</div>
   </div>
 </template>
 
@@ -45,7 +60,9 @@ export default {
   },
   data () {
     return {
-      data: {}
+      data: {
+      },
+      menuOpen: false
     }
   },
   props: {
@@ -75,8 +92,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.template2-container /deep/ {
-  min-width: 1366px;
+.template3-container /deep/ {
   .edit {
     position: absolute;
     top: 0;
@@ -99,33 +115,45 @@ export default {
   }
   .section1 {
     width: 100%;
-    height: 580px;
-    position: relative;
-    overflow: hidden;
+    height: 90px;
+    z-index: 1;
+    position: absolute;
+    .panel {
+      box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+    }
+    .iconfont {
+      cursor: pointer;
+      float: right;
+      margin-right: 30px;
+      margin-top: 30px;
+    }
     .logo {
       width: 100px;
-      height: 52px;
+      height: 100%;
       margin-left: 10px;
       position: absolute;
       top: 0;
     }
     .nav {
       position: absolute;
-      top: 0;
-      right: 10px;
-      height: 52px;
+      top: 90px;
+      width: 100%;
+      background-color: #f5f5f5;
       .nav-group {
         font-size: 0;
+        line-height: 58px;
+        border-bottom: 1px solid #e2e2e2;
         .nav-item {
-          padding: 0 15px;
-          height: 100%;
-          line-height: 52px;
-          color: white;
-          font-size: 14px;
-          display: inline-block;
-          transition: all 0.3s;
-          &:hover {
-            color: #00a2ca;
+          display: block;
+          height: 100px;
+          line-height: 100px;
+          font-size: 30px;
+          text-align: center;
+          border-top: 1px solid #e2e2e2;
+          color: #222222;
+          a {
+            display: inline-block;
+            text-align: center;
           }
         }
       }
@@ -134,96 +162,79 @@ export default {
   .section2 {
     width: 100%;
     height: auto;
-    .panel {
-      padding: 50px 0;
-      text-align: center;
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    .block1-content {
+      width: 100%;
+      padding: 0 40px;
     }
-    .font-content {
-      text-align: left;
-      width: 580px;
-      min-height: 100px;
-    }
-    .btn {
-      display: block;
-      margin-top: 30px;
-      .btn-content {
-        display: inline-block;
-        position: relative;
+    .block1-group {
+      .block1-item {
+        width: 100%;
+        &.left {
+          .content {
+            width: 300px;
+            // padding: 50px 60px 0;
+            // float: left;
+            padding-top: 100px;
+          }
+        }
+        img {
+          width: 350px;
+          height: auto;
+          margin: auto;
+        }
       }
-      .com-button {
-        min-width: 180px;
-        height: 45px;
-        border-radius: 20px;
-        font-size: 16px;
-      }
-    }
-    .video-container {
-      margin-top: 20px;
-      .video-content {
-        width: 728px;
-        height: 420px;
-        margin: auto;
-        background-color: #00a2ca;
+      .btn-container {
+        margin-top: 53px;
+        // margin-right: 500px;
+        float: left;
       }
     }
   }
   .section3 {
     width: 100%;
-    height: 560px;
-    .section3-block2 {
-      .block2-item {
-        padding: 100px 0;
-        cursor: pointer;
-      }
-      .edit-content {
-        width: 600px;
-      }
+    img {
+      width: 100%;
+      height: auto;
+      float: none;
+      padding-bottom: 20px;
+    }
+    .block1-bg {
+      width: 100%;
+      height: 100%;
+    }
+    float: auto;
+    .content {
+      padding: 20px 50px;
     }
   }
   .section4 {
     width: 100%;
     height: auto;
+    padding: 30px 50px;
     .panel {
       padding: 50px 0;
       text-align: center;
     }
-    .section4-font {
-      text-align: left;
-      width: 580px;
-      min-height: 60px;
-      margin-bottom: 40px;
+    .font-container {
+      display: block;
+      text-align: center;
+      * {
+        width: 100%;
+        text-align: center;
+      }
     }
-    .block1-group {
-      &.width2 {
-        .block1-item {
-          width: 500px;
-          min-height: 256px;
-        }
-      }
-      &.width3 {
-        .block1-item {
-          width: 390px;
-          min-height: 199px;
-        }
-      }
-      &.width4 {
-        .block1-item {
-          width: 280px;
-          min-height: 146px;
-        }
-      }
-      .block1-item {
-        .content {
-          &.top {
-            width: 70%;
-          }
-        }
-        .img {
-          width: 100%;
-          height: 158px;
-          display: block;
-        }
-      }
+    .video-wrap {
+      overflow: hidden;
+      width: 650px;
+      height: 375px;
+      border-radius: 4px;
+      border: 1px solid rgba(226, 226, 226, 1);
+    }
+    .video-container {
+      padding: 40px 0 20px 0;
     }
   }
   .section5 {
@@ -233,6 +244,58 @@ export default {
       padding: 50px 0;
       text-align: center;
     }
+    .bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.2;
+    }
+    .font-container {
+      padding: 0 50px;
+      line-height: 50px;
+    }
+    .btn-container {
+      padding-top: 50px;
+    }
+  }
+  .section8 {
+    width: 100%;
+    height: auto;
+    .font-container {
+      padding: 80px 0 27px 0;
+      display: block;
+      * {
+        width: 100%;
+      }
+    }
+    .block1-content {
+      width: 100%;
+      padding: 0 50px;
+    }
+    .block1-group {
+      width: 100%;
+      .block1-item {
+        display: inline-block;
+        width: 180px;
+        margin-right: 50px;
+        padding-top: 50px;
+        img {
+          width: 180px;
+          height: 180px;
+          border-radius: 500px;
+          overflow: hidden;
+        }
+        &:nth-of-type(3n) {
+          margin-right: 0;
+        }
+        .content {
+          text-align: center;
+          padding-top: 20px;
+        }
+      }
+    }
   }
   .section6 {
     width: 100%;
@@ -241,6 +304,15 @@ export default {
       padding: 50px;
       text-align: center;
     }
+    .font-container {
+      display: block;
+      * {
+        text-align: center;
+      }
+    }
+    .font-content {
+      padding: 20px 0 30px 0;
+    }
     .section6-font {
       text-align: left;
       width: 580px;
@@ -248,14 +320,16 @@ export default {
       margin-bottom: 40px;
     }
     .block1-group {
-      width: 980px;
+      width: 100%;
       overflow: hidden;
       .block1-item {
-        height: 56px;
-        margin: 0 30px 72px 32px;
-        float: left;
+        width: 140px;
+        display: inline-block;
         img {
           width: 100%;
+        }
+        &:nth-of-type(4n) {
+          margin-right: 0;
         }
       }
     }
@@ -276,6 +350,11 @@ export default {
     .support {
       font-size: 14px;
     }
+  }
+  .support {
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
   }
 }
 </style>

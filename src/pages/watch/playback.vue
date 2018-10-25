@@ -27,10 +27,10 @@
             </div>
             <template v-if='playType === "live" && isLogin'>
               <template v-if='isMuteShow'>
-                <div class="v-chat-control v-noLogin"
+                <!-- <div class="v-chat-control v-noLogin"
                      id="sendBoxBtn">
                   {{allMuted ? '已开启全体禁言' : '您已被禁言'}}
-                </div>
+                </div> -->
               </template>
               <template v-else>
                 <div class="v-chat-control"

@@ -4,23 +4,27 @@
                :editAble="false"
                v-model="data"
                v-bind:is="com"
-              :shareData='share'
-               ></component>
+               :shareData='share'></component>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import loginMixin from 'components/login-mixin'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
+import temp3 from './template3.vue'
 import temp4 from './template4.vue'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
+import userService from 'src/api/user-service'
 
 export default {
+  mixins: [loginMixin],
   components: {
     't0478320': temp1,
     't0478321': temp2,
+    't0478322': temp3,
     't0478323': temp4
   },
   data () {
@@ -70,6 +74,7 @@ export default {
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.tid
       }).then((res) => {
+        let activity = res.data.activity
         this.share.title = res.data.activity.title
         this.share.des = res.data.activity.description
         this.share.imgUrl = res.data.activity.imgUrl
@@ -100,6 +105,16 @@ export default {
             })
             return false
           }
+          this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+            _log.set('visitor_id', res.data.visitorId)
+            let login = this.getLoginInfo()
+            _log.set('business_uid', activity.userId)
+            if (login) {
+              _log.set('consumer_uid', login.consumerUserId)
+            }
+            _log.set('activity_id', activity.id)
+            _log.track(Vhall_User_Actions.ENTER)
+          })
           let data = JSON.parse(res.data.value)
           this.com = `t${data.tid}`
           data.editAble = true

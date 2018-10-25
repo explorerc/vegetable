@@ -26,7 +26,7 @@
           </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
-            <button class="primary-button">已报名</button>
+            <button class="primary-button v-disabled">已报名</button>
           </template>
           <template v-else>
             <!-- 未报名 -->
@@ -42,11 +42,14 @@
           <!-- 报名已截止 -->
           <template v-if="user.isApplay">
             <!-- 已报名 -->
-            <button class="primary-button">已报名</button>
+            <button class="primary-button v-disabled">已报名</button>
           </template>
           <template v-else>
             <button class="primary-button"
-                    @click="jumpPage( MOBILE_HOST + 'CheckState/')">报名验证</button>
+                    @click="jumpPage( MOBILE_HOST + 'CheckState/')"
+                    v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button v-disabled"
+                    v-else>报名已截止</button>
           </template>
         </template>
       </template>
@@ -57,11 +60,12 @@
              v-if="activity.isCountdown">
             直播正在进行中
           </p>
+        <button class="primary-button"
+                @click="joinWebinar()">进入直播</button>
         </template>
         <template v-else>
           <com-countdown :time="activity.countDown"
                          v-if="activity.isCountdown"></com-countdown>
-        </template>
         <button class="primary-button"
                 v-if="user.isOrder">已预约</button>
         <template v-else>
@@ -71,6 +75,7 @@
              class="v-registered"
              @click="jumpPage( MOBILE_HOST + 'CheckState/')"
              v-if="!this.user.phone">已预约</a>
+        </template>
         </template>
       </template>
     </div>
@@ -87,11 +92,15 @@
             </p>
           </template>
           <template v-else>
-            <com-countdown :time="activity.countDown"
-                           v-if="activity.isCountdown"></com-countdown>
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播即将开始
+            </p>
           </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
+            <button class="primary-button"
+                @click="joinWebinar()">进入直播</button>
             <!-- ！！！跳转观看页面 -->
           </template>
           <template v-else>
@@ -106,20 +115,49 @@
         </template>
         <template v-else>
           <!-- 报名已截止 -->
+          <template v-if="activity.status === 'LIVING'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播正在进行中
+            </p>
+          </template>
+          <template v-else>
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播即将开始
+            </p>
+          </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
+            <button class="primary-button"
+                @click="joinWebinar()">进入直播</button>
             <!-- <a href="javascript:;" class="v-submit">已报名</a> -->
           </template>
           <template v-else>
             <button class="primary-button"
-                    @click="jumpPage( MOBILE_HOST + 'CheckState/')">报名验证</button>
+                    @click="jumpPage( MOBILE_HOST + 'CheckState/')"
+                    v-if="!this.user.phone">报名验证</button>
+            <button class="primary-button v-disabled"
+                    v-else>报名已截止</button>
           </template>
         </template>
       </template>
       <!-- 无限制活动 -->
       <template v-else>
+        <template v-if="activity.status === 'LIVING'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播正在进行中
+          </p>
+        </template>
+        <template v-else>
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播即将开始
+          </p>
+        </template>
         <button class="primary-button"
-                @click="jumpPage( MOBILE_HOST + 'watch/')">进入直播</button>
+                @click="joinWebinar()">进入直播</button>
       </template>
       <!-- ！！！跳转观看页面 -->
     </div>
@@ -197,7 +235,23 @@ export default {
     },
     async initMsgServe () {
       await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
-        this.visitorObj.visitorId = res.data
+        let login = this.getLoginInfo()
+        _log.set('business_uid', this.activity.userId)
+        if (login) {
+          _log.set('consumer_uid', login.consumerUserId)
+        }
+        _log.set('activity_id', this.$route.params.id)
+        _log.set('visitor_id', res.data.visitorId)
+        let refer = this.$route.query.refer
+        if (refer !== undefined) {
+          localStorage.setItem(`refer_${this.activityId}`, refer)
+          _log.track(Vhall_User_Actions.ENTER, {
+            event: parseInt(refer)
+          })
+        } else {
+          _log.track(Vhall_User_Actions.ENTER)
+        }
+        this.visitorObj.visitorId = res.data.visitorId
       })
       if (!this.extChannel) return false
       const roomInfo = await this.$config({ handlers: true }).$post(activityService.GET_REG_SDK_INFO, {
@@ -230,6 +284,7 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         this.activity.viewCondition = res.data.activity.viewCondition
+        this.activity.userId = res.data.activity.userId
         this.activity.status = res.data.activity.status
         this.activity.title = res.data.guide ? res.data.guide.title : ''
         this.activity.description = res.data.guide ? res.data.guide.description : ''
@@ -240,12 +295,13 @@ export default {
         this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
+        let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
         if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.activity.viewCondition === 'APPOINT') {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
-          } else if (this.activity.viewCondition === 'NONE') {
+          } else if (this.activity.viewCondition === 'NONE' && user) {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         } else if (this.activity.countDown < 1800) {
@@ -253,7 +309,7 @@ export default {
             if (this.user.isApplay) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             }
-          } else if (this.activity.viewCondition === 'NONE') {
+          } else if (this.activity.viewCondition === 'NONE' && user) {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         } else {
@@ -309,6 +365,10 @@ export default {
           })
         }
       }
+    },
+    joinWebinar () {
+      window.localStorage.setItem(this.visitorObj.visitorId + '_' + this.$route.params.id, true)
+      this.jumpPage(this.MOBILE_HOST + 'watch/')
     }
   }
 }
