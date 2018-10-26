@@ -5,7 +5,7 @@
       <img src="../../assets/image/avatar@2x.png"
            alt="" v-else>
       <p v-if="isLogin">
-        {{loginInfo.nickName}}
+        {{centerInfo.consumerUser.nickName?centerInfo.consumerUser.nickName:''}}
       </p>
       <p v-else @click="doLogin()">
         未登录
@@ -34,12 +34,12 @@
             </span>
             <i class="iconfont icon-Loading fr"></i>
             <span class="fr">
-              有<span class="v-red">{{user.activityQuantity}}</span>场活动即将开始
+              有<span class="v-red">{{centerInfo.other.planActivityCount?centerInfo.other.planActivityCount:''}}</span>场活动即将开始
             </span>
           </div>
         </a>
       </div>
-      <div class="v-item">
+      <!-- <div class="v-item">
         <a href=""
            class="v-block">
           <i class="iconfont icon-Loading v-left-icon"></i>
@@ -61,11 +61,11 @@
             </span>
             <i class="iconfont icon-Loading fr"></i>
             <span class="fr">
-              有<span class="v-red">{{user.prizeQuantity}}</span>个奖品
+              有<span class="v-red">{{centerInfo.other.prizeCount?centerInfo.other.prizeCount:''}}</span>个奖品
             </span>
           </div>
         </a>
-      </div>
+      </div> -->
     </div>
     <com-login @login="loginSuccess"></com-login>
   </div>
@@ -74,20 +74,20 @@
 import loginMixin from 'components/login-mixin'
 import { mapMutations, mapState } from 'vuex'
 import * as types from '../../store/mutation-types.js'
-// import userService from 'src/api/user-service'
+import userService from 'src/api/user-service'
 export default {
   mixins: [loginMixin],
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
-      user: {
-        name: '', // 姓名
-        avatar: '', // 头像
-        balance: '0', // 余额
-        activityQuantity: 0, // 活动数量
-        orderQuantity: 0, // 订单数量
-        prizeQuantity: 0 // 奖品数量
-      },
+      // user: {
+      //   name: '', // 姓名
+      //   avatar: '', // 头像
+      //   balance: '0', // 余额
+      //   activityQuantity: 0, // 活动数量
+      //   orderQuantity: 0, // 订单数量
+      //   prizeQuantity: 0 // 奖品数量
+      // },
       isLogin: false // 当前用户是否登录
     }
   },
@@ -95,46 +95,41 @@ export default {
     if (this.getLoginInfo()) {
       this.storeLoginInfo(this.getLoginInfo())
       this.isLogin = true
-      if (!this.userInfo) {
-        // let data = {
-        // }
-        // this.$config({ handlers: true }).$post(userService.GET_666, data).then((res) => {
-        //   this.name = res.data.name
-        //   this.avatar = res.data.avatar
-        //   this.balance = res.data.balance
-        //   this.activityQuantity = res.data.activityQuantity
-        //   this.orderQuantity = res.data.orderQuantity
-        //   this.prizeQuantity = res.data.prizeQuantity
-        //   this.storeUserInfo(res.data)
-        // }).catch((err) => {
-        //   this.$messageBox({
-        //     header: '提示',
-        //     content: err.msg,
-        //     confirmText: '确定',
-        //     handleClick: (e) => {
-        //       if (e.action === 'cancel') {
-        //       } else if (e.action === 'confirm') {
-        //       }
-        //     }
-        //   })
-        // })
+      if (!this.centerInfo.consumerUser.consumerUserId) {
+        this.$config({ handlers: true }).$post(userService.GET_CENTER_INFO, {}).then((res) => {
+          this.storeCenterInfo(res.data)
+        }).catch(err => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
+        })
       }
     }
   },
+  beforeCreate () {
+
+  },
   computed: {
     ...mapState('login', {
-      userInfo: state => state.userInfo,
+      centerInfo: state => state.centerInfo,
       loginInfo: state => state.loginInfo
     }),
     defaultImg () {
-      return this.user.avatar ? this.$imgHost + '/' + this.user.avatar : ''
+      return this.centerInfo.consumerUser.avatar ? this.$imgHost + '/' + this.centerInfo.consumerUser.avatar : ''
     }
   },
   watch: {
   },
   methods: {
     ...mapMutations('login', {
-      storeUserInfo: types.USER_INFO,
+      storeCenterInfo: types.CENTER_INFO,
       storeLoginInfo: types.LOGIN_INFO
     }),
     loginSuccess (res) {

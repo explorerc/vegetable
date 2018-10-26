@@ -26,4 +26,4 @@ export const ACTIVITY_INFO = 'ACTIVITY_INFO'
 // 参会信息
 export const JOIN_INFO = 'JOIN_INFO'
 // 个人中心用户信息
-export const USER_INFO = 'JOIN_INFO'
+export const CENTER_INFO = 'CENTER_INFO'

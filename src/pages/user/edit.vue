@@ -5,10 +5,21 @@
     </a>
     <div class="v-edit">
       <div class="v-content">
-        <input type="text" v-model="val">
+      <com-input :value.sync="val"
+                 :placeholder="placeholder"
+                 class="v-input"
+                 type="input"
+                 :max-length="maxLength"
+                 v-if="maxLength"></com-input>
+      <com-input :value.sync="val"
+                 :placeholder="placeholder"
+                 class="v-input"
+                 type="input"
+                 @focus="inputFocus"
+                 v-else></com-input>
       </div>
-      <p class="v-error" v-if="error">
-        <i class="iconfont icon-Loading fl"></i>{{error}}
+      <p class="v-error">
+        <i class="iconfont icon-Loading fl" v-if="errorTips"></i>{{errorTips}}
       </p>
       <button class="primary-button" @click="save">
         保存
@@ -20,36 +31,58 @@
 import loginMixin from 'components/login-mixin'
 import { mapMutations, mapState } from 'vuex'
 import * as types from '../../store/mutation-types.js'
+import userService from 'src/api/user-service'
 export default {
   mixins: [loginMixin],
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
       title: '', // 修改类型名称
-      error: '', // 错误提示信息
+      errorTips: '', // 错误提示信息
       val: '', // 用户填写的信息
-      type: ''
+      type: '',
+      placeholder: '',
+      maxLength: 0
     }
   },
   created () {
+    this.type = this.$route.params.type
     if (this.getLoginInfo()) {
       this.storeLoginInfo(this.getLoginInfo())
+      if (!this.centerInfo.consumerUser.consumerUserId) {
+        this.$config({ handlers: true }).$post(userService.GET_CENTER_INFO, {}).then((res) => {
+          this.storeCenterInfo(res.data)
+          switch (this.type) {
+            case 'name': this.title = '昵称'
+              this.val = this.centerInfo.consumerUser.nickName
+              this.placeholder = '请填写昵称'
+              this.maxLength = 14
+              break
+            case 'email': this.title = '邮箱'
+              this.val = this.centerInfo.consumerUser.email
+              this.placeholder = '请填写邮箱'
+              break
+          }
+        }).catch(err => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
+        })
+      }
     } else {
       location.replace(`${this.MOBILE_HOST}user`)
-    }
-    this.type = this.$route.params.type
-    switch (this.$route.params.type) {
-      case 'name': this.title = '昵称'
-        this.val = this.loginInfo.nickName
-        break
-      case 'email': this.title = '邮箱'
-        this.val = this.loginInfo.email
-        break
     }
   },
   computed: {
     ...mapState('login', {
-      userInfo: state => state.userInfo,
+      centerInfo: state => state.centerInfo,
       loginInfo: state => state.loginInfo
     })
   },
@@ -59,22 +92,61 @@ export default {
   },
   methods: {
     ...mapMutations('login', {
-      storeUserInfo: types.USER_INFO,
+      storeCenterInfo: types.CENTER_INFO,
       storeLoginInfo: types.LOGIN_INFO
     }),
     save () {
-      if (!this.verification(this.val, true, this.type)) {
-        this.error = `请输入正确的${this.title}`
+      if (!this.val) {
+        switch (this.type) {
+          case 'name':
+            this.errorTips = '请输入昵称'
+            break
+          case 'email':
+            this.errorTips = '请输入邮箱'
+            break
+        }
         return false
       }
+      if (!this.verification(this.val, true, this.type)) {
+        this.errorTips = `${this.title}格式有误`
+        return false
+      }
+      let data = {}
       switch (this.$route.params.type) {
-        case 'name': this.title = '昵称'
-          this.val = this.loginInfo.nickName
+        case 'name':
+          data.nickName = this.val
           break
-        case 'email': this.title = '邮箱'
-          this.val = this.loginInfo.email
+        case 'email':
+          data.email = this.val
           break
       }
+      this.$config({ handlers: true }).$post(userService.POST_CENTER_UPDATE, data).then((res) => {
+        let tempLoginInfo = JSON.parse(JSON.stringify(this.centerInfo))
+        let tempCenterInfo = JSON.parse(JSON.stringify(this.centerInfo))
+        switch (this.$route.params.type) {
+          case 'name': this.title = '昵称'
+            tempLoginInfo.nickName = this.val
+            tempCenterInfo.consumerUser.nickName = this.val
+            break
+          case 'email': this.title = '邮箱'
+            tempLoginInfo.email = this.val
+            tempCenterInfo.consumerUser.email = this.val
+            break
+        }
+        this.storeLoginInfo(tempLoginInfo)
+        this.storeCenterInfo(tempCenterInfo)
+      }).catch(err => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
     },
     verification (val, isRequired, type) {
       let emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
@@ -89,6 +161,11 @@ export default {
         return emailReg.test(val)
       }
       return true
+    },
+    inputBlur () {
+    },
+    inputFocus () {
+      this.errorTips = ''
     }
   }
 }
@@ -108,7 +185,7 @@ export default {
     color: #222;
     padding: 0 30px;
   }
-  .v-edit {
+  .v-edit /deep/ {
     width: 100%;
     .v-content {
       width: 100%;
@@ -126,6 +203,7 @@ export default {
     }
     .v-error {
       padding: 0 40px;
+      height: 50px;
       font-size: 20px;
       color: #888;
       height: 56px;

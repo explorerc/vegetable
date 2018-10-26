@@ -5,6 +5,8 @@ export default {
   POST_MOBILELOGIN: '/user/consumer-user/mobile-login', // 手机登录
   GET_VISITOR_INFO: '/frontend/user/visitor-info', // 获取游客信息
   POST_VERIFY_MOBILE: '/common/message/verify-code',
-  POST_UPDATE_MOBILE: '/user/business-user/update-mobile',
-  POST_CHANGE_PASSWORD: '/user/business-user/update-password'
+  POST_UPDATE_MOBILE: '/user/consumer-user/update-mobile',
+  POST_CHANGE_PASSWORD: '/user/business-user/update-password',
+  GET_CENTER_INFO: '/user/consumer-user/center-info', // 获取个人中心信息
+  POST_CENTER_UPDATE: '/user/consumer-user/update' // 更新个人中心信息
 }

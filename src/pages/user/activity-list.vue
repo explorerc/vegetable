@@ -74,7 +74,6 @@ export default {
   },
   computed: {
     ...mapState('login', {
-      userInfo: state => state.userInfo,
       loginInfo: state => state.loginInfo
     })
   },
@@ -84,7 +83,6 @@ export default {
   },
   methods: {
     ...mapMutations('login', {
-      storeUserInfo: types.USER_INFO,
       storeLoginInfo: types.LOGIN_INFO
     }),
     getDataList () {

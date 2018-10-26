@@ -18,7 +18,7 @@
         </span>
         <i class="iconfont icon-Loading fr"></i>
         <span class="v-content fr">
-          {{loginInfo.nickName === '' ? '未填写':loginInfo.nickName}}
+          {{centerInfo.consumerUser.nickName ? centerInfo.consumerUser.nickName : '未填写'}}
         </span>
       </a>
       <a class="v-item clearfix" href="javascript:;" @click="changeMobile">
@@ -27,7 +27,7 @@
         </span>
         <i class="iconfont icon-Loading fr"></i>
         <span class="v-content fr">
-          {{loginInfo.mobile === '' ? '未填写':loginInfo.mobile}}
+          {{centerInfo.consumerUser.mobile ? centerInfo.consumerUser.mobile:'未填写'}}
         </span>
       </a>
       <a class="v-item clearfix" :href="MOBILE_HOST+'userInfoEdit/email'">
@@ -36,7 +36,7 @@
         </span>
         <i class="iconfont icon-Loading fr"></i>
         <span class="v-content fr">
-          {{loginInfo.email === '' ? '未填写':loginInfo.email}}
+          {{centerInfo.consumerUser.email ? centerInfo.consumerUser.email:'未填写'}}
         </span>
       </a>
     </div>
@@ -50,13 +50,9 @@
       <div v-if="step === 'initialPhone' ||  step === 'newPhone'">
         <div class="rule">{{messageBoxTitle}}</div>
         <com-input v-if="isOldphone"
-                   :value.sync="phone"
+                   :value.sync="centerInfo.consumerUser.mobile"
                    :placeholder="'输入原有注册手机号'"
                    class="v-input"
-                   type="mobile"
-                   :max-length="11"
-                   :errorTips="errorTips.oldPhone"
-                   @focus="phoneFocus('oldphone')"
                    disabled="disabled"></com-input>
         <com-input v-if="!isOldphone"
                    :value.sync="saveNewPhone"
@@ -105,10 +101,6 @@ export default {
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
-      user: {
-        name: '',
-        avatar: ''
-      },
       messageBoxShow: false,
       confirmText: '提交',
       messageBoxTitle: '修改手机号',
@@ -140,11 +132,36 @@ export default {
   created () {
     if (this.getLoginInfo()) {
       this.storeLoginInfo(this.getLoginInfo())
-      this.phone = this.loginInfo.mobile
+      if (!this.centerInfo.consumerUser.consumerUserId) {
+        this.$config({ handlers: true }).$post(userService.GET_CENTER_INFO, {}).then((res) => {
+          this.storeCenterInfo(res.data)
+          this.phone = this.centerInfo.consumerUser.mobile
+        }).catch(err => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
+        })
+      }
       this.$config({ handlers: true }).$get(activityService.GET_CAPTCHAID).then((res) => {
         this.key = res.data
       }).catch(err => {
-        console.log(err.msg)
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
       })
     } else {
       location.replace(`${this.MOBILE_HOST}user`)
@@ -152,19 +169,18 @@ export default {
   },
   computed: {
     ...mapState('login', {
-      userInfo: state => state.userInfo,
+      centerInfo: state => state.centerInfo,
       loginInfo: state => state.loginInfo
     }),
     defaultImg () {
-      console.log(this.loginInfo)
-      return this.loginInfo.avatar ? this.$imgHost + '/' + this.loginInfo.avatar : ''
+      return this.centerInfo.consumerUser.avatar ? this.$imgHost + '/' + this.centerInfo.consumerUser.avatar : ''
     }
   },
   props: {
   },
   watch: {
     phone: function () {
-      this.checkPhone(this.phone)
+      this.checkPhone(this.centerInfo.consumerUser.mobile)
     },
     newPhone: function () {
       this.checkPhone(this.newPhone)
@@ -181,7 +197,7 @@ export default {
   },
   methods: {
     ...mapMutations('login', {
-      storeUserInfo: types.USER_INFO,
+      storeCenterInfo: types.CENTER_INFO,
       storeLoginInfo: types.LOGIN_INFO
     }),
     loginSuccess (res) {
@@ -192,10 +208,39 @@ export default {
       this.$refs.uploadFile.overUpload()
     },
     uploadImgSuccess (data) {
-      console.log(data)
+      this.$config({ handlers: true }).$get(userService.POST_CENTER_UPDATE, {
+        avatar: data.name
+      }).then((res) => {
+        let tempLoginInfo = JSON.parse(JSON.stringify(this.centerInfo))
+        tempLoginInfo.avatar = data.name
+        this.storeLoginInfo(tempLoginInfo)
+        let tempCenterInfo = JSON.parse(JSON.stringify(this.centerInfo))
+        tempCenterInfo.consumerUser.avatar = data.name
+        this.storeCenterInfo(tempCenterInfo)
+      }).catch(err => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
     },
     uploadError (data) {
-      console.log('上传失败:', data)
+      this.$messageBox({
+        header: '提示',
+        content: data,
+        confirmText: '确定',
+        handleClick: (e) => {
+          if (e.action === 'cancel') {
+          } else if (e.action === 'confirm') {
+          }
+        }
+      })
     },
     changeMobile () {
       this.messageBoxShow = true
@@ -229,7 +274,7 @@ export default {
         this.messageBoxShow = false
       } else if (e.action === 'confirm') {
         if (this.step === 'initialPhone') {
-          if (!this.phone) {
+          if (!this.centerInfo.consumerUser.mobile) {
             this.errorTips.oldPhone = '请输入手机号'
             return false
           }
@@ -243,14 +288,13 @@ export default {
             return false
           }
           let data = {
-            mobile: this.phone,
+            mobile: this.centerInfo.consumerUser.mobile,
             code: this.phoneCode,
-            type: 'BUSINESS_USER_VERIFY_MOBILE'
+            type: 'CONSUMER_USER_VERIFY_MOBILE'
           }
           this.$config({ handlers: true }).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
             this.errorTips.code = res.msg
             this.token = res.data.codeToken
-            this.phone = ''
             this.fontColor = '#4B5AFE'
             this.messageBoxExplain = '验证成功，请输入新的手机号'
             this.phoneCode = ''
@@ -286,19 +330,17 @@ export default {
             code: this.phoneCode
           }
           this.$config({ handlers: true }).$post(userService.POST_UPDATE_MOBILE, data).then((res) => {
-            this.phone = ''
             this.step = 'phoneSuccess'
             this.confirmText = '完成'
             this.accountPhone = this.saveNewPhone
-            let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-            if (accountInfo) {
-              accountInfo.accountPhone = this.saveNewPhone
-              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-            }
             this.newPhone = this.saveNewPhone
             this.saveNewPhone = ''
-            this.loginInfo.mobile = this.newPhone
-            this.storeLoginInfo(this.loginInfo)
+            let tempLoginInfo = JSON.parse(JSON.stringify(this.centerInfo))
+            tempLoginInfo.mobile = data.mobile
+            this.storeLoginInfo(tempLoginInfo)
+            let tempCenterInfo = JSON.parse(JSON.stringify(this.centerInfo))
+            tempCenterInfo.consumerUser.mobile = data.mobile
+            this.storeCenterInfo(tempCenterInfo)
           }).catch(err => {
             this.errorTips.code = err.msg
           })
@@ -329,14 +371,14 @@ export default {
       let data = {}
       if (this.isOldphone) {
         data = {
-          'mobile': this.phone,
-          'type': 'BUSINESS_USER_VERIFY_MOBILE',
+          'mobile': this.centerInfo.consumerUser.mobile,
+          'type': 'CONSUMER_USER_VERIFY_MOBILE',
           captcha: this.phoneKey
         }
       } else {
         data = {
           'mobile': this.saveNewPhone,
-          'type': 'BUSINESS_USER_UPDATE_MOBILE',
+          'type': 'CONSUMER_USER_UPDATE_MOBILE',
           captcha: this.phoneKey
         }
       }

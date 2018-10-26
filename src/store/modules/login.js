@@ -2,14 +2,26 @@ import * as types from '../mutation-types'
 const loginModules = {
   namespaced: true,
   state: {
-    isLogin: false,
-    loginInfo: {},
-    userInfo: {}
+    isLogin: false, // 是否登录
+    loginInfo: {}, // 登录信息
+    centerInfo: {
+      consumerUser: {
+        nickName: '',
+        email: '',
+        userName: '',
+        consumerUserId: 0,
+        mobile: ''
+      },
+      other: {
+        planActivityCount: 0,
+        prizeCount: 0
+      }
+    }
   },
   getters: {
     isLoginGetter: (state) => state.isLogin,
     loginInfo: (state) => state.loginInfo,
-    userInfo: (state) => state.userInfo
+    centerInfo: (state) => state.centerInfo
   },
   mutations: {
     [types.UPDATE_IS_LOGIN] (state, status) {
@@ -18,8 +30,8 @@ const loginModules = {
     [types.LOGIN_INFO] (state, status) {
       state.loginInfo = status
     },
-    [types.USER_INFO] (state, status) {
-      state.userInfo = status
+    [types.CENTER_INFO] (state, status) {
+      state.centerInfo = status
     }
   }
 }
