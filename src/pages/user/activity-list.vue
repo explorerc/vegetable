@@ -29,7 +29,7 @@
                 </span>
               </div> -->
               <p class="v-sponsor">
-                XXX
+                {{itemData.hostNickname}}
               </p>
               <p class="v-time">
                 {{itemData.startTime}}
