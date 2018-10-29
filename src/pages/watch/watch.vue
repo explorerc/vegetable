@@ -476,6 +476,7 @@ export default {
       wxShareFunction(this.wxShare)
     },
     loginSuccess (res) {
+      this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {})
       _log.set('consumer_uid', res.consumerUserId)
       this.storeLoginInfo(res)
       this.$router.go(0)
