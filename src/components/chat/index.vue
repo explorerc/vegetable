@@ -7,7 +7,7 @@
          @mouseover="stopScroll = true"
          @mouseout="stopScroll = false">
       <ol class='chat-list bscroll-container'>
-        <li v-for='(item,idx) in chatData'
+        <li v-for='(item) in chatData'
             :data-joinId="item.id"
             :class="{'right': joinInfo.activityUserId*1 == item.id*1}">
           <dl class='clearfix'>
