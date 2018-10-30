@@ -15,24 +15,28 @@
       <div class="v-item">
         <a :href="MOBILE_HOST+'userInfo'"
            class="v-block">
-          <i class="iconfont icon-Loading v-left-icon"></i>
+          <i class="iconfont v-left-icon">
+            <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5312"><path d="M512.5376 896.4608a38.4 38.4 0 0 1 0 76.8H165.8624c-63.1296 0-114.1248-51.6352-114.1248-115.072V141.1328c0-63.4368 50.9952-115.072 114.1248-115.072h693.3504c63.1296 0 114.1248 51.6352 114.1248 115.072v358.528a38.4 38.4 0 0 1-76.8 0V141.1328c0-21.248-16.8192-38.272-37.3248-38.272H165.8624c-20.5056 0-37.3248 17.024-37.3248 38.272v717.056c0 21.248 16.8192 38.272 37.3248 38.272h346.6752z" fill="#555555" p-id="5313"></path><path d="M320 307.2h384a38.4 38.4 0 0 1 0 76.8h-384a38.4 38.4 0 0 1 0-76.8zM320 537.6h384a38.4 38.4 0 0 1 0 76.8h-384a38.4 38.4 0 0 1 0-76.8zM630.6816 889.4208l271.5392-271.5392a38.4 38.4 0 1 1 54.2976 54.2976L684.9792 943.7184a38.4 38.4 0 1 1-54.2976-54.2976z" fill="#FFD021" p-id="5314"></path></svg>
+          </i>
           <div class="v-item-right">
             <span class="v-title">
               个人信息
             </span>
-            <i class="iconfont icon-Loading fr"></i>
+            <i class="iconfont icon-jiantou1 fr"></i>
           </div>
         </a>
       </div>
       <div class="v-item">
         <a :href="MOBILE_HOST+'activityList'"
            class="v-block">
-          <i class="iconfont icon-Loading v-left-icon"></i>
+          <i class="iconfont v-left-icon">
+            <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5281"><path d="M780.9792 179.6608a38.4 38.4 0 0 1 0-76.8h103.8336c63.1296 0 114.1248 51.6352 114.1248 115.072v614.656c0 63.4368-50.9952 115.072-114.1248 115.072H140.2624c-63.1296 0-114.1248-51.6352-114.1248-115.072V217.9328c0-63.4368 50.9952-115.072 114.1248-115.072H243.2a38.4 38.4 0 0 1 0 76.8H140.2624c-20.5056 0-37.3248 17.024-37.3248 38.272v614.656c0 21.248 16.8192 38.272 37.3248 38.272h744.5504c20.5056 0 37.3248-17.024 37.3248-38.272V217.9328c0-21.248-16.8192-38.272-37.3248-38.272h-103.8336z" fill="#555555" p-id="5282"></path><path d="M435.2 394.1888v235.6224L634.6752 512 435.2 394.1888z m39.0656-66.1504l199.4752 117.8112a76.8 76.8 0 0 1 0 132.2496l-199.4752 117.8112A76.8 76.8 0 0 1 358.4 629.8112v-235.6224a76.8 76.8 0 0 1 115.8656-66.1504z" fill="#FFD021" p-id="5283"></path><path d="M396.8 102.4h230.4a38.4 38.4 0 0 1 0 76.8h-230.4a38.4 38.4 0 0 1 0-76.8z" fill="#555555" p-id="5284"></path></svg>
+          </i>
           <div class="v-item-right">
             <span class="v-title">
               我的活动
             </span>
-            <i class="iconfont icon-Loading fr"></i>
+            <i class="iconfont icon-jiantou1 fr"></i>
             <span class="fr">
               有<span class="v-red">{{centerInfo.other.planActivityCount?centerInfo.other.planActivityCount:''}}</span>场活动即将开始
             </span>
@@ -47,7 +51,7 @@
             <span class="v-title">
               我的订单
             </span>
-            <i class="iconfont icon-Loading fr"></i>
+            <i class="iconfont icon-jiantou1 fr"></i>
           </div>
         </a>
       </div>
@@ -59,7 +63,7 @@
             <span class="v-title">
               我的奖品
             </span>
-            <i class="iconfont icon-Loading fr"></i>
+            <i class="iconfont icon-jiantou1 fr"></i>
             <span class="fr">
               有<span class="v-red">{{centerInfo.other.prizeCount?centerInfo.other.prizeCount:''}}</span>个奖品
             </span>
@@ -152,6 +156,7 @@ export default {
     }
     &.fr {
       margin: 0 40px 0 26px;
+      font-size: 12px;
     }
   }
   .v-red {

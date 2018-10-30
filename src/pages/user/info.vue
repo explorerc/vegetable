@@ -1,7 +1,7 @@
 <template>
   <div class="v-user-info">
     <a :href="MOBILE_HOST+'user'" class="v-return-user clearfix">
-      <i class="iconfont icon-Loading fl"></i>个人中心
+      <i class="iconfont icon-jiantouzuo fl"></i>个人中心
     </a>
     <div class="v-list">
       <a class="v-item v-avatar clearfix" @click="upload">
@@ -9,14 +9,14 @@
         <span class="v-title">
           头像
         </span>
-        <i class="iconfont icon-Loading fr"></i>
+        <i class="iconfont icon-jiantou1 fr"></i>
         <img :src="defaultImg" alt="" class="fr">
       </a>
       <a class="v-item clearfix" :href="MOBILE_HOST+'userInfoEdit/name'">
         <span class="v-title">
           昵称
         </span>
-        <i class="iconfont icon-Loading fr"></i>
+        <i class="iconfont icon-jiantou1 fr"></i>
         <span class="v-content fr">
           {{centerInfo.consumerUser.nickName ? centerInfo.consumerUser.nickName : '未填写'}}
         </span>
@@ -25,7 +25,7 @@
         <span class="v-title">
           手机号
         </span>
-        <i class="iconfont icon-Loading fr"></i>
+        <i class="iconfont icon-jiantou1 fr"></i>
         <span class="v-content fr">
           {{centerInfo.consumerUser.mobile ? centerInfo.consumerUser.mobile:'未填写'}}
         </span>
@@ -34,7 +34,7 @@
         <span class="v-title">
           邮箱
         </span>
-        <i class="iconfont icon-Loading fr"></i>
+        <i class="iconfont icon-jiantou1 fr"></i>
         <span class="v-content fr">
           {{centerInfo.consumerUser.email ? centerInfo.consumerUser.email:'未填写'}}
         </span>

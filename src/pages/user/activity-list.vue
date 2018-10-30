@@ -1,7 +1,7 @@
 <template>
   <div class="v-activity-list">
     <a :href="MOBILE_HOST+'userinfo'" class="v-return-userinfo clearfix">
-      <i class="iconfont icon-Loading fl"></i>我的活动
+      <i class="iconfont icon-jiantouzuo fl"></i>我的活动
     </a>
     <div class="v-list">
     <div class="bscroll"

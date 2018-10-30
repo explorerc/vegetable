@@ -1,7 +1,7 @@
 <template>
   <div class="v-user-edit">
     <a :href="MOBILE_HOST+'userinfo'" class="v-return-userinfo clearfix">
-      <i class="iconfont icon-Loading fl"></i>修改{{title}}
+      <i class="iconfont icon-jiantouzuo fl"></i>修改{{title}}
     </a>
     <div class="v-edit">
       <div class="v-content">
@@ -19,7 +19,7 @@
                  v-else></com-input>
       </div>
       <p class="v-error">
-        <i class="iconfont icon-Loading fl" v-if="errorTips"></i>{{errorTips}}
+        <i class="iconfont icon-jiantou1 fl" v-if="errorTips"></i>{{errorTips}}
       </p>
       <button class="primary-button" @click="save">
         保存
