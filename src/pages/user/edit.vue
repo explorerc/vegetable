@@ -19,7 +19,7 @@
                  v-else></com-input>
       </div>
       <p class="v-error">
-        <i class="iconfont icon-jiantou1 fl" v-if="errorTips"></i>{{errorTips}}
+        <i class="iconfont icon-Shapex fl" v-if="errorTips"></i>{{errorTips}}
       </p>
       <button class="primary-button" @click="save">
         保存
@@ -213,6 +213,7 @@ export default {
       line-height: 56px;
       .iconfont {
         margin-right: 10px;
+        color: #fc5659;
       }
     }
     .primary-button {
