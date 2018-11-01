@@ -17,6 +17,7 @@
            :href="`/m/site/${activityId}`"
            class="fr v-my">
           <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
+          <a href="/m/user" class="fr v-my"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
       </template>
       <a v-else
          href="javascript:;"
@@ -136,7 +137,8 @@ export default {
       vx5div: false, // x5中同层开启
       vclosex5div: false, // x5中同层关闭
       votherdiv: false, // 非x5横屏
-      showPersonCount: 0
+      showPersonCount: 0,
+      sdkVisitorId: ''
     }
   },
   mounted () {
@@ -296,6 +298,10 @@ export default {
       }
     },
     async initPage () {
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+        _log.set('visitor_id', res.data.visitorId)
+        this.sdkVisitorId = res.data.visitorId
+      })
       await this.initRoomPaas()
       if (this.isWx()) {
         setTimeout(() => {
@@ -383,9 +389,6 @@ export default {
       } else {
         this.currentView = Live
       }
-      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
-        _log.set('visitor_id', res.data.visitorId)
-      })
       let login = this.getLoginInfo()
       _log.set('business_uid', activityInfo.userId)
       if (login) {
@@ -430,20 +433,21 @@ export default {
         }
         this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, data).then((res) => { // 获取参会信息
           this.storeJoinInfo(res.data)
-          this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
-            activityId: this.activityId,
-            activityUserId: res.data.activityUserId
-          }).then((res) => {
-            if (res.data) {
-              resolve(res.data)
-              this.storeRoomPaas(res.data)
-            }
-          })
         }).catch((err) => {
           if (err.code === 12004 || err.code === 11030) {
             this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
           } else if (err.code === 12031) {
             this.$router.replace('/kicked')
+          }
+        })
+        let userInfo = JSON.parse(sessionStorage.getItem('login'))
+        this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
+          activityId: this.activityId,
+          activityUserId: userInfo ? userInfo.consumerUserId : this.sdkVisitorId
+        }).then((res) => {
+          if (res.data) {
+            resolve(res.data)
+            this.storeRoomPaas(res.data)
           }
         })
       })

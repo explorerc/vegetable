@@ -43,7 +43,6 @@ export default class LivePuller extends BasePuller {
           // }
         },
         ready: () => {
-          alert(autoplay)
           console.log('3播放器初始化完成')
           completionBK && completionBK()
           if (autoplay) {

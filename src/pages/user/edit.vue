@@ -70,7 +70,9 @@ export default {
             confirmText: '确定',
             handleClick: (e) => {
               if (e.action === 'cancel') {
+                this.$router.replace('/user')
               } else if (e.action === 'confirm') {
+                this.$router.replace('/user')
               }
             }
           })
@@ -135,6 +137,7 @@ export default {
         }
         this.storeLoginInfo(tempLoginInfo)
         this.storeCenterInfo(tempCenterInfo)
+        this.$router.replace('/userinfo')
       }).catch(err => {
         this.$messageBox({
           header: '提示',

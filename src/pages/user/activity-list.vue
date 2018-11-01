@@ -67,7 +67,7 @@ export default {
     if (this.getLoginInfo()) {
       this.storeLoginInfo(this.getLoginInfo())
     } else {
-      location.replace(`${this.MOBILE_HOST}user`)
+      this.$router.replace('/user')
     }
     this.getDataList()
     this.initScroll()
