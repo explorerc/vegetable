@@ -9,9 +9,9 @@
       <ol class='chat-list bscroll-container'>
         <li v-for='(item) in chatData'
             :data-joinId="item.id"
-            :class="{'right': joinInfo.activityUserId*1 == item.id*1}">
+            :class="{'right': joinInfo.consumerUserId*1 == item.id*1}">
           <dl class='clearfix'>
-            <dt v-if="item.avatar !== '' && item.avatar !== null && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}/${item.avatar}`"> </dt>
+            <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
             <dt class='avatar'
                 v-else>{{item.name&&item.name.substr(0,1)}}</dt>
             <dd>
@@ -498,7 +498,7 @@ export default {
       this.isLogin = true
     }
     // 拉取最近聊天纪律
-    // this.getHistroy()
+    this.getHistroy()
     // this.initSdk()
     // const _that = this
     // setTimeout(function () {
@@ -633,7 +633,8 @@ export default {
       this.allMuted = false
     },
     isSelf (id) {
-      if (this.joinInfo.activityUserId === id) {
+      const compareId = this.joinInfo.consumerUserId ? this.joinInfo.consumerUserId : this.joinInfo.visitId
+      if (compareId === id) {
         return true
       } else {
         return false
