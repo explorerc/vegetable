@@ -254,8 +254,9 @@ export default {
         this.visitorObj.visitorId = res.data.visitorId
       })
       if (!this.extChannel) return false
+      let userInfo = JSON.parse(sessionStorage.getItem('login'))
       const roomInfo = await this.$config({ handlers: true }).$post(activityService.GET_REG_SDK_INFO, {
-        thirdUserId: `visitor_${this.visitorObj.visitorId}`,
+        thirdUserId: this.userInfo ? userInfo.consumerUserId : `visitor_${this.sdkVisitorId}`,
         channel: this.extChannel
       }).then((res) => {
         return res.data

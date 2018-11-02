@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import appModules from './modules/app'
-import aModules from './modules/a'
-import bModules from './modules/b'
 import loginModules from './modules/login'
 import liveMagerModules from './modules/liveMager'
 import tokenMagerModules from './modules/getToken'
@@ -34,8 +32,6 @@ const store = new Vuex.Store({
   },
   modules: {
     app: appModules,
-    a: aModules,
-    b: bModules,
     login: loginModules,
     liveMager: liveMagerModules,
     tokenMager: tokenMagerModules

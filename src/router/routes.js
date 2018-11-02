@@ -34,7 +34,12 @@ const kicked = () =>
   import('src/pages/watch/kicked')
 const userInfo = () =>
   import('src/pages/user/info')
-
+const user = () =>
+  import('src/pages/user')
+const activityList = () =>
+  import('src/pages/user/activity-list')
+const userInfoEdit = () =>
+  import('src/pages/user/edit')
 const testSuccess = () =>
   import('src/pages/test/success')
 const testFail = () =>
@@ -104,9 +109,29 @@ export default [{
   component: kicked
 },
 {
+  path: '/user',
+  name: 'user',
+  component: user
+},
+{
   path: '/userInfo',
   name: 'userInfo',
   component: userInfo
+},
+{
+  path: '/userInfoEdit/:type',
+  name: 'userInfoEdit',
+  component: userInfoEdit
+},
+{
+  path: '/activityList',
+  name: 'activityList',
+  component: activityList
+},
+{
+  path: '/testFail',
+  name: 'testFail',
+  component: testFail
 },
 {
   path: '/testSuccess',
