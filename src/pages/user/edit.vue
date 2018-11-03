@@ -9,12 +9,14 @@
                  :placeholder="placeholder"
                  class="v-input"
                  type="input"
+                 :isCharacter="isCharacter"
                  :max-length="maxLength"
                  v-if="maxLength"></com-input>
       <com-input :value.sync="val"
                  :placeholder="placeholder"
                  class="v-input"
                  type="input"
+                 :isCharacter="isCharacter"
                  @focus="inputFocus"
                  v-else></com-input>
       </div>
@@ -42,7 +44,8 @@ export default {
       val: '', // 用户填写的信息
       type: '',
       placeholder: '',
-      maxLength: 0
+      maxLength: 0,
+      isCharacter: 'false'
     }
   },
   created () {
@@ -61,6 +64,8 @@ export default {
             case 'email': this.title = '邮箱'
               this.val = this.centerInfo.consumerUser.email
               this.placeholder = '请填写邮箱'
+              this.isCharacter = true
+              this.maxLength = 40
               break
           }
         }).catch(err => {

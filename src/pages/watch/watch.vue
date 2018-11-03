@@ -16,8 +16,8 @@
         <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
-          <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
           <a href="/m/user" class="fr v-my"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
+          <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
       </template>
       <a v-else
          href="javascript:;"

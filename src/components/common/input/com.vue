@@ -20,10 +20,10 @@
        :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}"
        @click="toggleShow"></i>
     <span class="limit"
-          v-if="maxLength&&type==='input'">
+          v-if="maxLength&&(type==='input')">
       <i class="length"
-         v-text="innerValue.gbLength()"
-         :style="{ color: limitColor }">0</i>/
+         v-text="isCharacter?innerValue.length:innerValue.gbLength()"
+         :style="{ color: limitColor }" >0</i>
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -39,7 +39,7 @@
     <span class="limit area"
           v-if="maxLength&&type==='textarea'">
       <i class="length"
-         v-text="innerValue.gbLength()"
+         v-text="isCharacter?innerValue.length:innerValue.gbLength()"
          :style="{ color: limitColor }">0</i>/
       <i>{{maxLength}}</i>
     </span>
@@ -65,7 +65,11 @@ export default {
     },
     autosize: Boolean,
     disabled: String,
-    errorTips: String
+    errorTips: String,
+    isCharacter: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -122,6 +126,7 @@ export default {
           this.isMobile = true
           type = 'text'
           break
+
         default:
           type = 'text'
           break
@@ -133,6 +138,10 @@ export default {
     innerValue (value) {
       if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
+      } else if (this.isCharacter) {
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
         }
