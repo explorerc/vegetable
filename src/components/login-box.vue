@@ -10,7 +10,8 @@
                    type="mobile"
                    placeholder="请输入手机"
                    :error-tips="phoneErrorMsg"></com-input>
-        <div id="captcha"></div>
+        <div :id="captchaId"
+             class="captcha"></div>
         <com-input v-model="code"
                    class="code"
                    type="mobile"
@@ -39,6 +40,7 @@ export default {
   name: 'ComLogin',
   data () {
     return {
+      captchaId: `ca${Math.round(Math.random() * 1000)}`,
       visible: false,
       time: 60,
       captchaIns: null,
@@ -56,7 +58,7 @@ export default {
     this.$get(activityService.GET_CAPTCHAID).then((res) => {
       this.key = res.data
       window.initNECaptcha({
-        element: '#captcha',
+        element: `#${this.captchaId}`,
         mode: 'float',
         width: '100%',
         captchaId: this.key,
@@ -169,7 +171,7 @@ export default {
 
 <style lang="scss" scoped>
 .login-container /deep/ {
-  #captcha {
+  .captcha {
     margin-bottom: 20px;
   }
   .dialog-wrap {
