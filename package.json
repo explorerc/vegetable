@@ -17,9 +17,7 @@
     "type": "git",
     "url": "git@gitlab.vhall.com:marketing/fe_interaction_h5.git"
   },
-  "pre-commit": [
-    "lint-fix"
-  ],
+  "pre-commit": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
