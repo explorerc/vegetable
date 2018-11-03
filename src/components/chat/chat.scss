@@ -53,13 +53,16 @@
     border-radius: 4px;
     padding: 0 40px 0 70px;
     overflow: hidden;
+
     .marquee {
       left: 66px;
       width: auto;
       height: 80px;
       line-height: 80px;
       right: 40px;
+      font-size: 32px;
     }
+
     svg {
       // background: url('~assets/image/auto_wechat.png') no-repeat;
       position: absolute;
@@ -203,8 +206,7 @@
                 height: 16px;
                 display: inline-block;
                 // background: url('~assets/image/qq_s.png') no-repeat;
-                background: url('~assets/image/chat-kickout.png') no-repeat
-                  center;
+                background: url('~assets/image/chat-kickout.png') no-repeat center;
                 background-size: contain;
                 margin-right: 10px;
                 position: relative;
@@ -220,8 +222,7 @@
                 }
               }
 
-              &.kick i {
-              }
+              &.kick i {}
 
               &.mute i {
                 background-image: url('~assets/image/chat.png');
@@ -436,14 +437,14 @@
         .face-box {
           position: absolute;
           bottom: 85px;
-          left: -15px;
+          left: -22px;
           width: 620px;
           background: #fff;
           z-index: 10;
 
           img {
-            width: 30px;
-            height: 30px;
+            width: 38px;
+            height: 38px;
             float: left;
             cursor: pointer;
           }

@@ -9,7 +9,7 @@
       <ol class='chat-list bscroll-container'>
         <li v-for='(item) in chatData'
             :data-joinId="item.id"
-            :class="{'right': joinInfo.consumerUserId*1 == item.id*1}">
+            :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}">
           <dl class='clearfix'>
             <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
             <dt class='avatar'
@@ -122,6 +122,7 @@
                        :placeholder="chatPlaceholder"
                        :max-length="140"
                        class='inp'
+                       :isCharacter=true
                        type="textarea"></com-input>
           </template>
           <template v-else>
@@ -129,6 +130,7 @@
                        :placeholder="announcePlaceholder"
                        :max-length="140"
                        class='inp'
+                       :isCharacter=true
                        type="textarea"></com-input>
           </template>
           <div class="v-emoji">
@@ -498,7 +500,8 @@ export default {
       this.isLogin = true
     }
     // 拉取最近聊天纪律
-    this.getHistroy()
+
+    // this.getHistroy()
     // this.initSdk()
     // const _that = this
     // setTimeout(function () {
