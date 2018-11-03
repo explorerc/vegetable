@@ -20,6 +20,18 @@
               直播正在进行中
             </p>
           </template>
+          <template v-else-if="activity.status === 'PLAYBACK'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播已生成回放，请报名后观看
+            </p>
+          </template>
+          <template v-else-if="activity.status === 'FINISH'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播已结束
+            </p>
+          </template>
           <template v-else>
             <com-countdown :time="activity.countDown"
                            v-if="activity.isCountdown"></com-countdown>
@@ -63,6 +75,20 @@
         <button class="primary-button"
                 @click="joinWebinar()">进入直播</button>
         </template>
+        <template v-else-if="activity.status === 'PLAYBACK'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播已生成回放，请点击观看
+          </p>
+          <button class="primary-button"
+              @click="joinWebinar()">进入直播</button>
+        </template>
+        <template v-else-if="activity.status === 'FINISH'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播已结束
+          </p>
+        </template>
         <template v-else>
           <com-countdown :time="activity.countDown"
                          v-if="activity.isCountdown"></com-countdown>
@@ -89,6 +115,23 @@
             <p class="v-living"
                v-if="activity.isCountdown">
               直播正在进行中
+            </p>
+          </template>
+          <template v-else-if="activity.status === 'PLAYBACK'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+               <template v-if="user.isApplay">
+              直播已生成回放，请点击观看
+               </template>
+               <template v-else>
+              直播已生成回放，请报名后观看
+               </template>
+            </p>
+          </template>
+          <template v-else-if="activity.status === 'FINISH'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播已结束
             </p>
           </template>
           <template v-else>
@@ -121,6 +164,23 @@
               直播正在进行中
             </p>
           </template>
+          <template v-else-if="activity.status === 'PLAYBACK'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+               <template v-if="user.isApplay">
+              直播已生成回放，请点击观看
+               </template>
+               <template v-else>
+              直播已生成回放
+               </template>
+            </p>
+          </template>
+          <template v-else-if="activity.status === 'FINISH'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播已结束
+            </p>
+          </template>
           <template v-else>
             <p class="v-living"
                v-if="activity.isCountdown">
@@ -148,6 +208,18 @@
           <p class="v-living"
              v-if="activity.isCountdown">
             直播正在进行中
+          </p>
+        </template>
+        <template v-else-if="activity.status === 'PLAYBACK'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播已生成回放，请点击观看
+          </p>
+        </template>
+        <template v-else-if="activity.status === 'FINISH'">
+          <p class="v-living"
+             v-if="activity.isCountdown">
+            直播已结束
           </p>
         </template>
         <template v-else>
