@@ -11,7 +11,7 @@
             :data-joinId="item.id"
             :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}">
           <dl class='clearfix'>
-            <dt v-if="item.avatar !== '' && item.avatar !== null"><img :src="`${imgHost}${item.avatar}`"> </dt>
+            <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
             <dt class='avatar'
                 v-else>{{item.name&&item.name.substr(0,1)}}</dt>
             <dd>
