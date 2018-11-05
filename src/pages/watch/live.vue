@@ -19,9 +19,10 @@
                    :index="2">
             <div class="chat-content">
               <chating ref="chatbox"
+                      :class="{showKeyboard:sendBoxShow}"
                        :type="playType"
                        :isWatch="isWatch"
-                       :sendBoxShow="sendBoxShow"
+                       :sendBoxShow="true"
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"></chating>
             </div>
@@ -207,9 +208,7 @@ export default {
     chatClick () {
       // 点击弹出聊天窗口
       this.sendBoxShow = true
-      this.$nextTick(() => {
-        document.getElementsByClassName('inp')[0].children[0].focus()
-      })
+      document.getElementsByClassName('inp')[0].children[0].focus()
     },
     closeChatBox () {
       // 关闭聊天窗口

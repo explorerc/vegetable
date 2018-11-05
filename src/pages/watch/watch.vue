@@ -707,6 +707,11 @@ export default {
           word-break: break-all;
           overflow-x: hidden;
           overflow-y: auto;
+          .showKeyboard {
+            .v-send-box-bg {
+              left: 0;
+            }
+          }
         }
       }
       .v-subscribe {

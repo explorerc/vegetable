@@ -722,6 +722,8 @@ export default {
       for (let key in this.faceArr[index]) {
         this.value += key
       }
+      this.faceOpen = !this.faceOpen
+      document.getElementsByClassName('inp')[0].children[0].focus()
     },
     boxClick (e) {
       if (e.target.className !== 'icon-emoji') {
