@@ -45,6 +45,10 @@
                    :inputVal.sync="item.val"
                    :placeholder='item.placeholder'
                    :errorMsg.sync="item.errorMsg"></com-input>
+        <com-input v-else-if="item.type === 'name'"
+                   :inputVal.sync="item.val"
+                   :placeholder='item.placeholder'
+                   :errorMsg.sync="item.errorMsg"></com-input>
       </template>
       <button class="primary-button"
               @click="submitAppoint">提交</button>

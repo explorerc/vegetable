@@ -84,7 +84,7 @@
       <!-- </transition> -->
     </div>
     <div class="v-send-box-bg"
-         v-if='type === "live" && isLogin && sendBoxShow'>
+         v-show='type === "live" && isLogin && sendBoxShow'>
       <div class="send-box clearfix"
            id="sendBox">
         <div class="top">

@@ -2,10 +2,10 @@
   <div class="v-watch"
        :class="{'v-x5-div': vx5div,'v-close-x5-div': vclosex5div,'v-other-div': votherdiv}">
     <div class="v-x5-title"
-         v-if="domShow">
+         v-show="domShow">
       {{activityInfo.title}}
     </div>
-    <div v-if="domShow"
+    <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
       <span class="v-status">
@@ -13,11 +13,11 @@
       </span>
       <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
-        <a v-if="isShowSite"
+        <a href="/m/user" class="fr v-my"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
+        <!-- <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
-          <a href="/m/user" class="fr v-my"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
-          <i class="v-showpsd iconfont icon-guanwang"></i>官网</a>
+          <i class="v-showpsd iconfont icon-guanwang"></i>官网</a> -->
       </template>
       <a v-else
          href="javascript:;"

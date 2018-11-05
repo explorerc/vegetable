@@ -11,7 +11,7 @@
            v-model="innerValue"
            @focus="focusHandle"
            @blur="blurHandle">
-    <i v-if="type==='search'"
+    <i v-if="type==='search' || isDelete"
        v-show="showDelete"
        class="iconfont icon-delete"
        @click="empty"></i>
@@ -23,7 +23,7 @@
           v-if="maxLength&&(type==='input')">
       <i class="length"
          v-text="isCharacter?innerValue.length:innerValue.gbLength()"
-         :style="{ color: limitColor }" >0</i>
+         :style="{ color: limitColor }" >0</i>/
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -67,6 +67,10 @@ export default {
     disabled: String,
     errorTips: String,
     isCharacter: {
+      type: Boolean,
+      default: false
+    },
+    isDelete: {
       type: Boolean,
       default: false
     }
