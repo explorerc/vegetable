@@ -5,7 +5,7 @@
                   :play-type="playType"
                   :startInit="startInit"></play-video>
     </div>
-    <div v-if="domShow"
+    <div v-show="domShow"
          class="v-function-box">
       <div class="v-nav">
         <com-tabs :value.sync="tabValue"
@@ -207,6 +207,7 @@ export default {
     chatClick () {
       // 点击弹出聊天窗口
       this.sendBoxShow = true
+      document.getElementsByClassName('inp')[0].children[0].focus()
     },
     closeChatBox () {
       // 关闭聊天窗口

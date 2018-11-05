@@ -11,6 +11,7 @@
                  type="input"
                  :isCharacter="isCharacter"
                  :max-length="maxLength"
+                 :isDelete = "true"
                  v-if="maxLength"></com-input>
       <com-input :value.sync="val"
                  :placeholder="placeholder"
@@ -18,6 +19,7 @@
                  type="input"
                  :isCharacter="isCharacter"
                  @focus="inputFocus"
+                 :isDelete = "true"
                  v-else></com-input>
       </div>
       <p class="v-error">
@@ -204,9 +206,12 @@ export default {
         height: 100%;
         border: none;
         background-color: rgba(0, 0, 0, 0);
-        padding: 0 35px;
+        padding: 0 120px 0 35px !important;
         font-size: 30px;
         color: #222;
+      }
+      .icon-delete {
+        right: 80px;
       }
     }
     .v-error {
