@@ -207,7 +207,9 @@ export default {
     chatClick () {
       // 点击弹出聊天窗口
       this.sendBoxShow = true
-      document.getElementsByClassName('inp')[0].children[0].focus()
+      this.$nextTick(() => {
+        document.getElementsByClassName('inp')[0].children[0].focus()
+      })
     },
     closeChatBox () {
       // 关闭聊天窗口
