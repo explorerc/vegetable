@@ -4,8 +4,9 @@
 .bscroll {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  height: calc(100%);
+  overflow: auto;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
 
   &.vod {
     height: 100%;
