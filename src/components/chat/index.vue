@@ -84,7 +84,7 @@
       <!-- </transition> -->
     </div>
     <div class="v-send-box-bg"
-         v-if='type === "live" && isLogin && sendBoxShow'>
+         v-show='type === "live" && isLogin && sendBoxShow'>
       <div class="send-box clearfix"
            id="sendBox">
         <div class="top">
@@ -722,6 +722,8 @@ export default {
       for (let key in this.faceArr[index]) {
         this.value += key
       }
+      this.faceOpen = !this.faceOpen
+      document.getElementsByClassName('inp')[0].children[0].focus()
     },
     boxClick (e) {
       if (e.target.className !== 'icon-emoji') {
