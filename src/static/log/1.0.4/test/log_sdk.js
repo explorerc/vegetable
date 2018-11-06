@@ -1224,7 +1224,7 @@ var Log = function () {
           //   args += `${args ? '&' : ''}${key}=${params[key]}`
           // }
           // let token = window.btoa(args)
-          if (params.business_uid != '0') {
+          if (params.business_uid && params.business_uid != '0') {
             var id = '' + Date.now() + Math.floor(Math.random() * 10000);
             var token = window.btoa((0, _stringify2.default)(params));
             var src = this.reportUrl + '?k=' + k + '&id=' + id + '&s=' + this.s + '&token=' + token;
