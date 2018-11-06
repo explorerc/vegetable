@@ -137,14 +137,10 @@ export default {
     }),
     tabChange () {
       if (this.tabValue === 2) {
-        if (!this.$refs.chatbox.aBScroll) {
-          this.$refs.chatbox.initScroll()
-          this.$refs.chatbox.getHistroy()
-        }
         if (!this.$refs.chatbox.tipsShow) {
           const _that = this
           setTimeout(function () {
-            _that.$refs.chatbox.scrollBtm()
+            _that.$refs.chatbox.scrollBottom(10)
           }, 200)
         }
       }

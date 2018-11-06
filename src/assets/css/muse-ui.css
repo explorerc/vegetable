@@ -252,6 +252,10 @@
   line-height: 1.5
 }
 
+.yidun.yidun--light {
+  min-width: 100% !important;
+}
+
 .yidun.yidun--light .yidun_slider:hover {
   background-color: #FFD021 !important;
 }

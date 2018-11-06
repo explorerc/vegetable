@@ -5,7 +5,7 @@
          ref="bscroll"
          :class="type !== 'live'? 'vod' : 'live'"
          @mouseover="stopScroll = true"
-         @mouseout="stopScroll = false">
+         @mouseout="stopScroll = false" @scroll="scrollEvent($event)">
       <ol class='chat-list bscroll-container'>
         <li v-for='(item) in chatData'
             :data-joinId="item.id"
@@ -36,7 +36,7 @@
       </ol>
       <transition v-if="tipsShow && tipsCount > 0">
         <span class="msg-tips"
-              @click='scrollBtm'>有{{tipsCount}}条新消息
+              @click='scrollBottom'>有{{tipsCount}}条新消息
           <i class="iconfont icon-xiangxia"></i>
         </span>
       </transition>
@@ -160,7 +160,7 @@
 import ChatService from './ChatService.js'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
-import BScroll from 'better-scroll'
+// import BScroll from 'better-scroll'
 import activityService from 'src/api/activity-service'
 export default {
   name: 'chat',
@@ -192,6 +192,7 @@ export default {
       announcePlaceholder: '请输入公告内容',
       aBScroll: null,
       imgHost: process.env.IMGHOST + '/',
+      scrollEvent: null,
       // imgHost: process.env.IMGHOST + '/'
       /* 表情数组 */
       faceArr: [
@@ -499,9 +500,21 @@ export default {
     if (!this.isWatch) {
       this.isLogin = true
     }
+    this.scrollEvent = this.debounce(e => {
+      if (this.$refs.bscroll.offsetHeight + this.$refs.bscroll.scrollTop > this.$refs.bscroll.scrollHeight - 100) {
+        this.tipsCount = 0
+      }
+      let height = document.getElementsByClassName('chat-list')[0].offsetHeight
+      let wrapHeight = document.getElementsByClassName('live')[0].offsetHeight
+      if ((height * 0.5 > wrapHeight) && (height * 0.5 > this.$refs.bscroll.scrollTop)) {
+        this.tipsShow = true
+      } else {
+        this.tipsShow = false
+      }
+    }, 50)
     // 拉取最近聊天纪律
 
-    // this.getHistroy()
+    this.getHistroy()
     // this.initSdk()
     // const _that = this
     // setTimeout(function () {
@@ -518,6 +531,21 @@ export default {
     ...mapMutations('liveMager', {
       storeJoinInfo: types.JOIN_INFO
     }),
+    debounce (func, wait, immediate) {
+      var timeout
+      return function () {
+        var context = this
+        var args = arguments
+        var later = function () {
+          timeout = null
+          if (!immediate) func.apply(context, args)
+        }
+        var callNow = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+        if (callNow) func.apply(context, args)
+      }
+    },
     initSdk () {
       // ChatService.OBJ = new ChatService()
       let obj = { channelId: this.roomPaas.channelRoom }
@@ -683,7 +711,7 @@ export default {
       if (!this.tipsShow && !this.stopScroll) {
         const _that = this
         setTimeout(function () {
-          _that.scrollBtm()
+          _that.scrollBottom()
         }, 200)
       }
       if (this.stopScroll) {
@@ -711,11 +739,17 @@ export default {
     cancelClick () {
       this.$emit('closeChatBox', true)
     },
-    scrollBtm () {
-      this.aBScroll.scrollTo(0, this.aBScroll.maxScrollY, 500, 'bounce')
-      setTimeout(() => {
-        this.tipsCount = 0
-      }, 500)
+    scrollBottom (speed = 1) {
+      let elm = document.querySelector('.bscroll')
+      let maxTop = elm.scrollHeight - elm.offsetHeight
+      let interId = setInterval(() => {
+        if (elm.scrollTop < maxTop) {
+          elm.scrollTop += speed
+        } else {
+          clearInterval(interId)
+        }
+      }, 0)
+      this.tipsCount = 0
     },
     /* 选择表情 */
     inFace (index) {
@@ -759,27 +793,27 @@ export default {
       }
     },
     initScroll () {
-      this.$nextTick(() => {
-        let bscrollDom = this.$refs.bscroll
-        this.aBScroll = new BScroll(bscrollDom, {
-          'scrollbar': true,
-          'click': true,
-          'mouseWheel': true,
-          'probeType ': 3
-          // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
-        })
-        // 滚动结束触发
-        this.aBScroll.on('scrollEnd', (pos) => {
-          // scrollY接收变量
-          let height = document.getElementsByClassName('chat-list')[0].offsetHeight
-          let wrapHeight = document.getElementsByClassName('bscroll')[0].offsetHeight
-          if ((height * 0.5 > wrapHeight) && (height * 0.5 > pos.y * -1)) {
-            this.tipsShow = true
-          } else {
-            this.tipsShow = false
-          }
-        })
-      })
+      // this.$nextTick(() => {
+      //   let bscrollDom = this.$refs.bscroll
+      //   this.aBScroll = new BScroll(bscrollDom, {
+      //     'scrollbar': true,
+      //     'click': true,
+      //     'mouseWheel': true,
+      //     'probeType ': 3
+      //     // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
+      //   })
+      //   // 滚动结束触发
+      //   this.aBScroll.on('scrollEnd', (pos) => {
+      //     // scrollY接收变量
+      //     let height = document.getElementsByClassName('chat-list')[0].offsetHeight
+      //     let wrapHeight = document.getElementsByClassName('bscroll')[0].offsetHeight
+      //     if ((height * 0.5 > wrapHeight) && (height * 0.5 > pos.y * -1)) {
+      //       this.tipsShow = true
+      //     } else {
+      //       this.tipsShow = false
+      //     }
+      //   })
+      // })
     },
     async initInfo () {
       this.initSdk()
