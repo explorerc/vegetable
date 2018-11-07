@@ -18,11 +18,14 @@
     <img src="../../assets/image/success@2x.png"
          alt=""
          class="v-img">
-    <p class="v-success-title">
+    <p class="v-success-title" v-if="activity.status === 'FINISH'">
+      <span>直播已结束</span>
+    </p>
+    <p class="v-success-title" v-else>
       <span v-if="activity.viewCondition === 'APPOINT'">报名成功</span>
       <span v-else-if="activity.viewCondition === 'NONE'">预约成功</span>
     </p>
-    <p>活动将于
+    <p v-if="activity.status != 'FINISH'">活动将于
       <span class="v-red">{{activity.startTime}}</span>准时开播</p>
   </div>
 </template>
