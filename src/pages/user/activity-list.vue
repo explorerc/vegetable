@@ -5,7 +5,7 @@
     </a>
     <div class="v-list">
     <div class="bscroll"
-         ref="bscroll">
+         ref="bscroll" @scroll="scrollEvent($event)">
       <ol class="bscroll-container">
         <li  v-for="itemData in tableList" :key="itemData.id">
           <a :href="MOBILE_HOST+'guide/'+itemData.id" class="clearfix">
@@ -63,14 +63,19 @@ export default {
       imgHost: process.env.IMGHOST + '/'
     }
   },
-  created () {
+  mounted () {
     if (this.getLoginInfo()) {
       this.storeLoginInfo(this.getLoginInfo())
     } else {
       this.$router.replace('/user')
     }
     this.getDataList()
-    this.initScroll()
+    this.scrollEvent = this.debounce(e => {
+      if (this.$refs.bscroll.offsetHeight + this.$refs.bscroll.scrollTop > this.$refs.bscroll.scrollHeight - 100) {
+        this.getDataList()
+      }
+    }, 50)
+    // this.initScroll()
   },
   computed: {
     ...mapState('login', {
@@ -85,6 +90,21 @@ export default {
     ...mapMutations('login', {
       storeLoginInfo: types.LOGIN_INFO
     }),
+    debounce (func, wait, immediate) {
+      var timeout
+      return function () {
+        var context = this
+        var args = arguments
+        var later = function () {
+          timeout = null
+          if (!immediate) func.apply(context, args)
+        }
+        var callNow = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+        if (callNow) func.apply(context, args)
+      }
+    },
     getDataList () {
       this.$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
         res.data.list.map((item, indx) => {
@@ -154,8 +174,8 @@ export default {
     .bscroll {
       position: relative;
       width: 100%;
-      overflow: hidden;
-      height: calc(100%);
+      overflow: auto;
+      height: 100%;
     }
     li {
       width: 100%;

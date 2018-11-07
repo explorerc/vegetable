@@ -175,7 +175,7 @@ export default {
     margin-bottom: 20px;
   }
   .dialog-wrap {
-    width: 540px;
+    width: 600px;
     .dialog-body {
       padding: 30px 40px 10px;
       .rule {
@@ -194,13 +194,17 @@ export default {
         height: 80px;
         margin-bottom: 20px;
         display: inline-block;
-        width: 292px;
+        width: 342px;
       }
       .codeBtn {
-        width: 160px;
+        width: 170px;
         height: 90px;
         font-size: 20px;
         text-align: center;
+        &:disabled {
+          border-color: #e2e2e2;
+          background-color: #e2e2e2;
+        }
       }
     }
     .footer {

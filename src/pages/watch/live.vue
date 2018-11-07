@@ -198,6 +198,7 @@ export default {
       })
     },
     isMute (val) {
+      debugger
       this.isMuteShow = val.isMute
       this.allMuted = val.type === 'allMuted'
     },
