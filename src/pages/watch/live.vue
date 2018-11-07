@@ -193,12 +193,15 @@ export default {
       ChatService.OBJ.regHandler(ChatConfig.leaveLive, (msg) => {
         console.log('--离开房间--消息--')
         let temp = JSON.parse(JSON.stringify(this.activityInfo))
+        if (this.allMuted) {
+          temp.setting.gag = this.isMuteShow ? 'Y' : 'N'
+        }
         temp.onlineNum = parseInt(temp.onlineNum) - 1
+        console.log(temp)
         this.storeActivityInfo(temp)
       })
     },
     isMute (val) {
-      debugger
       this.isMuteShow = val.isMute
       this.allMuted = val.type === 'allMuted'
     },
