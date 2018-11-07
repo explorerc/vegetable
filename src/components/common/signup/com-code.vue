@@ -248,10 +248,10 @@ export default {
       text-align: center;
       border-radius: 6px;
       &.prohibit {
-        background-color: #ffd021;
+        background-color: #e2e2e2;
         opacity: 0.8;
         &:hover {
-          background-color: #ffd021;
+          background-color: #e2e2e2;
           opacity: 0.8;
         }
       }
