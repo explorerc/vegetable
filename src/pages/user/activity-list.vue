@@ -3,9 +3,7 @@
     <a :href="MOBILE_HOST+'userinfo'" class="v-return-userinfo clearfix">
       <i class="iconfont icon-jiantouzuo fl"></i>我的活动
     </a>
-    <div class="v-list">
-    <div class="bscroll"
-         ref="bscroll" @scroll="scrollEvent($event)">
+    <div class="v-list" ref="bscroll" @scroll="scrollEvent($event)">
       <ol class="bscroll-container">
         <li  v-for="itemData in tableList" :key="itemData.id">
           <a :href="MOBILE_HOST+'guide/'+itemData.id" class="clearfix">
@@ -39,14 +37,13 @@
         </li>
       </ol>
     </div>
-    </div>
   </div>
 </template>
 <script>
 import loginMixin from 'components/login-mixin'
 import { mapMutations, mapState } from 'vuex'
 import * as types from '../../store/mutation-types.js'
-import BScroll from 'better-scroll'
+// import BScroll from 'better-scroll'
 import activityService from 'src/api/activity-service'
 export default {
   mixins: [loginMixin],
@@ -122,30 +119,31 @@ export default {
         this.searchParams.page = parseInt(res.data.currPage) + 1
         this.searchParams.totalPage = res.data.totalPage
       })
-    },
-    initScroll () {
-      let _this = this
-      this.$nextTick(() => {
-        let bscrollDom = this.$refs.bscroll
-        this.aBScroll = new BScroll(bscrollDom, {
-          'scrollbar': true,
-          'click': true,
-          'mouseWheel': true,
-          'probeType ': 3,
-          'pullup': true
-          // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
-        })
-
-        this.aBScroll.on('scrollEnd', () => {
-          // 滚动到底部
-          if (this.aBScroll.y <= (this.aBScroll.maxScrollY)) {
-            if (_this.searchParams.page <= _this.searchParams.totalPage) {
-              _this.getDataList()
-            }
-          }
-        })
-      })
     }
+    // ,
+    // initScroll () {
+    //   let _this = this
+    //   this.$nextTick(() => {
+    //     let bscrollDom = this.$refs.bscroll
+    //     this.aBScroll = new BScroll(bscrollDom, {
+    //       'scrollbar': true,
+    //       'click': true,
+    //       'mouseWheel': true,
+    //       'probeType ': 3,
+    //       'pullup': true
+    //       // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
+    //     })
+
+    //     this.aBScroll.on('scrollEnd', () => {
+    //       // 滚动到底部
+    //       if (this.aBScroll.y <= (this.aBScroll.maxScrollY)) {
+    //         if (_this.searchParams.page <= _this.searchParams.totalPage) {
+    //           _this.getDataList()
+    //         }
+    //       }
+    //     })
+    //   })
+    // }
   }
 }
 </script>
@@ -169,15 +167,11 @@ export default {
   }
   .v-list {
     width: 100%;
-    overflow: hidden;
+    overflow: auto;
+    height: 100%;
     flex: 1;
-    .bscroll {
-      position: relative;
-      width: 100%;
-      overflow: auto;
-      height: 100%;
-      -webkit-overflow-scrolling: touch;
-    }
+    position: relative;
+    -webkit-overflow-scrolling: touch;
     li {
       width: 100%;
       height: 250px;
