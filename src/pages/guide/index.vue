@@ -52,6 +52,28 @@
         </template>
         <template v-else>
           <!-- 报名已截止 -->
+          <template v-if="activity.status === 'LIVING'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播正在进行中
+            </p>
+          </template>
+          <template v-else-if="activity.status === 'PLAYBACK'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播已生成回放，请报名后观看
+            </p>
+          </template>
+          <template v-else-if="activity.status === 'FINISH'">
+            <p class="v-living"
+               v-if="activity.isCountdown">
+              直播已结束
+            </p>
+          </template>
+          <template v-else>
+            <com-countdown :time="activity.countDown"
+                           v-if="activity.isCountdown"></com-countdown>
+          </template>
           <template v-if="user.isApplay">
             <!-- 已报名 -->
             <button class="primary-button v-disabled">已报名</button>
@@ -88,6 +110,8 @@
              v-if="activity.isCountdown">
             直播已结束
           </p>
+          <button class="primary-button"
+              @click="joinWebinar()">进入直播</button>
         </template>
         <template v-else>
           <com-countdown :time="activity.countDown"
