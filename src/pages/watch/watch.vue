@@ -143,6 +143,9 @@ export default {
   },
   mounted () {
     this.storeLoginInfo(this.getLoginInfo())
+    if (!this.loginInfo) {
+      this.doLogin()
+    }
   },
   computed: {
     ...mapState('liveMager', {

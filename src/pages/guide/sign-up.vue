@@ -122,6 +122,7 @@ export default {
         isOrder: false, // 是否已经预约
         isDisabled: false // 手机框是否可输入
       },
+      email: '',
       selectVal: [], // 下拉
       agreementShow: false, // 用户协议是否显示
       appointIsClick: true, // 报名是否可点击
@@ -230,6 +231,12 @@ export default {
           let obj = {}
           obj.questionId = element.id
           obj.answer = data.mobile
+          data.answer.push(obj)
+        } else if (element.type !== 'select') {
+          data.email = element.val
+          let obj = {}
+          obj.questionId = element.id
+          obj.answer = element.val
           data.answer.push(obj)
         } else if (element.type !== 'select') {
           let obj = {}
