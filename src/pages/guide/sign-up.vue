@@ -162,7 +162,7 @@ export default {
         this.activity.viewCondition = res.data.activity.viewCondition
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
-        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
           if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           } else if (this.activity.viewCondition === 'NONE') {
@@ -263,7 +263,7 @@ export default {
         }
         this.appointIsClick = false
         this.$config({ handlers: true }).$post(activityService.POST_QUESTIONINFO, data).then((res) => {
-          if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+          if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           } else if (this.activity.countDown < 1800) {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
@@ -275,7 +275,7 @@ export default {
             this.appointIsClick = true
             this.codeError = '请输入正确验证码'
           } else if (err.code === 12002) {
-            if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+            if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             } else if (this.activity.countDown < 1800) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
@@ -316,7 +316,7 @@ export default {
         activityId: this.$route.params.id
       }
       this.$config({ handlers: true }).$post(activityService.POST_SUBSCRIBE, data).then((res) => {
-        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
           this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
         } else if (this.activity.countDown < 1800) {
           this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
@@ -369,7 +369,7 @@ export default {
                 if (res.data.joinInfo.isOrder) {
                   this.user.isApplay = res.data.joinInfo.isApplay
                   this.user.isOrder = res.data.joinInfo.isOrder
-                  if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+                  if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
                     if (this.user.isApplay && this.activity.viewCondition === 'APPOINT') {
                       this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
                     } else if (this.activity.viewCondition === 'NONE') {
@@ -421,7 +421,7 @@ export default {
             this.appointIsClick = true
             this.codeError = '请输入正确验证码'
           } else if (err.code === 12002) {
-            if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+            if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             } else if (this.activity.countDown < 1800) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)

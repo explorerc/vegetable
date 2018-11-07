@@ -176,6 +176,7 @@ export default {
       width: 100%;
       overflow: auto;
       height: 100%;
+      -webkit-overflow-scrolling: touch;
     }
     li {
       width: 100%;
