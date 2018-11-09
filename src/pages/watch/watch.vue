@@ -301,7 +301,9 @@ export default {
       }
     },
     async initPage () {
-      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {
+        wechatAuth: sessionStorage.getItem('wechatAuth')
+      }).then((res) => {
         _log.set('visitor_id', res.data.visitorId)
         this.sdkVisitorId = res.data.visitorId
       })
@@ -483,7 +485,9 @@ export default {
       wxShareFunction(this.wxShare)
     },
     loginSuccess (res) {
-      this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {})
+      this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {
+        wechatAuth: sessionStorage.getItem('wechatAuth')
+      })
       _log.set('consumer_uid', res.consumerUserId)
       this.storeLoginInfo(res)
       this.$router.go(0)

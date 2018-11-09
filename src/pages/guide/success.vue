@@ -88,7 +88,9 @@ export default {
       // })
     },
     async initMsgServe () {
-      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {
+        wechatAuth: sessionStorage.getItem('wechatAuth')
+      }).then((res) => {
         this.visitorObj.visitorId = res.data
       })
       if (!this.extChannel) return false

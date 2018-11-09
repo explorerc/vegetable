@@ -330,7 +330,9 @@ export default {
       this.initMsgServe()
     },
     async initMsgServe () {
-      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+      await this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {
+        wechatAuth: sessionStorage.getItem('wechatAuth')
+      }).then((res) => {
         let login = this.getLoginInfo()
         _log.set('business_uid', this.activity.userId)
         if (login) {
