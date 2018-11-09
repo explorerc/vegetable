@@ -105,7 +105,9 @@ export default {
             })
             return false
           }
-          this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {}).then((res) => {
+          this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {
+            wechatAuth: sessionStorage.getItem('wechatAuth')
+          }).then((res) => {
             _log.set('visitor_id', res.data.visitorId)
             let login = this.getLoginInfo()
             _log.set('business_uid', activity.userId)
