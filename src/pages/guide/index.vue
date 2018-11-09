@@ -342,7 +342,6 @@ export default {
         _log.set('activity_id', this.$route.params.id)
         _log.set('visitor_id', res.data.visitorId)
         if (this.refer !== undefined) {
-          localStorage.setItem(`refer_${this.activityId}`, this.refer)
           _log.track(Vhall_User_Actions.ENTER, {
             event: parseInt(this.refer)
           })
@@ -395,6 +394,9 @@ export default {
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
         this.refer = this.$route.query.refer
+        if (this.refer !== undefined) {
+          localStorage.setItem(`refer_${this.$route.params.id}`, this.refer)
+        }
         let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
         if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.activity.viewCondition === 'APPOINT') {
