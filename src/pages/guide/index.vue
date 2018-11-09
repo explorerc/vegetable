@@ -272,6 +272,7 @@ export default {
   mixins: [loginMixin],
   data () {
     return {
+      refer: undefined,
       MOBILE_HOST: process.env.MOBILE_HOST,
       goUrl: '',
       goRegisteredUrl: '', // 已报名检验页面
@@ -340,11 +341,10 @@ export default {
         }
         _log.set('activity_id', this.$route.params.id)
         _log.set('visitor_id', res.data.visitorId)
-        let refer = this.$route.query.refer
-        if (refer !== undefined) {
-          localStorage.setItem(`refer_${this.activityId}`, refer)
+        if (this.refer !== undefined) {
+          localStorage.setItem(`refer_${this.activityId}`, this.refer)
           _log.track(Vhall_User_Actions.ENTER, {
-            event: parseInt(refer)
+            event: parseInt(this.refer)
           })
         } else {
           _log.track(Vhall_User_Actions.ENTER)
@@ -394,6 +394,7 @@ export default {
         this.viewLimit.canAppoint = res.data.viewLimit.canAppoint
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
+        this.refer = this.$route.query.refer
         let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
         if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
           if (this.activity.viewCondition === 'APPOINT') {
