@@ -250,7 +250,7 @@ export default {
     /* 进行订阅 */
     sendSubScribe () {
       this.$config({ handlers: true }).$post(activityService.POST_EMAILSUBSCRIBE, {
-        businessUserId: this.activityInfo.userId,
+        activityId: this.$route.params.id,
         email: this.loginInfo.email ? this.loginInfo.email : this.email
       }).then((res) => {
         this.autoClose = 3
