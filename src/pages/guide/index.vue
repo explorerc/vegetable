@@ -324,8 +324,9 @@ export default {
       setChatParams: types.CHAT_PARAMS
     }),
     jumpPage (url) {
-      let jumpUrl = url + this.$route.params.id
-      location.replace(jumpUrl)
+      // let jumpUrl = url + this.$route.params.id
+      this.$router(`/watch/${this.$route.params.id}`)
+      // location.replace(jumpUrl)
       // this.doAuth(jumpUrl)
     },
     initSdk () {
