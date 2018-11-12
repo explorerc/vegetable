@@ -94,8 +94,8 @@
              v-if="activity.isCountdown">
             直播正在进行中
           </p>
-        <button class="primary-button"
-                @click="joinWebinar()">进入直播</button>
+          <button class="primary-button"
+                  @click="joinWebinar()">进入直播</button>
         </template>
         <template v-else-if="activity.status === 'PLAYBACK'">
           <p class="v-living"
@@ -103,7 +103,7 @@
             直播已生成回放，请点击观看
           </p>
           <button class="primary-button"
-              @click="joinWebinar()">进入直播</button>
+                  @click="joinWebinar()">进入直播</button>
         </template>
         <template v-else-if="activity.status === 'FINISH'">
           <p class="v-living"
@@ -111,21 +111,21 @@
             直播已结束
           </p>
           <button class="primary-button"
-              @click="joinWebinar()">进入直播</button>
+                  @click="joinWebinar()">进入直播</button>
         </template>
         <template v-else>
           <com-countdown :time="activity.countDown"
                          v-if="activity.isCountdown"></com-countdown>
-        <button class="primary-button"
-                v-if="user.isOrder">已预约</button>
-        <template v-else>
           <button class="primary-button"
-                  @click="jumpPage( MOBILE_HOST + 'SignUp/')">预约</button>
-          <a href="javascript:;"
-             class="v-registered"
-             @click="jumpPage( MOBILE_HOST + 'CheckState/')"
-             v-if="!this.user.phone">已预约</a>
-        </template>
+                  v-if="user.isOrder">已预约</button>
+          <template v-else>
+            <button class="primary-button"
+                    @click="jumpPage( MOBILE_HOST + 'SignUp/')">预约</button>
+            <a href="javascript:;"
+               class="v-registered"
+               @click="jumpPage( MOBILE_HOST + 'CheckState/')"
+               v-if="!this.user.phone">已预约</a>
+          </template>
         </template>
       </template>
     </div>
@@ -144,12 +144,12 @@
           <template v-else-if="activity.status === 'PLAYBACK'">
             <p class="v-living"
                v-if="activity.isCountdown">
-               <template v-if="user.isApplay">
-              直播已生成回放，请点击观看
-               </template>
-               <template v-else>
-              直播已生成回放，请报名后观看
-               </template>
+              <template v-if="user.isApplay">
+                直播已生成回放，请点击观看
+              </template>
+              <template v-else>
+                直播已生成回放，请报名后观看
+              </template>
             </p>
           </template>
           <template v-else-if="activity.status === 'FINISH'">
@@ -167,7 +167,7 @@
           <template v-if="user.isApplay">
             <!-- 已报名 -->
             <button class="primary-button"
-                @click="joinWebinar()">进入直播</button>
+                    @click="joinWebinar()">进入直播</button>
             <!-- ！！！跳转观看页面 -->
           </template>
           <template v-else>
@@ -191,12 +191,12 @@
           <template v-else-if="activity.status === 'PLAYBACK'">
             <p class="v-living"
                v-if="activity.isCountdown">
-               <template v-if="user.isApplay">
-              直播已生成回放，请点击观看
-               </template>
-               <template v-else>
-              直播已生成回放
-               </template>
+              <template v-if="user.isApplay">
+                直播已生成回放，请点击观看
+              </template>
+              <template v-else>
+                直播已生成回放
+              </template>
             </p>
           </template>
           <template v-else-if="activity.status === 'FINISH'">
@@ -214,7 +214,7 @@
           <template v-if="user.isApplay">
             <!-- 已报名 -->
             <button class="primary-button"
-                @click="joinWebinar()">进入直播</button>
+                    @click="joinWebinar()">进入直播</button>
             <!-- <a href="javascript:;" class="v-submit">已报名</a> -->
           </template>
           <template v-else>
