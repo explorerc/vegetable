@@ -1,45 +1,7 @@
 @import 'assets/css/mixin.scss';
 @import 'assets/css/transitions.scss';
 
-.bscroll {
-  position: relative;
-  width: 100%;
-  overflow: auto;
-  height: 100%;
-  -webkit-overflow-scrolling: touch;
-
-  &.vod {
-    height: 100%;
-  }
-
-  .msg-tips {
-    bottom: 10px;
-    left: 50%;
-    font-size: 26px;
-    margin-left: -140px;
-    position: absolute;
-    width: 280px;
-    height: 70px;
-    line-height: 68px;
-    text-align: center;
-    background: rgba(233, 235, 255, 0.9);
-    border-radius: 45px;
-    border: 1px solid rgba(129, 140, 254, 1);
-    color: $color-blue;
-    cursor: pointer;
-
-    .icon-xiangxia {
-      padding-top: 30px;
-      height: 70px;
-      line-height: 68px;
-      font-size: 30px;
-      transform: scale(0.5);
-      -webkit-transform-origin: top left;
-      display: inline-block;
-      vertical-align: middle;
-    }
-  }
-
+.chat-wrap {
   .announce-box {
     position: absolute;
     top: 0px;
@@ -54,6 +16,7 @@
     border-radius: 4px;
     padding: 0 40px 0 70px;
     overflow: hidden;
+    z-index: 5;
 
     .marquee {
       left: 66px;
@@ -104,6 +67,47 @@
       // animation-fill-mode: backwards;
     }
   }
+}
+
+.bscroll {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+
+  &.vod {
+    height: 100%;
+  }
+
+  .msg-tips {
+    bottom: 10px;
+    left: 50%;
+    font-size: 26px;
+    margin-left: -140px;
+    position: absolute;
+    width: 280px;
+    height: 70px;
+    line-height: 68px;
+    text-align: center;
+    background: rgba(233, 235, 255, 0.9);
+    border-radius: 45px;
+    border: 1px solid rgba(129, 140, 254, 1);
+    color: $color-blue;
+    cursor: pointer;
+
+    .icon-xiangxia {
+      padding-top: 30px;
+      height: 70px;
+      line-height: 68px;
+      font-size: 30px;
+      transform: scale(0.5);
+      -webkit-transform-origin: top left;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
 }
 
 @keyframes marsquee {

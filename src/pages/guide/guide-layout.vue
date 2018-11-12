@@ -6,7 +6,7 @@
            class="v-guid-img">
     </template>
     <template v-else>
-      <img src="../../assets/image/guid.png"
+      <img src="../../assets/image/guide.jpg"
            alt=""
            class="v-guid-img">
     </template>
