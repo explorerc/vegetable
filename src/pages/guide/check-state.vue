@@ -144,9 +144,9 @@ export default {
         }).then((res) => {
           if (res.data) {
             sessionStorage.setItem('login', JSON.stringify(res.data))
-            if (res.data.activity.status === 'LIVING') {
+            if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            } else if (res.data.activity.countDown < 1800) {
+            } else if (this.activity.countDown < 1800) {
               this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
             } else {
               this.$router.replace('/Success/' + this.$route.params.id)

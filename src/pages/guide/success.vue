@@ -146,38 +146,40 @@ export default {
           }, 1000)
         }
       })
-      this.getToken()
-    },
-    getToken () {
-      if ((this.activity.viewCondition === 'APPOINT' && this.user.isApplay) || this.activity.viewCondition !== 'APPOINT') {
-        // 报名活动在已报名状态下和预约活动所有状态下可收到消息
-        if (!this.chatParams.token) {
-          // 当前vuex中没有聊天token 需要获取
-          this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, { // 获取参会信息
-            activityId: this.$route.params.id
-          }).then((res) => {
-            this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
-              activityId: this.$route.params.id,
-              activityUserId: res.data.activityUserId
-            }).then((res) => {
-              this.vhallParams.token = res.data.token
-              this.vhallParams.appId = res.data.appId
-              this.vhallParams.channelId = res.data.channelRoom
-              this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
-              this.setChatParams(this.vhallParams)
-              this.$nextTick(() => {
-                this.initSdk()
-              })
-            })
-          })
-        } else {
-          this.vhallParams = this.chatParams
-          this.$nextTick(() => {
-            this.initSdk()
-          })
-        }
-      }
+      // this.getToken()
+      this.initSdk()
     }
+    // ,
+    // getToken () {
+    //   if ((this.activity.viewCondition === 'APPOINT' && this.user.isApplay) || this.activity.viewCondition !== 'APPOINT') {
+    //     // 报名活动在已报名状态下和预约活动所有状态下可收到消息
+    //     if (!this.chatParams.token) {
+    //       // 当前vuex中没有聊天token 需要获取
+    //       this.$config({ handlers: true }).$get(userService.GET_USERREGACTIVITY, { // 获取参会信息
+    //         activityId: this.$route.params.id
+    //       }).then((res) => {
+    //         this.$config({ handlers: true }).$get(activityService.GET_SDKTOKEN, { // 获取观看端token
+    //           activityId: this.$route.params.id,
+    //           activityUserId: res.data.activityUserId
+    //         }).then((res) => {
+    //           this.vhallParams.token = res.data.token
+    //           this.vhallParams.appId = res.data.appId
+    //           this.vhallParams.channelId = res.data.channelRoom
+    //           this.vhallParams.accountId = res.data.accountId // 从参会接口取activiUserID
+    //           this.setChatParams(this.vhallParams)
+    //           this.$nextTick(() => {
+    //             this.initSdk()
+    //           })
+    //         })
+    //       })
+    //     } else {
+    //       this.vhallParams = this.chatParams
+    //       this.$nextTick(() => {
+    //         this.initSdk()
+    //       })
+    //     }
+    //   }
+    // }
   }
 }
 </script>
