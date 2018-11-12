@@ -182,7 +182,8 @@ export default {
     }),
     /* 初始组件 */
     initComponent () {
-      this.isPlayState = false
+      debugger
+      this.isPlay = false
       this.destoryComs()
       if (this.playType === 'live') { // 直播
         this.initLivePlay()
