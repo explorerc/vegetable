@@ -349,6 +349,34 @@ export default {
           _log.track(Vhall_User_Actions.ENTER)
         }
         this.visitorObj.visitorId = res.data.visitorId
+        // 获取游客id之后 判断是否可以直接进入观看端
+        let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
+        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
+          if (this.activity.viewCondition === 'APPOINT') {
+            if (this.user.isApplay) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            }
+          } else if (this.activity.viewCondition === 'NONE' && user) {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          }
+        } else if (this.activity.countDown < 1800) {
+          if (this.activity.viewCondition === 'APPOINT') {
+            if (this.user.isApplay) {
+              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+            }
+          } else if (this.activity.viewCondition === 'NONE' && user) {
+            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
+          }
+        } else {
+          let time = this.activity.countDown
+          let interval = setInterval(i => {
+            time--
+            if (time < 30 * 60) {
+              this.activity.countDown = 1799
+              clearInterval(interval)
+            }
+          }, 1000)
+        }
       })
       if (!this.extChannel) return false
       let userInfo = JSON.parse(sessionStorage.getItem('login'))
@@ -397,33 +425,8 @@ export default {
         if (this.refer !== undefined) {
           localStorage.setItem(`refer_${this.$route.params.id}`, this.refer)
         }
-        let user = window.localStorage.getItem(this.visitorObj.visitorId + '_' + this.$route.params.id)
-        if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK') {
-          if (this.activity.viewCondition === 'APPOINT') {
-            if (this.user.isApplay) {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            }
-          } else if (this.activity.viewCondition === 'NONE' && user) {
-            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-          }
-        } else if (this.activity.countDown < 1800) {
-          if (this.activity.viewCondition === 'APPOINT') {
-            if (this.user.isApplay) {
-              this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-            }
-          } else if (this.activity.viewCondition === 'NONE' && user) {
-            this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
-          }
-        } else {
-          let time = this.activity.countDown
-          let interval = setInterval(i => {
-            time--
-            if (time < 30 * 60) {
-              this.activity.countDown = 1799
-              clearInterval(interval)
-            }
-          }, 1000)
-        }
+        this.initSdk()
+        console.log(this.visitorObj)
       }).catch((err) => {
         this.$messageBox({
           header: '提示',
@@ -437,7 +440,6 @@ export default {
         })
       })
       // this.getToken()
-      this.initSdk()
     },
     // getToken () {
     //   if ((this.activity.viewCondition === 'APPOINT' && this.user.isApplay) || this.activity.viewCondition !== 'APPOINT') {

@@ -119,6 +119,7 @@ export default {
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.$route.params.id
       }).then((res) => {
+        this.initSdk()
         this.activity.viewCondition = res.data.activity.viewCondition
         this.activity.status = res.data.activity.status
         this.activity.startTime = res.data.activity.startTime
@@ -147,7 +148,6 @@ export default {
         }
       })
       // this.getToken()
-      this.initSdk()
     }
     // ,
     // getToken () {
