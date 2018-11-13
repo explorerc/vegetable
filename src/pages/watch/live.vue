@@ -167,20 +167,24 @@ export default {
       })
       /* 监听开始直播 */
       ChatService.OBJ.regHandler(ChatConfig.beginLive, (msg) => {
-        this.playType = 'live'
-        const temp = JSON.parse(JSON.stringify(this.activityInfo))
-        console.log(temp)
-        temp.status = 'LIVING'
-        temp.statusName = '直播中'
-        this.storeActivityInfo(temp)
+        setTimeout(() => {
+          this.playType = 'live'
+          const temp = JSON.parse(JSON.stringify(this.activityInfo))
+          console.log(temp)
+          temp.status = 'LIVING'
+          temp.statusName = '直播中'
+          this.storeActivityInfo(temp)
+        }, 5000)
       })
       /* 监听直播结束 */
       ChatService.OBJ.regHandler(ChatConfig.endLive, (msg) => {
-        this.playType = 'end'
-        const temp = JSON.parse(JSON.stringify(this.activityInfo))
-        temp.status = 'FINISH'
-        temp.statusName = '结束'
-        this.storeActivityInfo(temp)
+        setTimeout(() => {
+          this.playType = 'end'
+          const temp = JSON.parse(JSON.stringify(this.activityInfo))
+          temp.status = 'FINISH'
+          temp.statusName = '结束'
+          this.storeActivityInfo(temp)
+        }, 5000)
       })
       /* 监听真实人员进入直播间 */
       ChatService.OBJ.regHandler(ChatConfig.joinLive, (msg) => {
