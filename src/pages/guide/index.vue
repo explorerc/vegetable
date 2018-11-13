@@ -324,9 +324,10 @@ export default {
       setChatParams: types.CHAT_PARAMS
     }),
     jumpPage (url) {
-      // let jumpUrl = url + this.$route.params.id
+      let jumpUrl = url + this.$route.params.id
+      location.replace(jumpUrl)
+
       // this.doAuth(jumpUrl)
-      location.replace('https://www.baidu.com')
     },
     initSdk () {
       this.initMsgServe()
