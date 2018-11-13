@@ -184,7 +184,7 @@ export default {
           temp.status = 'FINISH'
           temp.statusName = '结束'
           this.storeActivityInfo(temp)
-        }, 5000)
+        }, 15000)
       })
       /* 监听真实人员进入直播间 */
       ChatService.OBJ.regHandler(ChatConfig.joinLive, (msg) => {
