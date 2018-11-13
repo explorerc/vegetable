@@ -174,7 +174,7 @@ export default {
           temp.status = 'LIVING'
           temp.statusName = '直播中'
           this.storeActivityInfo(temp)
-        }, 5000)
+        }, 15000)
       })
       /* 监听直播结束 */
       ChatService.OBJ.regHandler(ChatConfig.endLive, (msg) => {
