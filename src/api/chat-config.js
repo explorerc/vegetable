@@ -8,5 +8,6 @@ export default {
   beginLive: 'BEGIN_LIVE', // 开始直播
   endLive: 'FINISH_LIVE', // 结束直播
   joinLive: 'Join', // 进入直播间
-  leaveLive: 'Leave' // 离开直播间
+  leaveLive: 'Leave', // 离开直播间
+  cardPush: 'RECOMMEND_CARD_PUSH' // 推荐卡片
 }

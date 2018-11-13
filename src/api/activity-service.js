@@ -22,5 +22,6 @@ export default {
   GET_DEFAULEREPLAY: '/frontend/replay/default-replay', // 查询默认回放信息
   GET_WARMINFO: '/frontend/live/warm-up', // 通过id获取暖场信息
   GET_REG_SDK_INFO: '/frontend/channel/create-channel-token', // 获取聊天平道token
-  GET_ACTIVITY_LIST: '/frontend/user/visit-activity-list' // 查询直播列表
+  GET_ACTIVITY_LIST: '/frontend/user/visit-activity-list', // 查询直播列表
+  GET_VISITED_CARD: '/frontend/tool/recommend-card-visit' // 点击访问推荐卡片
 }
