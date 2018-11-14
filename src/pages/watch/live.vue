@@ -58,6 +58,10 @@
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
     </div>
+    <!-- 推荐卡片 -->
+    <transition name="top-bottom"  mode="out-in">
+      <com-cards v-if="cardData.show" :cardData="cardData" @closeCards='closeCards'></com-cards>
+    </transition>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -69,12 +73,13 @@ import * as types from '../../store/mutation-types.js'
 import loginMixin from 'components/login-mixin'
 import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
+import comCards from './sales-tools/com-cards'
 export default {
   props: {
     domShow: Boolean
   },
   mixins: [loginMixin],
-  components: { PlayVideo, Chating },
+  components: { PlayVideo, Chating, comCards },
   data () {
     return {
       playType: '', // 直播(live), 回放(vod), 暖场(warm)
@@ -85,7 +90,20 @@ export default {
       sendBoxShow: false, // 是否显示聊天输入窗口
       isLogin: false, // 是否登录
       isMuteShow: false, // 是否被禁言
-      allMuted: false // 是否是全体禁言
+      allMuted: false, // 是否是全体禁言
+      cardData: {
+        show: false,
+        btn_display: 'Y',
+        btn_link: 'www.baidu.com',
+        btn_text: '地方的',
+        desc: '打手犯规负担',
+        pic: 'mp-test/9c/10/9c10d12e6f417d6bd29a911159420290.png',
+        push_num: '0',
+        recommend_card_id: '18',
+        title: 'v风格方法',
+        view_num: '0',
+        visit_num: '0'
+      }
     }
   },
   computed: {
@@ -204,6 +222,16 @@ export default {
         console.log(temp)
         this.storeActivityInfo(temp)
       })
+      /* 监听推荐卡片 */
+      ChatService.OBJ.regHandler(ChatConfig.cardPush, (msg) => {
+        console.log('--推荐卡片--消息--')
+        console.log(msg)
+        const data = {
+          show: true
+        }
+        this.cardData = { ...msg.recommend_card_id, ...data }
+        console.log(this.cardData)
+      })
     },
     isMute (val) {
       this.isMuteShow = val.isMute
@@ -225,6 +253,9 @@ export default {
     },
     loginHandler () {
       this.$emit('showLogin')
+    },
+    closeCards () {
+      this.cardData.show = false
     }
   }
 }
