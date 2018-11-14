@@ -320,7 +320,7 @@ export default {
       this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
         activityId: this.$route.params.id
       }).then((res) => {
-        if (res.code === 200){
+        if (res.code === 200) {
           this.logoImg = res.data.logoUrl
         }
       })
