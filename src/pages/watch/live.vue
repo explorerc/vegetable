@@ -63,6 +63,8 @@
       <com-cards v-if="cardData.show" :cardData="cardData" @closeCards='closeCards'></com-cards>
     </transition>
 
+    <!-- 问卷 -->
+    66
     <comQuestions :dragData="dragData"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
   </div>
