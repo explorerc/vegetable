@@ -231,14 +231,19 @@ export default {
         this.storeActivityInfo(temp)
       })
       /* 监听推荐卡片 */
-      ChatService.OBJ.regHandler(ChatConfig.cardPush, (msg) => {
-        console.log('--推荐卡片--消息--')
+      ChatService.OBJ.regHandler(ChatConfig.MARKET_TOOL, (msg) => {
         console.log(msg)
-        const data = {
-          show: true
+        switch (msg.type) {
+          case 'RECOMMEND_CARD_PUSH':
+            console.log('--推荐卡片--消息--')
+            break
         }
-        this.cardData = { ...msg.recommend_card_id, ...data }
-        console.log(this.cardData)
+
+        // const data = {
+        //   show: true
+        // }
+        // this.cardData = { ...msg.recommend_card_id, ...data }
+        // console.log(this.cardData)
       })
     },
     isMute (val) {
