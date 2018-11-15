@@ -316,14 +316,14 @@ export default {
         this.sdkVisitorId = res.data.visitorId
       })
       await this.initRoomPaas()
-      /* 获取自定义主题 */
-      this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
-        activityId: this.$route.params.id
-      }).then((res) => {
-        if (res.code === 200) {
-          this.logoImg = res.data.logoUrl
-        }
-      })
+      // /* 获取自定义主题 */
+      // this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
+      //   activityId: this.$route.params.id
+      // }).then((res) => {
+      //   if (res.code === 200) {
+      //     this.logoImg = res.data.logoUrl
+      //   }
+      // })
       if (this.isWx()) {
         setTimeout(() => {
           this.share()
@@ -347,7 +347,7 @@ export default {
         }
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
-
+        this.logoImg = res.data.brand.wapLogo // 自定义logo
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar
         this.isShowSite = res.data.template
