@@ -17,6 +17,7 @@
                     :ref="`com${index}`">
         </com-question>
       </div>
+      <button class="v-save" @click="save">提交</button>
     </div>
   </div>
 </template>
@@ -39,6 +40,18 @@ export default {
     }
   },
   methods: {
+    save () {
+      let result = true
+      let refs = this.$refs
+      Object.keys(refs).forEach(key => {
+        if (refs[key][0].$children[0].check()) {
+          result = false
+        }
+      })
+      if (result) {
+        console.log(this.dragData)
+      }
+    }
   }
 }
 </script>
@@ -84,6 +97,16 @@ export default {
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     overflow: hidden;
+  }
+  .v-save {
+    width: 300px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #ffd021;
+    color: #222;
+    margin: 60px auto 50px;
+    border: none;
+    border-radius: 50px;
   }
 }
 </style>
