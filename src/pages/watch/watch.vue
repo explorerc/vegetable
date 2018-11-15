@@ -8,12 +8,15 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
+      <img class="logo" v-if="customLogo" :src="customLogo">
+      <span class="logo" v-else>微吼知客</span>
+      <span class="ac-title">{{activityInfo.title}}</span>
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
       <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
-        <a href="/m/user" class="fr v-my"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
+        <a href="/m/user" class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
         <!-- <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
@@ -22,11 +25,11 @@
       <a v-else
          href="javascript:;"
          @click="doLogin()"
-         class="fr v-my">
+         class="fr v-my v-right">
         <i class="v-showpsd iconfont icon-wode_icon"></i>登录</a>
 
       <a href="javascript:;"
-         class="fr"
+         class="fr v-right"
          @click="subscribe">
         <i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
     </div>
@@ -138,7 +141,8 @@ export default {
       vclosex5div: false, // x5中同层关闭
       votherdiv: false, // 非x5横屏
       showPersonCount: 0,
-      sdkVisitorId: ''
+      sdkVisitorId: '',
+      logoImg: ''
     }
   },
   mounted () {
@@ -164,6 +168,10 @@ export default {
     },
     defaultImg () {
       return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+    },
+    customLogo () {
+      const logo = this.logoImg
+      return logo ? `${this.$imgHost}/${logo}` : ''
     }
   },
   created () {
@@ -308,6 +316,14 @@ export default {
         this.sdkVisitorId = res.data.visitorId
       })
       await this.initRoomPaas()
+      // /* 获取自定义主题 */
+      // this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
+      //   activityId: this.$route.params.id
+      // }).then((res) => {
+      //   if (res.code === 200) {
+      //     this.logoImg = res.data.logoUrl
+      //   }
+      // })
       if (this.isWx()) {
         setTimeout(() => {
           this.share()
@@ -331,7 +347,7 @@ export default {
         }
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
-
+        this.logoImg = res.data.brand.wapLogo // 自定义logo
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar
         this.isShowSite = res.data.template
@@ -580,14 +596,33 @@ export default {
       left: 0;
       z-index: 1;
       width: 100%;
-      height: 80px;
+      height: 100px;
       background-color: #fff;
-      padding: 20px 30px;
+      padding: 0 30px 0 160px;
       font-size: 24px;
+      .logo{
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        height: 80px;
+        width: 130px;
+        margin-top: -40px;
+        line-height: 80px;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .ac-title{
+        display: block;
+        width: 50%;
+        line-height: 40px;
+        margin-top: 10px;
+      }
       .v-status {
         color: #fff;
         text-align: center;
-        background-color: #000000;
+        background-color: rgba(10,10,10,0.8);
         border-radius: 50px;
         padding: 8px 13px;
         margin-right: 20px;
@@ -603,6 +638,9 @@ export default {
       }
       .v-onlineNum {
         padding: 8px 0;
+      }
+      .v-right{
+        margin-top: -16px;
       }
       .v-my {
         margin-left: 36px;

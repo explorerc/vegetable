@@ -62,6 +62,8 @@
     <transition name="top-bottom"  mode="out-in">
       <com-cards v-if="cardData.show" :cardData="cardData" @closeCards='closeCards'></com-cards>
     </transition>
+
+    <comQuestions :dragData="dragData"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -74,12 +76,14 @@ import loginMixin from 'components/login-mixin'
 import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 import comCards from './sales-tools/com-cards'
+import comQuestions from './sales-tools/com-comQuestions'
+import { types as QTypes } from 'components/questionnaire/types'
 export default {
   props: {
     domShow: Boolean
   },
   mixins: [loginMixin],
-  components: { PlayVideo, Chating, comCards },
+  components: { PlayVideo, Chating, comCards, comQuestions },
   data () {
     return {
       playType: '', // 直播(live), 回放(vod), 暖场(warm)
@@ -103,7 +107,8 @@ export default {
         title: 'v风格方法',
         view_num: '0',
         visit_num: '0'
-      }
+      },
+      dragData: []
     }
   },
   computed: {
@@ -131,6 +136,7 @@ export default {
     }
     this.startInit = true
     this.initMsgServe()
+    this.getQuestions()
   },
   created () {
     // this.initToken()
@@ -256,6 +262,261 @@ export default {
     },
     closeCards () {
       this.cardData.show = false
+    },
+    getQuestions () {
+      this.questionsShow = true
+      this.dragData = [
+        {
+          title: '单选题',
+          errorTip: '',
+          type: QTypes.RADIO,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '选项'
+              }
+            ]
+          },
+          ext: {
+            name: '单选题'
+          }
+        },
+        {
+          title: '多选题',
+          errorTip: '',
+          type: QTypes.CHECKBOX,
+          value: [],
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '选项'
+              }
+            ]
+          },
+          ext: {
+            name: '多选题'
+          }
+        },
+        {
+          title: '下拉题',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '选项'
+              }
+            ]
+          },
+          ext: {
+            name: '下拉题'
+          }
+        },
+        {
+          title: '问答题',
+          errorTip: '',
+          type: QTypes.TEXT,
+          style: '',
+          required: false,
+          detail: {
+            format: 'textarea',
+            max: 300
+          },
+          ext: {
+            name: '问答题'
+          },
+          value: ''
+        },
+        {
+          title: '姓名',
+          errorTip: '',
+          type: QTypes.TEXT,
+          required: false,
+          detail: {
+            format: 'input',
+            max: 10
+          },
+          ext: {
+            name: '姓名'
+          },
+          value: ''
+        },
+        {
+          title: '手机号',
+          errorTip: '',
+          type: QTypes.TEXT,
+          required: true,
+          detail: {
+            format: 'mobile',
+            max: 11
+          },
+          verification: 'Y',
+          ext: {
+            name: '手机号'
+          },
+          value: ''
+        },
+        {
+          title: '邮箱',
+          errorTip: '',
+          type: QTypes.TEXT,
+          required: false,
+          detail: {
+            format: 'email',
+            max: 30
+          },
+          ext: {
+            name: '邮箱'
+          },
+          value: ''
+        },
+        {
+          title: '性别',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '男'
+              },
+              {
+                value: '女'
+              }
+            ]
+          },
+          ext: {
+            fixedness: true,
+            name: '性别'
+          }
+        },
+        {
+          title: '生日',
+          errorTip: '',
+          type: QTypes.DATE,
+          required: true,
+          detail: {
+            format: 'yyyy-MM-dd'
+          },
+          ext: {
+            name: '生日'
+          }
+        },
+        {
+          title: '地域',
+          errorTip: '',
+          type: QTypes.AREA,
+          required: true,
+          detail: {
+            level: 'address'
+          },
+          ext: {
+            name: '地域'
+          },
+          value: ''
+        },
+        {
+          title: '行业',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: 'IT/互联网'
+              },
+              {
+                value: '电子/通信/硬件'
+              },
+              {
+                value: '金融'
+              },
+              {
+                value: '交通/贸易/物流'
+              },
+              {
+                value: '消费品'
+              },
+              {
+                value: '机械/制造'
+              },
+              {
+                value: '能源/矿产环保'
+              },
+              {
+                value: '制药/医疗'
+              },
+              {
+                value: '专业服务'
+              },
+              {
+                value: '教育/培训'
+              },
+              {
+                value: '广告/媒体/娱乐/出版'
+              },
+              {
+                value: '房地产/建筑'
+              },
+              {
+                value: '服务业'
+              },
+              {
+                value: '政府/非盈利机构/其它'
+              }
+            ]
+          },
+          ext: {
+            fixedness: true,
+            name: '教育水平'
+          }
+        },
+        {
+          title: '职位',
+          type: QTypes.TEXT,
+          required: true,
+          detail: {
+            format: 'input',
+            max: 10
+          },
+          ext: {
+            name: '职位'
+          },
+          value: ''
+        },
+        {
+          title: '教育水平',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '博士'
+              },
+              {
+                value: '硕士'
+              },
+              {
+                value: '本科'
+              },
+              {
+                value: '大专'
+              },
+              {
+                value: '高中'
+              }
+            ]
+          },
+          ext: {
+            fixedness: true,
+            name: '教育水平'
+          }
+        }
+      ]
     }
   }
 }
