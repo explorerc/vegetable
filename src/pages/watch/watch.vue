@@ -347,6 +347,7 @@ export default {
         }
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
+        debugger
         this.logoImg = res.data.brand.wapLogo // 自定义logo
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar
@@ -600,7 +601,7 @@ export default {
       background-color: #fff;
       padding: 0 30px 0 160px;
       font-size: 24px;
-      .logo{
+      .logo {
         display: block;
         position: absolute;
         top: 50%;
@@ -613,7 +614,7 @@ export default {
         font-weight: bold;
         text-align: center;
       }
-      .ac-title{
+      .ac-title {
         display: block;
         width: 50%;
         line-height: 40px;
@@ -622,7 +623,7 @@ export default {
       .v-status {
         color: #fff;
         text-align: center;
-        background-color: rgba(10,10,10,0.8);
+        background-color: rgba(10, 10, 10, 0.8);
         border-radius: 50px;
         padding: 8px 13px;
         margin-right: 20px;
@@ -639,7 +640,7 @@ export default {
       .v-onlineNum {
         padding: 8px 0;
       }
-      .v-right{
+      .v-right {
         margin-top: -16px;
       }
       .v-my {
