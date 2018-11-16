@@ -325,9 +325,9 @@ export default {
     }),
     jumpPage (url) {
       let jumpUrl = url + this.$route.params.id
-      location.replace(jumpUrl)
+      // location.replace(jumpUrl)
 
-      // this.doAuth(jumpUrl)
+      this.doAuth(jumpUrl)
     },
     initSdk () {
       this.initMsgServe()
