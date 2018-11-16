@@ -77,6 +77,7 @@ import * as types from '../../store/mutation-types.js'
 import loginMixin from 'components/login-mixin'
 import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
+import activityService from 'src/api/activity-service'
 import comCards from './sales-tools/com-cards'
 import comQuestions from './sales-tools/com-comQuestions'
 import { types as QTypes } from 'components/questionnaire/types'
@@ -236,14 +237,9 @@ export default {
         switch (msg.type) {
           case 'RECOMMEND_CARD_PUSH':
             console.log('--推荐卡片--消息--')
+            this.getCardDetails(msg.recommend_card_id)
             break
         }
-
-        // const data = {
-        //   show: true
-        // }
-        // this.cardData = { ...msg.recommend_card_id, ...data }
-        // console.log(this.cardData)
       })
     },
     isMute (val) {
@@ -524,6 +520,17 @@ export default {
           }
         }
       ]
+    },
+    getCardDetails (id) {
+      this.$get(activityService.GET_VISITED_CARD_DETAIL, { recommend_card_id: id }).then((res) => {
+        if (res.code === 200) {
+          const data = {
+            show: true
+          }
+          this.cardData = { ...res.data, ...data }
+          console.log(this.cardData)
+        }
+      })
     }
   }
 }
