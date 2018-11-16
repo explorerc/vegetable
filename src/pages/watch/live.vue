@@ -26,7 +26,7 @@
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"></chating>
             </div>
-            <template v-if='playType === "live" && isLogin'>
+            <template v-if='(playType === "live" || playType === "warm" ) && isLogin'>
               <template v-if='isMuteShow'>
                 <div class="v-chat-control v-noLogin"
                      id="sendBoxBtn">
@@ -44,7 +44,7 @@
                 </div>
               </template>
             </template>
-            <template v-else-if='playType === "live" && !isLogin'>
+            <template v-else-if='(playType === "live" || playType === "warm" ) && !isLogin'>
               <div class="v-chat-control v-noLogin"
                    id="sendBoxBtn">
                 需要登录才能参与聊天
@@ -64,8 +64,7 @@
     </transition>
 
     <!-- 问卷 -->
-    66
-    <comQuestions :dragData="dragData"> </comQuestions>
+    <comQuestions :dragData="dragData" v-if="questionShow"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -110,7 +109,8 @@ export default {
         view_num: '0',
         visit_num: '0'
       },
-      dragData: []
+      dragData: [],
+      questionShow: false
     }
   },
   computed: {
