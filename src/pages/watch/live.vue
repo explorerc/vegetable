@@ -26,7 +26,7 @@
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"></chating>
             </div>
-            <template v-if='(playType === "live" || playType === "warm" ) && isLogin'>
+            <template v-if='(playType === "live" || playType === "warm"  || playType === "pre") && isLogin'>
               <template v-if='isMuteShow'>
                 <div class="v-chat-control v-noLogin"
                      id="sendBoxBtn">
@@ -44,7 +44,7 @@
                 </div>
               </template>
             </template>
-            <template v-else-if='(playType === "live" || playType === "warm" ) && !isLogin'>
+            <template v-else-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
               <div class="v-chat-control v-noLogin"
                    id="sendBoxBtn">
                 需要登录才能参与聊天
