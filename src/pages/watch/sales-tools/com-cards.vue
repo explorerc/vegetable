@@ -1,9 +1,9 @@
 <template>
   <div class="cards-wrap">
-    <i class="close" @click='close'>×</i>
     <img :src="imgHost+'/'+cardData.pic" >
     <div class="desc">{{cardData.desc}}</div>
-    <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><el-button @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</el-button></a>
+    <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><el-button  round class='btn primary-button' @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</el-button></a>
+    <i class="close" @click='close'></i>
   </div>
 </template>
 
@@ -41,27 +41,53 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+@import '~assets/css/mixin.scss';
 .cards-wrap {
   text-align: center;
-  width: 400px;
-  min-height: 400px;
+  width: 340px;
+  height: 442px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
   height: auto;
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -200px;
-  margin-left: -200px;
-  background: #fff;
+  margin-top: -221px;
+  margin-left: -170px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(34, 34, 34, 0.5);
-  padding: 20px;
   z-index: 99;
+  padding-bottom: 40px;
   img {
     width: 100%;
-    // height: auto;
+    height: 250px;
   }
   a {
     display: inline-block;
+  }
+  .desc {
+    word-break: break-all;
+    color: $color-font-sub;
+    padding: 30px 15px;
+  }
+  .btn {
+    padding: 0;
+    width: 180px;
+    height: 42px;
+    line-height: 32px;
+  }
+  .close {
+    cursor: pointer;
+    z-index: 99;
+    width: 53px;
+    height: 53px;
+    border-radius: 200px;
+    position: absolute;
+    bottom: -69px;
+    left: 50%;
+    margin-left: -26.6px;
+    background: url('~assets/image/card-close.png') no-repeat center;
+    background-size: contain;
   }
 }
 </style>

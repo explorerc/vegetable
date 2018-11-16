@@ -22,7 +22,7 @@
     <span class="limit"
           v-if="maxLength&&(type==='input')">
       <i class="length"
-         v-text="isCharacter?innerValue.length:innerValue.gbLength()"
+         v-text="isCharacter?innerValue.length:(innerValue?innerValue.gbLength():0)"
          :style="{ color: limitColor }" >0</i>/
       <i>{{maxLength}}</i>
     </span>
@@ -39,7 +39,7 @@
     <span class="limit area"
           v-if="maxLength&&type==='textarea'">
       <i class="length"
-         v-text="isCharacter?innerValue.length:innerValue.gbLength()"
+         v-text="isCharacter?innerValue.length:(innerValue?innerValue.gbLength():0)"
          :style="{ color: limitColor }">0</i>/
       <i>{{maxLength}}</i>
     </span>
@@ -64,7 +64,10 @@ export default {
       default: 2
     },
     autosize: Boolean,
-    disabled: String,
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     errorTips: String,
     isCharacter: {
       type: Boolean,
@@ -140,6 +143,12 @@ export default {
   },
   watch: {
     innerValue (value) {
+      if (value === undefined) {
+        this.innerValue = ''
+        this.$emit('update:value', this.innerValue)
+        this.$emit('input', this.innerValue)
+        return
+      }
       if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
