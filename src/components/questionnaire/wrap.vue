@@ -151,7 +151,7 @@ export default {
   font-size: 12px;
   position: relative;
   border-radius: 4px;
-  overflow: hidden;
+  // overflow: hidden;
   text-align: left;
   /deep/ {
     .el-input__inner {
@@ -229,14 +229,18 @@ export default {
       }
     }
     .index {
+      position: absolute;
+      left: -4px;
       float: left;
-      width: 50px;
       margin-top: 2px;
       text-align: left;
+      padding-left: 5px;
+      font-size: 24px;
       .v-red {
+        position: absolute;
+        left: -5px;
         display: inline-block;
         color: #fc5659;
-        margin-right: 5px;
         vertical-align: middle;
       }
     }
@@ -254,6 +258,7 @@ export default {
           // margin-bottom: 0;
         }
         .q-subject {
+          font-size: 24px;
           margin-bottom: 14px;
           &.error {
             input {

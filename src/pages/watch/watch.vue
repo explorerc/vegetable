@@ -347,7 +347,6 @@ export default {
         }
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
-        debugger
         this.logoImg = res.data.brand.wapLogo // 自定义logo
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar

@@ -12,7 +12,6 @@ const BASE_URL = process.env.API_PATH
 const defaultOptions = {
   timeout: 20000,
   responseType: 'json',
-  withCredentials: true,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
   }
@@ -30,7 +29,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   res => {
     Loading(false)
-    if (res.data.code !== 200) {
+    if (res.data.code && res.data.code !== 200) {
       return Promise.reject(res.data)
     }
     return res
@@ -64,7 +63,11 @@ class $Http {
     return this.ajax(url)
   }
   ajax (url) {
-    this.options.url = BASE_URL + url
+    this.options.url = url
+    if (!~url.indexOf('http')) {
+      this.options.url = BASE_URL + url
+      this.options.withCredentials = true
+    }
     let _options = Object.assign({}, defaultOptions, this.options)
     if (this.config.loading) {
       Loading(true)
