@@ -31,14 +31,8 @@
                 fill="#222222"
                 p-id="3292"></path>
         </svg>
-        <!-- <div class="txt-box">
-          <p class="txt">{{receiveAnnounce}}</p>
-        </div> -->
-        <com-marquee @over="announceShow = false"
-                     class="marquee"
-                     :content="receiveAnnounce"></com-marquee>
-        <i class="iconfont icon-close"
-           @click='announceShow = false'></i>
+        <com-marquee @over="announceShow = false" class="marquee" :content="receiveAnnounce"></com-marquee>
+        <i class="iconfont icon-close" @click='announceShow = false'></i>
       </div>
     <div class="bscroll"
          ref="bscroll"
@@ -46,31 +40,30 @@
          @mouseover="stopScroll = true"
          @mouseout="stopScroll = false" @scroll="scrollEvent($event)">
       <ol class='chat-list bscroll-container'>
-        <li v-for='(item) in chatData'
+        <li v-for='(item,idx) in chatData'
             :data-joinId="item.id"
-            :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}">
-          <dl class='clearfix'>
-            <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
-            <dt class='avatar'
-                v-else>{{item.name&&item.name.substr(0,1)}}</dt>
-            <dd>
-              <!-- <div class="name" v-if='type === "live"'>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em> <i class='handle' v-if='!isWatch && item.detail.role !== "主持人"'>
-                <ol>
-                  <li class='mute' v-if="item.isGag === 'N'" @click='handleMuted(0,item.id)'><i></i>禁言</li>
-                  <li class='mute' v-else @click='handleMuted(1,item.id)'><i></i>取消禁言</li>
-                  <li class='kick' v-if="item.isKick === 'N'" @click='handleKicked(0,item.id)'><i></i>踢出</li>
-                  <li class='kick' v-else @click='handleKicked(1,item.id)'><i></i>允许参会</li>
-                </ol>
-              </i>
-              </div> -->
-              <!-- <div class="name" v-else>{{item.name}} <em v-if="item.detail.role">{{item.detail.role}}</em></div> -->
-              <div class="name">{{item.name}}
-                <em v-if="item.detail.role">{{item.detail.role}}</em>
+            :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}" :key="idx">
+          <template v-if='item.msgType === "chat"'>
+            <dl class='clearfix'>
+              <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
+              <dt class='avatar' v-else>{{item.name&&item.name.substr(0,1)}}</dt>
+              <dd>
+                <div class="name">{{item.name}}
+                  <em v-if="item.detail.role">{{item.detail.role}}</em>
+                </div>
+                <div class="txt" v-html="item.detail.txt"></div>
+              </dd>
+            </dl>
+          </template>
+          <template v-else>
+            <div :class='item.detail.type' class="sales-tool-box" >
+                <div>{{item.detail.nickname}}</div>
+                <span v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em>商品</em>，赶快看看吧</span>
+                <span v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了<em>卡片</em>，赶快看看吧</span>
+                <span v-if="item.detail.type === 'NAIRE'">推送了 <em>问卷</em>，赶快看看吧</span>
+                <span v-if="item.detail.type === 'GOODS_PUSH1'">推送了 <em>红包</em>，赶快看看吧</span>
               </div>
-              <div class="txt"
-                   v-html="item.detail.txt"></div>
-            </dd>
-          </dl>
+          </template>
         </li>
       </ol>
       <transition v-if="tipsShow && tipsCount > 0">
@@ -79,9 +72,6 @@
           <i class="iconfont icon-xiangxia"></i>
         </span>
       </transition>
-      <!-- <transition name="left-right"
-                  mode="out-in"> -->
-      <!-- </transition> -->
     </div>
     <div class="v-send-box-bg"
          v-show='(type === "live" || type === "warm"  || type === "pre") && isLogin && sendBoxShow'>
@@ -584,30 +574,6 @@ export default {
       this.faceOpen = false
       this.$emit('closeChatBox', true)
     },
-    // handleKicked (flag, id) {
-    //   const data = {
-    //     activityId: this.activityId,
-    //     userId: id,
-    //     cancel: flag ? 'Y' : 'N' // 取消
-    //   }
-    //   this.$post(activityService.POST_KICK, data).then((res) => {
-    //     this.$toast({
-    //       content: flag ? '允许参会成功' : '踢出成功'
-    //     })
-    //   })
-    // },
-    // handleMuted (flag, id) {
-    //   const data = {
-    //     activityId: this.activityId,
-    //     userId: id,
-    //     cancel: flag ? 'Y' : 'N' // 取消
-    //   }
-    //   this.$post(activityService.POST_GAG, data).then((res) => {
-    //     this.$toast({
-    //       content: flag ? '取消禁言成功' : '禁言成功'
-    //     })
-    //   })
-    // },
     listenChat (msg) {
       console.log('接收 聊天消息', msg)
       this.reArrange(msg)
@@ -619,13 +585,6 @@ export default {
       console.log('接收 公告消息', msg)
       this.announceShow = true
       this.receiveAnnounce = msg.content
-      // const _that = this
-      // clearTimeout(_that.timer)
-      // _that.timer = setTimeout(function () {
-      //   _that.announceShow = false
-      //   this.receiveAnnounce = ''
-      //   clearTimeout(_that.timer)
-      // }, 30000)
     },
     listenKick (msg) {
       console.log('接收 踢出消息', msg)
@@ -680,32 +639,31 @@ export default {
     },
     reArrange (msg) {
       const obj = {}
-      obj.id = msg.third_party_user_id
-      obj.avatar = msg.avatar
-      obj.name = msg.nick_name
-      obj.isGag = msg.isGag
-      obj.isKick = msg.isKick
       obj.detail = JSON.parse(msg.data)
+      if (msg.third_party_user_id === 'MARKET_TOOL') { // 营销工具消息
+        obj.msgType = 'marketTool'
+      } else { // 普通聊天消息
+        obj.msgType = 'chat'
+        obj.id = msg.third_party_user_id
+        obj.avatar = msg.avatar
+        obj.name = msg.nick_name
+        obj.isGag = msg.isGag
+        obj.isKick = msg.isKick
 
-      // if (this.joinInfo && this.joinInfo.activityUserId * 1 === msg.third_party_user_id * 1) { // 如果消息里参会id是自己的id
-      //   obj.isSelf = true
-      // } else {
-      //   obj.isSelf = false
-      // }
-
-      /* 替换表情图片 */
-      this.faceArr.forEach((item, index) => {
-        for (let key in item) {
-          let test = key.replace(/\[/, '\\[').replace(/\]/, '\\]')
-          let reg = new RegExp(test, 'g')
-          obj.detail.txt = obj.detail.txt.replace(
-            reg,
-            "<img src='//cnstatic01.e.vhall.com/static/img/arclist/Expression_" +
+        /* 替换表情图片 */
+        this.faceArr.forEach((item, index) => {
+          for (let key in item) {
+            let test = key.replace(/\[/, '\\[').replace(/\]/, '\\]')
+            let reg = new RegExp(test, 'g')
+            obj.detail.txt = obj.detail.txt.replace(
+              reg,
+              "<img src='//cnstatic01.e.vhall.com/static/img/arclist/Expression_" +
             item[key] +
             "@2x.png'>"
-          )
-        }
-      })
+            )
+          }
+        })
+      }
 
       this.chatData.push(obj)
       if (!this.tipsShow && !this.stopScroll) {
@@ -768,7 +726,7 @@ export default {
       this.$get(activityService.GET_MESSAGELIST, {
         activityId: this.activityId
       }).then((res) => {
-        res.data.reverse().forEach(item => {
+        res.data.forEach(item => {
           this.reArrange(item)
         })
       })
