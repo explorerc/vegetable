@@ -58,10 +58,10 @@
           <template v-else>
             <div :class='item.detail.type' class="sales-tool-box" >
                 <div>{{item.detail.nickname}}</div>
-                <span v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em>商品</em>，赶快看看吧</span>
-                <span v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了<em>卡片</em>，赶快看看吧</span>
-                <span v-if="item.detail.type === 'NAIRE'">推送了 <em>问卷</em>，赶快看看吧</span>
-                <span v-if="item.detail.type === 'GOODS_PUSH1'">推送了 <em>红包</em>，赶快看看吧</span>
+                <span @click="push('GOODS_PUSH',item.detail.goods_id)" v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em>商品</em>，赶快看看吧</span>
+                <span @click="push('RECOMMEND_CARD_PUSH')" v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了<em>卡片</em>，赶快看看吧</span>
+                <span @click="push('NAIRE')" v-if="item.detail.type === 'NAIRE'">推送了 <em>问卷</em>，赶快看看吧</span>
+                <span @click="push('GOODS_PUSH1')" v-if="item.detail.type === 'GOODS_PUSH1'">推送了 <em>红包</em>，赶快看看吧</span>
               </div>
           </template>
         </li>
@@ -778,6 +778,11 @@ export default {
     },
     loginHandler () {
       this.$emit('showLogin')
+    },
+    push (type, param) {
+      console.log(type, '666666666')
+      // console.log(param)
+      this.$emit('magInfo', type, param)
     }
   },
   watch: {

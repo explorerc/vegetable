@@ -1,6 +1,20 @@
 <template>
   <div class="v-video-box">
     <div class="v-video">
+      <!--<div class="goods_small_popover" v-if="goodsSmallPopoverShow">
+        <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image}`">
+        <a href="#buy">
+          <div>
+            <p class="item-price">
+              <span>￥{{goodsSmallDetails.preferential}}</span>
+              <del>￥{{goodsSmallDetails.price}}</del>
+            </p>
+            <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+          </div>
+        </a>
+
+        <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
+      </div>-->
       <play-video role="watcher"
                   :play-type="playType"
                   :startInit="startInit"></play-video>
@@ -23,6 +37,7 @@
                        :type="playType"
                        :isWatch="isWatch"
                        :sendBoxShow="true"
+                       @magInfo ="magInfo"
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"></chating>
             </div>
@@ -57,6 +72,25 @@
            href="javascript:;">
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
+      <!--商品祥情-->
+      <transition name="top-bottom" mode="out-in">
+        <div class="goodsInfo" v-if="goodsInfoShow">
+          <p><span>商品详情 </span><i class="el-icon-close" @click="closeGoods"></i></p>
+          <div>
+            <h4>{{goodsSmallDetails.title}}</h4>
+            <el-carousel>
+              <el-carousel-item v-for="(item,ind) in goodsSmallDetails.image">
+                <img :src="`${$imgHost}/${item.name}`" alt="">
+              </el-carousel-item>
+            </el-carousel>
+            <p>{{goodsSmallDetails.describe}}</p>
+            <footer>
+              <div><span>{{goodsSmallDetails.preferential}}</span> <del>{{goodsSmallDetails.price}}</del> </div>
+              <span>立即购买</span>
+            </footer>
+          </div>
+        </div>
+      </transition>
     </div>
     <!-- 推荐卡片 -->
     <transition name="top-bottom"  mode="out-in">
@@ -66,6 +100,9 @@
     <!-- 问卷 -->
     <comQuestions :dragData="dragData" v-if="questionShow"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
+    <!--<transition mode="out-in">
+      <comGoods :goodsMsg='goodsMsg'></comGoods>
+    </transition>-->
   </div>
 </template>
 <script>
@@ -78,6 +115,7 @@ import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 import activityService from 'src/api/activity-service'
 import comCards from './sales-tools/com-cards'
+import comGoods from './sales-tools/com-goods'
 import comQuestions from './sales-tools/com-questions'
 import { types as QTypes } from 'components/questionnaire/types'
 export default {
@@ -85,7 +123,7 @@ export default {
     domShow: Boolean
   },
   mixins: [loginMixin],
-  components: { PlayVideo, Chating, comCards, comQuestions },
+  components: {PlayVideo, Chating, comCards, comQuestions, comGoods},
   data () {
     return {
       playType: '', // 直播(live), 回放(vod), 暖场(warm)
@@ -111,7 +149,11 @@ export default {
         visit_num: '0'
       },
       dragData: [],
-      questionShow: false
+      questionShow: false,
+      goodsSmallPopoverShow: false, // 弹框显示
+      goodsSmallDetails: {},
+      goodsMsg: {},
+      goodsInfoShow: false
     }
   },
   computed: {
@@ -238,6 +280,15 @@ export default {
           case 'RECOMMEND_CARD_PUSH':
             console.log('--推荐卡片--消息--')
             this.getCardDetails(msg.recommend_card_id)
+            break
+          case 'GOODS_PUSH':
+            console.log('--商品推送--消息--')
+            this.getGoodsDetails(msg.goods_id)
+            break
+          case 'GOODS_ADDED':
+          case 'GOODS_TOP':
+            console.log('--商品上架--消息--')
+            this.goodsMsg = msg
             break
         }
       })
@@ -531,6 +582,27 @@ export default {
           console.log(this.cardData)
         }
       })
+    },
+    getGoodsDetails (id) {
+      this.$get(activityService.GET_WATCH_GOODS_DETAIL, { goods_id: id }).then(res => {
+        if (res.code === 200) {
+          this.goodsSmallPopoverShow = true
+          // res.data.image = JSON.parse(res.data.image)[0].name
+          res.data.image = JSON.parse(res.data.image)
+          this.goodsSmallDetails = res.data
+          console.log(this.goodsSmallDetails, 8888)
+        }
+      })
+    },
+    magInfo (type, id) {
+      if (type === 'GOODS_PUSH') {
+        console.log(type, id, '555555')
+        this.getGoodsDetails(id)
+        this.goodsInfoShow = true
+      }
+    },
+    closeGoods () {
+      this.goodsInfoShow = false
     }
   }
 }
@@ -605,5 +677,128 @@ export default {
     z-index: 2;
     overflow: auto;
   }
+  .goods_small_popover {
+    overflow: hidden;
+    position: absolute;
+    bottom: 55px;
+    right: 22px;
+    border-radius: 4px;
+    z-index: 1000;
+    width: 340px;
+    height: 114px;
+    background-color: white;
+    padding: 2px;
+    .cover_img {
+      width: 110px;
+      height: 110px;
+      float: left;
+      margin-right: 4px;
+      border: 1px solid #cccccc;
+    }
+    i {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+    }
+    div {
+      height: 26px;
+      line-height: 26px;
+      .item-title {
+        margin-top: 10px;
+        font-size: 16px;
+        line-height: 22px;
+        height: 44px;
+        overflow: hidden;
+      }
+      .item-price {
+        margin-top: 15px;
+        span {
+          font-size: 22px;
+          color: #FC5659;
+        }
+        del {
+          font-size: 18px;
+          color: rgba(136, 136, 136, 1);
+        }
+      }
+    }
+  }
 }
+  .goodsInfo /deep/{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0 ;
+    left: 0;
+    overflow-y:auto ;
+    >p{
+      height: 80px;
+      line-height: 80px;
+      font-size:30px;
+      color:rgba(85,85,85,1);
+      border-bottom: 1px solid #cccccc;
+      span{
+        margin-left: 30px;
+      }
+      i{
+        margin-right: 30px;
+        line-height: 80px;
+        font-size: 28px;
+        float: right;
+      }
+    }
+    >div{
+      padding:0 50px 30px 50px;
+      h4{
+        font-size:32px;
+        color: #222222;
+        margin:  20px 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .el-carousel{
+        border-radius:10px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      p{
+        margin: 30px auto;
+        word-wrap : break-word;
+        font-size:28px;
+        font-weight:400;
+        color:rgba(136,136,136,1);
+        line-height:40px;
+      }
+      footer{
+        height: 80px;
+        line-height: 80px;
+        display: flex;
+        border-radius:0 45px 45px 0;
+        >div{
+          display: inline-block;
+          flex: 3;
+          text-align: center;
+          background-color: #555555;
+          span{
+            color: white;
+            font-size:36px;
+          }
+          del{
+            margin-left: 5px;
+            color: #888888;
+          }
+        }
+        >span{
+          text-align: center;
+          flex: 2;
+          display: inline-block;
+          background-color: #FFD021;
+        }
+      }
+    }
+  }
 </style>
