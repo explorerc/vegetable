@@ -19,12 +19,12 @@
       </div>
     </div>
     <el-select v-if="!edit"
-               v-model="value.value"
+               v-model="val"
                @change="change"
                placeholder="请选择">
       <el-option v-for="(item,index) in value.detail.list"
                  :label="item.value"
-                 :value="item.id"
+                 :value="item.key"
                  :key="index">
       </el-option>
     </el-select>
@@ -50,6 +50,7 @@ export default {
   },
   data () {
     return {
+      val: '',
       errorTip: ''
     }
   },
@@ -85,11 +86,12 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && !this.value.value) {
+      if (this.value.required && !this.val) {
         this.errorTip = '此项为必填项'
         return false
       }
-      return { id: this.value.id, value: this.value.value }
+      let ext = JSON.parse(this.value.ext)
+      return { id: this.value.id, value: this.val, type: ext.key, list: this.value.detail.list }
     }
   }
 }

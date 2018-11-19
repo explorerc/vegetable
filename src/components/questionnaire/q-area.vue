@@ -1,7 +1,7 @@
 <template>
   <div class="q-edit-content">
     <div class="q-edit-select">
-      <el-select v-model="value.province"
+      <el-select v-model="provinceVal"
                  @change="changeProvince"
                  @focus="focusProvince"
                  placeholder="省/自治区/直辖市">
@@ -13,7 +13,7 @@
       </el-select>
     </div>
     <div class="q-edit-select">
-      <el-select v-model="value.city"
+      <el-select v-model="cityVal"
                  @change="changeCity"
                  @focus="focusCity"
                  placeholder="市">
@@ -27,7 +27,7 @@
     </div>
     <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
          class="q-edit-select">
-      <el-select v-model="value.county"
+      <el-select v-model="countyVal"
                  @change="changeCounty"
                  @focus="focusCounty"
                  placeholder="区/县">
@@ -45,7 +45,7 @@
          class="q-edit-select">
       <com-input placeholder="详细地址"
                  :disabled="edit"
-                 v-model="value.address"
+                 v-model="addressVal"
                  @focus="focusAddress"
                  :max-length="50"></com-input>
       <span v-if="edit"
@@ -59,11 +59,11 @@
 </template>
 
 <script>
-import questionService from 'src/api/questionnaire-service'
 
 // import province from 'components/province.json'
 // import city from 'components/city.json'
 // import county from 'components/county.json'
+import questionService from 'src/api/questionnaire-service'
 export default {
   props: {
     value: {
@@ -79,6 +79,10 @@ export default {
   },
   data () {
     return {
+      provinceVal: '',
+      cityVal: '',
+      countyVal: '',
+      addressVal: '',
       area: {},
       province: '',
       city: '',
@@ -90,6 +94,10 @@ export default {
     }
   },
   mounted () {
+    // this.$get(questionService.GET_AREA_JSON).then((res) => {
+    //   this.area = res
+    //   this.provinces = this.area.provinces
+    // })
     this.$get(questionService.GET_AREA_JSON).then((res) => {
       this.area = res
       this.provinces = this.area.provinces
@@ -164,23 +172,43 @@ export default {
     },
     check () {
       let value = []
-      if (this.value.required && (!this.value.province || !this.value.city)) {
+      if (this.value.required && (!this.provinceVal || !this.cityVal)) {
         this.errorTip = '此项为必填项'
         return false
       }
-      value.push(this.value.province)
-      value.push(this.value.city)
-      if (this.value.required && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.value.county) {
+      if (this.provinceVal) {
+        this.provinces.forEach((item) => {
+          if (item.value === this.provinceVal) {
+            value.push(item.label)
+          }
+        })
+      }
+      if (this.cityVal) {
+        this.cities.forEach((item) => {
+          if (item.value === this.cityVal) {
+            value.push(item.label)
+          }
+        })
+      }
+
+      if (this.value.required && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.countyVal) {
         this.errorTip = '此项为必填项'
         return false
       }
-      this.value.county && value.push(this.value.county)
-      if (this.value.required && this.value.detail.level === 'address' && !this.value.address) {
+      if (this.countyVal) {
+        this.counties.forEach((item) => {
+          if (item.value === this.countyVal) {
+            value.push(item.label)
+          }
+        })
+      }
+      if (this.value.required && this.value.detail.level === 'address' && !this.addressVal) {
         this.errorTip = '此项为必填项'
         return false
       }
-      this.value.address && value.push(this.value.address)
-      return { id: this.value.id, value: value.join('|') }
+      this.addressVal && value.push(this.addressVal)
+      let ext = JSON.parse(this.value.ext)
+      return { id: this.value.id, value: value.join('|'), type: ext.key }
     }
   },
   computed: {

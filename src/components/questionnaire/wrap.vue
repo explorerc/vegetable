@@ -103,6 +103,9 @@ export default {
     }
   },
   methods: {
+    check () {
+      return this.$refs.content.check()
+    },
     focusTitle () {
       if (this.value.error) {
         this.value.error = false

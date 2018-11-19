@@ -3,9 +3,9 @@
     <el-radio v-for="(item,index) in value.detail.list"
               class="q-select-item"
               :class="{display:!edit}"
-              v-model="value.value"
+              v-model="val"
               @change="change"
-              :label="index"
+              :label="item.key"
               :key="index">
       <com-input v-if="edit"
                  :class="{error:item.error}"
@@ -41,6 +41,7 @@ export default {
   },
   data () {
     return {
+      val: '',
       errorTip: ''
     }
   },
@@ -76,11 +77,12 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && !this.value.value) {
+      if (this.value.required && !this.val) {
         this.errorTip = '此项为必填项'
         return false
       }
-      return { id: this.value.id, value: this.value.value }
+      let ext = JSON.parse(this.value.ext)
+      return { id: this.value.id, value: this.val, type: ext.key }
     }
   }
 }

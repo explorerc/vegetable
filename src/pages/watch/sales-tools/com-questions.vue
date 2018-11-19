@@ -23,13 +23,24 @@
 </template>
 <script>
 import question from 'components/questionnaire/wrap'
+import loginMixin from 'components/login-mixin'
+import questionService from 'src/api/questionnaire-service'
 export default {
   components: {
     comQuestion: question
   },
+  mixins: [loginMixin],
   props: {
     dragData: {
       type: Array,
+      default: null
+    },
+    naireId: {
+      type: Number,
+      default: null
+    },
+    visitorId: {
+      type: String,
       default: null
     }
   },
@@ -43,13 +54,81 @@ export default {
     save () {
       let result = true
       let refs = this.$refs
+      let data = {}
+      data.activityId = this.$route.params.id
+      data.naireId = this.naireId
+      data.visitorId = this.visitorId
+      data.extData = {}
+      data.extData.wechat_auth = this.getAuthInfo()
+      data.naireData = {}
       Object.keys(refs).forEach(key => {
-        if (refs[key][0].$children[0].check()) {
-          result = false
+        if (result) {
+          let returnData = refs[key][0].check()
+          if (!returnData) {
+            result = false
+          } else {
+            data.naireData[returnData.id] = returnData.value
+            switch (returnData.type) {
+              case 'phone':
+                data.extData.phone = returnData.value
+                data.extData.verifyCode = returnData.code
+                break
+              case 'name':
+                data.extData.real_name = returnData.value
+                break
+              case 'edu':
+                data.extData.education_level = returnData.value
+                break
+              case 'birth':
+                data.extData.birthday = returnData.value
+                break
+              case 'area':
+                data.extData.address = returnData.value
+                break
+              case 'sex':
+                returnData.list.forEach((item) => {
+                  if (returnData.value === item.key) {
+                    data.extData[returnData.type] = item.value === '男' ? 'M' : 'W'
+                  }
+                })
+                break
+              case 'email':
+              case 'industry':
+              case 'position':
+                data.extData[returnData.type] = returnData.value
+                break
+            }
+          }
         }
       })
       if (result) {
-        console.log(this.dragData)
+        data.extData = JSON.stringify(data.extData)
+        data.naireData = JSON.stringify(data.naireData)
+        this.$config({ handlers: true }).$post(questionService.POST_QUESTION, data).then((res) => {
+          this.$toast({
+            content: '提交成功',
+            position: 'center'
+          })
+          this.$emit('questionSuccess')
+        }).catch((err) => {
+          if (err.code === 111) {
+            let refs = this.$refs
+            let len = Object.keys(refs).length - 1
+            refs[`com${len}`][0].$refs.content.errorTip = '验证码不正确'
+          } else if (err.code === 15110) {
+            this.$emit('questionSuccess')
+            this.$messageBox({
+              header: '提示',
+              content: err.msg,
+              confirmText: '确定',
+              handleClick: (e) => {
+                if (e.action === 'cancel') {
+                } else if (e.action === 'confirm') {
+                }
+              }
+            })
+          }
+        })
       }
     }
   }

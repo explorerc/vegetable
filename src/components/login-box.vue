@@ -48,7 +48,7 @@ export default {
       verify: false,
       mobile: '',
       code: '',
-      mobileReg: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+      mobileReg: /^1[1|2|3|4|5|6|7|8|9][0-9]\d{8}$/,
       captchaKey: '',
       phoneErrorMsg: '',
       codeErrorMsg: ''
@@ -128,7 +128,7 @@ export default {
       this.time = 60
       this.verify = false
       this.captchaKey = ''
-      this.captchaIns.refresh()
+      this.captchaIns && this.captchaIns.refresh()
       clearInterval(this.timer)
     },
     verification (val, type) {
