@@ -79,7 +79,7 @@ import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 import activityService from 'src/api/activity-service'
 import comCards from './sales-tools/com-cards'
-import comQuestions from './sales-tools/com-comQuestions'
+import comQuestions from './sales-tools/com-questions'
 import { types as QTypes } from 'components/questionnaire/types'
 export default {
   props: {
