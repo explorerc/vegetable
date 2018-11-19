@@ -133,11 +133,10 @@
 
   .chat-list {
     // overflow-y: scroll;
-    padding: 0px 40px;
 
     dl {
       position: relative;
-
+      padding: 0px 40px;
       dt {
         width: 50px;
         height: 50px;
@@ -325,6 +324,48 @@
 
       .txt {
         float: right;
+      }
+    }
+    li .sales-tool-box {
+      width: 400px;
+      height:80px;
+      background: url('~assets/image/bg_card.png') no-repeat center;
+      background-size:contain;
+      border-radius:0px 100px 100px 0px;
+      padding:8px 30px;
+      font-size: 16px;
+      transition: all .3s ease-in-out;
+      &:hover {
+        box-shadow: 2px 3px 7px #e2e2e2;
+        transition: all .3s ease-in-out;
+      }
+      span {
+        font-size:14px;
+      }
+      em {
+        color:$color-default;
+        cursor: pointer;
+      }
+      &.RED_PACK {
+        background-image: url('~assets/image/bg_redpack.png');
+        em {
+          color:$color-error;
+        }
+
+      }
+      &.GOODS_PUSH {
+        background-image: url('~assets/image/bg_good.png');
+        em {
+          color:$color-error;
+        }
+
+      }
+      &.NAIRE {
+        background-image: url('~assets/image/bg_survey.png');
+        em {
+          color:$color-error;
+        }
+
       }
     }
   }

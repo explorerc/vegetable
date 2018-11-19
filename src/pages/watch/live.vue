@@ -24,7 +24,8 @@
                        :isWatch="isWatch"
                        :sendBoxShow="true"
                        @closeChatBox="closeChatBox"
-                       @isMute="isMute($event)"></chating>
+                       @isMute="isMute($event)"
+                       @clickTools="clickTools"></chating>
             </div>
             <template v-if='(playType === "live" || playType === "warm"  || playType === "pre") && isLogin'>
               <template v-if='isMuteShow'>
@@ -291,6 +292,19 @@ export default {
           console.log(this.cardData)
         }
       })
+    },
+    clickTools (res) {
+      console.log(res)
+      switch (res.type) {
+        case 'goods':
+          break
+        case 'cards':
+          break
+        case 'ques':
+          break
+        case 'redpack':
+          break
+      }
     }
   }
 }

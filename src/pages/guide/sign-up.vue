@@ -6,7 +6,7 @@
     <div class="v-operation"
          v-if="activity.viewCondition === 'APPOINT'">
       <template v-for="item in questionList">
-        <template v-if="item.type === 'mobile'">
+        <template v-if="item.ext === 'phone'">
           <com-input :inputVal.sync="user.phone"
                      :placeholder='item.placeholder'
                      :errorMsg.sync="item.errorMsg"
@@ -30,22 +30,22 @@
                                  :errorMsg.sync="codeError"
                                  codeType="APPLY_ACTIVITY"></com-verification-code>
         </template>
-        <com-input v-else-if="item.type === 'email'"
+        <com-input v-else-if="item.ext === 'email'"
                    :inputVal.sync="item.val"
                    :placeholder='item.placeholder'
                    :errorMsg.sync="item.errorMsg"></com-input>
-        <com-input v-else-if="item.type === 'integer'"
+        <com-input v-else-if="item.ext === 'integer'"
                    :inputVal.sync="item.val"
                    :placeholder='item.placeholder'
                    :errorMsg.sync="item.errorMsg"></com-input>
-        <com-select v-else-if="item.type === 'select'"
-                    :selectOptions="item.detail"
+        <com-select v-else-if="item.ext === 'select'"
+                    :selectOptions="item.detail.list"
                     @selected="selected($event, item.id)"></com-select>
-        <com-input v-else-if="item.type === 'text'"
+        <com-input v-else-if="item.ext === 'text'"
                    :inputVal.sync="item.val"
                    :placeholder='item.placeholder'
                    :errorMsg.sync="item.errorMsg"></com-input>
-        <com-input v-else-if="item.type === 'name'"
+        <com-input v-else-if="item.ext === 'name'"
                    :inputVal.sync="item.val"
                    :placeholder='item.placeholder'
                    :errorMsg.sync="item.errorMsg"></com-input>
@@ -215,9 +215,9 @@ export default {
         return false
       }
       this.questionList.forEach(element => {
-        if (isVerification && !this.verification(element.val, element.required, element.type)) {
-          switch (element.type) {
-            case 'mobile': element.errorMsg = '请正确填写手机号'
+        if (isVerification && !this.verification(element.val, element.required, element.ext)) {
+          switch (element.ext) {
+            case 'phone': element.errorMsg = '请正确填写手机号'
               break
             case 'email': element.errorMsg = '请正确填写邮箱'
               break
@@ -226,22 +226,27 @@ export default {
           }
           isVerification = false
         }
-        if (element.type === 'mobile') {
+        if (element.ext === 'phone') {
           data.mobile = this.user.phone === '' ? element.val : this.user.phone
           let obj = {}
-          obj.questionId = element.id
-          obj.answer = data.mobile
+          obj['id'] = element.id
+          obj['val'] = data.mobile
+          // obj.answer = data.mobile
           data.answer.push(obj)
-        } else if (element.type !== 'select') {
+        } else if (element.ext === 'email') {
           data.email = element.val
           let obj = {}
-          obj.questionId = element.id
-          obj.answer = element.val
+          obj['id'] = element.id
+          obj['val'] = element.val
+          // obj.questionId = element.id
+          // obj.answer = element.val
           data.answer.push(obj)
-        } else if (element.type !== 'select') {
+        } else if (element.ext !== 'select') {
           let obj = {}
-          obj.questionId = element.id
-          obj.answer = element.val
+          obj['id'] = element.id
+          obj['val'] = element.val
+          // obj.questionId = element.id
+          // obj.answer = element.val
           data.answer.push(obj)
         }
       })
@@ -256,12 +261,17 @@ export default {
         if (this.selectVal) {
           for (let i = 0; i < this.selectVal.length; i++) {
             let obj = {}
-            obj.questionId = this.selectVal[i].questionId
-            obj.answer = this.selectVal[i].answer
+            obj['id'] = this.selectVal[i].questionId
+            obj['val'] = this.selectVal[i].answer
+            // obj[this.selectVal[i].questionId] = this.selectVal[i].answer
+            // obj.questionId = this.selectVal[i].questionId
+            // obj.answer = this.selectVal[i].answer
             data.answer.push(obj)
           }
         }
         this.appointIsClick = false
+        console.log(data.answer)
+        data.answer = this.reArrangeList(data.answer)
         this.$config({ handlers: true }).$post(activityService.POST_QUESTIONINFO, data).then((res) => {
           if (this.activity.status === 'LIVING' || this.activity.status === 'PLAYBACK' || this.activity.status === 'FINISH') {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
@@ -341,7 +351,7 @@ export default {
       if (!this.isClick) {
         return false
       }
-      if (!this.verification(this.user.phone, 'Y', 'mobile')) {
+      if (!this.verification(this.user.phone, 'Y', 'phone')) {
         this.phoneError = '请正确填写手机号'
         return false
       }
@@ -461,7 +471,7 @@ export default {
       let integerReg = /^[0-9]*$/
       let codeReg = /^\d{6}$/
 
-      if (type === 'mobile') {
+      if (type === 'phone') {
         val = this.user.phone === '' ? val : this.user.phone
       }
       if (type === 'code') {
@@ -473,7 +483,7 @@ export default {
         }
       } else {
         switch (type) {
-          case 'mobile': val = this.user.phone === '' ? val : this.user.phone
+          case 'phone': val = this.user.phone === '' ? val : this.user.phone
             return phoneReg.test(val)
           case 'integer': return integerReg.test(val)
           case 'email': return emailReg.test(val)
@@ -486,6 +496,13 @@ export default {
     },
     btnClick () {
       this.agreementShow = false
+    },
+    reArrangeList (arr) {
+      const obj = {}
+      arr.forEach((item, idx) => {
+        obj[item.id] = item.val
+      })
+      return JSON.stringify(obj)
     }
   }
 }
