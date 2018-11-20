@@ -81,7 +81,7 @@ export default {
             switch (returnData.type) {
               case 'phone':
                 data.extData.phone = returnData.value
-                data.extData.verifyCode = returnData.code
+                data.extData.verifyCode = returnData.code ? returnData.code : ''
                 break
               case 'name':
                 data.extData.real_name = returnData.value
