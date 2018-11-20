@@ -1,9 +1,10 @@
 <template>
   <div class="q-edit-content">
     <el-date-picker v-if="!edit"
-                    v-model="value.value"
+                    v-model="val"
                     type="date"
                     @focus="focus"
+                    value-format="yyyy-MM-dd"
                     placeholder="选择日期">
     </el-date-picker>
     <div v-if="!edit&&errorTip"
@@ -28,6 +29,7 @@ export default {
   },
   data () {
     return {
+      val: '',
       errorTip: ''
     }
   },
@@ -45,11 +47,12 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && !this.value.value) {
+      if (this.value.required && !this.val) {
         this.errorTip = '此项为必填项'
         return false
       }
-      return { id: this.value.id, value: this.value.value }
+      let ext = JSON.parse(this.value.ext)
+      return { id: this.value.id, value: this.val, type: ext.key }
     }
   }
 }

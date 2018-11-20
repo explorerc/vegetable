@@ -1,11 +1,11 @@
 <template>
   <div class="q-edit-content">
-    <el-checkbox-group v-model="value.value"
+    <el-checkbox-group v-model="valArr"
                        @change="change">
       <el-checkbox v-for="(item,index) in value.detail.list"
                    class="q-select-item"
                    :class="{display:!edit}"
-                   :label="index"
+                   :label="item.key"
                    :key="index">
         <com-input v-if="edit"
                    :class="{error:item.error}"
@@ -42,6 +42,7 @@ export default {
   },
   data () {
     return {
+      valArr: [],
       errorTip: ''
     }
   },
@@ -77,11 +78,20 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && (!this.value.value || this.value.value.length === 0)) {
+      if (this.value.required && (!this.valArr || this.valArr.length === 0)) {
         this.errorTip = '此项为必填项'
         return false
       }
-      return { id: this.value.id, value: this.value.value }
+      let ext = JSON.parse(this.value.ext)
+      let returnVal = ''
+      if (this.valArr) {
+        if (this.valArr.length === 1) {
+          returnVal = this.valArr[0]
+        } else if (this.valArr.length > 1) {
+          returnVal = this.valArr.split(',')
+        }
+      }
+      return { id: this.value.id, value: returnVal, type: ext.key }
     }
   }
 }
