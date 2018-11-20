@@ -347,7 +347,6 @@ export default {
             break
           case 'NAIRE':
             console.log('--发送问卷--消息--')
-            debugger
             if (this.currentQuestionId === msg.id && this.questionsShow) {
             } else {
               this.currentQuestionId = msg.id
