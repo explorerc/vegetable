@@ -197,8 +197,8 @@
       color: #FFD021;
       img {
         display: inline-block;
-        width: 20px;
-        height: 25px;
+        width: 40px;
+        height: 50px;
         vertical-align: middle;
       }
     }
