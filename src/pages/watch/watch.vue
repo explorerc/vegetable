@@ -67,6 +67,71 @@
         恭喜您，订阅成功！
       </p>
     </message-box>
+    <!-- 红包雨 -- 降临 -->
+    <message-box v-if="redBagTipShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox" class="red-bag-box">
+        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+        <div class="red-bag-content">
+          <p class="red-bag-title">红包雨即将降临</p>
+          <!--<p class="red-bag-info">您还未<span class="login-link">登录</span>无法参与红包雨活动</p>-->
+          <!--<p class="red-bag-info">手速越快，红可能越大哦~</p>-->
+          <!--<p class="red-bag-info">开奖前分享直播间参与红包雨活动</p>-->
+          <p class="red-bag-info tip-info">参与条件：开奖前发送口令参与红包雨活动</p>
+          <!--<p class="red-bag-info">开奖前填写问卷调查参与红包雨活动</p>-->
+          <span class="red-bag-tip">口令：大家好才是真的好</span>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包雨 -- 倒计时-->
+    <message-box v-if="redBagTimeDownShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox" class="red-bag-box">
+        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+        <div class="red-bag-content">
+          <p class="red-bag-title">红包雨降临倒计时</p>
+          <span class="time-down">{{timer}}</span>
+          <p class="red-bag-info">点击屏幕上落下的红包，手速越快红包越大！</p>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包雨 -- 抢到红包 -->
+    <message-box v-if="redBagShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox" class="red-bag-box get-red-bag">
+        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+        <div class="red-bag-content">
+          <p class="red-bag-title">恭喜您抢到</p>
+          <span class="red-bag-money">￥{{redBagResultInfo.amount}}</span>
+          <span class="red-bag-detail" style="margin-top: 30px;">超过了<span style="color: #fff;">{{redBagResultInfo.percent}}%</span>的小伙伴</span>
+          <span class="red-bag-detail">已收入钱包，请到个人中心提现</span>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包雨 -- 未抢到红包 -->
+    <message-box v-if="redBagNoneShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox" class="red-bag-box red-bag-top" style="background-color: #fff;">
+        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+        <p class="red-bag-title">天呐，您与红包擦肩而过～</p>
+        <div class="top-content">
+          <p class="red-bag-title">（手气榜 TOP5）</p>
+          <ul class="red-bag-list">
+            <li v-if="redBagrecordList.length<=0">
+              <span class="none-data">暂无数据</span>
+            </li>
+            <li v-else v-for="redBagInfo in redBagrecordList">
+              <span class="head-icon" v-if="!redBagInfo.avatar"></span>
+              <span class="head-icon" v-else :style="{backgroundImage: `url(${redBagInfo.avatar})`}"></span>
+              <span class="nick-name">{{redBagInfo.nick_name}}</span>
+              <span class="red-bag-money fr">￥{{redBagInfo.amount}}</span>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </message-box>
+    <RedBagRain :rainTime="rainTime" @endRain="endRainHandler" @selectOk="selectRedBag"></RedBagRain>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -82,6 +147,10 @@ import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service' // import vconsole
 import EventBus from 'src/utils/eventBus'
+import RedBagRain from './red-bag-rain' // 红包雨
+import RedBagConfig from 'src/api/red-bag-config'
+import ChatService from 'components/chat/ChatService.js'
+
 // let vConsole = new VConsole()
 const playTypes = {
   'PREPARE': 'pre',
@@ -97,6 +166,7 @@ const playStatuTypes = {
 }
 export default {
   mixins: [loginMixin],
+  components: { RedBagRain },
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
@@ -142,7 +212,27 @@ export default {
       votherdiv: false, // 非x5横屏
       showPersonCount: 0,
       sdkVisitorId: '',
-      logoImg: ''
+      logoImg: '',
+      red_packet_id: '',
+      redBagTipShow: false,
+      redBagNoneShow: false,
+      redBagShow: false,
+      redBagTimeDownShow: false,
+      redBagrecordList: [],
+      redBagResultInfo: {
+        avatar: '',
+        nick_name: '',
+        amount: '',
+        amount_ranking: '',
+        percent: ''
+      },
+      autoTime: 0,
+      rainTime: 0,
+      redBagCount: 0,
+      timer: 10,
+      timerInterval: 0,
+      redBagStartTimer: 0,
+      redBagStartTimerInterval: 0
     }
   },
   mounted () {
@@ -173,6 +263,10 @@ export default {
       const logo = this.logoImg
       return logo ? `${this.$imgHost}/${logo}` : ''
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.timerInterval)
+    clearInterval(this.redBagStartTimerInterval)
   },
   created () {
     EventBus.$on('enterFullScreen', () => {
@@ -210,6 +304,13 @@ export default {
       false
     )
   },
+  filters: {
+    fmtTimer (value) {
+      let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+      let s = ((value % 60 >> 0) + '').padStart(2, 0)
+      return `${m}:${s}`
+    }
+  },
   watch: {
     activityInfo: {
       handler (newVal) {
@@ -219,6 +320,21 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    redBagTimeDownShow (newVal) {
+      if (newVal) {
+        this.timer = 10
+        this.timerInterval = setInterval(() => {
+          if (this.timer === 0) {
+            clearInterval(this.timerInterval)
+            this.timerInterval = 0
+            this.redBagTimeDownShow = false
+            this.rainTime = 10
+            return
+          }
+          this.timer--
+        }, 1000)
+      }
     }
   },
   methods: {
@@ -228,7 +344,8 @@ export default {
     ...mapMutations('liveMager', {
       storeActivityInfo: types.ACTIVITY_INFO,
       storeRoomPaas: types.ROOM_PAAS,
-      storeJoinInfo: types.JOIN_INFO
+      storeJoinInfo: types.JOIN_INFO,
+      storeDownTimer: types.DOWN_TIMER
     }),
     ...mapMutations('login', {
       storeLoginInfo: types.LOGIN_INFO
@@ -316,6 +433,7 @@ export default {
         this.sdkVisitorId = res.data.visitorId
       })
       await this.initRoomPaas()
+      this.initMsgServe()
       // /* 获取自定义主题 */
       // this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
       //   activityId: this.$route.params.id
@@ -515,6 +633,101 @@ export default {
         return true
       }
       return false
+    },
+    initMsgServe () {
+      debugger
+      ChatService.OBJ.init({
+        accountId: this.roomPaas.accountId,
+        token: this.roomPaas.token,
+        appId: this.roomPaas.appId,
+        channelId: this.roomPaas.channelRoom
+      })
+      /* 监听创建红包通知消息 */
+      ChatService.OBJ.regHandler(RedBagConfig.MARKET_TOOL, (msg) => {
+        console.log('-----------收到红包消息------------')
+        console.log(msg)
+        if (msg.type === RedBagConfig.createRedBag) {
+          this.autoTime = msg.time ? parseInt(msg.time) : 0
+          this.red_packet_id = msg.red_packet_uuid
+          this.redBagCount = 0
+          this.dealWithRedBag()
+        }
+      })
+    },
+    handleRedBagClick (e) {
+      this.redBagTipShow = false
+      this.redBagTimeDownShow = false
+      this.redBagShow = false
+      this.redBagNoneShow = false
+    },
+    selectRedBag (count) { // 选中红包雨红包
+      this.redBagCount = count
+      console.log(`点击到了 ${count} 个红包`)
+    },
+    /* 红包雨结束 */
+    async endRainHandler () {
+      this.rainTime = 0
+      if (this.redBagCount) {
+        await this.sendRedBag()
+        if (!this.redBagResultInfo.amount) {
+          // 延迟2秒执行，保证本次红包活动已经结束
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.queryRedBagrecordList()
+          }, 2000)
+        }
+      } else {
+        this.queryRedBagrecordList()
+      }
+    },
+    /* 抢红包接口 */
+    sendRedBag () {
+      let param = {
+        activity_id: this.activityId,
+        red_packet_id: this.red_packet_id,
+        password: ''
+      }
+      if (!param.password) {
+        delete param.password
+      }
+      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_INFO, {
+        ...param
+      }).then((res) => {
+        if (res.code === 200 && res.data) {
+          this.redBagShow = true
+          this.redBagResultInfo = res.data
+        }
+      })
+    },
+    queryRedBagrecordList () {
+      this.redBagNoneShow = true
+      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_RECOREDS, {
+        red_packet_id: this.red_packet_id
+      }).then((res) => {
+        if (res.code === 200 && res.data) {
+          this.redBagrecordList = res.data.list
+        }
+      })
+    },
+    dealWithRedBag () {
+      if (this.autoTime === 0) { // 立即开始
+        this.redBagTimeDownShow = true
+      } else {
+        // 红包雨活动已推送,倒计时
+        this.redBagStartTimer = this.autoTime * 60
+        this.redBagStartTimerInterval = setInterval(() => {
+          this.storeDownTimer(this.redBagStartTimer)
+          if (this.redBagStartTimer === 10) {
+            clearInterval(this.redBagStartTimerInterval)
+            this.redBagStartTimer = 0
+            this.storeDownTimer(0)
+            // 10秒倒计时
+            this.redBagTimeDownShow = true
+            return
+          }
+          this.redBagStartTimer = this.redBagStartTimer - 1
+        }, 1000)
+      }
     }
   }
 }

@@ -26,14 +26,16 @@ const liveMagerModules = {
       channelId: ''
     },
     activityInfo: {}, // 活动信息
-    joinInfo: {} // 参会信息
+    joinInfo: {}, // 参会信息
+    downTimer: 0
   },
   getters: {
     liveDevices: state => state.liveDevices,
     emailInfo: state => state.emailInfo,
     roomPaas: (state) => state.roomPaas,
     activityInfo: (state) => state.activityInfo,
-    joinInfo: state => state.joinInfo
+    joinInfo: state => state.joinInfo,
+    downTimer: state => state.downTimer
   },
   mutations: {
     [types.VIDEO_DEVICE] (state, reLoad) {
@@ -50,6 +52,9 @@ const liveMagerModules = {
     },
     [types.JOIN_INFO] (state, reLoad) {
       state.joinInfo = reLoad
+    },
+    [types.DOWN_TIMER] (state, reLoad) {
+      state.downTimer = reLoad
     }
   }
 }
