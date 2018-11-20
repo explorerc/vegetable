@@ -58,10 +58,16 @@
           <template v-else>
             <div :class='item.detail.type' class="sales-tool-box" >
                 <div>{{item.detail.nickname}}</div>
-                <span v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em @click='moreInfo("goods",item.detail.recommend_card_id)'>商品</em>，赶快看看吧</span>
+                <span v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em @click='moreInfo("goods",item.detail.goods_id)'>商品</em>，赶快看看吧</span>
                 <span v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了 <em @click='moreInfo("cards",item.detail.recommend_card_id)'>卡片</em>，赶快看看吧</span>
                 <span v-if="item.detail.type === 'NAIRE'">推送了 <em @click='moreInfo("ques",item.detail.recommend_card_id)'>问卷</em>，赶快看看吧</span>
                 <span v-if="item.detail.type === 'GOODS_PUSH1'">推送了 <em @click='moreInfo("redpack",item.detail.recommend_card_id)'>红包雨</em>，赶快看看吧</span>
+<!--
+                <span @click="push('GOODS_PUSH',item.detail.goods_id)" v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em>商品</em>，赶快看看吧</span>
+                <span @click="push('RECOMMEND_CARD_PUSH')" v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了<em>卡片</em>，赶快看看吧</span>
+                <span @click="push('NAIRE')" v-if="item.detail.type === 'NAIRE'">推送了 <em>问卷</em>，赶快看看吧</span>
+                <span @click="push('GOODS_PUSH1')" v-if="item.detail.type === 'GOODS_PUSH1'">推送了 <em>红包</em>，赶快看看吧</span>
+-->
               </div>
           </template>
         </li>
@@ -781,6 +787,9 @@ export default {
     },
     moreInfo (type, id) {
       this.$emit('clickTools', { 'type': type, 'id': id })
+    },
+    push (type, param) {
+      this.$emit('magInfo', type, param)
     }
   },
   watch: {
