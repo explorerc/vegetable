@@ -121,6 +121,16 @@
                   :visitorId="visitorId"
                   :questions="questions"
                   @questionSuccess="questionsShow=false"> </comQuestions>
+    <message-box v-if="questionsSubmissionShow"
+                 header=''
+                 confirmText='提交'
+                 class="v-questions-submission-box"
+                 @handleClick="hiddenQuestions">
+      <div class="v-content">
+        <img src="../../assets/image/success@2x.png" alt="">
+        <p>已提交问卷，感谢您的参与</p>
+      </div>
+    </message-box>
     <com-login @login="loginSuccess"></com-login>
     <!--弹框-->
     <message-box v-if="taoShow"
@@ -184,6 +194,7 @@ export default {
       },
       dragData: [],
       questionsShow: false,
+      questionsSubmissionShow: false,
       naireId: '',
       questions: {
         imgUrl: '',
@@ -369,7 +380,7 @@ export default {
     },
     getQuestions () {
       this.questionsShow = false
-      this.$get(questionService.GET_QUESTION, {
+      this.$config({ handlers: true }).$get(questionService.GET_QUESTION, {
         activityId: this.$route.params.id,
         visitorId: this.visitorId
       }).then((res) => {
@@ -379,7 +390,27 @@ export default {
         this.naireId = res.data.id
         this.dragData = res.data.detail
         this.questionsShow = true
+      }).catch((err) => {
+        if (err.code === 15110) {
+          this.questionsSubmissionShow = true
+        } else {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
+        }
       })
+    },
+    hiddenQuestions (e) {
+      if (e.action === 'cancel') {
+        this.questionsSubmissionShow = false
+      }
     },
     getCardDetails (id) {
       this.$get(activityService.GET_VISITED_CARD_DETAIL, { recommend_card_id: id }).then((res) => {
@@ -731,6 +762,30 @@ export default {
       .ve-message-box__btns {
         display: none;
       }
+    }
+  }
+}
+.v-questions-submission-box /deep/ {
+  img {
+    display: block;
+    width: 122px;
+    margin: 90px auto 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: #222;
+    text-align: center;
+    margin: 30px auto 100px;
+  }
+
+  .ve-message-box {
+    &:before {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    .ve-message-box__btns {
+      display: none;
     }
   }
 }
