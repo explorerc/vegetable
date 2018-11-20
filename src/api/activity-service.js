@@ -25,5 +25,7 @@ export default {
   GET_ACTIVITY_LIST: '/frontend/user/visit-activity-list', // 查询直播列表
   GET_VISITED_CARD: '/frontend/tool/recommend-card-visit', // 点击访问推荐卡片
   GET_VISITED_CARD_DETAIL: '/manage/recommend-card/query', // 查询推荐卡片详情
-  GET_CUSTOM_LOGO: '/manage/brand-manage/get' // 获取logo信息
+  GET_CUSTOM_LOGO: '/manage/brand-manage/get', // 获取logo信息
+  GET_RED_BAG_RECOREDS: '/frontend/tool/red-packet-get-records', // 观看端获取红包领取记录接口
+  GET_RED_BAG_INFO: '/frontend/tool/red-packet-get' // 观看端抢红包接口
 }

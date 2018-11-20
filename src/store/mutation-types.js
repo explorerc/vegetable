@@ -27,3 +27,5 @@ export const ACTIVITY_INFO = 'ACTIVITY_INFO'
 export const JOIN_INFO = 'JOIN_INFO'
 // 个人中心用户信息
 export const CENTER_INFO = 'CENTER_INFO'
+// 倒计时
+export const DOWN_TIMER = 'DOWN_TIMER'
