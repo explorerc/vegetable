@@ -71,10 +71,9 @@
             <!--商品推送-->
             <!--操作区-->
             <div class="icon-list">
-              <span @click="showGoods">商品</span>
-              <span @click="showGoods">商品</span>
-              <span @click="showGoods">商品</span>
-              <span @click="showGoods">商品</span>
+              <span class='redpack' ><em></em>红包</span>
+              <span class='ques' ><em></em>问卷</span>
+              <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
             </div>
             <!--操作区-->
           </com-tab>
@@ -104,7 +103,7 @@
         </div>
       </transition>
       <transition mode="out-in">
-        <comGoods class="goodsList" :goodsMsg='goodsMsg' v-show="goodsListShow" @closeGoodList = 'closeGoodList' @goodsInfo="goodsInfo"></comGoods>
+        <comGoods class="goodsList" :goodsMsg='goodsMsg' v-show="goodsListShow" @closeGoodList = 'closeGoodList' @goodsInfo="goodsInfo" @goodsCount="goodsCount"></comGoods>
       </transition>
     </div>
     <!-- 推荐卡片 -->
@@ -158,7 +157,7 @@ export default {
     domShow: Boolean
   },
   mixins: [loginMixin],
-  components: {PlayVideo, Chating, comCards, comQuestions, comGoods},
+  components: { PlayVideo, Chating, comCards, comQuestions, comGoods },
   data () {
     return {
       playType: '', // 直播(live), 回放(vod), 暖场(warm)
@@ -199,7 +198,8 @@ export default {
       goodsInfoShow: false,
       goodsListShow: false,
       activityId: this.$route.params.id,
-      taoShow: false
+      taoShow: false,
+      goodsLen: 0
     }
   },
   computed: {
@@ -464,6 +464,9 @@ export default {
         this.taoShow = false
       } else if (e.action === 'confirm') { // 点击确定
       }
+    },
+    goodsCount (res) {
+      this.goodsLen = res
     }
   }
 }
@@ -541,21 +544,42 @@ export default {
 }
 .icon-list /deep/ {
   position: absolute;
-  bottom: 120px;
+  bottom: 90px;
   right: 22px;
-  span{
+  span {
+    position: relative;
     color: transparent;
     width: 80px;
     height: 80px;
     display: block;
+    border-radius: 200px;
+    background: url('~assets/image/tools-circle-redpack.png') no-repeat center;
+    background-size: 100%;
+    margin-bottom: 30px;
+    em {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 20px;
+      height: 20px;
+      background: #fc5659;
+      border-radius: 200px;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+    }
   }
-  >span:nth-of-type(1){
-    background: url('~assets/image/H5-goods-icon.png') no-repeat center;
-    background-size: cover;
+  .ques {
+    background-image: url('~assets/image/tools-circle-ques.png');
   }
-  >span:nth-of-type(2){
-    background: url('~assets/image/H5-goods-icon.png') no-repeat center;
-    background-size: cover;
+  .goods {
+    background-image: url('~assets/image/tools-circle-good.png');
+    em {
+      width: 40px;
+      height: 30px;
+      line-height: 35px;
+      top: 0;
+    }
   }
 }
 .goods_small_popover /deep/ {
@@ -567,144 +591,144 @@ export default {
   width: 470px;
   height: 140px;
   background-color: white;
-  box-shadow:0px 2px 8px 0px rgba(0,0,0,0.15);
- div{
-   .cover_img {
-     width: 140px;
-     height: 140px;
-     float: left;
-     margin-right: 4px;
-   }
-   i {
-     position: absolute;
-     top: 5px;
-     right: 10px;
-   }
-   div {
-     padding: 10px;
-     height: 26px;
-     line-height: 26px;
-     .item-title {
-       font-size: 12px;
-       line-height: 30px;
-       height: 60px;
-       margin-top: 10px;
-       overflow: hidden;
-     }
-     .item-price {
-       span {
-         font-size: 22px;
-         color: #FC5659;
-       }
-       del {
-         font-size: 18px;
-         color: rgba(136, 136, 136, 1);
-       }
-     }
-   }
- }
-}
-.goodsList /deep/{
-  background-color: white;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top:0 ;
-  left: 0;
-  overflow-y:auto ;
-}
-  .goodsInfo /deep/ {
-    background-color: white;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow-y: auto;
-    > p {
-      height: 80px;
-      line-height: 80px;
-      font-size: 30px;
-      color: rgba(85, 85, 85, 1);
-      border-bottom: 1px solid #cccccc;
-      span {
-        margin-left: 30px;
-      }
-      i {
-        margin-right: 30px;
-        line-height: 80px;
-        font-size: 28px;
-        float: right;
-      }
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  div {
+    .cover_img {
+      width: 140px;
+      height: 140px;
+      float: left;
+      margin-right: 4px;
     }
-    > div {
-      padding: 0 50px 30px 50px;
-      h4 {
-        font-size: 32px;
-        color: #222222;
-        margin: 20px 0;
+    i {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+    }
+    div {
+      padding: 10px;
+      height: 26px;
+      line-height: 26px;
+      .item-title {
+        font-size: 12px;
+        line-height: 30px;
+        height: 60px;
+        margin-top: 10px;
         overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
       }
-      .el-carousel {
-        border-radius: 10px;
-        img {
-          width: 100%;
-          height: 100%;
+      .item-price {
+        span {
+          font-size: 22px;
+          color: #fc5659;
         }
-      }
-      p {
-        margin: 30px auto;
-        word-wrap: break-word;
-        font-size: 28px;
-        font-weight: 400;
-        color: rgba(136, 136, 136, 1);
-        line-height: 40px;
-      }
-      footer {
-        height: 80px;
-        line-height: 80px;
-        display: flex;
-        border-radius: 40px;
-        overflow: hidden;
-        > div {
-          display: inline-block;
-          flex: 3;
-          text-align: center;
-          background-color: #555555;
-          span {
-            color: white;
-            font-size: 36px;
-          }
-          del {
-            margin-left: 5px;
-            color: #888888;
-          }
-        }
-        > span {
-          text-align: center;
-          flex: 2;
-          display: inline-block;
-          background-color: #FFD021;
+        del {
+          font-size: 18px;
+          color: rgba(136, 136, 136, 1);
         }
       }
     }
   }
-.tao-show /deep/{
-  .ve-message-box {
-    .ve-message-box__container{
-      .v-content{
+}
+.goodsList /deep/ {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+}
+.goodsInfo /deep/ {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  > p {
+    height: 80px;
+    line-height: 80px;
+    font-size: 30px;
+    color: rgba(85, 85, 85, 1);
+    border-bottom: 1px solid #cccccc;
+    span {
+      margin-left: 30px;
+    }
+    i {
+      margin-right: 30px;
+      line-height: 80px;
+      font-size: 28px;
+      float: right;
+    }
+  }
+  > div {
+    padding: 0 50px 30px 50px;
+    h4 {
+      font-size: 32px;
+      color: #222222;
+      margin: 20px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .el-carousel {
+      border-radius: 10px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    p {
+      margin: 30px auto;
+      word-wrap: break-word;
+      font-size: 28px;
+      font-weight: 400;
+      color: rgba(136, 136, 136, 1);
+      line-height: 40px;
+    }
+    footer {
+      height: 80px;
+      line-height: 80px;
+      display: flex;
+      border-radius: 40px;
+      overflow: hidden;
+      > div {
+        display: inline-block;
+        flex: 3;
         text-align: center;
-        img{
+        background-color: #555555;
+        span {
+          color: white;
+          font-size: 36px;
+        }
+        del {
+          margin-left: 5px;
+          color: #888888;
+        }
+      }
+      > span {
+        text-align: center;
+        flex: 2;
+        display: inline-block;
+        background-color: #ffd021;
+      }
+    }
+  }
+}
+.tao-show /deep/ {
+  .ve-message-box {
+    .ve-message-box__container {
+      .v-content {
+        text-align: center;
+        img {
           margin: 80px auto 20px auto;
         }
-        p{
-          font-size:30px;
+        p {
+          font-size: 30px;
           color: #333333;
         }
       }
-      .ve-message-box__btns{
+      .ve-message-box__btns {
         display: none;
       }
     }

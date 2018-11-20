@@ -115,6 +115,7 @@
             })
             this.goodsList = res.data
             console.log(this.goodsList)
+            this.$emit('goodsCount', this.goodsList.length)
           })
       },
       setStatus (val) {
@@ -153,177 +154,178 @@
 </script>
 
 <style scoped lang="scss">
-  @import '~assets/css/mixin.scss';
-  .header-title{
-    height:80px;
+@import '~assets/css/mixin.scss';
+.header-title {
+  height: 80px;
+  line-height: 80px;
+  border-bottom: 1px solid #cccccc;
+  padding: 0 30px;
+  span {
+    color: #555555;
+    font-size: 30px;
+  }
+  i {
+    display: inline-block;
+    height: 80px;
     line-height: 80px;
-    border-bottom: 1px solid #cccccc;
-    padding: 0 30px;
-    span{
-      color: #555555;
-      font-size: 30px;
-    }
-    i{
+    float: right;
+  }
+}
+.goods-box {
+  /deep/ {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    margin-bottom: 60px;
+    .item,
+    .top_item {
       display: inline-block;
-      height: 80px;
-      line-height: 80px;
-      float: right;
-    }
-  }
-  .goods-box {
-    /deep/ {
+      overflow: hidden;
+      border-bottom: 1px solid #ccc;
+      border-radius: 4px;
+      position: relative;
       width: 100%;
-      height: 100%;
-      position: absolute;
-      top:0 ;
-      left: 0;
-      overflow-y:auto ;
-      margin-bottom: 60px;
-      .item, .top_item {
-        display: inline-block;
-        overflow: hidden;
-        border-bottom: 1px solid #ccc;
+      padding: 30px;
+      span.index {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        background-color: #ffd021;
+        color: $color-font;
+        width: 50px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 0 0 50% 0;
+        z-index: 1000;
+      }
+      img {
         border-radius: 4px;
-        position: relative;
-        width: 100%;
-        padding: 30px;
-        span.index {
-          position: absolute;
-          top: 30px;
-          left: 30px;
-          background-color: #FFD021;
-          color: $color-font;
-          width: 50px;
-          height: 30px;
-          line-height: 30px;
-          text-align: center;
-          border-radius: 0 0 50% 0;
-          z-index: 1000;
-        }
-        img {
-          border-radius: 4px;
-          float: left;
-          width: 220px;
-          height: 220px;
-          margin-right: 20px;
-        }
-        div {
-          /*padding: 10px 15px;*/
-          .item-title {
-            font-size: 32px;
-            max-height: 90px;
-            line-height: 45px;
-            overflow: hidden;
-          }
-          .item-price {
-            height: 26px;
-            line-height: 26px;
-            margin: 30px auto auto auto;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            span {
-              font-size: 22px;
-              color: rgba(252, 86, 89, 1);
-            }
-            del {
-              margin-left: 4px;
-              font-size: 18px;
-              color: rgba(136, 136, 136, 1);
-            }
-          }
-          .item-des {
-            color: rgba(136, 136, 136, 1);
-            font-size: 14px;
-            font-weight: 400;
-            margin-top: 8px;
-          }
-          button {
-            margin: 20px 0;
-          }
-        }
+        float: left;
+        width: 220px;
+        height: 220px;
+        margin-right: 20px;
       }
-      .ve-message-box {
-        height: 300px;
-        &::before {
-          content: '';
-          height: 0;
+      div {
+        /*padding: 10px 15px;*/
+        .item-title {
+          font-size: 32px;
+          max-height: 90px;
+          line-height: 45px;
+          overflow: hidden;
         }
-        padding: 0;
-        .buyImg {
-          width: 310px;
-          height: 310px;
-          float: left;
-          margin-right: 20px;
-          img {
-            width: 100%;
-            height: 100%;
+        .item-price {
+          height: 26px;
+          line-height: 26px;
+          margin: 30px auto auto auto;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          span {
+            font-size: 22px;
+            color: rgba(252, 86, 89, 1);
           }
-        }
-        .buyInfo {
-          margin-right: 20px;
-          .item-title {
+          del {
+            margin-left: 4px;
             font-size: 18px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            &::before {
-              content: '';
-              height: 40px;
-              display: block;
-            }
-          }
-          .item-price {
-            height: 26px;
-            line-height: 26px;
-            margin: 5px auto;
-            span {
-              font-size: 22px;
-              color: rgba(252, 86, 89, 1);
-            }
-            del {
-              margin-left: 15px;
-              font-size: 18px;
-              color: rgba(136, 136, 136, 1);
-            }
-          }
-          .item-des {
             color: rgba(136, 136, 136, 1);
-            font-size: 14px;
-            font-weight: 400;
-            margin-top: 8px;
-            line-height: 22px;
-            height: 132px;
-            overflow: hidden;
-            word-break: break-all
           }
         }
-        .ve-message-box__header {
-          padding: 0;
+        .item-des {
+          color: rgba(136, 136, 136, 1);
+          font-size: 14px;
+          font-weight: 400;
+          margin-top: 8px;
         }
-        .ve-message-box__container {
-          padding: 0;
+        button {
+          margin: 20px 0;
         }
-        .ve-message-box__btns {
-          display: none;
-        }
-      }
-
-      .el-carousel__item h3 {
-        color: #475669;
-        font-size: 14px;
-        opacity: 0.75;
-        line-height: 150px;
-        margin: 0;
-      }
-
-      .el-carousel__item:nth-child(2n) {
-        background-color: #99a9bf;
-      }
-
-      .el-carousel__item:nth-child(2n+1) {
-        background-color: #d3dce6;
       }
     }
+    .ve-message-box {
+      height: 300px;
+      &::before {
+        content: '';
+        height: 0;
+      }
+      padding: 0;
+      .buyImg {
+        width: 310px;
+        height: 310px;
+        float: left;
+        margin-right: 20px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .buyInfo {
+        margin-right: 20px;
+        .item-title {
+          font-size: 18px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          &::before {
+            content: '';
+            height: 40px;
+            display: block;
+          }
+        }
+        .item-price {
+          height: 26px;
+          line-height: 26px;
+          margin: 5px auto;
+          span {
+            font-size: 22px;
+            color: rgba(252, 86, 89, 1);
+          }
+          del {
+            margin-left: 15px;
+            font-size: 18px;
+            color: rgba(136, 136, 136, 1);
+          }
+        }
+        .item-des {
+          color: rgba(136, 136, 136, 1);
+          font-size: 14px;
+          font-weight: 400;
+          margin-top: 8px;
+          line-height: 22px;
+          height: 132px;
+          overflow: hidden;
+          word-break: break-all;
+        }
+      }
+      .ve-message-box__header {
+        padding: 0;
+      }
+      .ve-message-box__container {
+        padding: 0;
+      }
+      .ve-message-box__btns {
+        display: none;
+      }
+    }
+
+    .el-carousel__item h3 {
+      color: #475669;
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 150px;
+      margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n + 1) {
+      background-color: #d3dce6;
+    }
   }
+}
 </style>
