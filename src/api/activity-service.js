@@ -27,5 +27,9 @@ export default {
   GET_VISITED_CARD_DETAIL: '/manage/recommend-card/query', // 查询推荐卡片详情
   GET_CUSTOM_LOGO: '/manage/brand-manage/get', // 获取logo信息
   GET_RED_BAG_RECOREDS: '/frontend/tool/red-packet-get-records', // 观看端获取红包领取记录接口
-  GET_RED_BAG_INFO: '/frontend/tool/red-packet-get' // 观看端抢红包接口
+  GET_RED_BAG_INFO: '/frontend/tool/red-packet-get', // 观看端抢红包接口
+  GET_WATCH_GOODS_DETAIL: '/frontend/tool/goods-detail', // 商品详情
+  GET_WATCH_GOODS_LIST: '/frontend/tool/goods-list', // 商品推送
+  GOODS_VISIT: '/frontend/tool/goods-visit' // 商品浏览
+
 }
