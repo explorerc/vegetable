@@ -71,8 +71,8 @@
             <!--商品推送-->
             <!--操作区-->
             <div class="icon-list">
-              <span class='redpack' ><em></em>红包</span>
-              <span class='ques' ><em></em>问卷</span>
+              <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
+              <span class='ques' v-if="questionStatus.iconShow"><em v-if="questionStatus.redIcon"></em>问卷</span>
               <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
             </div>
             <!--操作区-->
@@ -204,6 +204,10 @@ export default {
       visitorId: this.$parent.sdkVisitorId,
       currentQuestionId: '',
       questionShow: false,
+      questionStatus: {
+        iconShow: false,
+        redIcon: false
+      },
       goodsSmallPopoverShow: false, // 弹框显示
       goodsSmallDetails: {},
       goodsMsg: {},
@@ -218,7 +222,8 @@ export default {
     ...mapState('liveMager', {
       activityInfo: state => state.activityInfo,
       roomPaas: state => state.roomPaas,
-      joinInfo: state => state.joinInfo
+      joinInfo: state => state.joinInfo,
+      downTimer: state => state.downTimer
     }),
     ...mapState('login', {
       loginInfo: state => state.loginInfo
@@ -239,6 +244,7 @@ export default {
     }
     this.startInit = true
     this.initMsgServe()
+    this.getQuestionsStatus()
   },
   created () {
     // this.initToken()
@@ -384,6 +390,20 @@ export default {
     closeCards () {
       this.cardData.show = false
     },
+    getQuestionsStatus () {
+      this['questionnaire/getById']({
+        activityId: this.$route.params.id,
+        visitorId: this.$parent.sdkVisitorId
+      }).then((res) => {
+        if (res.code === 200 && res.data && res.data.id) {
+          this.questionStatus.iconShow = true
+          this.questionStatus.redIcon = true
+        } else if (res.code === 15110) {
+          this.questionStatus.iconShow = true
+          this.questionStatus.redIcon = false
+        }
+      })
+    },
     getQuestions () {
       this.questionsShow = false
       this.questionsSubmissionShow = false
@@ -441,8 +461,10 @@ export default {
           this.getCardDetails(res.id)
           break
         case 'ques':
+          // this.getQuestions(res.id)
           break
         case 'redpack':
+          // this.$parent.showDownTip()
           break
       }
     },
@@ -506,6 +528,9 @@ export default {
     },
     goodsCount (res) {
       this.goodsLen = res
+    },
+    clickRedpack () {
+      this.$parent.showDownTip()
     }
   }
 }

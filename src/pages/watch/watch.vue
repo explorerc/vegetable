@@ -740,7 +740,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 .v-watch {
   /deep/ {
     position: relative;
@@ -1058,11 +1058,11 @@ export default {
   position: relative;
   width: 100vw;
   height: 130vw;
-  background-image: url("../../assets/image/red-bag-bg@2x.png");
+  background-image: url('../../assets/image/red-bag-bg@2x.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  color: #FFD021;
+  color: #ffd021;
 
   .red-bag-content {
     position: absolute;
@@ -1074,7 +1074,7 @@ export default {
   }
 
   &.get-red-bag {
-    background-image: url("../../assets/image/red-bag-bg-success@2x.png");
+    background-image: url('../../assets/image/red-bag-bg-success@2x.png');
     background-size: contain;
     background-repeat: no-repeat;
     .red-bag-content {
@@ -1086,18 +1086,18 @@ export default {
     .red-bag-title {
       font-size: 6vw;
       line-height: 10vw;
-      color: #BA5003;
+      color: #ba5003;
     }
 
     .red-bag-money {
       font-size: 32px;
-      color: #EC0827;
+      color: #ec0827;
     }
-    .detail-top{
+    .detail-top {
       margin-top: 190px;
       font-size: 48px;
     }
-    .detail-bottom{
+    .detail-bottom {
       margin-top: 40px;
       font-size: 28px;
     }
@@ -1110,8 +1110,8 @@ export default {
     margin-bottom: -2px;
     color: #333;
     background-image: none;
-    background-color: #EC0627;
-    background: linear-gradient(#FF6700, #FE0025);
+    background-color: #ec0627;
+    background: linear-gradient(#ff6700, #fe0025);
     border-radius: 10px;
     .red-bag-title {
       font-size: 28px;
@@ -1124,7 +1124,7 @@ export default {
       margin-bottom: 4px;
 
       .red-bag-title {
-        color: #4B5AFE;
+        color: #4b5afe;
         font-size: 28px;
       }
     }
@@ -1132,7 +1132,7 @@ export default {
     .icon-close {
       top: 10px;
       right: 10px;
-      color: #FFD021;
+      color: #ffd021;
     }
   }
 
@@ -1143,26 +1143,26 @@ export default {
     font-size: 40px;
     &:hover {
       cursor: pointer;
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 
   .red-bag-title {
     font-size: 6vw;
     line-height: 10vw;
-    color: #FFD021;
+    color: #ffd021;
   }
 
   .red-bag-info {
     font-size: 28px;
 
     &.tip-info {
-      background-color: #D90B25;
+      background-color: #d90b25;
       padding: 15px;
       margin: 6vw 0;
       border-radius: 3px;
       color: #fff;
-      opacity: .8;
+      opacity: 0.8;
       font-size: 28px;
     }
 
@@ -1173,7 +1173,7 @@ export default {
         cursor: pointer;
         color: $color-blue-hover;
         text-decoration: underline;
-        transition: color .2s;
+        transition: color 0.2s;
       }
     }
   }
@@ -1185,7 +1185,7 @@ export default {
     text-align: center;
     color: #333;
     font-size: 14px;
-    background-color: #FFD021;
+    background-color: #ffd021;
     border-radius: 30px;
     padding: 0 30px;
     margin-top: 10px;
@@ -1247,12 +1247,12 @@ export default {
       }
     }
   }
-  .none-data{
+  .none-data {
     display: block;
     width: 100%;
     line-height: 40px;
     text-align: center;
-    color: #8E9198;
+    color: #8e9198;
   }
 }
 </style>
