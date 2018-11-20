@@ -1,12 +1,12 @@
 <template>
   <div class="v-questions-from">
     <div class="v-content">
-      <img src="../../../assets/image/avatar@2x.png" alt="">
+      <img :src="defaultImg" alt="" v-if="defaultImg" class="v-question-img">
       <p class="v-title">
-        产品调研
+        {{questions.title}}
       </p>
       <p class="v-summary">
-       欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
+        {{questions.description}}
       </p>
       <div class="v-questions">
         <com-question v-for="(item,index) in dragData"
@@ -42,12 +42,21 @@ export default {
     visitorId: {
       type: String,
       default: null
+    },
+    questions: {
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
       activityId: this.$route.params.id,
       imgHost: process.env.IMGHOST + '/'
+    }
+  },
+  computed: {
+    defaultImg () {
+      return this.questions.imgUrl ? this.$imgHost + '/' + this.questions.imgUrl : ''
     }
   },
   methods: {

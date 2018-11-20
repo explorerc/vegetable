@@ -72,6 +72,7 @@
                   v-if="questionsShow"
                   :naireId="naireId"
                   :visitorId="visitorId"
+                  :questions="questions"
                   @questionSuccess="questionsShow=false"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
   </div>
@@ -120,7 +121,12 @@ export default {
       },
       dragData: [],
       questionsShow: false,
-      naireId: '', // 问卷id
+      naireId: '',
+      questions: {
+        imgUrl: '',
+        title: '',
+        description: ''
+      }, // 问卷id
       visitorId: this.$parent.sdkVisitorId
     }
   },
@@ -285,6 +291,9 @@ export default {
         activityId: this.$route.params.id,
         visitorId: this.visitorId
       }).then((res) => {
+        this.questions.imgUrl = res.data.imgUrl
+        this.questions.title = res.data.title
+        this.questions.description = res.data.description
         this.naireId = res.data.id
         this.dragData = res.data.detail
         this.questionsShow = true
