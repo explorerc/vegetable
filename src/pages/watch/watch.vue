@@ -635,7 +635,6 @@ export default {
       return false
     },
     initMsgServe () {
-      debugger
       ChatService.OBJ.init({
         accountId: this.roomPaas.accountId,
         token: this.roomPaas.token,
