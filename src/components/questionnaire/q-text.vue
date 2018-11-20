@@ -2,14 +2,14 @@
   <div class="q-edit-content">
     <com-input v-if="!edit"
                @focus="focus"
+               :disabled="isHidden"
                :type="value.detail.format"
                :max-length="value.detail.max?value.detail.max:0"
                :value.sync="value.value"></com-input>
-
                <div :id="captchaId"
-                     v-if="!edit&&value.verification==='Y'"
+                     v-if="!edit&&value.verification==='Y'&&!isHidden"
                      class="captcha" ></div>
-               <com-input v-if="!edit&&value.verification==='Y'"
+               <com-input v-if="!edit&&value.verification==='Y'&&!isHidden"
                class="code"
                @focus="focus"
                :local="true"
@@ -19,7 +19,7 @@
                <com-button class="codeBtn"
                             :disabled="!codeEnable"
                             @click="getCode"
-                            v-if="!edit&&value.verification==='Y'">{{codeText}}</com-button>
+                            v-if="!edit&&value.verification==='Y'&&!isHidden">{{codeText}}</com-button>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
     </div>
@@ -28,8 +28,9 @@
 
 <script>
 import activityService from 'src/api/activity-service'
-
+import loginMixin from 'components/login-mixin'
 export default {
+  mixins: [loginMixin],
   props: {
     value: {
       type: Object,
@@ -57,32 +58,39 @@ export default {
       mobileReg: /^1[1|2|3|4|5|6|7|8|9][0-9]\d{8}$/,
       errorTip: '',
       phoneKey: '',
-      codeType: 'CONSUMER_USER_LOGIN'
+      codeType: 'CONSUMER_USER_LOGIN',
+      isHidden: false
     }
   },
   mounted () {
     if (this.value.detail.format === 'phone') {
-      this.$get(activityService.GET_CAPTCHAID).then((res) => {
-        this.key = res.data
-        window.initNECaptcha({
-          element: `#${this.captchaId}`,
-          mode: 'float',
-          width: '100%',
-          captchaId: this.key,
-          onVerify: (err, data) => {
-            if (err) {
-              console.log(err)
-            } else {
-              this.verify = true
-              this.captchaKey = data.validate
+      let userInfo = JSON.parse(sessionStorage.getItem('login'))
+      if (userInfo) {
+        this.value.value = userInfo.mobile
+        this.isHidden = true
+      } else {
+        this.$get(activityService.GET_CAPTCHAID).then((res) => {
+          this.key = res.data
+          window.initNECaptcha({
+            element: `#${this.captchaId}`,
+            mode: 'float',
+            width: '100%',
+            captchaId: this.key,
+            onVerify: (err, data) => {
+              if (err) {
+                console.log(err)
+              } else {
+                this.verify = true
+                this.captchaKey = data.validate
+              }
             }
-          }
-        }, (instance) => {
-          this.captchaIns = instance
-        }, (err) => {
-          console.log(err)
+          }, (instance) => {
+            this.captchaIns = instance
+          }, (err) => {
+            console.log(err)
+          })
         })
-      })
+      }
     }
   },
   computed: {
@@ -163,14 +171,14 @@ export default {
         if (!this.value.value || this.value.value.length < 11) {
           this.errorTip = '请输入正确的手机号'
           return false
-        } else if (!this.value.code && this.value.verification === 'Y') {
+        } else if (!this.isHidden && !this.value.code && this.value.verification === 'Y') {
           this.errorTip = '请输入验证码'
           return false
         }
         if (!this.verification(this.value.value, 'phone')) return false
-        if (!this.verification(this.value.code, 'code')) return false
+        if (!this.isHidden && !this.verification(this.value.code, 'code')) return false
         let ext = JSON.parse(this.value.ext)
-        return { id: this.value.id, value: this.value.value, code: this.value.code, type: ext.key }
+        return { id: this.value.id, value: this.value.value, code: this.isHidden ? '' : this.value.code, type: ext.key }
       }
       let ext = JSON.parse(this.value.ext)
       return { id: this.value.id, value: this.value.value, type: ext.key }

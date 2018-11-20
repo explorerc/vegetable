@@ -8,15 +8,19 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <img class="logo" v-if="customLogo" :src="customLogo">
-      <span class="logo" v-else>微吼知客</span>
+      <img class="logo"
+           v-if="customLogo"
+           :src="customLogo">
+      <span class="logo"
+            v-else>微吼知客</span>
       <span class="ac-title">{{activityInfo.title}}</span>
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
       <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
-        <a href="/m/user" class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
+        <a href="/m/user"
+           class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
         <!-- <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
@@ -67,6 +71,86 @@
         恭喜您，订阅成功！
       </p>
     </message-box>
+    <!-- 红包雨 -- 降临 -->
+    <message-box v-if="redBagTipShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox"
+           class="red-bag-box">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
+        <div class="red-bag-content">
+          <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
+          <!--<p class="red-bag-info">您还未<span class="login-link">登录</span>无法参与红包雨活动</p>-->
+          <!--<p class="red-bag-info">手速越快，红可能越大哦~</p>-->
+          <!--<p class="red-bag-info">开奖前分享直播间参与红包雨活动</p>-->
+          <p class="red-bag-info tip-info">参与条件：开奖前发送口令参与红包雨活动</p>
+          <!--<p class="red-bag-info">开奖前填写问卷调查参与红包雨活动</p>-->
+          <span class="red-bag-tip">口令：大家好才是真的好</span>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包雨 -- 倒计时-->
+    <message-box v-if="redBagTimeDownShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox"
+           class="red-bag-box">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
+        <div class="red-bag-content">
+          <p class="red-bag-title">红包雨降临倒计时</p>
+          <span class="time-down">{{timer}}</span>
+          <p class="red-bag-info">点击屏幕上落下的红包，手速越快红包越大！</p>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包雨 -- 抢到红包 -->
+    <message-box v-if="redBagShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox"
+           class="red-bag-box get-red-bag">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
+        <div class="red-bag-content">
+          <p class="red-bag-title">恭喜您抢到</p>
+          <span class="red-bag-money">￥{{redBagResultInfo.amount}}</span>
+          <span class="red-bag-detail detail-top">超过了<span style="color: #fff;">{{redBagResultInfo.percent}}%</span>的小伙伴</span>
+          <span class="red-bag-detail detail-bottom">已收入钱包，请到个人中心提现</span>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包雨 -- 未抢到红包 -->
+    <message-box v-if="redBagNoneShow"
+                 @handleClick="handleRedBagClick">
+      <div slot="msgBox"
+           class="red-bag-box red-bag-top"
+           style="background-color: #fff;">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
+        <p class="red-bag-title">天呐，您与红包擦肩而过～</p>
+        <div class="top-content">
+          <p class="red-bag-title">（手气榜 TOP5）</p>
+          <ul class="red-bag-list">
+            <li v-if="redBagrecordList.length<=0">
+              <span class="none-data">暂无数据</span>
+            </li>
+            <li v-else
+                v-for="redBagInfo in redBagrecordList">
+              <span class="head-icon"
+                    v-if="!redBagInfo.avatar"></span>
+              <span class="head-icon"
+                    v-else
+                    :style="{backgroundImage: `url(${redBagInfo.avatar})`}"></span>
+              <span class="nick-name">{{redBagInfo.nick_name}}</span>
+              <span class="red-bag-money fr">￥{{redBagInfo.amount}}</span>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </message-box>
+    <RedBagRain :rainTime="rainTime"
+                @endRain="endRainHandler"
+                @selectOk="selectRedBag"></RedBagRain>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -82,6 +166,10 @@ import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service' // import vconsole
 import EventBus from 'src/utils/eventBus'
+import RedBagRain from './red-bag-rain' // 红包雨
+import RedBagConfig from 'src/api/red-bag-config'
+import ChatService from 'components/chat/ChatService.js'
+
 // let vConsole = new VConsole()
 const playTypes = {
   'PREPARE': 'pre',
@@ -97,6 +185,7 @@ const playStatuTypes = {
 }
 export default {
   mixins: [loginMixin],
+  components: { RedBagRain },
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
@@ -142,7 +231,27 @@ export default {
       votherdiv: false, // 非x5横屏
       showPersonCount: 0,
       sdkVisitorId: '',
-      logoImg: ''
+      logoImg: '',
+      red_packet_id: '',
+      redBagTipShow: false,
+      redBagNoneShow: false,
+      redBagShow: false,
+      redBagTimeDownShow: false,
+      redBagrecordList: [],
+      redBagResultInfo: {
+        avatar: '',
+        nick_name: '',
+        amount: '',
+        amount_ranking: '',
+        percent: ''
+      },
+      autoTime: 0,
+      rainTime: 0,
+      redBagCount: 0,
+      timer: 10,
+      timerInterval: 0,
+      redBagStartTimer: 0,
+      redBagStartTimerInterval: 0
     }
   },
   mounted () {
@@ -155,7 +264,8 @@ export default {
     ...mapState('liveMager', {
       activityInfo: state => state.activityInfo,
       joinInfo: state => state.joinInfo,
-      roomPaas: state => state.roomPaas
+      roomPaas: state => state.roomPaas,
+      downTimer: state => state.downTimer
     }),
     ...mapState('tokenMager', {
       chatParams: state => state.chatParams
@@ -174,6 +284,10 @@ export default {
       return logo ? `${this.$imgHost}/${logo}` : ''
     }
   },
+  beforeDestroy () {
+    clearInterval(this.timerInterval)
+    clearInterval(this.redBagStartTimerInterval)
+  },
   created () {
     EventBus.$on('enterFullScreen', () => {
       this.vx5div = true
@@ -189,7 +303,18 @@ export default {
     }
     this.activityId = queryId
     this.initPage()
-
+    EventBus.$on('red_packet', (data) => {
+      if (this.red_packet_id) {
+        let data = {
+          red_packet_id: this.red_packet_id,
+          activity_id: this.activityId
+        }
+        if (data) {
+          data.password = data
+        }
+        this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, data).then((res) => { })
+      }
+    })
     let _this = this
     window.addEventListener(
       'onorientationchange' in window ? 'orientationchange' : 'resize',
@@ -210,6 +335,13 @@ export default {
       false
     )
   },
+  filters: {
+    fmtTimer (value) {
+      let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+      let s = ((value % 60 >> 0) + '').padStart(2, 0)
+      return `${m}:${s}`
+    }
+  },
   watch: {
     activityInfo: {
       handler (newVal) {
@@ -219,6 +351,21 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    redBagTimeDownShow (newVal) {
+      if (newVal) {
+        this.timer = 10
+        this.timerInterval = setInterval(() => {
+          if (this.timer === 0) {
+            clearInterval(this.timerInterval)
+            this.timerInterval = 0
+            this.redBagTimeDownShow = false
+            this.rainTime = 10
+            return
+          }
+          this.timer--
+        }, 1000)
+      }
     }
   },
   methods: {
@@ -228,7 +375,8 @@ export default {
     ...mapMutations('liveMager', {
       storeActivityInfo: types.ACTIVITY_INFO,
       storeRoomPaas: types.ROOM_PAAS,
-      storeJoinInfo: types.JOIN_INFO
+      storeJoinInfo: types.JOIN_INFO,
+      storeDownTimer: types.DOWN_TIMER
     }),
     ...mapMutations('login', {
       storeLoginInfo: types.LOGIN_INFO
@@ -316,6 +464,7 @@ export default {
         this.sdkVisitorId = res.data.visitorId
       })
       await this.initRoomPaas()
+      this.initMsgServe()
       // /* 获取自定义主题 */
       // this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
       //   activityId: this.$route.params.id
@@ -515,11 +664,113 @@ export default {
         return true
       }
       return false
+    },
+    initMsgServe () {
+      ChatService.OBJ.init({
+        accountId: this.roomPaas.accountId,
+        token: this.roomPaas.token,
+        appId: this.roomPaas.appId,
+        channelId: this.roomPaas.channelRoom
+      })
+      /* 监听创建红包通知消息 */
+      ChatService.OBJ.regHandler(RedBagConfig.MARKET_TOOL, (msg) => {
+        console.log('-----------收到红包消息------------')
+        console.log(msg)
+        if (msg.type === RedBagConfig.createRedBag) {
+          this.autoTime = msg.time ? parseInt(msg.time) : 0
+          this.red_packet_id = msg.red_packet_uuid
+          this.redBagCount = 0
+          this.dealWithRedBag()
+        }
+      })
+    },
+    handleRedBagClick (e) {
+      this.redBagTipShow = false
+      this.redBagTimeDownShow = false
+      this.redBagShow = false
+      this.redBagNoneShow = false
+    },
+    selectRedBag (count) { // 选中红包雨红包
+      this.redBagCount = count
+      console.log(`点击到了 ${count} 个红包`)
+    },
+    /* 红包雨结束 */
+    async endRainHandler () {
+      this.rainTime = 0
+      if (this.redBagCount) {
+        await this.sendRedBag()
+        if (!this.redBagResultInfo.amount) {
+          // 延迟2秒执行，保证本次红包活动已经结束
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.queryRedBagrecordList()
+          }, 2000)
+        }
+      } else {
+        this.queryRedBagrecordList()
+      }
+    },
+    /* 抢红包接口 */
+    sendRedBag () {
+      let param = {
+        activity_id: this.activityId,
+        red_packet_id: this.red_packet_id,
+        password: ''
+      }
+      if (!param.password) {
+        delete param.password
+      }
+      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_INFO, {
+        ...param
+      }).then((res) => {
+        if (res.code === 200 && res.data) {
+          this.redBagShow = true
+          this.redBagResultInfo = res.data
+        }
+      })
+    },
+    queryRedBagrecordList () {
+      this.redBagNoneShow = true
+      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_RECOREDS, {
+        red_packet_id: this.red_packet_id
+      }).then((res) => {
+        if (res.code === 200 && res.data) {
+          this.redBagrecordList = res.data.list
+        }
+      })
+    },
+    dealWithRedBag () {
+      if (this.autoTime === 0) { // 立即开始
+        this.redBagTimeDownShow = true
+      } else {
+        this.redBagTipShow = true
+        // 红包雨活动已推送,倒计时
+        this.redBagStartTimer = this.autoTime * 60
+        this.redBagStartTimerInterval = setInterval(() => {
+          this.storeDownTimer(this.redBagStartTimer)
+          if (this.redBagStartTimer === 10) {
+            clearInterval(this.redBagStartTimerInterval)
+            this.redBagStartTimer = 0
+            this.storeDownTimer(0)
+            this.redBagTipShow = false
+            // 10秒倒计时
+            this.redBagTimeDownShow = true
+            return
+          }
+          this.redBagStartTimer = this.redBagStartTimer - 1
+        }, 1000)
+      }
+    },
+    showDownTip () {
+      if (this.redBagStartTimer > 10) {
+        this.redBagTipShow = true
+      }
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+@import 'assets/css/mixin.scss';
 .v-watch {
   /deep/ {
     position: relative;
@@ -831,6 +1082,207 @@ export default {
         }
       }
     }
+  }
+}
+.red-bag-box {
+  position: relative;
+  width: 100vw;
+  height: 130vw;
+  background-image: url('../../assets/image/red-bag-bg@2x.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: #ffd021;
+
+  .red-bag-content {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    width: 70vw;
+    margin-left: -35vw;
+    padding: 0 20px;
+  }
+
+  &.get-red-bag {
+    background-image: url('../../assets/image/red-bag-bg-success@2x.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    .red-bag-content {
+      top: 30%;
+    }
+    .icon-close {
+      top: 86px;
+    }
+    .red-bag-title {
+      font-size: 6vw;
+      line-height: 10vw;
+      color: #ba5003;
+    }
+
+    .red-bag-money {
+      font-size: 32px;
+      color: #ec0827;
+    }
+    .detail-top {
+      margin-top: 190px;
+      font-size: 48px;
+    }
+    .detail-bottom {
+      margin-top: 40px;
+      font-size: 28px;
+    }
+  }
+
+  &.red-bag-top {
+    width: 80vw;
+    padding: 30px;
+    height: auto;
+    margin-bottom: -2px;
+    color: #333;
+    background-image: none;
+    background-color: #ec0627;
+    background: linear-gradient(#ff6700, #fe0025);
+    border-radius: 10px;
+    .red-bag-title {
+      font-size: 28px;
+      line-height: 10vw;
+      color: #fff;
+    }
+    .top-content {
+      background-color: #fff;
+      border-radius: 10px;
+      margin-bottom: 4px;
+
+      .red-bag-title {
+        color: #4b5afe;
+        font-size: 28px;
+      }
+    }
+
+    .icon-close {
+      top: 10px;
+      right: 10px;
+      color: #ffd021;
+    }
+  }
+
+  .icon-close {
+    position: absolute;
+    top: 14%;
+    right: 12%;
+    font-size: 40px;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  .red-bag-title {
+    font-size: 6vw;
+    line-height: 10vw;
+    color: #ffd021;
+  }
+
+  .red-bag-info {
+    font-size: 28px;
+
+    &.tip-info {
+      background-color: #d90b25;
+      padding: 15px;
+      margin: 6vw 0;
+      border-radius: 3px;
+      color: #fff;
+      opacity: 0.8;
+      font-size: 28px;
+    }
+
+    .login-link {
+      color: $color-blue;
+
+      &:hover {
+        cursor: pointer;
+        color: $color-blue-hover;
+        text-decoration: underline;
+        transition: color 0.2s;
+      }
+    }
+  }
+
+  .red-bag-tip {
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    background-color: #ffd021;
+    border-radius: 30px;
+    padding: 0 30px;
+    margin-top: 10px;
+    font-size: 28px;
+  }
+
+  .time-down {
+    display: inline-block;
+    margin: 10px 0 30px 0;
+    font-size: 72px;
+    color: #fff;
+  }
+
+  .red-bag-money {
+    color: $color-red;
+    font-size: 30px;
+    line-height: 50px;
+  }
+
+  .red-bag-detail {
+    display: block;
+    font-size: 28px;
+    line-height: 30px;
+  }
+
+  .red-bag-list {
+    list-style: none;
+    user-select: none;
+
+    li {
+      width: 100%;
+      padding: 20px;
+      text-align: left;
+      .head-icon {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin-right: 16px;
+        border: solid 1px $color-bd;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      .nick-name {
+        display: inline-block;
+        max-width: 300px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 80px;
+        vertical-align: middle;
+      }
+
+      .red-bag-money {
+        font-size: 14px;
+        line-height: 86px;
+      }
+    }
+  }
+  .none-data {
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    color: #8e9198;
   }
 }
 </style>

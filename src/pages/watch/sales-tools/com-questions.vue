@@ -1,12 +1,13 @@
 <template>
   <div class="v-questions-from">
+    <a @click="colse" class="v-close">收起<i class="iconfont icon-jiantouzuo"></i></a>
     <div class="v-content">
-      <img src="../../../assets/image/avatar@2x.png" alt="">
+      <img :src="defaultImg" alt="" v-if="defaultImg" class="v-question-img">
       <p class="v-title">
-        产品调研
+        {{questions.title}}
       </p>
       <p class="v-summary">
-       欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
+        {{questions.description}}
       </p>
       <div class="v-questions">
         <com-question v-for="(item,index) in dragData"
@@ -25,6 +26,7 @@
 import question from 'components/questionnaire/wrap'
 import loginMixin from 'components/login-mixin'
 import questionService from 'src/api/questionnaire-service'
+import EventBus from 'src/utils/eventBus.js'
 export default {
   components: {
     comQuestion: question
@@ -42,6 +44,10 @@ export default {
     visitorId: {
       type: String,
       default: null
+    },
+    questions: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -50,11 +56,17 @@ export default {
       imgHost: process.env.IMGHOST + '/'
     }
   },
+  computed: {
+    defaultImg () {
+      return this.questions.imgUrl ? this.$imgHost + '/' + this.questions.imgUrl : ''
+    }
+  },
   methods: {
     save () {
       let result = true
       let refs = this.$refs
       let data = {}
+      let isRefresh = false
       data.activityId = this.$route.params.id
       data.naireId = this.naireId
       data.visitorId = this.visitorId
@@ -71,7 +83,8 @@ export default {
             switch (returnData.type) {
               case 'phone':
                 data.extData.phone = returnData.value
-                data.extData.verifyCode = returnData.code
+                data.extData.verifyCode = returnData.code ? returnData.code : ''
+                isRefresh = returnData.code
                 break
               case 'name':
                 data.extData.real_name = returnData.value
@@ -105,18 +118,36 @@ export default {
         data.extData = JSON.stringify(data.extData)
         data.naireData = JSON.stringify(data.naireData)
         this.$config({ handlers: true }).$post(questionService.POST_QUESTION, data).then((res) => {
+          EventBus.$emit('red_packet')
           this.$toast({
             content: '提交成功',
             position: 'center'
           })
-          this.$emit('questionSuccess')
+
+          if (isRefresh) {
+            setTimeout(() => {
+              this.$router.go(0)
+            }, 1000)
+          } else {
+            this.$emit('questionSuccess')
+          }
         }).catch((err) => {
-          if (err.code === 111) {
+          if (err.code === 10020) {
             let refs = this.$refs
             let len = Object.keys(refs).length - 1
             refs[`com${len}`][0].$refs.content.errorTip = '验证码不正确'
           } else if (err.code === 15110) {
             this.$emit('questionSuccess')
+            this.$toast({
+              content: err.msg,
+              position: 'center'
+            })
+            if (isRefresh) {
+              setTimeout(() => {
+                this.$router.go(0)
+              }, 1000)
+            }
+          } else {
             this.$messageBox({
               header: '提示',
               content: err.msg,
@@ -130,6 +161,9 @@ export default {
           }
         })
       }
+    },
+    colse () {
+      this.$emit('questionSuccess')
     }
   }
 }
@@ -147,6 +181,15 @@ export default {
   z-index: 10;
   font-size: 24px;
   color: #222;
+  .v-close {
+    font-size: 30px;
+    color: #555;
+    display: block;
+    width: 170px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
   .v-content {
     overflow: auto;
     height: 100%;
@@ -156,6 +199,8 @@ export default {
   img {
     margin: 0 auto;
     display: block;
+    max-width: 100%;
+    max-height: 140px;
   }
 
   .v-title {
