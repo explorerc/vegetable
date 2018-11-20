@@ -66,6 +66,7 @@ export default {
       let result = true
       let refs = this.$refs
       let data = {}
+      let isRefresh = false
       data.activityId = this.$route.params.id
       data.naireId = this.naireId
       data.visitorId = this.visitorId
@@ -83,6 +84,7 @@ export default {
               case 'phone':
                 data.extData.phone = returnData.value
                 data.extData.verifyCode = returnData.code ? returnData.code : ''
+                isRefresh = returnData.code
                 break
               case 'name':
                 data.extData.real_name = returnData.value
@@ -121,14 +123,31 @@ export default {
             content: '提交成功',
             position: 'center'
           })
-          this.$emit('questionSuccess')
+
+          if (isRefresh) {
+            setTimeout(() => {
+              this.$router.go(0)
+            }, 1000)
+          } else {
+            this.$emit('questionSuccess')
+          }
         }).catch((err) => {
-          if (err.code === 111) {
+          if (err.code === 10020) {
             let refs = this.$refs
             let len = Object.keys(refs).length - 1
             refs[`com${len}`][0].$refs.content.errorTip = '验证码不正确'
           } else if (err.code === 15110) {
             this.$emit('questionSuccess')
+            this.$toast({
+              content: err.msg,
+              position: 'center'
+            })
+            if (isRefresh) {
+              setTimeout(() => {
+                this.$router.go(0)
+              }, 1000)
+            }
+          } else {
             this.$messageBox({
               header: '提示',
               content: err.msg,
