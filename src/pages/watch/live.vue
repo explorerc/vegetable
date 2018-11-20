@@ -438,6 +438,7 @@ export default {
           this.goodsInfoShow = true
           break
         case 'cards':
+          this.getCardDetails(res.id)
           break
         case 'ques':
           break
