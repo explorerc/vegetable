@@ -202,6 +202,7 @@ export default {
         description: ''
       }, // 问卷id
       visitorId: this.$parent.sdkVisitorId,
+      currentQuestionId: '',
       questionShow: false,
       goodsSmallPopoverShow: false, // 弹框显示
       goodsSmallDetails: {},
@@ -340,7 +341,12 @@ export default {
             break
           case 'NAIRE':
             console.log('--发送问卷--消息--')
-            this.getQuestions()
+            debugger
+            if (this.currentQuestionId === msg.id && this.questionsShow) {
+            } else {
+              this.currentQuestionId = msg.id
+              this.getQuestions(msg.id)
+            }
             break
           case 'GOODS_PUSH':
             console.log('--商品推送--消息--')
@@ -380,6 +386,7 @@ export default {
     },
     getQuestions () {
       this.questionsShow = false
+      this.questionsSubmissionShow = false
       this.$config({ handlers: true }).$get(questionService.GET_QUESTION, {
         activityId: this.$route.params.id,
         visitorId: this.visitorId
