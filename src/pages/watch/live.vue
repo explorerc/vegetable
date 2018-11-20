@@ -347,7 +347,6 @@ export default {
             break
           case 'NAIRE':
             console.log('--发送问卷--消息--')
-            debugger
             if (this.currentQuestionId === msg.id && this.questionsShow) {
             } else {
               this.currentQuestionId = msg.id
@@ -392,9 +391,9 @@ export default {
       this.cardData.show = false
     },
     getQuestionsStatus () {
-      this['questionnaire/getById']({
+      this.$config({ handlers: true }).$get(questionService.GET_QUESTION, {
         activityId: this.$route.params.id,
-        visitorId: this.$parent.sdkVisitorId
+        visitorId: this.visitorId
       }).then((res) => {
         if (res.code === 200 && res.data && res.data.id) {
           this.questionStatus.iconShow = true

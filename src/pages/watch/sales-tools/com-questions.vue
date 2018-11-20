@@ -26,6 +26,7 @@
 import question from 'components/questionnaire/wrap'
 import loginMixin from 'components/login-mixin'
 import questionService from 'src/api/questionnaire-service'
+import EventBus from 'src/utils/eventBus.js'
 export default {
   components: {
     comQuestion: question
@@ -81,7 +82,7 @@ export default {
             switch (returnData.type) {
               case 'phone':
                 data.extData.phone = returnData.value
-                data.extData.verifyCode = returnData.code
+                data.extData.verifyCode = returnData.code ? returnData.code : ''
                 break
               case 'name':
                 data.extData.real_name = returnData.value
@@ -115,6 +116,7 @@ export default {
         data.extData = JSON.stringify(data.extData)
         data.naireData = JSON.stringify(data.naireData)
         this.$config({ handlers: true }).$post(questionService.POST_QUESTION, data).then((res) => {
+          EventBus.$emit('red_packet')
           this.$toast({
             content: '提交成功',
             position: 'center'
