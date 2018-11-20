@@ -115,7 +115,7 @@
             })
             this.goodsList = res.data
             console.log(this.goodsList)
-            this.$emit('goodsCount', this.goodsList.length)
+            this.$emit('goodsCount', this.goodsTopNum)
           })
       },
       setStatus (val) {
@@ -132,6 +132,7 @@
             this.goodsTopNum += 1
           }
         })
+        this.$emit('goodsCount', this.goodsTopNum)
         console.log(this.goodsList, '09876543876543')
         console.log(this.goodsTopNum, 'goodsNumgoodsNumgoodsNum')
       },

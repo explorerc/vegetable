@@ -355,7 +355,7 @@ export default {
             break
           case 'GOODS_PUSH':
             console.log('--商品推送--消息--')
-            this.goodsLen += 1
+            // this.goodsLen += 1
             this.getGoodsDetails(msg.goods_id)
             break
           case 'GOODS_ADDED':
