@@ -287,6 +287,7 @@ export default {
       this.cardData.show = false
     },
     getQuestions () {
+      this.questionsShow = false
       this.$get(questionService.GET_QUESTION, {
         activityId: this.$route.params.id,
         visitorId: this.visitorId

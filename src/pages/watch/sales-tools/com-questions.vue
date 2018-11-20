@@ -1,5 +1,6 @@
 <template>
   <div class="v-questions-from">
+    <a @click="colse" class="v-close">收起<i class="iconfont icon-jiantouzuo"></i></a>
     <div class="v-content">
       <img :src="defaultImg" alt="" v-if="defaultImg" class="v-question-img">
       <p class="v-title">
@@ -139,6 +140,9 @@ export default {
           }
         })
       }
+    },
+    colse () {
+      this.$emit('questionSuccess')
     }
   }
 }
@@ -156,6 +160,15 @@ export default {
   z-index: 10;
   font-size: 24px;
   color: #222;
+  .v-close {
+    font-size: 30px;
+    color: #555;
+    display: block;
+    width: 170px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
   .v-content {
     overflow: auto;
     height: 100%;
@@ -165,6 +178,8 @@ export default {
   img {
     margin: 0 auto;
     display: block;
+    max-width: 100%;
+    max-height: 140px;
   }
 
   .v-title {
