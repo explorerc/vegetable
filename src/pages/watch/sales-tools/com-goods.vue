@@ -1,7 +1,9 @@
 <template>
   <div class="goods-box">
     <!--置顶-->
-    <div class='top_item' v-for="(ite,indr) in goodsList" :class="item_w"
+    <p class="header-title"><span>商品推荐 </span><i class="el-icon-close" @click="closeGoods"></i></p>
+    <div class='top_item' v-for="(ite,indr) in goodsList"
+         @click="goInfo({goods_id:ite.goods_id,type:0})"
          :key="`top${indr}`" v-show="ite.added === '1' && ite.top === '1'">
       <span class="index">置顶</span>
       <div class="cov_img">
@@ -13,12 +15,13 @@
           <span>￥{{ite.preferential}}</span>
           <del>￥{{ite.price}}</del>
         </p>
-        <h4 class="item-des">{{ite.describe}}</h4>
-        <com-button class="primary-button" @click="goInfo({goods_id:ite.goods_id,type:0})">查看详情</com-button>
+        <!--<h4 class="item-des">{{ite.describe}}</h4>-->
+        <!--<com-button class="primary-button" @click="goInfo({goods_id:ite.goods_id,type:0})">查看详情</com-button>-->
       </div>
     </div>
     <!--未置顶-->
-    <div class='item' v-for="(ite,ind) in goodsList" :class="item_w" :key="ind"
+    <div class='item' v-for="(ite,ind) in goodsList"
+         @click="goInfo({goods_id:ite.goods_id,type:0})"
          v-show="ite.added === '1' && ite.top !== '1'">
       <span class="index">{{ite.number<10?`0${ite.number}`:ite.number}} </span>
       <div class="cov_img">
@@ -30,11 +33,11 @@
           <span>￥{{ite.preferential}}</span>
           <del>￥{{ite.price}}</del>
         </p>
-        <h4 class="item-des">{{ite.describe}}</h4>
-        <com-button class="primary-button" @click="goInfo({goods_id:ite.goods_id,type:0})">查看详情</com-button>
+        <!--<h4 class="item-des">{{ite.describe}}</h4>-->
+        <!--<com-button class="primary-button" @click="goInfo({goods_id:ite.goods_id,type:0})">查看详情</com-button>-->
       </div>
     </div>
-    <!--弹框-->
+    <!--&lt;!&ndash;弹框&ndash;&gt;
     <message-box v-if="buyShow"
                  width="700px"
                  header=''
@@ -61,7 +64,7 @@
           </div>
         </div>
       </div>
-    </message-box>
+    </message-box>-->
   </div>
 </template>
 
@@ -94,19 +97,6 @@
         item_2: 'item_2',
         item_3: 'item_3',
         item_4: 'item_4'
-      }
-    },
-    computed: {
-      item_w () {
-        if (this.goodsTopNum === 1) {
-          return [this.item_1]
-        } else if (this.goodsTopNum === 2) {
-          return [this.item_2]
-        } else if (this.goodsTopNum === 3) {
-          return [this.item_3]
-        } else {
-          return [this.item_4]
-        }
       }
     },
     methods: {
@@ -146,6 +136,7 @@
       },
       goInfo (params) {
         this.buyShow = true
+        this.$emit('goodsInfo', params)
         this.$get(GoodsService.GET_WATCH_GOODS_DETAIL, { goods_id: params.goods_id })
           .then((res) => {
             res.data.image = JSON.parse(res.data.image)
@@ -153,20 +144,9 @@
             console.log(this.goodsInfo)
           })
       },
-      goBuy (params) {
-        params.activity_id = this.activityId
-        this.$get(GoodsService.GOODS_VISIT, params)
-          .then((res) => {
-            console.log(res)
-            this.buyShow = false
-          })
-      },
-      saveQuestions (e) {
-        if (e.action === 'cancel') {
-          this.buyShow = false
-        } else if (e.action === 'confirm') { // 点击确定
-          console.log('buy')
-        }
+      closeGoods () {
+        console.log('关闭')
+        this.$emit('closeGoodList')
       }
     }
   }
@@ -174,34 +154,43 @@
 
 <style scoped lang="scss">
   @import '~assets/css/mixin.scss';
-
+  .header-title{
+    height:80px;
+    line-height: 80px;
+    border-bottom: 1px solid #cccccc;
+    padding: 0 30px;
+    span{
+      color: #555555;
+      font-size: 30px;
+    }
+    i{
+      display: inline-block;
+      height: 80px;
+      line-height: 80px;
+      float: right;
+    }
+  }
   .goods-box {
-    margin: 0 auto;
-    /* 设备宽度大于 1600 */
-    @media all and (min-width: 1600px) {
-      width: 1687px;
-    }
-
-    /* 设备宽度小于 1600px */
-    @media all and (max-width: 1600px) {
-      width: 1132px;
-    }
     /deep/ {
-      margin-top: 30px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top:0 ;
+      left: 0;
+      overflow-y:auto ;
       margin-bottom: 60px;
-      display: flex;
-      flex: 1;
-      justify-content: space-between;
       .item, .top_item {
         display: inline-block;
         overflow: hidden;
-        border: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
         border-radius: 4px;
         position: relative;
+        width: 100%;
+        padding: 30px;
         span.index {
           position: absolute;
-          top: 0;
-          left: 0;
+          top: 30px;
+          left: 30px;
           background-color: #FFD021;
           color: $color-font;
           width: 50px;
@@ -211,26 +200,28 @@
           border-radius: 0 0 50% 0;
           z-index: 1000;
         }
-        &:hover {
-          box-shadow: 0 0 10px 5px #e2e2e2;
-          transform: translate(-5px, -5px);
-          transition: all 0.5s;
-        }
         img {
           border-radius: 4px;
+          float: left;
+          width: 220px;
+          height: 220px;
+          margin-right: 20px;
         }
         div {
           /*padding: 10px 15px;*/
           .item-title {
-            font-size: 18px;
-            height: 48px;
-            line-height: 24px;
+            font-size: 32px;
+            max-height: 90px;
+            line-height: 45px;
             overflow: hidden;
           }
           .item-price {
             height: 26px;
             line-height: 26px;
-            margin: 5px auto;
+            margin: 30px auto auto auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             span {
               font-size: 22px;
               color: rgba(252, 86, 89, 1);
@@ -249,132 +240,6 @@
           }
           button {
             margin: 20px 0;
-          }
-        }
-      }
-      .item_1 {
-        width: 100%;
-        padding: 20px;
-        img {
-          float: left;
-          width: 280px;
-          height: 280px;
-          margin-right: 30px;
-        }
-        > div:nth-of-type(2) {
-          margin-top: 5px;
-          .item-title {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          .item-des {
-            height: 88px;
-            line-height: 22px;
-            overflow: hidden;
-          }
-        }
-      }
-      .item_2 {
-        width: 49.5%;
-        padding: 20px;
-        img {
-          float: left;
-          width: 280px;
-          height: 280px;
-          margin-right: 20px;
-        }
-        > div:nth-of-type(2) {
-          margin-top: 5px;
-          .item-title {
-            height: 48px;
-            line-height: 24px;
-            overflow: hidden;
-          }
-          .item-des {
-            height: 66px;
-            line-height: 22px;
-            overflow: hidden;
-          }
-        }
-      }
-      .item_3 {
-        width: 32%;
-        padding: 20px;
-        .cov_img {
-          /*width: 100%;*/
-          /*position: relative;*/
-          /* &::before {
-             display: inline-block;
-             content: '';
-             padding-top: 100%;
-           }*/
-          img {
-            float: left;
-            width: 240px;
-            height: 240px;
-            margin-right: 20px;
-            /*  position: absolute;
-              width: 100%;
-              height: 100%;
-              top: 0;
-              left: 0;*/
-          }
-        }
-        > div:nth-of-type(2) {
-          /*margin-top: 5px;*/
-          /*padding: 10px 0;*/
-          .item-title {
-            height: 48px;
-            line-height: 24px;
-            overflow: hidden;
-          }
-          .item-des {
-            height: 66px;
-            line-height: 22px;
-            overflow: hidden;
-          }
-          /* button{
-             display: block;
-             margin: auto;
-           }*/
-        }
-      }
-      .item_4 {
-        width: 24%;
-        padding: 20px;
-        .cov_img {
-          width: 100%;
-          position: relative;
-          &::before {
-            display: inline-block;
-            content: '';
-            padding-top: 100%;
-          }
-          img {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-          }
-        }
-        > div:nth-of-type(2) {
-          margin-top: 5px;
-          padding: 10px 0;
-          .item-title {
-            height: 48px;
-            line-height: 24px;
-            overflow: hidden;
-          }
-          .item-des {
-            height: 88px;
-            line-height: 22px;
-            overflow: hidden;
-          }
-          button {
-            display: block;
-            margin: auto;
           }
         }
       }

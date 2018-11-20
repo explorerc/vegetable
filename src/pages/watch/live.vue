@@ -1,20 +1,6 @@
 <template>
   <div class="v-video-box">
     <div class="v-video">
-      <!--<div class="goods_small_popover" v-if="goodsSmallPopoverShow">
-        <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image}`">
-        <a href="#buy">
-          <div>
-            <p class="item-price">
-              <span>￥{{goodsSmallDetails.preferential}}</span>
-              <del>￥{{goodsSmallDetails.price}}</del>
-            </p>
-            <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
-          </div>
-        </a>
-
-        <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
-      </div>-->
       <play-video role="watcher"
                   :play-type="playType"
                   :startInit="startInit"></play-video>
@@ -66,6 +52,30 @@
                 <span @click="doLogin">登录</span>
               </div>
             </template>
+            <!--商品推送-->
+            <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
+              <div >
+                <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                <div>
+                  <p class="item-price">
+                    <span>￥{{goodsSmallDetails.preferential}}</span>
+                    <del>￥{{goodsSmallDetails.price}}</del>
+                  </p>
+                  <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                </div>
+                <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
+              </div>
+              <i></i>
+            </div>
+            <!--商品推送-->
+            <!--操作区-->
+            <div class="icon-list">
+              <span @click="showGoods">商品</span>
+              <span @click="showGoods">商品</span>
+              <span @click="showGoods">商品</span>
+              <span @click="showGoods">商品</span>
+            </div>
+            <!--操作区-->
           </com-tab>
         </com-tabs>
         <!-- <a class="v-subscribe"
@@ -84,12 +94,16 @@
               </el-carousel-item>
             </el-carousel>
             <p>{{goodsSmallDetails.describe}}</p>
+            <input type="text" v-model="goodsSmallDetails.tao" id="copyContent" style="position:absolute;opacity:0;">
             <footer>
               <div><span>{{goodsSmallDetails.preferential}}</span> <del>{{goodsSmallDetails.price}}</del> </div>
-              <span>立即购买</span>
+              <span @click="goBuy({goods_id:goodsSmallDetails.goods_id,type:1})">立即购买</span>
             </footer>
           </div>
         </div>
+      </transition>
+      <transition mode="out-in">
+        <comGoods class="goodsList" :goodsMsg='goodsMsg' v-show="goodsListShow" @closeGoodList = 'closeGoodList' @goodsInfo="goodsInfo"></comGoods>
       </transition>
     </div>
     <!-- 推荐卡片 -->
@@ -100,9 +114,21 @@
     <!-- 问卷 -->
     <comQuestions :dragData="dragData" v-if="questionShow"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
-    <!--<transition mode="out-in">
-      <comGoods :goodsMsg='goodsMsg'></comGoods>
-    </transition>-->
+    <!--弹框-->
+    <message-box v-if="taoShow"
+                 width="100%"
+                 header=''
+                 confirmText=''
+                 class="v-questions-box tao-show"
+                 @handleClick="taoShowBox">
+      <div class="v-content">
+        <img src="~assets/image/tao.png" alt="">
+        <p>
+         请打开 <br>【{{goodsSmallDetails.tao}}】 <br>购买商品
+        </p>
+
+      </div>
+    </message-box>
   </div>
 </template>
 <script>
@@ -153,7 +179,10 @@ export default {
       goodsSmallPopoverShow: false, // 弹框显示
       goodsSmallDetails: {},
       goodsMsg: {},
-      goodsInfoShow: false
+      goodsInfoShow: false,
+      goodsListShow: false,
+      activityId: this.$route.params.id,
+      taoShow: false
     }
   },
   computed: {
@@ -583,10 +612,12 @@ export default {
         }
       })
     },
-    getGoodsDetails (id) {
+    getGoodsDetails (id, type) {
       this.$get(activityService.GET_WATCH_GOODS_DETAIL, { goods_id: id }).then(res => {
         if (res.code === 200) {
-          this.goodsSmallPopoverShow = true
+          if (!type) {
+            this.goodsSmallPopoverShow = true
+          }
           // res.data.image = JSON.parse(res.data.image)[0].name
           res.data.image = JSON.parse(res.data.image)
           this.goodsSmallDetails = res.data
@@ -603,6 +634,37 @@ export default {
     },
     closeGoods () {
       this.goodsInfoShow = false
+    },
+    showGoods () {
+      console.log(111111)
+      this.goodsListShow = true
+    },
+    closeGoodList () {
+      this.goodsListShow = false
+    },
+    goodsInfo (params) {
+      this.goodsListShow = false
+      this.goodsInfoShow = true
+      this.getGoodsDetails(params.goods_id, 'info')
+    },
+    goBuy (params) {
+      params.activity_id = this.activityId
+      this.$get(activityService.GOODS_VISIT, params)
+        .then((res) => {
+          if (this.goodsSmallDetails.tao) {
+            this.taoShow = true
+          } else {
+            location.href = this.goodsSmallDetails.url
+          }
+          console.log(res)
+        })
+    },
+    taoShowBox (e) {
+      if (e.action === 'cancel') {
+        this.taoShow = false
+      } else if (e.action === 'confirm') { // 点击确定
+        console.log('buy')
+      }
     }
   }
 }
@@ -677,122 +739,151 @@ export default {
     z-index: 2;
     overflow: auto;
   }
-  .goods_small_popover {
-    overflow: hidden;
-    position: absolute;
-    bottom: 55px;
-    right: 22px;
-    border-radius: 4px;
-    z-index: 1000;
-    width: 340px;
-    height: 114px;
-    background-color: white;
-    padding: 2px;
-    .cover_img {
-      width: 110px;
-      height: 110px;
-      float: left;
-      margin-right: 4px;
-      border: 1px solid #cccccc;
-    }
-    i {
-      position: absolute;
-      top: 5px;
-      right: 10px;
-    }
-    div {
-      height: 26px;
-      line-height: 26px;
-      .item-title {
-        margin-top: 10px;
-        font-size: 16px;
-        line-height: 22px;
-        height: 44px;
-        overflow: hidden;
-      }
-      .item-price {
-        margin-top: 15px;
-        span {
-          font-size: 22px;
-          color: #FC5659;
-        }
-        del {
-          font-size: 18px;
-          color: rgba(136, 136, 136, 1);
-        }
-      }
-    }
+}
+.icon-list /deep/ {
+  position: absolute;
+  bottom: 120px;
+  right: 22px;
+  span{
+    color: transparent;
+    width: 80px;
+    height: 80px;
+    display: block;
+  }
+  >span:nth-of-type(1){
+    background: url('~assets/image/H5-goods-icon.png') no-repeat center;
+    background-size: cover;
+  }
+  >span:nth-of-type(2){
+    background: url('~assets/image/H5-goods-icon.png') no-repeat center;
+    background-size: cover;
   }
 }
-  .goodsInfo /deep/{
+.goods_small_popover /deep/ {
+  position: absolute;
+  bottom: 450px;
+  right: 22px;
+  border-radius: 4px;
+  z-index: 1000;
+  width: 470px;
+  height: 140px;
+  background-color: white;
+  box-shadow:0px 2px 8px 0px rgba(0,0,0,0.15);
+ div{
+   .cover_img {
+     width: 140px;
+     height: 140px;
+     float: left;
+     margin-right: 4px;
+   }
+   i {
+     position: absolute;
+     top: 5px;
+     right: 10px;
+   }
+   div {
+     padding: 10px;
+     height: 26px;
+     line-height: 26px;
+     .item-title {
+       font-size: 12px;
+       line-height: 30px;
+       height: 60px;
+       margin-top: 10px;
+       overflow: hidden;
+     }
+     .item-price {
+       span {
+         font-size: 22px;
+         color: #FC5659;
+       }
+       del {
+         font-size: 18px;
+         color: rgba(136, 136, 136, 1);
+       }
+     }
+   }
+ }
+}
+.goodsList /deep/{
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:0 ;
+  left: 0;
+  overflow-y:auto ;
+}
+  .goodsInfo /deep/ {
     background-color: white;
     width: 100%;
     height: 100%;
     position: absolute;
-    top:0 ;
+    top: 0;
     left: 0;
-    overflow-y:auto ;
-    >p{
+    overflow-y: auto;
+    > p {
       height: 80px;
       line-height: 80px;
-      font-size:30px;
-      color:rgba(85,85,85,1);
+      font-size: 30px;
+      color: rgba(85, 85, 85, 1);
       border-bottom: 1px solid #cccccc;
-      span{
+      span {
         margin-left: 30px;
       }
-      i{
+      i {
         margin-right: 30px;
         line-height: 80px;
         font-size: 28px;
         float: right;
       }
     }
-    >div{
-      padding:0 50px 30px 50px;
-      h4{
-        font-size:32px;
+    > div {
+      padding: 0 50px 30px 50px;
+      h4 {
+        font-size: 32px;
         color: #222222;
-        margin:  20px 0;
+        margin: 20px 0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
-      .el-carousel{
-        border-radius:10px;
-        img{
+      .el-carousel {
+        border-radius: 10px;
+        img {
           width: 100%;
           height: 100%;
         }
       }
-      p{
+      p {
         margin: 30px auto;
-        word-wrap : break-word;
-        font-size:28px;
-        font-weight:400;
-        color:rgba(136,136,136,1);
-        line-height:40px;
+        word-wrap: break-word;
+        font-size: 28px;
+        font-weight: 400;
+        color: rgba(136, 136, 136, 1);
+        line-height: 40px;
       }
-      footer{
+      footer {
         height: 80px;
         line-height: 80px;
         display: flex;
-        border-radius:0 45px 45px 0;
-        >div{
+        border-radius: 40px;
+        overflow: hidden;
+        > div {
           display: inline-block;
           flex: 3;
           text-align: center;
           background-color: #555555;
-          span{
+          span {
             color: white;
-            font-size:36px;
+            font-size: 36px;
           }
-          del{
+          del {
             margin-left: 5px;
             color: #888888;
           }
         }
-        >span{
+        > span {
           text-align: center;
           flex: 2;
           display: inline-block;
@@ -801,4 +892,23 @@ export default {
       }
     }
   }
+.tao-show /deep/{
+  .ve-message-box {
+    .ve-message-box__container{
+      .v-content{
+        text-align: center;
+        img{
+          margin: 80px auto 20px auto;
+        }
+        p{
+          font-size:30px;
+          color: #333333;
+        }
+      }
+      .ve-message-box__btns{
+        display: none;
+      }
+    }
+  }
+}
 </style>
