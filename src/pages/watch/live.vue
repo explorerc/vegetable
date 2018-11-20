@@ -19,7 +19,7 @@
                    :index="2">
             <div class="chat-content">
               <chating ref="chatbox"
-                      :class="{showKeyboard:sendBoxShow}"
+                       :class="{showKeyboard:sendBoxShow}"
                        :type="playType"
                        :isWatch="isWatch"
                        :sendBoxShow="true"
@@ -60,12 +60,19 @@
       </div>
     </div>
     <!-- 推荐卡片 -->
-    <transition name="top-bottom"  mode="out-in">
-      <com-cards v-if="cardData.show" :cardData="cardData" @closeCards='closeCards'></com-cards>
+    <transition name="top-bottom"
+                mode="out-in">
+      <com-cards v-if="cardData.show"
+                 :cardData="cardData"
+                 @closeCards='closeCards'></com-cards>
     </transition>
 
     <!-- 问卷 -->
-    <comQuestions :dragData="dragData" v-if="questionsShow" :naireId="naireId" :visitorId="visitorId" @questionSuccess="questionsShow=false"> </comQuestions>
+    <comQuestions :dragData="dragData"
+                  v-if="questionsShow"
+                  :naireId="naireId"
+                  :visitorId="visitorId"
+                  @questionSuccess="questionsShow=false"> </comQuestions>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -213,6 +220,7 @@ export default {
           temp.status = 'FINISH'
           temp.statusName = '结束'
           this.storeActivityInfo(temp)
+          _log.track(Vhall_User_Actions.LEAVE)
         }, 15000)
       })
       /* 监听真实人员进入直播间 */
