@@ -73,7 +73,7 @@
       <div slot="msgBox" class="red-bag-box">
         <i class="iconfont icon-close" @click="handleRedBagClick"></i>
         <div class="red-bag-content">
-          <p class="red-bag-title">红包雨即将降临</p>
+          <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <!--<p class="red-bag-info">您还未<span class="login-link">登录</span>无法参与红包雨活动</p>-->
           <!--<p class="red-bag-info">手速越快，红可能越大哦~</p>-->
           <!--<p class="red-bag-info">开奖前分享直播间参与红包雨活动</p>-->
@@ -103,8 +103,8 @@
         <div class="red-bag-content">
           <p class="red-bag-title">恭喜您抢到</p>
           <span class="red-bag-money">￥{{redBagResultInfo.amount}}</span>
-          <span class="red-bag-detail" style="margin-top: 30px;">超过了<span style="color: #fff;">{{redBagResultInfo.percent}}%</span>的小伙伴</span>
-          <span class="red-bag-detail">已收入钱包，请到个人中心提现</span>
+          <span class="red-bag-detail detail-top">超过了<span style="color: #fff;">{{redBagResultInfo.percent}}%</span>的小伙伴</span>
+          <span class="red-bag-detail detail-bottom">已收入钱包，请到个人中心提现</span>
         </div>
       </div>
     </message-box>
@@ -245,7 +245,8 @@ export default {
     ...mapState('liveMager', {
       activityInfo: state => state.activityInfo,
       joinInfo: state => state.joinInfo,
-      roomPaas: state => state.roomPaas
+      roomPaas: state => state.roomPaas,
+      downTimer: state => state.downTimer
     }),
     ...mapState('tokenMager', {
       chatParams: state => state.chatParams
@@ -712,6 +713,7 @@ export default {
       if (this.autoTime === 0) { // 立即开始
         this.redBagTimeDownShow = true
       } else {
+        this.redBagTipShow = true
         // 红包雨活动已推送,倒计时
         this.redBagStartTimer = this.autoTime * 60
         this.redBagStartTimerInterval = setInterval(() => {
@@ -720,6 +722,7 @@ export default {
             clearInterval(this.redBagStartTimerInterval)
             this.redBagStartTimer = 0
             this.storeDownTimer(0)
+            this.redBagTipShow = false
             // 10秒倒计时
             this.redBagTimeDownShow = true
             return
@@ -727,11 +730,17 @@ export default {
           this.redBagStartTimer = this.redBagStartTimer - 1
         }, 1000)
       }
+    },
+    showDownTip () {
+      if (this.redBagStartTimer > 10) {
+        this.redBagTipShow = true
+      }
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+  @import "assets/css/mixin.scss";
 .v-watch {
   /deep/ {
     position: relative;
@@ -1043,6 +1052,207 @@ export default {
         }
       }
     }
+  }
+}
+.red-bag-box {
+  position: relative;
+  width: 100vw;
+  height: 130vw;
+  background-image: url("../../assets/image/red-bag-bg@2x.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: #FFD021;
+
+  .red-bag-content {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    width: 70vw;
+    margin-left: -35vw;
+    padding: 0 20px;
+  }
+
+  &.get-red-bag {
+    background-image: url("../../assets/image/red-bag-bg-success@2x.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    .red-bag-content {
+      top: 30%;
+    }
+    .icon-close {
+      top: 86px;
+    }
+    .red-bag-title {
+      font-size: 6vw;
+      line-height: 10vw;
+      color: #BA5003;
+    }
+
+    .red-bag-money {
+      font-size: 32px;
+      color: #EC0827;
+    }
+    .detail-top{
+      margin-top: 190px;
+      font-size: 48px;
+    }
+    .detail-bottom{
+      margin-top: 40px;
+      font-size: 28px;
+    }
+  }
+
+  &.red-bag-top {
+    width: 80vw;
+    padding: 30px;
+    height: auto;
+    margin-bottom: -2px;
+    color: #333;
+    background-image: none;
+    background-color: #EC0627;
+    background: linear-gradient(#FF6700, #FE0025);
+    border-radius: 10px;
+    .red-bag-title {
+      font-size: 28px;
+      line-height: 10vw;
+      color: #fff;
+    }
+    .top-content {
+      background-color: #fff;
+      border-radius: 10px;
+      margin-bottom: 4px;
+
+      .red-bag-title {
+        color: #4B5AFE;
+        font-size: 28px;
+      }
+    }
+
+    .icon-close {
+      top: 10px;
+      right: 10px;
+      color: #FFD021;
+    }
+  }
+
+  .icon-close {
+    position: absolute;
+    top: 14%;
+    right: 12%;
+    font-size: 40px;
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
+
+  .red-bag-title {
+    font-size: 6vw;
+    line-height: 10vw;
+    color: #FFD021;
+  }
+
+  .red-bag-info {
+    font-size: 28px;
+
+    &.tip-info {
+      background-color: #D90B25;
+      padding: 15px;
+      margin: 6vw 0;
+      border-radius: 3px;
+      color: #fff;
+      opacity: .8;
+      font-size: 28px;
+    }
+
+    .login-link {
+      color: $color-blue;
+
+      &:hover {
+        cursor: pointer;
+        color: $color-blue-hover;
+        text-decoration: underline;
+        transition: color .2s;
+      }
+    }
+  }
+
+  .red-bag-tip {
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    background-color: #FFD021;
+    border-radius: 30px;
+    padding: 0 30px;
+    margin-top: 10px;
+    font-size: 28px;
+  }
+
+  .time-down {
+    display: inline-block;
+    margin: 10px 0 30px 0;
+    font-size: 72px;
+    color: #fff;
+  }
+
+  .red-bag-money {
+    color: $color-red;
+    font-size: 30px;
+    line-height: 50px;
+  }
+
+  .red-bag-detail {
+    display: block;
+    font-size: 28px;
+    line-height: 30px;
+  }
+
+  .red-bag-list {
+    list-style: none;
+    user-select: none;
+
+    li {
+      width: 100%;
+      padding: 20px;
+      text-align: left;
+      .head-icon {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin-right: 16px;
+        border: solid 1px $color-bd;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      .nick-name {
+        display: inline-block;
+        max-width: 300px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 80px;
+        vertical-align: middle;
+      }
+
+      .red-bag-money {
+        font-size: 14px;
+        line-height: 86px;
+      }
+    }
+  }
+  .none-data{
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    color: #8E9198;
   }
 }
 </style>

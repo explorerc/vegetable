@@ -77,7 +77,7 @@
       },
       density: {
         type: Number,
-        default: 0.3
+        default: 0.5
       }
     },
     computed: {
@@ -130,7 +130,7 @@
             speed: this.random(6, 10),
             left: this.random(0, width - 60),
             top: -this.random(0, height) * 2,
-            scale: this.random(3, 5) / 10
+            scale: this.random(5, 7) / 10
           })
         }
         for (let i = 0; i < (this.density * 20); i++) {
@@ -139,19 +139,19 @@
             speed: this.random(6, 10),
             left: this.random(0, width - 60),
             top: -this.random(0, height) * 2,
-            scale: this.random(3, 5) / 10
+            scale: this.random(5, 8) / 10
           })
         }
         for (let i = 0; i < (this.density * 20); i++) {
           this.meteorList.push({
             left: this.random(0, width - 50),
             top: this.random(0, height),
-            scale: this.random(3, 5) / 10
+            scale: this.random(5, 8) / 10
           })
           this.bigMeteorList.push({
             left: this.random(0, width - 50),
             top: this.random(0, height),
-            scale: this.random(3, 5) / 10
+            scale: this.random(5, 8) / 10
           })
         }
         this.$nextTick(() => {
