@@ -8,15 +8,19 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <img class="logo" v-if="customLogo" :src="customLogo">
-      <span class="logo" v-else>微吼知客</span>
+      <img class="logo"
+           v-if="customLogo"
+           :src="customLogo">
+      <span class="logo"
+            v-else>微吼知客</span>
       <span class="ac-title">{{activityInfo.title}}</span>
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
       <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
-        <a href="/m/user" class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
+        <a href="/m/user"
+           class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
         <!-- <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
@@ -70,8 +74,10 @@
     <!-- 红包雨 -- 降临 -->
     <message-box v-if="redBagTipShow"
                  @handleClick="handleRedBagClick">
-      <div slot="msgBox" class="red-bag-box">
-        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+      <div slot="msgBox"
+           class="red-bag-box">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
         <div class="red-bag-content">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <!--<p class="red-bag-info">您还未<span class="login-link">登录</span>无法参与红包雨活动</p>-->
@@ -86,8 +92,10 @@
     <!-- 红包雨 -- 倒计时-->
     <message-box v-if="redBagTimeDownShow"
                  @handleClick="handleRedBagClick">
-      <div slot="msgBox" class="red-bag-box">
-        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+      <div slot="msgBox"
+           class="red-bag-box">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
         <div class="red-bag-content">
           <p class="red-bag-title">红包雨降临倒计时</p>
           <span class="time-down">{{timer}}</span>
@@ -98,8 +106,10 @@
     <!-- 红包雨 -- 抢到红包 -->
     <message-box v-if="redBagShow"
                  @handleClick="handleRedBagClick">
-      <div slot="msgBox" class="red-bag-box get-red-bag">
-        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+      <div slot="msgBox"
+           class="red-bag-box get-red-bag">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
         <div class="red-bag-content">
           <p class="red-bag-title">恭喜您抢到</p>
           <span class="red-bag-money">￥{{redBagResultInfo.amount}}</span>
@@ -111,8 +121,11 @@
     <!-- 红包雨 -- 未抢到红包 -->
     <message-box v-if="redBagNoneShow"
                  @handleClick="handleRedBagClick">
-      <div slot="msgBox" class="red-bag-box red-bag-top" style="background-color: #fff;">
-        <i class="iconfont icon-close" @click="handleRedBagClick"></i>
+      <div slot="msgBox"
+           class="red-bag-box red-bag-top"
+           style="background-color: #fff;">
+        <i class="iconfont icon-close"
+           @click="handleRedBagClick"></i>
         <p class="red-bag-title">天呐，您与红包擦肩而过～</p>
         <div class="top-content">
           <p class="red-bag-title">（手气榜 TOP5）</p>
@@ -120,9 +133,13 @@
             <li v-if="redBagrecordList.length<=0">
               <span class="none-data">暂无数据</span>
             </li>
-            <li v-else v-for="redBagInfo in redBagrecordList">
-              <span class="head-icon" v-if="!redBagInfo.avatar"></span>
-              <span class="head-icon" v-else :style="{backgroundImage: `url(${redBagInfo.avatar})`}"></span>
+            <li v-else
+                v-for="redBagInfo in redBagrecordList">
+              <span class="head-icon"
+                    v-if="!redBagInfo.avatar"></span>
+              <span class="head-icon"
+                    v-else
+                    :style="{backgroundImage: `url(${redBagInfo.avatar})`}"></span>
               <span class="nick-name">{{redBagInfo.nick_name}}</span>
               <span class="red-bag-money fr">￥{{redBagInfo.amount}}</span>
             </li>
@@ -131,7 +148,9 @@
         </div>
       </div>
     </message-box>
-    <RedBagRain :rainTime="rainTime" @endRain="endRainHandler" @selectOk="selectRedBag"></RedBagRain>
+    <RedBagRain :rainTime="rainTime"
+                @endRain="endRainHandler"
+                @selectOk="selectRedBag"></RedBagRain>
     <com-login @login="loginSuccess"></com-login>
   </div>
 </template>
@@ -284,7 +303,18 @@ export default {
     }
     this.activityId = queryId
     this.initPage()
-
+    EventBus.$on('red_packet', (data) => {
+      if (this.red_packet_id) {
+        let data = {
+          red_packet_id: this.red_packet_id,
+          activity_id: this.activityId
+        }
+        if (data) {
+          data.password = data
+        }
+        this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, data).then((res) => { })
+      }
+    })
     let _this = this
     window.addEventListener(
       'onorientationchange' in window ? 'orientationchange' : 'resize',
