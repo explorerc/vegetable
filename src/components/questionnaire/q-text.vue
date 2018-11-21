@@ -158,7 +158,7 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && !this.value.value && this.value.detail.format !== 'phone') {
+      if (this.value.required === 'Y' && !this.value.value && this.value.detail.format !== 'phone') {
         this.errorTip = '此项为必填项'
         return false
       } else if (this.value.detail.format === 'email' && this.value.value) {
