@@ -6,20 +6,20 @@
                :type="value.detail.format"
                :max-length="value.detail.max?value.detail.max:0"
                :value.sync="value.value"></com-input>
-               <div :id="captchaId"
-                     v-if="!edit&&value.verification==='Y'&&!isHidden"
-                     class="captcha" ></div>
-               <com-input v-if="!edit&&value.verification==='Y'&&!isHidden"
+    <div :id="captchaId"
+         v-if="!edit&&value.verification==='Y'&&!isHidden"
+         class="captcha"></div>
+    <com-input v-if="!edit&&value.verification==='Y'&&!isHidden"
                class="code"
                @focus="focus"
                :local="true"
                :max-length="6"
                placeholder="请输入验证码"
                v-model="value.code"></com-input>
-               <com-button class="codeBtn"
-                            :disabled="!codeEnable"
-                            @click="getCode"
-                            v-if="!edit&&value.verification==='Y'&&!isHidden">{{codeText}}</com-button>
+    <com-button class="codeBtn"
+                :disabled="!codeEnable"
+                @click="getCode"
+                v-if="!edit&&value.verification==='Y'&&!isHidden">{{codeText}}</com-button>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
     </div>
@@ -73,7 +73,6 @@ export default {
           this.key = res.data
           window.initNECaptcha({
             element: `#${this.captchaId}`,
-            mode: 'float',
             width: '100%',
             captchaId: this.key,
             onVerify: (err, data) => {

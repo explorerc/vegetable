@@ -77,7 +77,9 @@
                 <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
               </div>
               <!--操作区-->
+              <i></i>
             </div>
+            <!--商品推送-->
           </com-tab>
         </com-tabs>
         <!-- <a class="v-subscribe"
@@ -537,6 +539,9 @@ export default {
     goGoodsList () {
       this.goodsInfoShow = false
       this.goodsListShow = true
+    },
+    clickQues () {
+      this.getQuestions()
     }
   }
 }
