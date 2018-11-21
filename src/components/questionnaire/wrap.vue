@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index"><span v-if="value.required" class="v-red">*</span>{{index}}</div>
+      <div class="index">{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -14,8 +14,7 @@
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
-             class="q-subject"
-             v-text="value.title"></div>
+             class="q-subject" >{{value.title}}<span v-if="value.required" class="v-red">*</span></div>
         <!-- 问题描述区 -->
         <component ref="content"
                    :is="QComs[value.type]"
@@ -169,13 +168,13 @@ export default {
     .com-input {
       width: 100% !important;
       input {
-        height: 60px;
-        line-height: 60px;
-        font-size: 24px;
+        height: 90px;
+        line-height: 90px;
+        font-size: 28px;
         border-radius: 4px !important;
       }
       .limit {
-        margin-top: -14px;
+        margin-top: 0px;
       }
     }
     .el-checkbox {
@@ -192,8 +191,8 @@ export default {
       width: 100% !important;
       .el-input__inner {
         border: 1px solid #e2e2e2;
-        height: 60px;
-        line-height: 60px;
+        height: 90px;
+        line-height: 90px;
       }
       .el-icon-arrow-up {
         line-height: 10px;
@@ -202,11 +201,11 @@ export default {
     .el-date-editor {
       width: 100%;
       .el-input__inner {
-        height: 60px;
-        line-height: 60px;
+        height: 90px;
+        line-height: 90px;
       }
       .el-input__icon {
-        line-height: 60px;
+        line-height: 90px;
       }
     }
     .q-edit-content {
@@ -226,26 +225,24 @@ export default {
         bottom: 30px;
         right: 0;
         width: 160px;
-        height: 60px;
+        height: 90px;
         text-align: center;
-        line-height: 60px;
+        line-height: 90px;
       }
     }
     .index {
-      position: absolute;
-      left: -4px;
       float: left;
-      margin-top: 2px;
+      margin: 2px 15px 0 0;
       text-align: left;
       padding-left: 5px;
-      font-size: 24px;
-      .v-red {
-        position: absolute;
-        left: -5px;
-        display: inline-block;
-        color: #fc5659;
-        vertical-align: middle;
-      }
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .v-red {
+      display: inline-block;
+      color: #fc5659;
+      vertical-align: middle;
+      margin-left: 10px;
     }
     .question-content {
       padding: 30px;
@@ -261,8 +258,9 @@ export default {
           // margin-bottom: 0;
         }
         .q-subject {
-          font-size: 24px;
+          font-size: 30px;
           margin-bottom: 14px;
+          font-weight: bold;
           &.error {
             input {
               border-color: #fc5659;
