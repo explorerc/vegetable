@@ -88,7 +88,7 @@ export default {
         if (this.valArr.length === 1) {
           returnVal = this.valArr[0]
         } else if (this.valArr.length > 1) {
-          returnVal = this.valArr.split(',')
+          returnVal = this.valArr.join(',')
         }
       }
       return { id: this.value.id, value: returnVal, type: ext.key }
