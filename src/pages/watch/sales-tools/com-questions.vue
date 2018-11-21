@@ -129,7 +129,7 @@ export default {
               this.$router.go(0)
             }, 1000)
           } else {
-            this.$emit('questionSuccess')
+            this.$emit('questionSuccess', false)
           }
         }).catch((err) => {
           if (err.code === 10020) {
@@ -137,7 +137,7 @@ export default {
             let len = Object.keys(refs).length - 1
             refs[`com${len}`][0].$refs.content.errorTip = '验证码不正确'
           } else if (err.code === 15110) {
-            this.$emit('questionSuccess')
+            this.$emit('questionSuccess', false)
             this.$toast({
               content: err.msg,
               position: 'center'
@@ -163,7 +163,7 @@ export default {
       }
     },
     colse () {
-      this.$emit('questionSuccess')
+      this.$emit('questionSuccess', true)
     }
   }
 }

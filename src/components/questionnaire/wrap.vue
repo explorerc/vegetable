@@ -14,7 +14,7 @@
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
-             class="q-subject" >{{value.title}}<span v-if="value.required" class="v-red">*</span></div>
+             class="q-subject" >{{value.title}}<span v-if="value.required === 'Y'" class="v-red">*</span></div>
         <!-- 问题描述区 -->
         <component ref="content"
                    :is="QComs[value.type]"
