@@ -88,6 +88,14 @@ export default {
   }
 }
 .template1-container /deep/ {
+  .panel-container {
+    i {
+      font-style: italic;
+      &.iconfont {
+        font-style: normal;
+      }
+    }
+  }
   overflow: hidden;
   .support {
     height: 70px;
