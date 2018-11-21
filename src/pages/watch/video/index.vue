@@ -246,14 +246,14 @@ export default {
     changeLiveDevice () {
       if (window.hostPusher) {
         window.hostPusher.changeSetting({
-          video: {
-            deviceId: this.liveDevices.camera
-          },
-          audio: {
-            deviceId: this.liveDevices.mic
-          },
           conf: {
-            videoSize: [800, 450, 800, 450]
+            video: {
+              deviceId: this.liveDevices.camera
+            },
+            audio: {
+              deviceId: this.liveDevices.mic
+            },
+            videoSize: [640, 480, 640, 480]
           }
         })
       }
@@ -311,7 +311,7 @@ export default {
                 })
               } else {
                 document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
-                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '10.667vw'
+                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '16vw'
               }
               // window.VhallPlayer.play()
               // this.dealWithVideo()
@@ -375,7 +375,7 @@ export default {
             })
           } else {
             document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
-            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '10.667vw'
+            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '16vw'
           }
           console.log('----------开始播放----------')
         })
@@ -568,7 +568,7 @@ export default {
   }
   .v-click-modal {
     position: absolute;
-    top: 80px;
+    top: 120px;
     left: 0;
     width: 100%;
     height: 422px;
@@ -577,7 +577,7 @@ export default {
   .control-box-div {
     position: absolute;
     left: 0;
-    top: 422px;
+    top: 462px;
     height: 80px;
     line-height: 80px;
     // background-color: rgba(0, 0, 0, 0.75);
@@ -616,7 +616,7 @@ export default {
   .v-mark {
     position: absolute;
     background-color: #222;
-    top: 80px;
+    top: 120px;
     left: 0;
     width: 100%;
     height: 422px;

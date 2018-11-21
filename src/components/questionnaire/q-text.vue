@@ -3,23 +3,24 @@
     <com-input v-if="!edit"
                @focus="focus"
                :disabled="isHidden"
-               :type="value.detail.format"
+               :type="value.detail.format==='phone'?'mobile':value.detail.format"
                :max-length="value.detail.max?value.detail.max:0"
                :value.sync="value.value"></com-input>
-               <div :id="captchaId"
-                     v-if="!edit&&value.verification==='Y'&&!isHidden"
-                     class="captcha" ></div>
-               <com-input v-if="!edit&&value.verification==='Y'&&!isHidden"
+    <div :id="captchaId"
+         v-if="!edit&&value.verification==='Y'&&!isHidden"
+         class="captcha"></div>
+    <com-input v-if="!edit&&value.verification==='Y'&&!isHidden"
                class="code"
                @focus="focus"
                :local="true"
                :max-length="6"
+               type='number'
                placeholder="请输入验证码"
                v-model="value.code"></com-input>
-               <com-button class="codeBtn"
-                            :disabled="!codeEnable"
-                            @click="getCode"
-                            v-if="!edit&&value.verification==='Y'&&!isHidden">{{codeText}}</com-button>
+    <com-button class="codeBtn"
+                :disabled="!codeEnable"
+                @click="getCode"
+                v-if="!edit&&value.verification==='Y'&&!isHidden">{{codeText}}</com-button>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
     </div>
@@ -73,7 +74,6 @@ export default {
           this.key = res.data
           window.initNECaptcha({
             element: `#${this.captchaId}`,
-            mode: 'float',
             width: '100%',
             captchaId: this.key,
             onVerify: (err, data) => {
@@ -198,15 +198,14 @@ export default {
       }
     }
     .captcha {
-      height: 60px;
-      margin-bottom: 10px;
-      .yidun_control {
-        height: 60px !important;
-        .yidun_slide_indicator {
-          height: 60px !important;
-        }
-        .yidun_tips {
-          line-height: 60px !important;
+      height: 90px;
+      margin: 10px 0;
+      .yidun_intelli-control {
+        height: 90px !important;
+        .yidun_intelli-tips,
+        .yidun_classic-tips {
+          height: 90px !important;
+          line-height: 90px !important;
         }
       }
     }
@@ -219,10 +218,10 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 30px;
+        bottom: 0px;
         right: 0;
-        height: 60px;
-        line-height: 60px;
+        height: 90px;
+        line-height: 90px;
         border-color: #ffd021;
         background-color: #ffd021;
         opacity: 1;

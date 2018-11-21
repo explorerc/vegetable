@@ -53,29 +53,33 @@
                 <span @click="doLogin">登录</span>
               </div>
             </template>
-            <!--商品推送-->
-            <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
-              <div @click="goInfo(goodsSmallDetails)">
-                <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
-                <div>
-                  <p class="item-price">
-                    <span>￥{{goodsSmallDetails.preferential}}</span>
-                    <del>￥{{goodsSmallDetails.price}}</del>
-                  </p>
-                  <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+            <div class="msg-Box">
+              <!--商品推送-->
+              <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
+                <div @click="goInfo(goodsSmallDetails)">
+                  <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                  <div>
+                    <p class="item-price">
+                      <span>￥{{goodsSmallDetails.preferential}}</span>
+                      <del>￥{{goodsSmallDetails.price}}</del>
+                    </p>
+                    <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                  </div>
+                  <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
                 </div>
-                <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
+                <i></i>
               </div>
+              <!--商品推送-->
+              <!--操作区-->
+              <div class="icon-list">
+                <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
+                <span class='ques' v-if="questionStatus.iconShow"><em v-if="questionStatus.redIcon"></em>问卷</span>
+                <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
+              </div>
+              <!--操作区-->
               <i></i>
             </div>
             <!--商品推送-->
-            <!--操作区-->
-            <div class="icon-list">
-              <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
-              <span class='ques' v-if="questionStatus.iconShow"  @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
-              <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
-            </div>
-            <!--操作区-->
           </com-tab>
         </com-tabs>
         <!-- <a class="v-subscribe"
@@ -83,9 +87,9 @@
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
       <!--商品祥情-->
-      <transition name="top-bottom" mode="out-in">
+      <transition name="fade">
         <div class="goodsInfo" v-if="goodsInfoShow">
-          <p><span>商品详情 </span><i class="el-icon-close" @click="closeGoods"></i></p>
+          <p><span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down" @click="closeGoods"></i></p>
           <div>
             <h4>{{goodsSmallDetails.title}}</h4>
             <el-carousel>
@@ -102,7 +106,7 @@
           </div>
         </div>
       </transition>
-      <transition mode="out-in">
+      <transition name="fade">
         <comGoods class="goodsList" :goodsMsg='goodsMsg' v-show="goodsListShow" @closeGoodList = 'closeGoodList' @goodsInfo="goodsInfo" @goodsCount="goodsCount"></comGoods>
       </transition>
     </div>
@@ -532,6 +536,10 @@ export default {
     clickRedpack () {
       this.$parent.showDownTip()
     },
+    goGoodsList () {
+      this.goodsInfoShow = false
+      this.goodsListShow = true
+    },
     clickQues () {
       this.getQuestions()
     }
@@ -545,6 +553,17 @@ export default {
   position: relative;
   flex: 1;
   background-color: #000000;
+}
+.fade-enter-active {
+  transition: all .5s ease;
+}
+.fade-leave-active {
+  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(20px);
+  opacity: 0;
 }
 .v-video /deep/ {
   width: 100%;
@@ -720,6 +739,9 @@ export default {
     border-bottom: 1px solid #cccccc;
     span {
       margin-left: 30px;
+      cursor: pointer;
+      font-weight:400;
+      color: #4B5AFE;
     }
     i {
       margin-right: 30px;

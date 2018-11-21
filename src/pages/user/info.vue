@@ -1,18 +1,29 @@
 <template>
   <div class="v-user-info">
-    <a :href="MOBILE_HOST+'user'" class="v-return-user clearfix">
+    <a :href="MOBILE_HOST+'user'"
+       class="v-return-user clearfix">
       <i class="iconfont icon-jiantouzuo fl"></i>个人中心
     </a>
     <div class="v-list">
-      <a class="v-item v-avatar clearfix" @click="upload">
-        <ve-upload ref="uploadFile" title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+      <a class="v-item v-avatar clearfix"
+         @click="upload">
+        <ve-upload ref="uploadFile"
+                   title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
+                   accept="png|jpg|jpeg|bmp"
+                   :defaultImg="defaultImg"
+                   :fileSize="2048"
+                   @error="uploadError"
+                   @success="uploadImgSuccess"></ve-upload>
         <span class="v-title">
           头像
         </span>
         <i class="iconfont icon-jiantou1 fr"></i>
-        <img :src="defaultImg" alt="" class="fr">
+        <img :src="defaultImg"
+             alt=""
+             class="fr">
       </a>
-      <a class="v-item clearfix" :href="MOBILE_HOST+'userInfoEdit/name'">
+      <a class="v-item clearfix"
+         :href="MOBILE_HOST+'userInfoEdit/name'">
         <span class="v-title">
           昵称
         </span>
@@ -21,7 +32,9 @@
           {{centerInfo.consumerUser.nickName ? centerInfo.consumerUser.nickName : '未填写'}}
         </span>
       </a>
-      <a class="v-item clearfix" href="javascript:;" @click="changeMobile">
+      <a class="v-item clearfix"
+         href="javascript:;"
+         @click="changeMobile">
         <span class="v-title">
           手机号
         </span>
@@ -30,7 +43,8 @@
           {{centerInfo.consumerUser.mobile ? centerInfo.consumerUser.mobile:'未填写'}}
         </span>
       </a>
-      <a class="v-item clearfix" :href="MOBILE_HOST+'userInfoEdit/email'">
+      <a class="v-item clearfix"
+         :href="MOBILE_HOST+'userInfoEdit/email'">
         <span class="v-title">
           邮箱
         </span>
@@ -251,7 +265,6 @@ export default {
       window.initNECaptcha({
         captchaId: _self.key,
         element: '#captchaChangeMobile',
-        mode: 'float',
         width: '100%',
         onReady: function (instance) {
         },

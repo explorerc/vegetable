@@ -1,6 +1,6 @@
 <template>
   <div class="v-questions-from">
-    <a @click="colse" class="v-close">收起<i class="iconfont icon-jiantouzuo"></i></a>
+    <a @click="colse" class="v-close">收起<i class="iconfont icon-Up"></i></a>
     <div class="v-content">
       <img :src="defaultImg" alt="" v-if="defaultImg" class="v-question-img">
       <p class="v-title">

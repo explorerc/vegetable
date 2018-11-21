@@ -59,7 +59,6 @@ export default {
       window.initNECaptcha({
         captchaId: _self.key,
         element: '#captcha',
-        mode: 'float',
         width: '100%',
         onReady: function (instance) { },
         onVerify: function (err, data) {
