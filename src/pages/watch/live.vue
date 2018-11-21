@@ -124,7 +124,7 @@
                   :naireId="naireId"
                   :visitorId="visitorId"
                   :questions="questions"
-                  @questionSuccess="questionsShow=false"> </comQuestions>
+                  @questionSuccess="questionSuccess"> </comQuestions>
     <message-box v-if="questionsSubmissionShow"
                  header=''
                  confirmText='提交'
@@ -402,7 +402,9 @@ export default {
         if (res.code === 200 && res.data && res.data.id) {
           this.questionStatus.iconShow = true
           this.questionStatus.redIcon = true
-        } else if (res.code === 15110) {
+        }
+      }).catch((err) => {
+        if (err.code === 15110) {
           this.questionStatus.iconShow = true
           this.questionStatus.redIcon = false
         }
@@ -415,6 +417,7 @@ export default {
         activityId: this.$route.params.id,
         visitorId: this.visitorId
       }).then((res) => {
+        this.questionStatus.redIcon = true
         this.questions.imgUrl = res.data.imgUrl
         this.questions.title = res.data.title
         this.questions.description = res.data.description
@@ -424,6 +427,8 @@ export default {
       }).catch((err) => {
         if (err.code === 15110) {
           this.questionsSubmissionShow = true
+          this.questionStatus.iconShow = true
+          this.questionStatus.redIcon = false
         } else {
           this.$messageBox({
             header: '提示',
@@ -437,6 +442,11 @@ export default {
           })
         }
       })
+    },
+    questionSuccess (type) {
+      debugger
+      this.questionsShow = false
+      this.questionStatus.redIcon = type
     },
     hiddenQuestions (e) {
       if (e.action === 'cancel') {

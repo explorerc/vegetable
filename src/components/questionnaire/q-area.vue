@@ -121,7 +121,7 @@ export default {
     },
     blurProvince () {
       setTimeout(() => {
-        if (this.value.required && !this.value.province) {
+        if (this.value.required === 'Y' && !this.value.province) {
           this.errorTip = '此项为必填项'
         }
       }, 300)
@@ -134,7 +134,7 @@ export default {
     },
     blurCity () {
       setTimeout(() => {
-        if (this.value.required && !this.value.city) {
+        if (this.value.required === 'Y' && !this.value.city) {
           this.errorTip = '此项为必填项'
         }
       }, 300)
@@ -147,7 +147,7 @@ export default {
     },
     blurCounty () {
       setTimeout(() => {
-        if (this.value.required && !this.value.county) {
+        if (this.value.required === 'Y' && !this.value.county) {
           this.errorTip = '此项为必填项'
         }
       }, 300)
@@ -156,7 +156,7 @@ export default {
       this.errorTip = ''
     },
     blurAddress () {
-      if (this.value.required && !this.value.address) {
+      if (this.value.required === 'Y' && !this.value.address) {
         this.errorTip = '此项为必填项'
       }
     },
@@ -172,7 +172,7 @@ export default {
     },
     check () {
       let value = []
-      if (this.value.required && (!this.provinceVal || !this.cityVal)) {
+      if (this.value.required === 'Y' && (!this.provinceVal || !this.cityVal)) {
         this.errorTip = '此项为必填项'
         return false
       }
@@ -191,7 +191,7 @@ export default {
         })
       }
 
-      if (this.value.required && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.countyVal) {
+      if (this.value.required === 'Y' && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.countyVal) {
         this.errorTip = '此项为必填项'
         return false
       }
@@ -202,7 +202,7 @@ export default {
           }
         })
       }
-      if (this.value.required && this.value.detail.level === 'address' && !this.addressVal) {
+      if (this.value.required === 'Y' && this.value.detail.level === 'address' && !this.addressVal) {
         this.errorTip = '此项为必填项'
         return false
       }
