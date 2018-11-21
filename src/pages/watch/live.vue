@@ -72,7 +72,7 @@
             <!--操作区-->
             <div class="icon-list">
               <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
-              <span class='ques' v-if="questionStatus.iconShow"><em v-if="questionStatus.redIcon"></em>问卷</span>
+              <span class='ques' v-if="questionStatus.iconShow"  @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
               <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
             </div>
             <!--操作区-->
@@ -531,6 +531,9 @@ export default {
     },
     clickRedpack () {
       this.$parent.showDownTip()
+    },
+    clickQues () {
+      this.getQuestions()
     }
   }
 }
