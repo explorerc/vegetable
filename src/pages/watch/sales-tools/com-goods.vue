@@ -1,7 +1,7 @@
 <template>
   <div class="goods-box">
     <!--置顶-->
-    <p class="header-title"><span>商品推荐 </span><i class="el-icon-close" @click="closeGoods"></i></p>
+    <p class="header-title"><span>商品推荐 </span><i class="el-icon-arrow-down" @click="closeGoods"></i></p>
     <div class='top_item' v-for="(ite,indr) in goodsList"
          @click="goInfo({goods_id:ite.goods_id,type:0})"
          :key="`top${indr}`" v-show="ite.added === '1' && ite.top === '1'">
@@ -15,8 +15,6 @@
           <span>￥{{ite.preferential}}</span>
           <del>￥{{ite.price}}</del>
         </p>
-        <!--<h4 class="item-des">{{ite.describe}}</h4>-->
-        <!--<com-button class="primary-button" @click="goInfo({goods_id:ite.goods_id,type:0})">查看详情</com-button>-->
       </div>
     </div>
     <!--未置顶-->
@@ -33,38 +31,8 @@
           <span>￥{{ite.preferential}}</span>
           <del>￥{{ite.price}}</del>
         </p>
-        <!--<h4 class="item-des">{{ite.describe}}</h4>-->
-        <!--<com-button class="primary-button" @click="goInfo({goods_id:ite.goods_id,type:0})">查看详情</com-button>-->
       </div>
     </div>
-    <!--&lt;!&ndash;弹框&ndash;&gt;
-    <message-box v-if="buyShow"
-                 width="700px"
-                 header=''
-                 confirmText=''
-                 class="v-questions-box"
-                 @handleClick="saveQuestions">
-      <div class="v-content">
-        <div class="v-hearder">
-          <div class="buyImg">
-            <el-carousel>
-              <el-carousel-item v-for="(item,ind) in goodsInfo.image">
-                <img :src="`${$imgHost}/${item.name}`" alt="">
-              </el-carousel-item>
-            </el-carousel>
-          </div>
-          <div class="buyInfo">
-            <h4 class="item-title">{{goodsInfo.title}}</h4>
-            <p class="item-price">
-              <span>￥{{goodsInfo.preferential}}</span>
-              <del>￥{{goodsInfo.price}}</del>
-            </p>
-            <h4 class="item-des">{{goodsInfo.describe}}</h4>
-            <com-button class="primary-button" @click="goBuy({goods_id:goodsInfo.goods_id,type:0})">立即购买</com-button>
-          </div>
-        </div>
-      </div>
-    </message-box>-->
   </div>
 </template>
 
