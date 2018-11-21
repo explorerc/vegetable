@@ -73,7 +73,7 @@
               <!--操作区-->
               <div class="icon-list">
                 <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
-                <span class='ques' v-if="questionStatus.iconShow"><em v-if="questionStatus.redIcon"></em>问卷</span>
+                <span class='ques' v-if="questionStatus.iconShow" @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
                 <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
               </div>
               <!--操作区-->
@@ -124,7 +124,7 @@
                   :naireId="naireId"
                   :visitorId="visitorId"
                   :questions="questions"
-                  @questionSuccess="questionsShow=false"> </comQuestions>
+                  @questionSuccess="questionSuccess"> </comQuestions>
     <message-box v-if="questionsSubmissionShow"
                  header=''
                  confirmText='提交'
@@ -402,7 +402,9 @@ export default {
         if (res.code === 200 && res.data && res.data.id) {
           this.questionStatus.iconShow = true
           this.questionStatus.redIcon = true
-        } else if (res.code === 15110) {
+        }
+      }).catch((err) => {
+        if (err.code === 15110) {
           this.questionStatus.iconShow = true
           this.questionStatus.redIcon = false
         }
@@ -415,6 +417,7 @@ export default {
         activityId: this.$route.params.id,
         visitorId: this.visitorId
       }).then((res) => {
+        this.questionStatus.redIcon = true
         this.questions.imgUrl = res.data.imgUrl
         this.questions.title = res.data.title
         this.questions.description = res.data.description
@@ -424,6 +427,8 @@ export default {
       }).catch((err) => {
         if (err.code === 15110) {
           this.questionsSubmissionShow = true
+          this.questionStatus.iconShow = true
+          this.questionStatus.redIcon = false
         } else {
           this.$messageBox({
             header: '提示',
@@ -437,6 +442,11 @@ export default {
           })
         }
       })
+    },
+    questionSuccess (type) {
+      debugger
+      this.questionsShow = false
+      this.questionStatus.redIcon = type
     },
     hiddenQuestions (e) {
       if (e.action === 'cancel') {
@@ -456,21 +466,21 @@ export default {
     },
     clickTools (res) {
       console.log(res)
-      switch (res.type) {
-        case 'goods':
-          this.getGoodsDetails(res.id, 'info')
-          this.goodsInfoShow = true
-          break
-        case 'cards':
-          this.getCardDetails(res.id)
-          break
-        case 'ques':
-          // this.getQuestions(res.id)
-          break
-        case 'redpack':
-          // this.$parent.showDownTip()
-          break
-      }
+      // switch (res.type) {
+      //   case 'goods':
+      //     this.getGoodsDetails(res.id, 'info')
+      //     this.goodsInfoShow = true
+      //     break
+      //   case 'cards':
+      //     this.getCardDetails(res.id)
+      //     break
+      //   case 'ques':
+      //     // this.getQuestions(res.id)
+      //     break
+      //   case 'redpack':
+      //     // this.$parent.showDownTip()
+      //     break
+      // }
     },
     getGoodsDetails (id, type) {
       this.$get(activityService.GET_WATCH_GOODS_DETAIL, { goods_id: id }).then(res => {
@@ -555,10 +565,10 @@ export default {
   background-color: #000000;
 }
 .fade-enter-active {
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 .fade-leave-active {
-  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .fade-enter, .fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
@@ -740,8 +750,8 @@ export default {
     span {
       margin-left: 30px;
       cursor: pointer;
-      font-weight:400;
-      color: #4B5AFE;
+      font-weight: 400;
+      color: #4b5afe;
     }
     i {
       margin-right: 30px;

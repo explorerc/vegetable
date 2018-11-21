@@ -3,7 +3,7 @@
     <com-input v-if="!edit"
                @focus="focus"
                :disabled="isHidden"
-               :type="value.detail.format"
+               :type="value.detail.format==='phone'?'mobile':value.detail.format"
                :max-length="value.detail.max?value.detail.max:0"
                :value.sync="value.value"></com-input>
     <div :id="captchaId"
@@ -14,6 +14,7 @@
                @focus="focus"
                :local="true"
                :max-length="6"
+               type='number'
                placeholder="请输入验证码"
                v-model="value.code"></com-input>
     <com-button class="codeBtn"
@@ -157,7 +158,7 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && !this.value.value && this.value.detail.format !== 'phone') {
+      if (this.value.required === 'Y' && !this.value.value && this.value.detail.format !== 'phone') {
         this.errorTip = '此项为必填项'
         return false
       } else if (this.value.detail.format === 'email' && this.value.value) {
@@ -197,15 +198,14 @@ export default {
       }
     }
     .captcha {
-      height: 60px;
-      margin-bottom: 10px;
-      .yidun_control {
-        height: 60px !important;
-        .yidun_slide_indicator {
-          height: 60px !important;
-        }
-        .yidun_tips {
-          line-height: 60px !important;
+      height: 90px;
+      margin: 10px 0;
+      .yidun_intelli-control {
+        height: 90px !important;
+        .yidun_intelli-tips,
+        .yidun_classic-tips {
+          height: 90px !important;
+          line-height: 90px !important;
         }
       }
     }
@@ -218,10 +218,10 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 30px;
+        bottom: 0px;
         right: 0;
-        height: 60px;
-        line-height: 60px;
+        height: 90px;
+        line-height: 90px;
         border-color: #ffd021;
         background-color: #ffd021;
         opacity: 1;

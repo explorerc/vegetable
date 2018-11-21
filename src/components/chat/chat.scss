@@ -360,7 +360,7 @@
         color:$color-default;
         cursor: pointer;
       }
-      &.RED_PACK {
+      &.RED_PACKET_PUSH {
         background-image: url('~assets/image/bg_redpack.png');
         em {
           color:$color-error;
@@ -390,6 +390,12 @@
           background-image:url('~assets/image/tools-chat-ques.png')
         }
 
+      }
+      .name {
+        width:270px;;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }
