@@ -456,21 +456,21 @@ export default {
     },
     clickTools (res) {
       console.log(res)
-      switch (res.type) {
-        case 'goods':
-          this.getGoodsDetails(res.id, 'info')
-          this.goodsInfoShow = true
-          break
-        case 'cards':
-          this.getCardDetails(res.id)
-          break
-        case 'ques':
-          // this.getQuestions(res.id)
-          break
-        case 'redpack':
-          // this.$parent.showDownTip()
-          break
-      }
+      // switch (res.type) {
+      //   case 'goods':
+      //     this.getGoodsDetails(res.id, 'info')
+      //     this.goodsInfoShow = true
+      //     break
+      //   case 'cards':
+      //     this.getCardDetails(res.id)
+      //     break
+      //   case 'ques':
+      //     // this.getQuestions(res.id)
+      //     break
+      //   case 'redpack':
+      //     // this.$parent.showDownTip()
+      //     break
+      // }
     },
     getGoodsDetails (id, type) {
       this.$get(activityService.GET_WATCH_GOODS_DETAIL, { goods_id: id }).then(res => {
@@ -555,10 +555,10 @@ export default {
   background-color: #000000;
 }
 .fade-enter-active {
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 .fade-leave-active {
-  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .fade-enter, .fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
@@ -740,8 +740,8 @@ export default {
     span {
       margin-left: 30px;
       cursor: pointer;
-      font-weight:400;
-      color: #4B5AFE;
+      font-weight: 400;
+      color: #4b5afe;
     }
     i {
       margin-right: 30px;
