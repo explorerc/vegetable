@@ -59,7 +59,6 @@ export default {
       this.key = res.data
       window.initNECaptcha({
         element: `#${this.captchaId}`,
-        mode: 'float',
         width: '100%',
         captchaId: this.key,
         onVerify: (err, data) => {

@@ -8,11 +8,8 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <img class="logo"
-           v-if="customLogo"
-           :src="customLogo">
-      <span class="logo"
-            v-else>微吼知客</span>
+      <span class="logo" v-if="!logoImg"></span>
+      <span class="logo" :style="{backgroundImage:`url(${customLogo})`}"></span>
       <span class="ac-title">{{activityInfo.title}}</span>
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
@@ -780,36 +777,36 @@ export default {
         display: block !important;
       }
       .v-hearder {
-        top: 100px !important;
+        top: 120px !important;
       }
       .v-click-modal {
-        top: 180px !important;
+        top: 220px !important;
       }
       .v-function-box {
-        top: 602px !important;
+        top: 642px !important;
       }
       .control-box-div {
-        top: 522px !important;
+        top: 562px !important;
       }
       .v-video-box {
         .v-mark-img {
-          top: 180px;
+          top: 220px;
         }
         video {
-          object-position: 0 180px !important;
+          object-position: 0 220px !important;
           margin-top: 0 !important;
         }
       }
     }
     &.v-close-x5-div {
       video {
-        object-position: 0 80px !important;
+        object-position: 0 120px !important;
       }
     }
     &.v-other-div {
       .v-video-box {
         .v-mark-img {
-          top: 180px;
+          top: 220px;
         }
         video {
           margin-top: 0 !important;
@@ -847,28 +844,32 @@ export default {
       left: 0;
       z-index: 1;
       width: 100%;
-      height: 100px;
+      height: 120px;
       background-color: #fff;
-      padding: 0 30px 0 160px;
+      padding: 0 30px 0 130px;
       font-size: 24px;
       .logo {
         display: block;
         position: absolute;
         top: 50%;
-        left: 10px;
-        height: 80px;
-        width: 130px;
+        left: 26px;
+        height: 84px;
+        width: 84px;
         margin-top: -40px;
         line-height: 80px;
         font-size: 30px;
         font-weight: bold;
         text-align: center;
+        border-radius: 50%;
+        background-image: url("../../assets/image/avatar@2x.png");
+        background-repeat: no-repeat;
+        background-size: cover;
       }
       .ac-title {
         display: block;
         width: 50%;
         line-height: 40px;
-        margin-top: 10px;
+        margin-top: 20px;
       }
       .v-status {
         color: #fff;
@@ -903,7 +904,7 @@ export default {
     .v-function-box {
       width: 100%;
       position: absolute;
-      top: 502px;
+      top: 542px;
       bottom: 0;
       z-index: 3;
       background-color: #fff;
