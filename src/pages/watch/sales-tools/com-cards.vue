@@ -58,7 +58,7 @@ export default {
 }
 .cards-wrap {
   text-align: center;
-  width: 340px;
+  width: 500px;
   height: 442px;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
@@ -67,14 +67,14 @@ export default {
   top: 50%;
   left: 50%;
   margin-top: -221px;
-  margin-left: -170px;
+  margin-left: -250px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(34, 34, 34, 0.5);
   z-index: 9999;
   padding-bottom: 40px;
   img {
     width: 100%;
-    height: 250px;
+    height: auto;
   }
   a {
     display: inline-block;
@@ -83,6 +83,7 @@ export default {
     word-break: break-all;
     color: $color-font-sub;
     padding: 30px 15px;
+    font-size: 12px;
   }
   .btn {
     padding: 0;
