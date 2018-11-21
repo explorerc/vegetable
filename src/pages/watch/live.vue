@@ -146,7 +146,7 @@
       <div class="v-content">
         <img src="~assets/image/tao.png" alt="">
         <p>
-         请打开 <br>【{{goodsSmallDetails.tao}}】 <br>购买商品
+         请打开 <br><span style="color: #2878FF">{{goodsSmallDetails.tao}}</span> <br>购买商品
         </p>
 
       </div>
