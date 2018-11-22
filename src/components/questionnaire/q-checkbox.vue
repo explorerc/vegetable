@@ -139,10 +139,12 @@ export default {
         }
       }
       .remove {
+        word-break: break-all;
         cursor: pointer;
         font-size: 30px;
       }
       .item-text {
+        word-break: break-all;
         display: inline-block;
         font-size: 30px;
         margin-top: 5px;
