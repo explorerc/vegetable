@@ -81,7 +81,7 @@ export default {
     opacity: 0;
   }
   position: fixed;
-  z-index: 900;
+  z-index: 2000;
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   bottom: 0;

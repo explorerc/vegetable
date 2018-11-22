@@ -97,6 +97,7 @@
           this.jinbiList = []
           this.meteorList = []
           this.bigMeteorList = []
+          this.selectBagList = []
         }
       },
       density: {
@@ -119,6 +120,7 @@
         this.jinbiList = []
         this.meteorList = []
         this.bigMeteorList = []
+        this.selectBagList = []
         let width = document.body.clientWidth
         let height = document.body.clientHeight
         let rotate = false
