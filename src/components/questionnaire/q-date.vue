@@ -5,7 +5,8 @@
                     type="date"
                     @focus="focus"
                     value-format="yyyy-MM-dd"
-                    placeholder="选择日期">
+                    placeholder="选择日期"
+                    :picker-options="pickerOptions">
     </el-date-picker>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
@@ -30,7 +31,12 @@ export default {
   data () {
     return {
       val: '',
-      errorTip: ''
+      errorTip: '',
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() > Date.now()
+        }
+      }
     }
   },
   methods: {
