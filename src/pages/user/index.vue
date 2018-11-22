@@ -11,6 +11,16 @@
         未登录
       </p>
     </div>
+    <div class="v-balance clearfix">
+      <i class="iconfont v-left-icon fl">
+        <svg class="icon" style="width: 1.1103515625em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1137 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5563"><path d="M894.976 229.831111a42.666667 42.666667 0 0 1 0-85.333333h17.692444c60.046222 0 108.487111 49.152 108.487112 109.454222v229.12a42.666667 42.666667 0 0 1-85.333334 0V253.952c0-13.454222-10.496-24.120889-23.153778-24.120889h-17.692444z m40.846222 517.688889a42.666667 42.666667 0 0 1 85.333334 0v140.856889c0 60.302222-48.440889 109.454222-108.487112 109.454222H122.709333c-60.046222 0-108.487111-49.152-108.487111-109.454222V253.952c0-60.302222 48.440889-109.454222 108.487111-109.454222h116.821334a42.666667 42.666667 0 0 1 0 85.333333H122.709333c-12.657778 0-23.153778 10.666667-23.153777 24.120889v634.424889c0 13.454222 10.496 24.120889 23.153777 24.120889h789.930667c12.657778 0 23.153778-10.666667 23.153778-24.120889V747.52z" fill="#555555" p-id="5564"></path><path d="M798.435556 617.244444a85.333333 85.333333 0 0 0 85.333333 85.333334h122.311111a14.222222 14.222222 0 0 0 14.222222-14.222222v-142.222223a14.222222 14.222222 0 0 0-14.222222-14.222222h-122.311111a85.333333 85.333333 0 0 0-85.333333 85.333333z m207.644444-170.666666a99.555556 99.555556 0 0 1 99.555556 99.555555v142.222223a99.555556 99.555556 0 0 1-99.555556 99.555555h-122.311111a170.666667 170.666667 0 1 1 0-341.333333h122.311111z" fill="#555555" p-id="5565"></path><path d="M901.688889 617.244444m-51.2 0a51.2 51.2 0 1 0 102.4 0 51.2 51.2 0 1 0-102.4 0Z" fill="#FFD021" p-id="5566"></path><path d="M550.570667 109.880889l-231.082667 247.808a42.666667 42.666667 0 1 1-62.407111-58.197333L501.105778 37.831111a66.389333 66.389333 0 0 1 93.809778-3.271111l92.416 86.186667a42.666667 42.666667 0 1 1-58.197334 62.407111l-78.563555-73.272889z" fill="#FFD021" p-id="5567"></path><path d="M721.180444 193.479111l-363.150222 177.123556a42.666667 42.666667 0 1 1-37.404444-76.714667L697.173333 110.222222a70.456889 70.456889 0 0 1 94.179556 32.426667l83.939555 172.117333a42.666667 42.666667 0 1 1-76.714666 37.404445l-77.397334-158.691556z" fill="#FFD021" p-id="5568"></path><path d="M214.272 379.591111a42.666667 42.666667 0 0 1 0-85.333333h741.489778a42.666667 42.666667 0 0 1 0 85.333333H214.272z" fill="#555555" p-id="5569"></path></svg>
+      </i>
+      <div class="v-item-right fl">
+        <span class="v-title">
+          当前余额 <span>￥{{user.balance}}</span>
+        </span>
+      </div>
+    </div>
     <div class="v-list" v-if="isLogin">
       <div class="v-item">
         <a :href="MOBILE_HOST+'userInfo'"
@@ -84,14 +94,9 @@ export default {
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
-      // user: {
-      //   name: '', // 姓名
-      //   avatar: '', // 头像
-      //   balance: '0', // 余额
-      //   activityQuantity: 0, // 活动数量
-      //   orderQuantity: 0, // 订单数量
-      //   prizeQuantity: 0 // 奖品数量
-      // },
+      user: {
+        balance: '0.00' // 余额
+      },
       isLogin: false // 当前用户是否登录
     }
   },
@@ -102,6 +107,7 @@ export default {
       if (!this.centerInfo.consumerUser.consumerUserId) {
         this.$config({ handlers: true }).$post(userService.GET_CENTER_INFO, {}).then((res) => {
           this.storeCenterInfo(res.data)
+          this.user.balance = res.data.consumerUser.balance
         }).catch(err => {
           this.$messageBox({
             header: '提示',
@@ -191,9 +197,14 @@ export default {
     line-height: 140px;
     margin-top: 20px;
     background-color: #fff;
-    .v-content {
-      font-size: 42px;
-      margin-left: 20px;
+    padding: 0 0 0 40px;
+    font-size: 30px;
+    .v-title {
+      vertical-align: middle;
+      span {
+        font-size: 42px;
+        margin-left: 20px;
+      }
     }
   }
   .v-list {

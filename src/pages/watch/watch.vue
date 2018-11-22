@@ -8,8 +8,10 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <span class="logo" v-if="!logoImg"></span>
-      <span class="logo" :style="{backgroundImage:`url(${customLogo})`}"></span>
+      <span class="logo"
+            v-if="!logoImg"></span>
+      <span class="logo"
+            :style="{backgroundImage:`url(${customLogo})`}"></span>
       <span class="ac-title">{{activityInfo.title}}</span>
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
@@ -77,12 +79,16 @@
            @click="handleRedBagClick"></i>
         <div class="red-bag-content">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
-          <!--<p class="red-bag-info">您还未<span class="login-link">登录</span>无法参与红包雨活动</p>-->
-          <!--<p class="red-bag-info">手速越快，红可能越大哦~</p>-->
-          <!--<p class="red-bag-info">开奖前分享直播间参与红包雨活动</p>-->
-          <p class="red-bag-info tip-info">参与条件：开奖前发送口令参与红包雨活动</p>
-          <!--<p class="red-bag-info">开奖前填写问卷调查参与红包雨活动</p>-->
-          <span class="red-bag-tip">口令：大家好才是真的好</span>
+          <p class="red-bag-info "
+             v-if="redBagInfo.condition==0">手速越快，红可能越大哦~</p>
+          <p class="red-bag-info"
+             v-else-if="redBagInfo.condition==1">开奖前分享直播间参与红包雨活动</p>
+          <p class="red-bag-info tip-info"
+             v-else-if="redBagInfo.condition==2">参与条件：开奖前发送口令参与红包雨活动</p>
+          <p class="red-bag-info"
+             v-else-if="redBagInfo.condition==3">开奖前填写问卷调查参与红包雨活动</p>
+          <span class="red-bag-tip"
+                v-if="redBagInfo.condition==2">口令：{{redBagInfo.password}}</span>
         </div>
       </div>
     </message-box>
@@ -136,7 +142,7 @@
                     v-if="!redBagInfo.avatar"></span>
               <span class="head-icon"
                     v-else
-                    :style="{backgroundImage: `url(${redBagInfo.avatar})`}"></span>
+                    :style="{backgroundImage: `url(${$imgHost}/${redBagInfo.avatar})`}"></span>
               <span class="nick-name">{{redBagInfo.nick_name}}</span>
               <span class="red-bag-money fr">￥{{redBagInfo.amount}}</span>
             </li>
@@ -165,6 +171,7 @@ import userService from 'src/api/user-service' // import vconsole
 import EventBus from 'src/utils/eventBus'
 import RedBagRain from './red-bag-rain' // 红包雨
 import RedBagConfig from 'src/api/red-bag-config'
+import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 
 // let vConsole = new VConsole()
@@ -302,14 +309,16 @@ export default {
     this.initPage()
     EventBus.$on('red_packet', (data) => {
       if (this.red_packet_id) {
-        let data = {
+        let _data = {
           red_packet_id: this.red_packet_id,
           activity_id: this.activityId
         }
         if (data) {
-          data.password = data
+          _data.password = data
         }
-        this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, data).then((res) => { })
+        this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, _data).then((res) => { }).catch((err) => {
+          console.log(err)
+        })
       }
     })
     let _this = this
@@ -680,6 +689,11 @@ export default {
           this.dealWithRedBag()
         }
       })
+      /* 监听直播结束 */
+      ChatService.OBJ.regHandler(ChatConfig.endLive, () => {
+        // 结束直播--消息之后--中断红包雨
+        this.stopRedBag()
+      })
     },
     handleRedBagClick (e) {
       this.redBagTipShow = false
@@ -717,7 +731,7 @@ export default {
       if (!param.password) {
         delete param.password
       }
-      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_INFO, {
+      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG, {
         ...param
       }).then((res) => {
         if (res.code === 200 && res.data) {
@@ -736,27 +750,72 @@ export default {
         }
       })
     },
-    dealWithRedBag () {
-      if (this.autoTime === 0) { // 立即开始
-        this.redBagTimeDownShow = true
-      } else {
-        this.redBagTipShow = true
-        // 红包雨活动已推送,倒计时
-        this.redBagStartTimer = this.autoTime * 60
-        this.redBagStartTimerInterval = setInterval(() => {
-          this.storeDownTimer(this.redBagStartTimer)
-          if (this.redBagStartTimer === 10) {
-            clearInterval(this.redBagStartTimerInterval)
-            this.redBagStartTimer = 0
-            this.storeDownTimer(0)
-            this.redBagTipShow = false
-            // 10秒倒计时
-            this.redBagTimeDownShow = true
-            return
-          }
-          this.redBagStartTimer = this.redBagStartTimer - 1
-        }, 1000)
+    /* 停止红包操作 */
+    stopRedBag () {
+      clearInterval(this.timerInterval)
+      clearInterval(this.redBagStartTimerInterval)
+      this.redBagResultInfo = {
+        avatar: '',
+        nick_name: '',
+        amount: '',
+        amount_ranking: '',
+        percent: ''
       }
+      this.timer = 0
+      this.redBagStartTimer = 0
+      this.storeDownTimer(0)
+      this.rainTime = 0
+      this.autoTime = 0
+      this.handleRedBagClick()
+    },
+    dealWithRedBag () {
+      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_INFO, {
+        red_packet_id: this.red_packet_id
+      }).then((res) => {
+        if (res.code === 200) {
+          this.redBagInfo = { condition: res.data.condition, password: res.data.password }
+          if (this.autoTime === 0) { // 立即开始
+            this.redBagTimeDownShow = true
+          } else {
+            this.redBagTipShow = true
+            // 红包雨活动已推送,倒计时
+            this.redBagStartTimer = this.autoTime * 60
+            this.redBagStartTimerInterval = setInterval(() => {
+              this.storeDownTimer(this.redBagStartTimer)
+              if (this.redBagStartTimer === 10) {
+                clearInterval(this.redBagStartTimerInterval)
+                this.redBagStartTimer = 0
+                this.storeDownTimer(0)
+                this.redBagTipShow = false
+                // 10秒倒计时
+                this.redBagTimeDownShow = true
+                return
+              }
+              this.redBagStartTimer = this.redBagStartTimer - 1
+            }, 1000)
+          }
+        }
+      })
+      // if (this.autoTime === 0) { // 立即开始
+      //   this.redBagTimeDownShow = true
+      // } else {
+      //   this.redBagTipShow = true
+      //   // 红包雨活动已推送,倒计时
+      //   this.redBagStartTimer = this.autoTime * 60
+      //   this.redBagStartTimerInterval = setInterval(() => {
+      //     this.storeDownTimer(this.redBagStartTimer)
+      //     if (this.redBagStartTimer === 10) {
+      //       clearInterval(this.redBagStartTimerInterval)
+      //       this.redBagStartTimer = 0
+      //       this.storeDownTimer(0)
+      //       this.redBagTipShow = false
+      //       // 10秒倒计时
+      //       this.redBagTimeDownShow = true
+      //       return
+      //     }
+      //     this.redBagStartTimer = this.redBagStartTimer - 1
+      //   }, 1000)
+      // }
     },
     showDownTip () {
       if (this.redBagStartTimer > 10) {
@@ -861,7 +920,7 @@ export default {
         font-weight: bold;
         text-align: center;
         border-radius: 50%;
-        background-image: url("../../assets/image/avatar@2x.png");
+        background-image: url('../../assets/image/avatar@2x.png');
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -1260,6 +1319,10 @@ export default {
         border: solid 1px $color-bd;
         text-align: center;
         vertical-align: middle;
+        background-image: url('../../assets/image/avatar@2x.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
       }
 
       .nick-name {

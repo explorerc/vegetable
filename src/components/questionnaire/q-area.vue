@@ -115,6 +115,8 @@ export default {
     },
     changeProvince (value) {
       this.cities = this.area.cities[value]
+      this.cityVal = ''
+      this.countyVal = ''
     },
     focusProvince () {
       this.errorTip = ''
@@ -128,6 +130,7 @@ export default {
     },
     changeCity (value) {
       this.counties = this.area.counties[value]
+      this.countyVal = ''
     },
     focusCity () {
       this.errorTip = ''
