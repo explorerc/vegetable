@@ -4,6 +4,7 @@
                     v-model="val"
                     type="date"
                     @focus="focus"
+                    :editable="false"
                     value-format="yyyy-MM-dd"
                     placeholder="选择日期"
                     :picker-options="pickerOptions">
