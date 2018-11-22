@@ -93,6 +93,14 @@ export default {
 
 <style scoped lang="scss">
 .template3-container /deep/ {
+  .panel-container {
+    i {
+      font-style: italic;
+      &.iconfont {
+        font-style: normal;
+      }
+    }
+  }
   .edit {
     position: absolute;
     top: 0;

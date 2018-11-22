@@ -1214,7 +1214,9 @@ var Log = function () {
           var k = ret.k;
           var exParams = data || {};
           exParams.behavior = ret.behavior;
+          var async = true;
           if (k === _type_maps.urlKeys['/site/'][1].k) {
+            async = false;
             var during = Math.floor(Date.now() - this.start);
             exParams.event = during;
           }
@@ -1228,7 +1230,7 @@ var Log = function () {
             var id = '' + Date.now() + Math.floor(Math.random() * 10000);
             var token = window.btoa((0, _stringify2.default)(params));
             var src = this.reportUrl + '?k=' + k + '&id=' + id + '&s=' + this.s + '&token=' + token;
-            this.xmlHttp.open('GET', src);
+            this.xmlHttp.open('GET', src, async);
             this.xmlHttp.send();
           }
         }
