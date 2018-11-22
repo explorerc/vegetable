@@ -5,7 +5,7 @@
               :class="{display:!edit}"
               v-model="val"
               @change="change"
-              :label="item.key"
+              :label="index"
               :key="index">
       <com-input v-if="edit"
                  :class="{error:item.error}"
