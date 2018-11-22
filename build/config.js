@@ -5,12 +5,12 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     PUBLIC_PATH: '/',
-    IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
+    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
     // MOBILE_HOST: '//172.16.11.28:8866/m/',
     MOBILE_HOST: '//localhost:8866/m/',
     proxyTable: {
       '/api': {
-        target: 'http://dev-api-zhike.vhall.com',
+        target: 'http://test-api-zhike.vhall.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
