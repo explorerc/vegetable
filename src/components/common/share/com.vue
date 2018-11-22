@@ -75,7 +75,7 @@
       shareLink: {
         handler (newVal) {
           this.linkSrc = newVal.link
-          this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.link + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary + '&desc=' + newVal.data.desc + '&pic=' + newVal.data.pic
+          this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.link + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary.substr(0, 10) + '&desc=' + newVal.data.desc.substr(0, 10) + '&pic=' + newVal.data.pic
           this.weiboLink = 'http://service.weibo.com/share/share.php?url=' + newVal.link + '&title=' + newVal.data.desc + '&pic=' + newVal.data.pic + '&appkey=&searchPic=false'
         },
         immediate: true,
@@ -110,154 +110,156 @@
 </script>
 
 <style lang="scss" scoped>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
 
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 
-  @keyframes mysuccess {
-    from {
-      opacity: .5;
-    }
-    30% {
-      opacity: 1;
-    }
-    60% {
-      top: -20px;
-    }
-    100% {
-      top: -12px;
-    }
+@keyframes mysuccess {
+  from {
+    opacity: 0.5;
   }
+  30% {
+    opacity: 1;
+  }
+  60% {
+    top: -20px;
+  }
+  100% {
+    top: -12px;
+  }
+}
 
-  .ve-message-box__wrapper {
+.ve-message-box__wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 3000;
+  .ve-modal {
     position: fixed;
-    top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 3000;
-    .ve-modal {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      opacity: .5;
-      background: #000;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background: #000;
+  }
+  .ve-message-box {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 410px;
+    padding-bottom: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ebeef5;
+    font-size: 16px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 3001;
+    .ve-message-box__header {
+      position: relative;
+      background-color: #edecec;
+      text-align: center;
+      line-height: 40px;
+      button {
+        position: absolute;
+        top: 12px;
+        right: 15px;
+        padding: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        cursor: pointer;
+        &:hover {
+          color: #409eff;
+        }
+      }
     }
-    .ve-message-box {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 410px;
-      padding-bottom: 10px;
-      background-color: #fff;
-      border-radius: 4px;
-      border: 1px solid #ebeef5;
-      font-size: 16px;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
-      overflow: hidden;
-      z-index: 3001;
-      .ve-message-box__header {
-        position: relative;
-        background-color: #edecec;
-        text-align: center;
-        line-height: 40px;
-        button {
+    .ve-message-box__content {
+      font-size: 14px;
+      padding: 20px;
+      text-align: left;
+      p {
+        padding: 5px 0;
+        .icon-successful {
           position: absolute;
-          top: 12px;
-          right: 15px;
-          padding: 0;
+          top: 0px;
+          left: 98px;
+          display: inline-block;
+          margin-left: 72px;
+          font-size: 34px;
+          color: #00dd00;
+          animation: mysuccess 0.8s linear;
+        }
+        input {
+          -webkit-appearance: none;
+          background-color: #fff;
+          border: 1px solid #dcdfe6;
+          box-sizing: border-box;
+          color: #606266;
+          display: inline-block;
+          font-size: inherit;
+          height: 32px;
+          line-height: 32px;
+          outline: none;
+          padding: 0 8px;
+          transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+          width: 310px;
+        }
+        .copy-link {
+          height: 32px;
+          line-height: 32px;
           border: none;
           outline: none;
-          background: transparent;
           font-size: 14px;
           cursor: pointer;
+          padding: 0 10px;
+          background-color: #fc5659;
+          color: #fff;
+          border-radius: 4px;
+          margin-left: 5px;
+          box-sizing: border-box;
           &:hover {
-            color: #409eff;
+            opacity: 0.8;
           }
         }
-      }
-      .ve-message-box__content {
-        font-size: 14px;
-        padding: 20px;
-        text-align: left;
-        p {
-          padding: 5px 0;
-          .icon-successful {
-            position: absolute;
-            top: 0px;
-            left: 98px;
-            display: inline-block;
-            margin-left: 72px;
-            font-size: 34px;
-            color: #00dd00;
-            animation: mysuccess .8s linear;
+        .share-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: none;
+          outline: none;
+          color: #fff;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+            transition: opacity 0.3s;
           }
-          input {
-            -webkit-appearance: none;
-            background-color: #fff;
-            border: 1px solid #dcdfe6;
-            box-sizing: border-box;
-            color: #606266;
-            display: inline-block;
-            font-size: inherit;
-            height: 32px;
-            line-height: 32px;
-            outline: none;
-            padding: 0 8px;
-            transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
-            width: 310px;
+          &.weibo {
+            background-color: #ff3333;
           }
-          .copy-link {
-            height: 32px;
-            line-height: 32px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            cursor: pointer;
-            padding: 0 10px;
-            background-color: #fc5659;
-            color: #fff;
-            border-radius: 4px;
-            margin-left: 5px;
-            box-sizing: border-box;
-            &:hover {
-              opacity: .8;
-            }
+          &.wxchart {
+            background-color: #61e92c;
+            margin: 0 4px;
           }
-          .share-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            outline: none;
-            color: #fff;
-            cursor: pointer;
-            &:hover {
-              opacity: .8;
-              transition: opacity .3s;
-            }
-            &.weibo {
-              background-color: #ff3333;
-            }
-            &.wxchart {
-              background-color: #61E92C;
-              margin: 0 4px;
-            }
-            &.qq {
-              background-color: #5095FF;
-            }
+          &.qq {
+            background-color: #5095ff;
           }
         }
       }
     }
   }
+}
 </style>
