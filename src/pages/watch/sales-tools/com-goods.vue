@@ -12,8 +12,11 @@
       <div>
         <h4 class="item-title">{{ite.title}}</h4>
         <p class="item-price">
-          <span>￥{{ite.preferential}}</span>
-          <del>￥{{ite.price}}</del>
+          <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
+          <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
+          <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
+          <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
+          <i v-show="ite.price === '0.00'"></i>
         </p>
       </div>
     </div>
@@ -28,8 +31,11 @@
       <div>
         <h4 class="item-title">{{ite.title}}</h4>
         <p class="item-price">
-          <span>￥{{ite.preferential}}</span>
-          <del>￥{{ite.price}}</del>
+          <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
+          <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
+          <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
+          <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
+          <i v-show="ite.price === '0.00'"></i>
         </p>
       </div>
     </div>
@@ -101,18 +107,10 @@
           }
         })
         this.$emit('goodsCount', this.goodsTopNum)
-        console.log(this.goodsList, '09876543876543')
-        console.log(this.goodsTopNum, 'goodsNumgoodsNumgoodsNum')
       },
       goInfo (params) {
         this.buyShow = true
         this.$emit('goodsInfo', params)
-        this.$get(GoodsService.GET_WATCH_GOODS_DETAIL, { goods_id: params.goods_id })
-          .then((res) => {
-            res.data.image = JSON.parse(res.data.image)
-            this.goodsInfo = res.data
-            console.log(this.goodsInfo)
-          })
       },
       closeGoods () {
         console.log('关闭')
