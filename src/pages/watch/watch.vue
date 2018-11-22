@@ -8,8 +8,10 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <span class="logo" v-if="!logoImg"></span>
-      <span class="logo" :style="{backgroundImage:`url(${customLogo})`}"></span>
+      <span class="logo"
+            v-if="!logoImg"></span>
+      <span class="logo"
+            :style="{backgroundImage:`url(${customLogo})`}"></span>
       <span class="ac-title">{{activityInfo.title}}</span>
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
@@ -307,14 +309,16 @@ export default {
     this.initPage()
     EventBus.$on('red_packet', (data) => {
       if (this.red_packet_id) {
-        let data = {
+        let _data = {
           red_packet_id: this.red_packet_id,
           activity_id: this.activityId
         }
         if (data) {
-          data.password = data
+          _data.password = data
         }
-        this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, data).then((res) => { })
+        this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, _data).then((res) => { }).catch((err) => {
+          console.log(err)
+        })
       }
     })
     let _this = this
@@ -916,7 +920,7 @@ export default {
         font-weight: bold;
         text-align: center;
         border-radius: 50%;
-        background-image: url("../../assets/image/avatar@2x.png");
+        background-image: url('../../assets/image/avatar@2x.png');
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -1315,7 +1319,7 @@ export default {
         border: solid 1px $color-bd;
         text-align: center;
         vertical-align: middle;
-        background-image: url("../../assets/image/avatar@2x.png");
+        background-image: url('../../assets/image/avatar@2x.png');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;

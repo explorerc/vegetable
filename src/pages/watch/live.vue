@@ -60,8 +60,13 @@
                   <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
                   <div>
                     <p class="item-price">
-                      <span>￥{{goodsSmallDetails.preferential}}</span>
-                      <del>￥{{goodsSmallDetails.price}}</del>
+                     <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
+                      <del>￥{{goodsSmallDetails.price}}</del>-->
+                      <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
+                      <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
+                      <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
+                      <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                      <i v-show="goodsSmallDetails.price === '0.00'"></i>
                     </p>
                     <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
                   </div>
@@ -98,9 +103,15 @@
               </el-carousel-item>
             </el-carousel>
             <p>{{goodsSmallDetails.describe}}</p>
-            <input type="text" v-model="goodsSmallDetails.tao" id="copyContent" style="position:absolute;opacity:0;">
             <footer>
-              <div><span>{{goodsSmallDetails.preferential}}</span> <del>{{goodsSmallDetails.price}}</del> </div>
+              <div>
+                <!--<span>{{goodsSmallDetails.preferential}}</span> <del>{{goodsSmallDetails.price}}</del>-->
+                <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
+                <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
+                <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
+                <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                <i v-show="goodsSmallDetails.price === '0.00'"></i>
+              </div>
               <span @click="goBuy({goods_id:goodsSmallDetails.goods_id,type:1})">立即购买</span>
             </footer>
           </div>
@@ -466,7 +477,7 @@ export default {
       })
     },
     clickTools (res) {
-      console.log(res)
+      // console.log(res)
       // switch (res.type) {
       //   case 'goods':
       //     this.getGoodsDetails(res.id, 'info')
@@ -489,7 +500,6 @@ export default {
           if (!type) {
             this.goodsSmallPopoverShow = true
           }
-          // res.data.image = JSON.parse(res.data.image)[0].name
           res.data.image = JSON.parse(res.data.image)
           this.goodsSmallDetails = res.data
           console.log(this.goodsSmallDetails, 8888)
@@ -507,33 +517,31 @@ export default {
       this.goodsInfoShow = false
     },
     showGoods () {
-      console.log(111111)
       this.goodsListShow = true
     },
     closeGoodList () {
       this.goodsListShow = false
     },
-    goodsInfo (params) {
+    async goodsInfo (params) {
       this.goodsListShow = false
       this.goodsInfoShow = true
-      this.getGoodsDetails(params.goods_id, 'info')
+      await this.getGoodsDetails(params.goods_id, 'info')
+      await this.goodsVisit(params)
     },
-    goInfo (params) {
+    async goInfo (params) {
       this.goodsInfoShow = true
       this.goodsSmallPopoverShow = false
-      this.getGoodsDetails(params.goods_id, 'info')
+      await this.getGoodsDetails(params.goods_id, 'info')
+      await this.goodsVisit({ goods_id: params.goods_id, type: 0 })
     },
     goBuy (params) {
-      params.activity_id = this.activityId
-      this.$get(activityService.GOODS_VISIT, params)
-        .then((res) => {
-          if (this.goodsSmallDetails.tao) {
-            this.taoShow = true
-          } else {
-            location.href = this.goodsSmallDetails.url
-          }
-          console.log(res)
-        })
+      // params.activity_id = this.activityId
+      this.goodsVisit(params)
+      if (this.goodsSmallDetails.tao) {
+        this.taoShow = true
+      } else {
+        location.href = this.goodsSmallDetails.url
+      }
     },
     taoShowBox (e) {
       if (e.action === 'cancel') {
@@ -553,6 +561,10 @@ export default {
     },
     clickQues () {
       this.getQuestions()
+    },
+    goodsVisit (params) {
+      params.activity_id = this.activityId
+      this.$get(activityService.GOODS_VISIT, params)
     }
   }
 }
