@@ -140,11 +140,11 @@ export default {
       }
       .remove {
         cursor: pointer;
-        font-size: 12px;
+        font-size: 30px;
       }
       .item-text {
         display: inline-block;
-        font-size: 12px;
+        font-size: 30px;
         margin-top: 5px;
       }
     }
