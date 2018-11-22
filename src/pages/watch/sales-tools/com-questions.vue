@@ -90,7 +90,11 @@ export default {
                 data.extData.real_name = returnData.value
                 break
               case 'edu':
-                data.extData.education_level = returnData.value
+                returnData.list.forEach((item) => {
+                  if (returnData.value === item.key) {
+                    data.extData['education_level'] = item.value
+                  }
+                })
                 break
               case 'birth':
                 data.extData.birthday = returnData.value
@@ -105,8 +109,14 @@ export default {
                   }
                 })
                 break
-              case 'email':
               case 'industry':
+                returnData.list.forEach((item) => {
+                  if (returnData.value === item.key) {
+                    data.extData[returnData.type] = item.value
+                  }
+                })
+                break
+              case 'email':
               case 'position':
                 data.extData[returnData.type] = returnData.value
                 break
