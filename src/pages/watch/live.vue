@@ -532,7 +532,7 @@ export default {
       this.goodsInfoShow = true
       this.goodsSmallPopoverShow = false
       await this.getGoodsDetails(params.goods_id, 'info')
-      await this.goodsVisit({goods_id: params.goods_id, type: 0})
+      await this.goodsVisit({ goods_id: params.goods_id, type: 0 })
     },
     goBuy (params) {
       // params.activity_id = this.activityId
