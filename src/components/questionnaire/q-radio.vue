@@ -77,7 +77,7 @@ export default {
       return result
     },
     check () {
-      if (this.value.required && !this.val) {
+      if (this.value.required === 'Y' && !this.val) {
         this.errorTip = '此项为必填项'
         return false
       }
