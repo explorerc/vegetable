@@ -704,7 +704,7 @@ export default {
 }
 .goods_small_popover /deep/ {
   position: absolute;
-  bottom: 450px;
+  top: 80px;
   right: 22px;
   border-radius: 4px;
   z-index: 1000;

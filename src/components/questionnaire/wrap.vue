@@ -261,6 +261,7 @@ export default {
           font-size: 30px;
           margin-bottom: 14px;
           font-weight: bold;
+          word-break: break-all;
           &.error {
             input {
               border-color: #fc5659;
