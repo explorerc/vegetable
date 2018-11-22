@@ -47,7 +47,8 @@
         <li v-for='(item,idx) in chatData'
             :data-joinId="item.id"
             :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}"
-            :key="idx">
+            :key="idx"
+            v-if="item.detail.type !== 'RED_PACKET_JOIN'">
           <template v-if='item.msgType === "chat"'>
             <dl class='clearfix'>
               <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
