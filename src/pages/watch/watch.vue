@@ -169,6 +169,7 @@ import userService from 'src/api/user-service' // import vconsole
 import EventBus from 'src/utils/eventBus'
 import RedBagRain from './red-bag-rain' // 红包雨
 import RedBagConfig from 'src/api/red-bag-config'
+import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 
 // let vConsole = new VConsole()
@@ -684,6 +685,11 @@ export default {
           this.dealWithRedBag()
         }
       })
+      /* 监听直播结束 */
+      ChatService.OBJ.regHandler(ChatConfig.endLive, () => {
+        // 结束直播--消息之后--中断红包雨
+        this.stopRedBag()
+      })
     },
     handleRedBagClick (e) {
       this.redBagTipShow = false
@@ -739,6 +745,24 @@ export default {
           this.redBagrecordList = res.data.list
         }
       })
+    },
+    /* 停止红包操作 */
+    stopRedBag () {
+      clearInterval(this.timerInterval)
+      clearInterval(this.redBagStartTimerInterval)
+      this.redBagResultInfo = {
+        avatar: '',
+        nick_name: '',
+        amount: '',
+        amount_ranking: '',
+        percent: ''
+      }
+      this.timer = 0
+      this.redBagStartTimer = 0
+      this.storeDownTimer(0)
+      this.rainTime = 0
+      this.autoTime = 0
+      this.handleRedBagClick()
     },
     dealWithRedBag () {
       this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_INFO, {
