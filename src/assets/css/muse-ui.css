@@ -154,7 +154,8 @@
   left: 56px
 }
 
-.mu-text-field-focus-line.error, .mu-text-field-focus-line.focus {
+.mu-text-field-focus-line.error,
+.mu-text-field-focus-line.focus {
   -webkit-transform: scaleX(1);
   -ms-transform: scaleX(1);
   transform: scaleX(1)
