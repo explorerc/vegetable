@@ -11,6 +11,16 @@
         未登录
       </p>
     </div>
+    <div class="v-balance clearfix">
+      <i class="iconfont v-left-icon fl">
+        <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5312"><path d="M512.5376 896.4608a38.4 38.4 0 0 1 0 76.8H165.8624c-63.1296 0-114.1248-51.6352-114.1248-115.072V141.1328c0-63.4368 50.9952-115.072 114.1248-115.072h693.3504c63.1296 0 114.1248 51.6352 114.1248 115.072v358.528a38.4 38.4 0 0 1-76.8 0V141.1328c0-21.248-16.8192-38.272-37.3248-38.272H165.8624c-20.5056 0-37.3248 17.024-37.3248 38.272v717.056c0 21.248 16.8192 38.272 37.3248 38.272h346.6752z" fill="#555555" p-id="5313"></path><path d="M320 307.2h384a38.4 38.4 0 0 1 0 76.8h-384a38.4 38.4 0 0 1 0-76.8zM320 537.6h384a38.4 38.4 0 0 1 0 76.8h-384a38.4 38.4 0 0 1 0-76.8zM630.6816 889.4208l271.5392-271.5392a38.4 38.4 0 1 1 54.2976 54.2976L684.9792 943.7184a38.4 38.4 0 1 1-54.2976-54.2976z" fill="#FFD021" p-id="5314"></path></svg>
+      </i>
+      <div class="v-item-right fl">
+        <span class="v-title">
+          当前余额 <span>￥{{user.balance}}</span>
+        </span>
+      </div>
+    </div>
     <div class="v-list" v-if="isLogin">
       <div class="v-item">
         <a :href="MOBILE_HOST+'userInfo'"
@@ -84,14 +94,9 @@ export default {
   data () {
     return {
       MOBILE_HOST: process.env.MOBILE_HOST,
-      // user: {
-      //   name: '', // 姓名
-      //   avatar: '', // 头像
-      //   balance: '0', // 余额
-      //   activityQuantity: 0, // 活动数量
-      //   orderQuantity: 0, // 订单数量
-      //   prizeQuantity: 0 // 奖品数量
-      // },
+      user: {
+        balance: '0.00' // 余额
+      },
       isLogin: false // 当前用户是否登录
     }
   },
@@ -102,6 +107,7 @@ export default {
       if (!this.centerInfo.consumerUser.consumerUserId) {
         this.$config({ handlers: true }).$post(userService.GET_CENTER_INFO, {}).then((res) => {
           this.storeCenterInfo(res.data)
+          this.user.balance = res.data.consumerUser.balance
         }).catch(err => {
           this.$messageBox({
             header: '提示',
@@ -191,9 +197,14 @@ export default {
     line-height: 140px;
     margin-top: 20px;
     background-color: #fff;
-    .v-content {
-      font-size: 42px;
-      margin-left: 20px;
+    padding: 0 0 0 40px;
+    font-size: 30px;
+    .v-title {
+      vertical-align: middle;
+      span {
+        font-size: 42px;
+        margin-left: 20px;
+      }
     }
   }
   .v-list {
