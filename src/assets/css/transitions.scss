@@ -65,3 +65,16 @@
   transition: .3s;
 }
 
+/* 向上滑入，从下划出 */
+.top-bottom-enter,
+.top-bottom-leave-to {
+  transform: translateY(100%);
+}
+.top-bottom-enter-to ,
+.top-bottom-leave{
+  transform: translateY(0);
+}
+.top-bottom-enter-active,
+.top-bottom-leave-active {
+  transition: .3s;
+}

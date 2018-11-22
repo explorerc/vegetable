@@ -1,12 +1,9 @@
 <template>
-  <div>
-    <div class="wrap-cover"></div>
-    <div class="cards-wrap">
-      <img :src="imgHost+'/'+cardData.pic" >
-      <div class="desc">{{cardData.desc}}</div>
-      <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><el-button  round class='btn primary-button' @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</el-button></a>
-      <i class="close" @click='close'></i>
-    </div>
+  <div class="cards-wrap">
+    <img :src="imgHost+'/'+cardData.pic" >
+    <div class="desc">{{cardData.desc}}</div>
+    <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><el-button  round class='btn primary-button' @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</el-button></a>
+    <i class="close" @click='close'></i>
   </div>
 </template>
 
@@ -45,17 +42,6 @@ export default {
 
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
-.wrap-cover {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 9998;
-  background: rgba(0, 0, 0, 0.7);
-}
 .cards-wrap {
   text-align: center;
   width: 552px;
