@@ -111,6 +111,7 @@
       </transition>
     </div>
     <!-- 推荐卡片 -->
+    <div class="wrap-cover" v-if="cardData.show"></div>
     <transition name="top-bottom"
                 mode="out-in">
       <com-cards v-if="cardData.show"
@@ -557,6 +558,17 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.wrap-cover {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.7);
+}
 .v-video-box {
   width: 100%;
   height: 100%;
