@@ -133,11 +133,13 @@ export default {
     .remove {
       cursor: pointer;
       font-size: 30px;
+      word-break: break-all;
     }
     .item-text {
       display: inline-block;
       font-size: 30px;
       margin-top: 9px;
+      word-break: break-all;
     }
   }
 }
