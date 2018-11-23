@@ -3,8 +3,12 @@
     <p class="v-title">
       {{activity.title}}
     </p>
-    <div class="v-summary"
+    <!-- <div class="v-summary"
          v-if="!activity.isCountdown || (activity.viewCondition === 'NONE' && activity.countDown < 1800) || viewLimit.canAppoint !== 'Y'">
+      <div v-html="activity.description"></div>
+    </div> -->
+    <div class="v-summary"
+         v-if="!activity.isCountdown">
       <div v-html="activity.description"></div>
     </div>
     <div class="v-operation"
@@ -121,10 +125,10 @@
           <template v-else>
             <button class="primary-button"
                     @click="jumpPage( MOBILE_HOST + 'SignUp/')">预约</button>
-            <a href="javascript:;"
+            <!-- <a href="javascript:;"
                class="v-registered"
                @click="jumpPage( MOBILE_HOST + 'CheckState/')"
-               v-if="!this.user.phone">已预约</a>
+               v-if="!this.user.phone">已预约</a> -->
           </template>
         </template>
       </template>
@@ -491,7 +495,7 @@ export default {
     word-break: break-all;
   }
   .v-summary {
-    text-align: left;
+    text-align: center;
     font-size: 28px;
     line-height: 40px;
     color: #555;
