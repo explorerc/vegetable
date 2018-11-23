@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import loginMixin from 'components/login-mixin'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
@@ -18,7 +17,11 @@ import temp4 from './template4.vue'
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
 import userService from 'src/api/user-service'
-
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+import * as types from '../../store/mutation-types'
 export default {
   mixins: [loginMixin],
   components: {
@@ -70,6 +73,9 @@ export default {
     })
   },
   methods: {
+    ...mapMutations('liveMager', {
+      storeVisiteInfo: types.VISITE_INFO
+    }),
     async init () {
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.tid
@@ -108,6 +114,7 @@ export default {
           this.$config({ handlers: true }).$post(userService.GET_VISITOR_INFO, {
             wechatAuth: sessionStorage.getItem('wechatAuth')
           }).then((res) => {
+            this.storeVisiteInfo(res.data)
             _log.set('visitor_id', res.data.visitorId)
             let login = this.getLoginInfo()
             _log.set('business_uid', activity.userId)

@@ -293,6 +293,7 @@ export default {
     clearInterval(this.redBagStartTimerInterval)
   },
   created () {
+    this.PlaybackVideo()
     EventBus.$on('enterFullScreen', () => {
       this.vx5div = true
       this.vclosex5div = false
@@ -692,6 +693,7 @@ export default {
       /* 监听直播结束 */
       ChatService.OBJ.regHandler(ChatConfig.endLive, () => {
         // 结束直播--消息之后--中断红包雨
+        _log.track(Vhall_User_Actions.LEAVE)
         this.stopRedBag()
       })
     },
@@ -821,6 +823,12 @@ export default {
       if (this.redBagStartTimer > 10) {
         this.redBagTipShow = true
       }
+    },
+    PlaybackVideo () {
+      EventBus.$on('play_back_video_completed', (a) => {
+        _log.track(Vhall_User_Actions.LEAVE)
+        console.log('回放播放完成了')
+      })
     }
   }
 }
