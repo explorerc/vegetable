@@ -46,7 +46,9 @@ export default function wxShare (wxShare) {
         _log.track(Vhall_User_Actions.SHARE, {
           event: 3
         })
-        EventBus.$emit('red_packet')
+        EventBus.$emit('red_packet', {
+          condition: 1
+        })
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -66,7 +68,9 @@ export default function wxShare (wxShare) {
         _log.track(Vhall_User_Actions.SHARE, {
           event: 2
         })
-        EventBus.$emit('red_packet')
+        EventBus.$emit('red_packet', {
+          condition: 1
+        })
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -85,7 +89,9 @@ export default function wxShare (wxShare) {
         _log.track(Vhall_User_Actions.SHARE, {
           event: 1
         })
-        EventBus.$emit('red_packet')
+        EventBus.$emit('red_packet', {
+          condition: 1
+        })
         // 用户确认分享后执行的回调函数
       },
       cancel: function () {
@@ -106,7 +112,9 @@ export default function wxShare (wxShare) {
         _log.track(Vhall_User_Actions.SHARE, {
           event: 4
         })
-        EventBus.$emit('red_packet')
+        EventBus.$emit('red_packet', {
+          condition: 1
+        })
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -122,7 +130,9 @@ export default function wxShare (wxShare) {
           : ''), // 分享链接
       imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
-        EventBus.$emit('red_packet')
+        EventBus.$emit('red_packet', {
+          condition: 1
+        })
         // 用户确认分享后执行的回调函数
       },
       cancel: function () {

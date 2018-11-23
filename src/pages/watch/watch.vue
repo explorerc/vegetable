@@ -312,10 +312,11 @@ export default {
       if (this.red_packet_id) {
         let _data = {
           red_packet_id: this.red_packet_id,
-          activity_id: this.activityId
+          activity_id: this.activityId,
+          condition: data.condition
         }
-        if (data) {
-          _data.password = data
+        if (data.password) {
+          _data.password = data.password
         }
         this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, _data).then((res) => { }).catch((err) => {
           console.log(err)
@@ -705,7 +706,10 @@ export default {
     },
     selectRedBag (count) { // 选中红包雨红包
       this.redBagCount = count
-      console.log(`点击到了 ${count} 个红包`)
+      this.$post(activityService.SEND_JOIN_RED_BAG, {
+        red_packet_id: this.red_packet_id,
+        activity_id: this.activityId
+      })
     },
     /* 红包雨结束 */
     async endRainHandler () {
@@ -733,7 +737,7 @@ export default {
       if (!param.password) {
         delete param.password
       }
-      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG, {
+      this.$post(activityService.GET_RED_BAG, {
         ...param
       }).then((res) => {
         if (res.code === 200 && res.data) {
@@ -1207,7 +1211,6 @@ export default {
     height: auto;
     margin-bottom: -2px;
     color: #333;
-    background-image: none;
     background-color: #ec0627;
     background: linear-gradient(#ff6700, #fe0025);
     border-radius: 10px;
@@ -1319,9 +1322,9 @@ export default {
       text-align: left;
       .head-icon {
         display: inline-block;
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
         border-radius: 50%;
         margin-right: 16px;
         border: solid 1px $color-bd;
@@ -1339,22 +1342,24 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        line-height: 80px;
+        line-height: 90px;
         vertical-align: middle;
+        font-size: 28px;
       }
 
       .red-bag-money {
-        font-size: 14px;
-        line-height: 86px;
+        font-size: 28px;
+        line-height: 90px;
       }
     }
   }
   .none-data {
     display: block;
     width: 100%;
-    line-height: 40px;
+    line-height: 80px;
     text-align: center;
     color: #8e9198;
+    font-size: 28px;
   }
 }
 </style>
