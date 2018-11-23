@@ -312,10 +312,11 @@ export default {
       if (this.red_packet_id) {
         let _data = {
           red_packet_id: this.red_packet_id,
-          activity_id: this.activityId
+          activity_id: this.activityId,
+          condition: data.condition
         }
-        if (data) {
-          _data.password = data
+        if (data.password) {
+          _data.password = data.password
         }
         this.$config({ handlers: true }).$post(activityService.UNLOCK_RED_BAG, _data).then((res) => { }).catch((err) => {
           console.log(err)
