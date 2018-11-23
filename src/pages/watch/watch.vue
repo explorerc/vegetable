@@ -1319,9 +1319,9 @@ export default {
       text-align: left;
       .head-icon {
         display: inline-block;
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
         border-radius: 50%;
         margin-right: 16px;
         border: solid 1px $color-bd;
@@ -1339,22 +1339,24 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        line-height: 80px;
+        line-height: 90px;
         vertical-align: middle;
+        font-size: 28px;
       }
 
       .red-bag-money {
-        font-size: 14px;
-        line-height: 86px;
+        font-size: 28px;
+        line-height: 90px;
       }
     }
   }
   .none-data {
     display: block;
     width: 100%;
-    line-height: 40px;
+    line-height: 80px;
     text-align: center;
     color: #8e9198;
+    font-size: 28px;
   }
 }
 </style>
