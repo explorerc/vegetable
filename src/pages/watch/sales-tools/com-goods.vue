@@ -49,7 +49,6 @@
     props: ['goodsMsg'],
     created () {
       this.getGoodsList()
-      console.log(this.$route.params.id, 777)
     },
     watch: {
       goodsMsg: {
@@ -88,12 +87,10 @@
               }
             })
             this.goodsList = res.data
-            console.log(this.goodsList)
             this.$emit('goodsCount', this.goodsTopNum)
           })
       },
       setStatus (val) {
-        console.log(val, '23456789')
         this.goodsTopNum = null
         this.goodsList.forEach((ite, ind) => {
           ite.top = '0'
@@ -113,7 +110,6 @@
         this.$emit('goodsInfo', params)
       },
       closeGoods () {
-        console.log('关闭')
         this.$emit('closeGoodList')
       }
     }
