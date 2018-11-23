@@ -27,7 +27,8 @@ const liveMagerModules = {
     },
     activityInfo: {}, // 活动信息
     joinInfo: {}, // 参会信息
-    downTimer: 0
+    downTimer: 0,
+    visiteInfo: {}
   },
   getters: {
     liveDevices: state => state.liveDevices,
@@ -35,7 +36,8 @@ const liveMagerModules = {
     roomPaas: (state) => state.roomPaas,
     activityInfo: (state) => state.activityInfo,
     joinInfo: state => state.joinInfo,
-    downTimer: state => state.downTimer
+    downTimer: state => state.downTimer,
+    visiteInfo: state => state.visiteInfo
   },
   mutations: {
     [types.VIDEO_DEVICE] (state, reLoad) {
@@ -55,6 +57,9 @@ const liveMagerModules = {
     },
     [types.DOWN_TIMER] (state, reLoad) {
       state.downTimer = reLoad
+    },
+    [types.VISITE_INFO] (state, reLoad) {
+      state.visiteInfo = reLoad
     }
   }
 }

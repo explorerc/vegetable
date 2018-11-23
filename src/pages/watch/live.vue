@@ -55,25 +55,27 @@
             </template>
             <div class="msg-Box">
               <!--商品推送-->
-              <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
-                <div @click="goInfo(goodsSmallDetails)">
-                  <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
-                  <div>
-                    <p class="item-price">
-                     <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
-                      <del>￥{{goodsSmallDetails.price}}</del>-->
-                      <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
-                      <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
-                      <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
-                      <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
-                      <i v-show="goodsSmallDetails.price === '0.00'"></i>
-                    </p>
-                    <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+              <transition name="goods-fade">
+                <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
+                  <div @click="goInfo(goodsSmallDetails)">
+                    <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                    <div>
+                      <p class="item-price">
+                       <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
+                        <del>￥{{goodsSmallDetails.price}}</del>-->
+                        <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
+                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
+                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
+                        <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                        <i v-show="goodsSmallDetails.price === '0.00'"></i>
+                      </p>
+                      <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                    </div>
+                    <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
                   </div>
-                  <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
+                  <i></i>
                 </div>
-                <i></i>
-              </div>
+              </transition>
               <!--商品推送-->
               <!--操作区-->
               <div class="icon-list">
@@ -702,16 +704,39 @@ export default {
     }
   }
 }
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.goods-fade-enter-active {
+  transition: all .1s ease;
+  animation: goods-fade-in 0.1s;
+}
+.goods-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  animation: goods-fade-in .3s reverse;
+}
+.goods-fade-enter, .goods-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(30px);
+  opacity: 0;
+}
+@keyframes goods-fade-in {
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
 .goods_small_popover /deep/ {
   position: absolute;
-  bottom: 450px;
-  right: 22px;
+  bottom: 105px;
+  left: 0;
   border-radius: 4px;
   z-index: 1000;
   width: 470px;
   height: 140px;
   background-color: white;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 10px 20px 5px rgba(0, 0, 0, 0.15);
   div {
     .cover_img {
       width: 140px;
@@ -729,7 +754,7 @@ export default {
       height: 26px;
       line-height: 26px;
       .item-title {
-        font-size: 12px;
+        font-size: 14px;
         line-height: 30px;
         height: 60px;
         margin-top: 10px;
