@@ -107,7 +107,7 @@
       },
       goInfo (params) {
         this.buyShow = true
-        this.$emit('goodsInfo', params)
+        this.$emit('goodsInfo', params, 'lists')
       },
       closeGoods () {
         this.$emit('closeGoodList')
