@@ -55,27 +55,27 @@
             </template>
             <div class="msg-Box">
               <!--商品推送-->
-              <transition name="goods-fade">
                 <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
-                  <div @click="goInfo(goodsSmallDetails)">
-                    <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
-                    <div>
-                      <p class="item-price">
-                       <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
-                        <del>￥{{goodsSmallDetails.price}}</del>-->
-                        <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
-                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
-                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
-                        <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
-                        <i v-show="goodsSmallDetails.price === '0.00'"></i>
-                      </p>
-                      <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                  <transition name="goods-fade">
+                    <div @click="goInfo(goodsSmallDetails)">
+                      <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                      <div>
+                        <p class="item-price">
+                         <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
+                          <del>￥{{goodsSmallDetails.price}}</del>-->
+                          <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
+                          <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
+                          <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
+                          <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                          <i v-show="goodsSmallDetails.price === '0.00'"></i>
+                        </p>
+                        <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                      </div>
+                      <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
                     </div>
-                    <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
-                  </div>
-                  <i></i>
+                    <i></i>
+                  </transition>
                 </div>
-              </transition>
               <!--商品推送-->
               <!--操作区-->
               <div class="icon-list">
