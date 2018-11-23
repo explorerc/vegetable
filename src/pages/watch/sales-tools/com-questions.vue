@@ -1,8 +1,12 @@
 <template>
   <div class="v-questions-from">
-    <a @click="colse" class="v-close">收起<i class="iconfont icon-Up"></i></a>
+    <a @click="colse"
+       class="v-close">收起<i class="iconfont icon-Up"></i></a>
     <div class="v-content">
-      <img :src="defaultImg" alt="" v-if="defaultImg" class="v-question-img">
+      <img :src="defaultImg"
+           alt=""
+           v-if="defaultImg"
+           class="v-question-img">
       <p class="v-title">
         {{questions.title}}
       </p>
@@ -11,14 +15,15 @@
       </p>
       <div class="v-questions">
         <com-question v-for="(item,index) in dragData"
-                    :value.sync="item"
-                    :edit="false"
-                    :index="index+1"
-                    :key="index"
-                    :ref="`com${index}`">
+                      :value.sync="item"
+                      :edit="false"
+                      :index="index+1"
+                      :key="index"
+                      :ref="`com${index}`">
         </com-question>
       </div>
-      <button class="v-save" @click="save">提交</button>
+      <button class="v-save"
+              @click="save">提交</button>
     </div>
   </div>
 </template>
@@ -128,7 +133,9 @@ export default {
         data.extData = JSON.stringify(data.extData)
         data.naireData = JSON.stringify(data.naireData)
         this.$config({ handlers: true }).$post(questionService.POST_QUESTION, data).then((res) => {
-          EventBus.$emit('red_packet')
+          EventBus.$emit('red_packet', {
+            condition: 3
+          })
           this.$toast({
             content: '提交成功',
             position: 'center'
