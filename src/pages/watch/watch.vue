@@ -733,7 +733,7 @@ export default {
       if (!param.password) {
         delete param.password
       }
-      this.$config({ handlers: true }).$post(activityService.GET_RED_BAG, {
+      this.$post(activityService.GET_RED_BAG, {
         ...param
       }).then((res) => {
         if (res.code === 200 && res.data) {
@@ -1207,7 +1207,6 @@ export default {
     height: auto;
     margin-bottom: -2px;
     color: #333;
-    background-image: none;
     background-color: #ec0627;
     background: linear-gradient(#ff6700, #fe0025);
     border-radius: 10px;
