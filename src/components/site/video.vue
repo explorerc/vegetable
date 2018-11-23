@@ -10,6 +10,9 @@
 <script>
 import editMixin from './mixin'
 import activityService from 'src/api/activity-service'
+import {
+  mapState
+} from 'vuex'
 export default {
   mixins: [editMixin],
   data () {
@@ -21,6 +24,18 @@ export default {
       videoId: `vid_${Math.floor(Math.random() * 10000)}`,
       confirmId: `vid_confirm_${Math.floor(Math.random() * 10000)}`,
       nameId: `vid_name_${Math.floor(Math.random() * 10000)}`
+    }
+  },
+  computed: {
+    ...mapState('liveMager', {
+      visiteInfo: state => state.visiteInfo
+    })
+  },
+  watch: {
+    'visiteInfo.visitorId': {
+      handler (newval) {
+        this.getPaasInfo(newval)
+      }
     }
   },
   methods: {
@@ -90,15 +105,28 @@ export default {
         accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
         token: this.vhallParams.token // token必填
       })
-    }
-  },
-  mounted () {
-    this.$get(activityService.GET_CREATEACCESSTOKEN, {}).then((res) => {
-      this.vhallParams = res.data
-      if (this.value.videoType === 'upload' && this.value.recordId) {
-        this.initVideo()
+    },
+    getPaasInfo (visitedId) {
+      let obj = {}
+      if (visitedId) {
+        obj = {
+          userId: visitedId
+        }
       }
-    })
+      this.$get(activityService.GET_CREATEACCESSTOKEN, obj).then((res) => {
+        this.vhallParams = res.data
+        /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+        this.$nextTick(() => {
+        // 初始化pass上传插件
+        // this.initVhallUpload()
+          if (this.value.videoType === 'upload' && this.value.recordId) {
+            this.$nextTick(() => {
+              this.initVideo()
+            })
+          }
+        })
+      })
+    }
   }
 }
 </script>
