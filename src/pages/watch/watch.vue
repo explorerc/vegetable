@@ -705,7 +705,10 @@ export default {
     },
     selectRedBag (count) { // 选中红包雨红包
       this.redBagCount = count
-      console.log(`点击到了 ${count} 个红包`)
+      this.$post(activityService.SEND_JOIN_RED_BAG, {
+        red_packet_id: this.red_packet_id,
+        activity_id: this.activityId
+      })
     },
     /* 红包雨结束 */
     async endRainHandler () {
