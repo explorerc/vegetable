@@ -28,6 +28,7 @@ export default {
   GET_CUSTOM_LOGO: '/manage/brand-manage/get', // 获取logo信息
   GET_RED_BAG_RECOREDS: '/frontend/tool/red-packet-get-records', // 观看端获取红包领取记录接口
   GET_RED_BAG: '/frontend/tool/red-packet-get', // 观看端抢红包接口
+  SEND_JOIN_RED_BAG: '/frontend/tool/red-packet-join', // 观看端参加红包-通知接口
   UNLOCK_RED_BAG: '/frontend/tool/red-packet-unlock', // 观看端解锁红包
   GET_WATCH_GOODS_DETAIL: '/frontend/tool/goods-detail', // 商品详情
   GET_WATCH_GOODS_LIST: '/frontend/tool/goods-list', // 商品推送

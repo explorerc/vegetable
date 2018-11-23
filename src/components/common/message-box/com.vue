@@ -150,7 +150,7 @@
       padding-bottom: 10px;
       background-color: #fff;
       border-radius: 4px;
-      font-size: 16px;
+      font-size: 28px;
       overflow: hidden;
       z-index: 1006;
       &:before {
@@ -183,15 +183,15 @@
           }
         }
         .prompt-title {
-          font-size: 16px;
+          font-size: 30px;
         }
       }
       .ve-message-box__container {
         padding: 10px 20px 20px 20px;
-        font-size: 14px;
+        font-size: 28px;
         text-align: left;
         .ve-message-box__title {
-          font-size: 20px;
+          font-size: 34px;
         }
       }
       .ve-message-box__header {
@@ -207,7 +207,7 @@
           border: none;
           outline: none;
           background: transparent;
-          font-size: 14px;
+          font-size: 28px;
           cursor: pointer;
           &:hover {
             color: $color-default;
@@ -215,8 +215,8 @@
         }
       }
       .ve-message-box__content {
-        font-size: 14px;
-        padding: 20px 0;
+        font-size: 28px;
+        padding: 40px 0;
       }
       .ve-message-box__btns {
         text-align: right;
