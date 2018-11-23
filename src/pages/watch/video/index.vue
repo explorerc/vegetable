@@ -315,6 +315,9 @@ export default {
               }
               // window.VhallPlayer.play()
               // this.dealWithVideo()
+            },
+            end: () => {
+              EventBus.$emit('play_back_video_completed')
             }
           })
         })

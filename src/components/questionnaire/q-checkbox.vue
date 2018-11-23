@@ -111,20 +111,15 @@ export default {
       width: 100%;
       position: relative;
       margin-bottom: 15px;
-      height: 40px;
+      // height: 40px;
       &.display {
         margin-bottom: 5px;
       }
       .el-checkbox__input {
-        display: inline-block;
-        margin-top: 8px;
+        float: left;
+        margin-top: 5px;
       }
       .el-checkbox__label {
-        left: 20px;
-        right: 28px;
-        padding-left: 0;
-        position: absolute;
-        margin-right: 10px;
         .com-input {
           margin-right: 8px;
           &.error {
@@ -139,13 +134,17 @@ export default {
         }
       }
       .remove {
+        word-break: break-all;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 30px;
       }
       .item-text {
+        width: 100%;
         display: inline-block;
-        font-size: 12px;
+        font-size: 30px;
         margin-top: 5px;
+        word-break: break-all;
+        white-space: normal;
       }
     }
   }
