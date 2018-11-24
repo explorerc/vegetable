@@ -162,7 +162,6 @@
 import { mapMutations, mapState } from 'vuex'
 import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
-import Empty from './empty'
 import * as types from '../../store/mutation-types'
 import loginMixin from 'components/login-mixin'
 import wxShareFunction from '../../assets/js/wx-share.js'
@@ -198,7 +197,7 @@ export default {
       playType: '', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
       imgUrl: '',
-      currentView: Empty,
+      currentView: '',
       vhallParams: {
         token: '',
         appId: '',
@@ -769,7 +768,7 @@ export default {
     },
     /* 刷新页面或者后进入时 */
     initRedBagInfo () {
-      this.$post(activityService.GET_NOW_RED_BAG_INFO, {
+      this.$config({ handlers: true }).$post(activityService.GET_NOW_RED_BAG_INFO, {
         red_packet_id: this.red_packet_id
       }).then((res) => {
         if (res.data && res.data.time) {
@@ -882,6 +881,9 @@ export default {
       .v-mark {
         top: 0;
       }
+    }
+    .vjs-loading-spinner{
+      top:25%;
     }
     .v-x5-title {
       display: none;
