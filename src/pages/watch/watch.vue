@@ -926,7 +926,10 @@ export default {
       }
       .ac-title {
         display: block;
-        width: 50%;
+        width: 62%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         line-height: 40px;
         margin-top: 20px;
       }
