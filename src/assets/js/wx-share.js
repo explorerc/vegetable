@@ -60,7 +60,7 @@ export default function wxShare (wxShare) {
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-3'
           : ''), // 分享链接
-      imgUrl: 'https://test-zhike.vhall.com/m/static/img/share@2x.png', // 分享图标
+      imgUrl: 'https://test-zhike.oss-cn-beijing.aliyuncs.com/mp-test/78/1d/781d168bd224d0f7836041650ff60ef2.png', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
         _log.track(Vhall_User_Actions.SHARE, {
