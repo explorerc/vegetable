@@ -286,10 +286,12 @@ export default {
     },
     /* 播放暖场视频 */
     playBackVideo () {
+      alert(1)
       this.$nextTick(() => {
         if (!this.recordId) return
         let _videoAttr = {}
         if (this.isX5()) {
+          alert(2)
           _videoAttr = {
             'x5-video-player-type': 'h5',
             'x5-video-orientation': 'landscape|portrait',
