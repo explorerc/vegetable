@@ -24,6 +24,8 @@ const Test = () => import('src/pages/test-login')
 const SiteTemplate = () => import('src/pages/site/template.vue')
 // 被踢出
 const kicked = () => import('src/pages/watch/kicked')
+// 空页面
+const empty = () => import('src/pages/watch/empty')
 
 const userInfo = () => import('src/pages/user/info')
 const user = () => import('src/pages/user')
@@ -31,107 +33,115 @@ const activityList = () => import('src/pages/user/activity-list')
 const userInfoEdit = () => import('src/pages/user/edit')
 const testSuccess = () => import('src/pages/test/success')
 const testFail = () => import('src/pages/test/fail')
-export default [
-  {
-    path: '/',
-    name: 'Layout',
-    component: GuidLayout,
-    children: [
-      {
-        path: '/signUp/:id',
-        name: 'signUp',
-        component: SignUp
-      },
-      {
-        path: '/subscribe/:id',
-        name: 'subscribe',
-        component: Subscribe
-      },
-      {
-        path: '/guide/:id',
-        name: 'guide',
-        component: Guide
-      },
-      {
-        path: '/success/:id',
-        name: 'success',
-        component: Success
-      },
-      {
-        path: '/checkState/:id',
-        name: 'checkState',
-        component: CheckState
-      }
-    ]
+export default [{
+  path: '/',
+  name: 'Layout',
+  component: GuidLayout,
+  children: [{
+    path: '/signUp/:id',
+    name: 'signUp',
+    component: SignUp
   },
   {
-    path: '/site/:id',
-    name: 'SiteTemplate',
-    component: SiteTemplate
+    path: '/subscribe/:id',
+    name: 'subscribe',
+    component: Subscribe
   },
   {
-    path: '/sitePreview/:id',
-    name: 'SiteTemplate',
-    component: SiteTemplate
+    path: '/guide/:id',
+    name: 'guide',
+    component: Guide
   },
   {
-    path: '/watch/:id',
-    name: 'watch',
-    component: Watch
-  },
-  // {
-  //   path: '/live/:id',
-  //   name: 'live',
-  //   component: Live
-  // },
-  // {
-  //   path: '/playback/:id',
-  //   name: 'playback',
-  //   component: Playback
-  // },
-  {
-    path: '/test',
-    name: 'Test',
-    component: Test
+    path: '/success/:id',
+    name: 'success',
+    component: Success
   },
   {
-    path: '/kicked',
-    name: 'kicked',
-    component: kicked
-  },
-  {
-    path: '/user',
-    name: 'user',
-    component: user
-  },
-  {
-    path: '/userInfo',
-    name: 'userInfo',
-    component: userInfo
-  },
-  {
-    path: '/userInfoEdit/:type',
-    name: 'userInfoEdit',
-    component: userInfoEdit
-  },
-  {
-    path: '/activityList',
-    name: 'activityList',
-    component: activityList
-  },
-  {
-    path: '/testFail',
-    name: 'testFail',
-    component: testFail
-  },
-  {
-    path: '/testSuccess',
-    name: 'testSuccess',
-    component: testSuccess
-  },
-  {
-    path: '/testFail',
-    name: 'testFail',
-    component: testFail
+    path: '/checkState/:id',
+    name: 'checkState',
+    component: CheckState
   }
+  ]
+},
+{
+  path: '/site/:id',
+  name: 'SiteTemplate',
+  component: SiteTemplate
+},
+{
+  path: '/sitePreview/:id',
+  name: 'SiteTemplate',
+  component: SiteTemplate
+},
+{
+  path: '/watch/:id',
+  name: 'watch',
+  component: Watch
+},
+// {
+//   path: '/live/:id',
+//   name: 'live',
+//   component: Live
+// },
+// {
+//   path: '/playback/:id',
+//   name: 'playback',
+//   component: Playback
+// },
+{
+  path: '/test',
+  name: 'Test',
+  component: Test
+},
+{
+  path: '/kicked',
+  name: 'kicked',
+  component: kicked
+},
+{
+  path: '/empty',
+  name: 'empty',
+  component: empty
+},
+{
+  path: '/user',
+  name: 'user',
+  component: user
+},
+{
+  path: '/user',
+  name: 'user',
+  component: user
+},
+{
+  path: '/userInfo',
+  name: 'userInfo',
+  component: userInfo
+},
+{
+  path: '/userInfoEdit/:type',
+  name: 'userInfoEdit',
+  component: userInfoEdit
+},
+{
+  path: '/activityList',
+  name: 'activityList',
+  component: activityList
+},
+{
+  path: '/testFail',
+  name: 'testFail',
+  component: testFail
+},
+{
+  path: '/testSuccess',
+  name: 'testSuccess',
+  component: testSuccess
+},
+{
+  path: '/testFail',
+  name: 'testFail',
+  component: testFail
+}
 ]
