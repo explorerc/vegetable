@@ -43,7 +43,6 @@ export default {
     }
   },
   created: function () {
-    this.share()
     if (this.isWx()) {
       this.share()
     }
@@ -97,12 +96,9 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          let imgPath = require('assets/image/share@2x.png')
-          console.log('aaaaaaaaaaaaaaaaaaaaaaaa', imgPath)
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + this.$staticHost + imgPath
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share@2x.png')
         }
       })
-      console.log(this.wxShare)
       wxShareFunction(this.wxShare)
     },
     isWx () {

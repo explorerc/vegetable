@@ -63,7 +63,6 @@ export default {
   },
   mounted () {
     this.init()
-    this.share()
     if (this.isWx()) {
       this.shareFunction()
     }
