@@ -8,6 +8,13 @@
     <div v-show="domShow"
          class="v-function-box">
       <div class="v-nav">
+        <!--操作区-->
+        <div class="icon-list">
+          <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
+          <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
+          <span class='ques' v-if="questionStatus.iconShow" @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
+        </div>
+        <!--操作区-->
         <com-tabs :value.sync="tabValue"
                   @change="tabChange">
           <com-tab label="活动简介"
@@ -77,13 +84,6 @@
                 </div>
               </transition>
               <!--商品推送-->
-              <!--操作区-->
-              <div class="icon-list">
-                <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
-                <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
-                <span class='ques' v-if="questionStatus.iconShow" @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
-              </div>
-              <!--操作区-->
               <i></i>
             </div>
             <!--商品推送-->
@@ -670,6 +670,7 @@ export default {
   position: absolute;
   bottom: 90px;
   right: 22px;
+  z-index: 1;
   span {
     position: relative;
     color: transparent;
@@ -783,6 +784,7 @@ export default {
   top: 0;
   left: 0;
   overflow-y: auto;
+  z-index: 10;
 }
 .goodsInfo /deep/ {
   background-color: white;
@@ -792,6 +794,7 @@ export default {
   top: 0;
   left: 0;
   overflow-y: auto;
+  z-index: 10;
   > p {
     height: 80px;
     line-height: 80px;
