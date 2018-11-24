@@ -35,7 +35,7 @@ Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = process.env.NODE_ENV !== 'production'
 Vue.prototype.$imgHost = process.env.IMGHOST
-Vue.prototype.$staticHost = process.env.MOBILE_HOST
+Vue.prototype.$staticHost = process.env.PUBLIC_PATH
 Vue.filter('isEmpty', function (value, replaceStr) {
   replaceStr = replaceStr || '-'
   return value || replaceStr
