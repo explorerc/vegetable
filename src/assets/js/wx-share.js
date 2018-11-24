@@ -35,8 +35,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareTimeline({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.shareDatadesc,
-      link:
-        wxShare.shareData.shareDatalink +
+      link: wxShare.shareData.shareDatalink +
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-3'
           : ''), // 分享链接
@@ -57,8 +56,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareAppMessage({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.shareDatadesc,
-      link:
-        wxShare.shareData.shareDatalink +
+      link: wxShare.shareData.shareDatalink +
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-3'
           : ''), // 分享链接
@@ -79,8 +77,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareQQ({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.shareDatadesc,
-      link:
-        wxShare.shareData.shareDatalink +
+      link: wxShare.shareData.shareDatalink +
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-2'
           : ''), // 分享链接
@@ -101,8 +98,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareWeibo({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.shareDatadesc,
-      link:
-        wxShare.shareData.shareDatalink +
+      link: wxShare.shareData.shareDatalink +
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-1'
           : ''), // 分享链接
@@ -123,8 +119,7 @@ export default function wxShare (wxShare) {
     wx.onMenuShareQZone({
       title: wxShare.shareData.title, // 分享标题
       desc: wxShare.shareData.shareDatadesc,
-      link:
-        wxShare.shareData.shareDatalink +
+      link: wxShare.shareData.shareDatalink +
         (wxShare.shareUser.shareId
           ? '?shareId=' + wxShare.shareUser.shareId + '-2'
           : ''), // 分享链接
