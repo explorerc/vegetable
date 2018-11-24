@@ -890,7 +890,7 @@ export default {
       }
     }
     .vjs-loading-spinner {
-      top: 25%;
+      top: 28%;
     }
     .v-x5-title {
       display: none;
