@@ -30,8 +30,12 @@ const Test = () =>
 // 活动官网
 const SiteTemplate = () =>
   import('src/pages/site/template.vue')
+// 被踢出
 const kicked = () =>
   import('src/pages/watch/kicked')
+// 活动不存在
+const empty = () =>
+  import('src/pages/watch/empty')
 const userInfo = () =>
   import('src/pages/user/info')
 const user = () =>
@@ -107,6 +111,11 @@ export default [{
   path: '/kicked',
   name: 'kicked',
   component: kicked
+},
+{
+  path: '/empty',
+  name: 'empty',
+  component: empty
 },
 {
   path: '/user',

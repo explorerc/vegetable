@@ -433,17 +433,8 @@ export default {
         }
         this.initSdk()
         console.log(this.visitorObj)
-      }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-            }
-          }
-        })
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
       // this.getToken()
     },

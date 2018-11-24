@@ -146,6 +146,8 @@ export default {
             }
           }, 1000)
         }
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
       // this.getToken()
     }

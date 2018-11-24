@@ -542,17 +542,8 @@ export default {
         } else {
           this.doAuth(this.MOBILE_HOST + 'guide/' + this.$route.params.id)
         }
-      }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-            }
-          }
-        })
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
       /* 查询真实在线人数 */
       await this.$config({ handlers: true }).$get(activityService.GET_ONLINENUM, {
@@ -652,7 +643,7 @@ export default {
           }
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : require('assets/image/share@2x.png')
         }
       })
       wxShareFunction(this.wxShare)

@@ -175,17 +175,8 @@ export default {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         }
-      }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-            }
-          }
-        })
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
     },
     selected (val, id) {
@@ -319,6 +310,8 @@ export default {
         if (this.activity.viewCondition === 'APPOINT') {
           this.getQuestionLists()
         }
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
     },
     subScribe () { // 预约活动
@@ -397,18 +390,8 @@ export default {
                 } else {
                   this.subScribe()
                 }
-              }).catch((err) => {
-                this.isClick = true
-                this.$messageBox({
-                  header: '提示',
-                  content: err.msg,
-                  confirmText: '确定',
-                  handleClick: (e) => {
-                    if (e.action === 'cancel') {
-                    } else if (e.action === 'confirm') {
-                    }
-                  }
-                })
+              }).catch(() => {
+                this.$router.replace('/empty')
               })
             } else {
               this.$messageBox({

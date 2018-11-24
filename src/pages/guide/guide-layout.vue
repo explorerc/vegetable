@@ -71,19 +71,9 @@ export default {
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
         this.imgUrl = res.data.guide ? res.data.guide.imgUrl : ''
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
-      // .catch((err) => {
-      //   this.$messageBox({
-      //     header: '提示',
-      //     content: err.msg,
-      //     confirmText: '确定',
-      //     handleClick: (e) => {
-      //       if (e.action === 'cancel') {
-      //       } else if (e.action === 'confirm') {
-      //       }
-      //     }
-      //   })
-      // })
     },
     async share () { // 微信分享
       let _url = window.location.href
@@ -106,7 +96,7 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : require('assets/image/share@2x.png')
         }
       })
       wxShareFunction(this.wxShare)

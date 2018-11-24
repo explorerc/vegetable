@@ -133,6 +133,8 @@ export default {
           data = JSON.parse(dataStr)
           this.data = data
         })
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
     },
     async shareFunction () { // 微信分享
@@ -156,7 +158,7 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : ''
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : require('assets/image/share@2x.png')
         }
       })
       wxShareFunction(this.wxShare)

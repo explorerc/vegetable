@@ -249,6 +249,8 @@ export default {
             this.doAuth(this.MOBILE_HOST + 'watch/' + this.$route.params.id)
           }
         }
+      }).catch(() => {
+        this.$router.replace('/empty')
       })
     }
   }
