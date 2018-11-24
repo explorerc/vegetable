@@ -97,7 +97,9 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + this.$staticHost + require('assets/image/share@2x.png')
+          let imgPath = require('assets/image/share@2x.png')
+          console.log('aaaaaaaaaaaaaaaaaaaaaaaa', imgPath)
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + this.$staticHost + imgPath
         }
       })
       console.log(this.wxShare)
