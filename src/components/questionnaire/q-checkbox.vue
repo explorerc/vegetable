@@ -5,7 +5,7 @@
       <el-checkbox v-for="(item,index) in value.detail.list"
                    class="q-select-item"
                    :class="{display:!edit}"
-                   :label="index"
+                   :label="item.key"
                    :key="index">
         <com-input v-if="edit"
                    :class="{error:item.error}"

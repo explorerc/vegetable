@@ -68,6 +68,7 @@ export default {
   },
   methods: {
     save () {
+      debugger
       let result = true
       let refs = this.$refs
       let data = {}
@@ -85,6 +86,8 @@ export default {
             result = false
           } else {
             data.naireData[returnData.id] = returnData.value
+
+            debugger
             switch (returnData.type) {
               case 'phone':
                 data.extData.phone = returnData.value
