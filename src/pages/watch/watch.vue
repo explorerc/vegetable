@@ -362,21 +362,6 @@ export default {
       },
       deep: true,
       immediate: true
-    },
-    redBagTimeDownShow (newVal) {
-      if (newVal) {
-        this.timer = 10
-        this.timerInterval = setInterval(() => {
-          if (this.timer === 0) {
-            clearInterval(this.timerInterval)
-            this.timerInterval = 0
-            this.redBagTimeDownShow = false
-            this.rainTime = 10
-            return
-          }
-          this.timer--
-        }, 1000)
-      }
     }
   },
   methods: {
@@ -784,8 +769,13 @@ export default {
             // 减去1秒纠正查询接口时间误差
             this.autoTime = (res.data.time - 1) / 60
             this.initRedBagDownTimer()
-          } else if (res.data.valid_time && (res.data.valid_time - 30) <= 0) {
-            this.queryRedBagrecordList()
+          } else if (res.data.valid_time) {
+            if (res.data.valid_time > 20) {
+              this.redBagTimeDownShow = true
+              this.initRedBayRainTimer(res.data.valid_time - 20)
+            } else {
+              this.queryRedBagrecordList()
+            }
           }
         }
       })
@@ -803,6 +793,7 @@ export default {
     initRedBagDownTimer () {
       if (this.autoTime === 0) { // 立即开始
         this.redBagTimeDownShow = true
+        this.initRedBayRainTimer(10)
       } else {
         this.redBagTipShow = true
         // 红包雨活动已推送,倒计时
@@ -816,11 +807,26 @@ export default {
             this.redBagTipShow = false
             // 10秒倒计时
             this.redBagTimeDownShow = true
+            this.initRedBayRainTimer(10)
             return
           }
           this.redBagStartTimer = this.redBagStartTimer - 1
         }, 1000)
       }
+    },
+    /* 控制红包雨倒计时 */
+    initRedBayRainTimer (time) {
+      this.timer = time
+      this.timerInterval = setInterval(() => {
+        if (this.timer === 0) {
+          clearInterval(this.timerInterval)
+          this.timerInterval = 0
+          this.redBagTimeDownShow = false
+          this.rainTime = 10
+          return
+        }
+        this.timer--
+      }, 1000)
     },
     showDownTip () {
       if (this.redBagStartTimer > 10) {
