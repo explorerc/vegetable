@@ -458,7 +458,6 @@ export default {
       })
     },
     questionSuccess (type) {
-      debugger
       this.questionsShow = false
       this.questionStatus.redIcon = type
     },
