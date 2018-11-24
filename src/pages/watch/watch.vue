@@ -482,6 +482,9 @@ export default {
       //     this.logoImg = res.data.logoUrl
       //   }
       // })
+      setTimeout(() => {
+        this.share()
+      }, 1000)
       if (this.isWx()) {
         setTimeout(() => {
           this.share()
