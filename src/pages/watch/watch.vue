@@ -249,6 +249,7 @@ export default {
         amount_ranking: '',
         percent: ''
       },
+      redBagInfo: {},
       autoTime: 0,
       rainTime: 0,
       redBagCount: 0,
@@ -688,6 +689,7 @@ export default {
         _log.track(Vhall_User_Actions.LEAVE)
         this.stopRedBag()
       })
+      this.initRedBagInfo()
     },
     handleRedBagClick (e) {
       this.redBagTipShow = false
@@ -765,54 +767,49 @@ export default {
       this.autoTime = 0
       this.handleRedBagClick()
     },
+    /* 刷新页面或者后进入时 */
+    initRedBagInfo () {
+      this.$post(activityService.GET_NOW_RED_BAG_INFO, {
+        red_packet_id: this.red_packet_id
+      }).then((res) => {
+        if (res.data && res.data.time) {
+          // 减去1秒纠正查询接口时间误差
+          this.autoTime = (res.data.time - 1) / 60
+          this.initRedBagDownTimer()
+        }
+      })
+    },
     dealWithRedBag () {
       this.$config({ handlers: true }).$post(activityService.GET_RED_BAG_INFO, {
         red_packet_id: this.red_packet_id
       }).then((res) => {
         if (res.code === 200) {
           this.redBagInfo = { condition: res.data.condition, password: res.data.password }
-          if (this.autoTime === 0) { // 立即开始
-            this.redBagTimeDownShow = true
-          } else {
-            this.redBagTipShow = true
-            // 红包雨活动已推送,倒计时
-            this.redBagStartTimer = this.autoTime * 60
-            this.redBagStartTimerInterval = setInterval(() => {
-              this.storeDownTimer(this.redBagStartTimer)
-              if (this.redBagStartTimer === 10) {
-                clearInterval(this.redBagStartTimerInterval)
-                this.redBagStartTimer = 0
-                this.storeDownTimer(0)
-                this.redBagTipShow = false
-                // 10秒倒计时
-                this.redBagTimeDownShow = true
-                return
-              }
-              this.redBagStartTimer = this.redBagStartTimer - 1
-            }, 1000)
-          }
+          this.initRedBagDownTimer()
         }
       })
-      // if (this.autoTime === 0) { // 立即开始
-      //   this.redBagTimeDownShow = true
-      // } else {
-      //   this.redBagTipShow = true
-      //   // 红包雨活动已推送,倒计时
-      //   this.redBagStartTimer = this.autoTime * 60
-      //   this.redBagStartTimerInterval = setInterval(() => {
-      //     this.storeDownTimer(this.redBagStartTimer)
-      //     if (this.redBagStartTimer === 10) {
-      //       clearInterval(this.redBagStartTimerInterval)
-      //       this.redBagStartTimer = 0
-      //       this.storeDownTimer(0)
-      //       this.redBagTipShow = false
-      //       // 10秒倒计时
-      //       this.redBagTimeDownShow = true
-      //       return
-      //     }
-      //     this.redBagStartTimer = this.redBagStartTimer - 1
-      //   }, 1000)
-      // }
+    },
+    initRedBagDownTimer () {
+      if (this.autoTime === 0) { // 立即开始
+        this.redBagTimeDownShow = true
+      } else {
+        this.redBagTipShow = true
+        // 红包雨活动已推送,倒计时
+        this.redBagStartTimer = parseInt(this.autoTime * 60)
+        this.redBagStartTimerInterval = setInterval(() => {
+          this.storeDownTimer(this.redBagStartTimer)
+          if (this.redBagStartTimer <= 10) {
+            clearInterval(this.redBagStartTimerInterval)
+            this.redBagStartTimer = 0
+            this.storeDownTimer(0)
+            this.redBagTipShow = false
+            // 10秒倒计时
+            this.redBagTimeDownShow = true
+            return
+          }
+          this.redBagStartTimer = this.redBagStartTimer - 1
+        }, 1000)
+      }
     },
     showDownTip () {
       if (this.redBagStartTimer > 10) {

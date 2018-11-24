@@ -195,7 +195,7 @@
       position: absolute;
       top: 20px;
       left: 100px;
-      z-index: 1999999;
+      z-index: 1000;
       color: #FFD021;
       img {
         display: inline-block;

@@ -33,5 +33,6 @@ export default {
   GET_WATCH_GOODS_DETAIL: '/frontend/tool/goods-detail', // 商品详情
   GET_WATCH_GOODS_LIST: '/frontend/tool/goods-list', // 商品推送
   GOODS_VISIT: '/frontend/tool/goods-visit', // 商品浏览
-  GET_RED_BAG_INFO: '/frontend/tool/red-packet-get-info' // 观看端 获取 红包信息接口
+  GET_RED_BAG_INFO: '/frontend/tool/red-packet-get-info', // 观看端 获取 红包信息接口
+  GET_NOW_RED_BAG_INFO: '/frontend/tool/red-packet-get-now' // 观看端根据活动ID获取当前未开始的红包信息接口
 }
