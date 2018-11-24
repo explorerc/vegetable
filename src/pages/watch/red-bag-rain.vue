@@ -189,13 +189,13 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    z-index: 9999;
+    z-index: 1000;
     .rain-num {
       display: inline-block;
       position: absolute;
       top: 20px;
       left: 100px;
-      z-index: 1000;
+      z-index: 1001;
       color: #FFD021;
       img {
         display: inline-block;
