@@ -47,7 +47,7 @@
               我的活动
             </span>
             <i class="iconfont icon-jiantou1 fr"></i>
-            <span class="fr">
+            <span class="fr" v-if="centerInfo.other.planActivityCount">
               有<span class="v-red">{{centerInfo.other.planActivityCount?centerInfo.other.planActivityCount:''}}</span>场活动即将开始
             </span>
           </div>
