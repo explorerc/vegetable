@@ -108,6 +108,7 @@
     </message-box>
     <!-- 红包雨 -- 抢到红包 -->
     <message-box v-if="redBagShow"
+                 type="noneModal"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box get-red-bag">
@@ -123,6 +124,7 @@
     </message-box>
     <!-- 红包雨 -- 未抢到红包 -->
     <message-box v-if="redBagNoneShow"
+                 type="noneModal"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box red-bag-top"
@@ -774,12 +776,17 @@ export default {
     /* 刷新页面或者后进入时 */
     initRedBagInfo () {
       this.$post(activityService.GET_NOW_RED_BAG_INFO, {
-        red_packet_id: this.red_packet_id
+        activity_id: this.activityId
       }).then((res) => {
-        if (res.data && res.data.time) {
-          // 减去1秒纠正查询接口时间误差
-          this.autoTime = (res.data.time - 1) / 60
-          this.initRedBagDownTimer()
+        if (res.data) {
+          this.red_packet_id = res.data.red_packet_uuid
+          if (res.data.time) {
+            // 减去1秒纠正查询接口时间误差
+            this.autoTime = (res.data.time - 1) / 60
+            this.initRedBagDownTimer()
+          } else if (res.data.valid_time && (res.data.valid_time - 30) <= 0) {
+            this.queryRedBagrecordList()
+          }
         }
       })
     },
