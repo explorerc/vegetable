@@ -660,9 +660,8 @@ export default {
       })
       /* 监听创建红包通知消息 */
       ChatService.OBJ.regHandler(RedBagConfig.MARKET_TOOL, (msg) => {
-        console.log('-----------收到红包消息------------')
-        console.log(msg)
         if (msg.type === RedBagConfig.createRedBag) {
+          this.stopRedBag()
           this.autoTime = msg.time ? parseInt(msg.time) : 0
           this.red_packet_id = msg.red_packet_uuid
           this.redBagCount = 0
