@@ -15,6 +15,33 @@
           <span class='ques' v-if="questionStatus.iconShow" @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
         </div>
         <!--操作区-->
+        <div class="msg-Box">
+          <!--商品推送-->
+          <transition name="goods-fade">
+            <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
+              <div @click="goInfo(goodsSmallDetails, 'push')">
+                <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                <div>
+                  <p class="item-price">
+                    <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
+                     <del>￥{{goodsSmallDetails.price}}</del>-->
+                    <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
+                    <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
+                    <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
+                    <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                    <i v-show="goodsSmallDetails.price === '0.00'"></i>
+                  </p>
+                  <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                </div>
+                <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
+              </div>
+              <i></i>
+            </div>
+          </transition>
+          <!--商品推送-->
+          <i></i>
+        </div>
+        <!--商品推送-->
         <com-tabs :value.sync="tabValue"
                   @change="tabChange">
           <com-tab label="活动简介"
@@ -53,42 +80,15 @@
                 </div>
               </template>
             </template>
-            <template v-else-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
-              <div class="v-chat-control v-noLogin"
-                   id="sendBoxBtn">
-                需要登录才能参与聊天
-                <span @click="doLogin">登录</span>
-              </div>
-            </template>
-            <div class="msg-Box">
-              <!--商品推送-->
-              <transition name="goods-fade">
-                <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
-                  <div @click="goInfo(goodsSmallDetails, 'push')">
-                    <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
-                    <div>
-                      <p class="item-price">
-                       <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
-                        <del>￥{{goodsSmallDetails.price}}</del>-->
-                        <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
-                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
-                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
-                        <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
-                        <i v-show="goodsSmallDetails.price === '0.00'"></i>
-                      </p>
-                      <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
-                    </div>
-                    <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
-                  </div>
-                  <i></i>
-                </div>
-              </transition>
-              <!--商品推送-->
-              <i></i>
-            </div>
-            <!--商品推送-->
           </com-tab>
         </com-tabs>
+        <template v-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
+          <div class="v-chat-control v-noLogin not-login"
+               id="sendBoxBtn">
+            需要登录才能参与聊天
+            <span @click="doLogin">登录</span>
+          </div>
+        </template>
         <!-- <a class="v-subscribe"
            href="javascript:;">
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
@@ -733,15 +733,16 @@ export default {
 .goods_small_popover /deep/ {
   position: absolute;
   bottom: 105px;
-  left: 0;
-  border-radius: 4px;
+  left: 22px;
+  border-radius: 8px;
   z-index: 1000;
-  width: 470px;
+  width: 605px;
   height: 140px;
   background-color: white;
   box-shadow: 2px 10px 20px 5px rgba(0, 0, 0, 0.15);
   div {
     .cover_img {
+      border: 1px solid #cccccc;
       width: 140px;
       height: 140px;
       float: left;
@@ -765,11 +766,11 @@ export default {
       }
       .item-price {
         span {
-          font-size: 22px;
+          font-size: 28px;
           color: #fc5659;
         }
         del {
-          font-size: 18px;
+          font-size: 22px;
           color: rgba(136, 136, 136, 1);
         }
       }
@@ -911,4 +912,19 @@ export default {
     }
   }
 }
+  .not-login /deep/ {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    line-height: 89px;
+    padding: 0 40px;
+    border-top: 1px solid #e2e2e2;
+    background-color: white;
+    text-align: center;
+    span{
+      color: #4b5afe;
+    }
+  }
 </style>
