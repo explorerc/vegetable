@@ -721,7 +721,7 @@ export default {
       if (!param.password) {
         delete param.password
       }
-      this.$post(activityService.GET_RED_BAG, {
+      return this.$post(activityService.GET_RED_BAG, {
         ...param
       }).then((res) => {
         if (res.code === 200 && res.data) {
