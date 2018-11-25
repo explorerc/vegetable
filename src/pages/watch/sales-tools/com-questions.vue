@@ -204,11 +204,14 @@ export default {
     display: block;
     width: 170px;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    z-index: 100;
   }
   .v-content {
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     height: 100%;
     padding: 85px 50px 50px;
   }

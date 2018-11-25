@@ -900,6 +900,9 @@ export default {
         top: 0;
       }
     }
+    .vjs-loading-spinner {
+      top: 24%;
+    }
     .v-x5-title {
       display: none;
       width: 100%;
