@@ -21,7 +21,8 @@
          v-else-if="playType=='end'">
       <span class="end-box"
             v-if="role!=='master'">
-          <img :src="require('assets/image/watch_liveEnd@2x.png')" alt="">
+        <img :src="require('assets/image/watch_liveEnd@2x.png')"
+             alt="">
         <p>您来晚了，直播已结束了～</p>
       </span>
     </div>
@@ -372,6 +373,9 @@ export default {
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
         this.playComps.initLivePlayer(false, true, () => {
+          document.querySelector('.vjs-tech').addEventListener('pause', () => {
+            this.isPlay = false
+          })
           if (this.isX5()) {
             document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
               this.changeX5ExitFullScreen()
