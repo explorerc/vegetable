@@ -762,7 +762,7 @@ export default {
       let p = {
         activity_id: this.activityId
       }
-      this.$post(activityService.GET_NOW_RED_BAG_INFO, p).then((res) => {
+      this.$config({ handlers: true }).$post(activityService.GET_NOW_RED_BAG_INFO, p).then((res) => {
         if (res.data) {
           this.red_packet_id = res.data.red_packet_uuid
           if (res.data.time) {
