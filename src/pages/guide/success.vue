@@ -4,10 +4,12 @@
     <img src="../../assets/image/success@2x.png"
          alt=""
          class="v-img">
-    <p class="v-start-title" v-if="activity.status === 'LIVING'">
+    <p class="v-start-title"
+       v-if="activity.status === 'LIVING'">
       <span>直播正在进行中</span>
     </p>
-    <p class="v-start-title" v-else>
+    <p class="v-start-title"
+       v-else>
       <span>直播将要开始啦</span>
     </p>
     <button class="primary-button"
@@ -18,10 +20,12 @@
     <img src="../../assets/image/success@2x.png"
          alt=""
          class="v-img">
-    <p class="v-success-title" v-if="activity.status === 'FINISH'">
+    <p class="v-success-title"
+       v-if="activity.status === 'FINISH'">
       <span>直播已结束</span>
     </p>
-    <p class="v-success-title" v-else>
+    <p class="v-success-title"
+       v-else>
       <span v-if="activity.viewCondition === 'APPOINT'">报名成功</span>
       <span v-else-if="activity.viewCondition === 'NONE'">预约成功</span>
     </p>

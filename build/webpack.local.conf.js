@@ -4,13 +4,14 @@ const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.conf')
 const config = require('./config')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 const webpackConfig = merge(baseConfig, {
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.scss/,
         use: [
           'vue-style-loader',
@@ -34,7 +35,7 @@ const webpackConfig = merge(baseConfig, {
     hot: true,
     contentBase: resolve('dist'),
     open: false,
-    host: 'localhost',
+    host: '0.0.0.0',
     port: 8866,
     https: true,
     overlay: {

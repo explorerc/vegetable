@@ -233,6 +233,7 @@ export default {
       border-radius: 45px;
       margin: 60px auto 0;
       display: block;
+      font-size: 30px;
     }
   }
 }

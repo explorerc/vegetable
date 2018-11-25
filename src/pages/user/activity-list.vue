@@ -1,6 +1,6 @@
 <template>
   <div class="v-activity-list">
-    <a :href="MOBILE_HOST+'userinfo'" class="v-return-userinfo clearfix">
+    <a :href="MOBILE_HOST+'user'" class="v-return-userinfo clearfix">
       <i class="iconfont icon-jiantouzuo fl"></i>我的活动
     </a>
     <div class="v-list" ref="bscroll" @scroll="scrollEvent($event)">

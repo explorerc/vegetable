@@ -108,6 +108,7 @@
     </message-box>
     <!-- 红包雨 -- 抢到红包 -->
     <message-box v-if="redBagShow"
+                 type="noneModal"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box get-red-bag">
@@ -123,6 +124,7 @@
     </message-box>
     <!-- 红包雨 -- 未抢到红包 -->
     <message-box v-if="redBagNoneShow"
+                 type="noneModal"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box red-bag-top"
@@ -162,7 +164,6 @@
 import { mapMutations, mapState } from 'vuex'
 import Playback from './playback' // 直播推流回放组件
 import Live from './live' // 直播推流回放组件
-import Empty from './empty'
 import * as types from '../../store/mutation-types'
 import loginMixin from 'components/login-mixin'
 import wxShareFunction from '../../assets/js/wx-share.js'
@@ -198,7 +199,7 @@ export default {
       playType: '', // 直播(live), 回放(vod), 暖场(warm), 结束(end)，预告(pre)
       playStatus: '',
       imgUrl: '',
-      currentView: Empty,
+      currentView: '',
       vhallParams: {
         token: '',
         appId: '',
@@ -360,21 +361,6 @@ export default {
       },
       deep: true,
       immediate: true
-    },
-    redBagTimeDownShow (newVal) {
-      if (newVal) {
-        this.timer = 10
-        this.timerInterval = setInterval(() => {
-          if (this.timer === 0) {
-            clearInterval(this.timerInterval)
-            this.timerInterval = 0
-            this.redBagTimeDownShow = false
-            this.rainTime = 10
-            return
-          }
-          this.timer--
-        }, 1000)
-      }
     }
   },
   methods: {
@@ -769,13 +755,23 @@ export default {
     },
     /* 刷新页面或者后进入时 */
     initRedBagInfo () {
-      this.$post(activityService.GET_NOW_RED_BAG_INFO, {
+      this.$config({ handlers: true }).$post(activityService.GET_NOW_RED_BAG_INFO, {
         red_packet_id: this.red_packet_id
       }).then((res) => {
-        if (res.data && res.data.time) {
-          // 减去1秒纠正查询接口时间误差
-          this.autoTime = (res.data.time - 1) / 60
-          this.initRedBagDownTimer()
+        if (res.data) {
+          this.red_packet_id = res.data.red_packet_uuid
+          if (res.data.time) {
+            // 减去1秒纠正查询接口时间误差
+            this.autoTime = (res.data.time - 1) / 60
+            this.initRedBagDownTimer()
+          } else if (res.data.valid_time) {
+            if (res.data.valid_time > 20) {
+              this.redBagTimeDownShow = true
+              this.initRedBayRainTimer(res.data.valid_time - 20)
+            } else {
+              this.queryRedBagrecordList()
+            }
+          }
         }
       })
     },
@@ -792,6 +788,7 @@ export default {
     initRedBagDownTimer () {
       if (this.autoTime === 0) { // 立即开始
         this.redBagTimeDownShow = true
+        this.initRedBayRainTimer(10)
       } else {
         this.redBagTipShow = true
         // 红包雨活动已推送,倒计时
@@ -805,11 +802,26 @@ export default {
             this.redBagTipShow = false
             // 10秒倒计时
             this.redBagTimeDownShow = true
+            this.initRedBayRainTimer(10)
             return
           }
           this.redBagStartTimer = this.redBagStartTimer - 1
         }, 1000)
       }
+    },
+    /* 控制红包雨倒计时 */
+    initRedBayRainTimer (time) {
+      this.timer = time
+      this.timerInterval = setInterval(() => {
+        if (this.timer === 0) {
+          clearInterval(this.timerInterval)
+          this.timerInterval = 0
+          this.redBagTimeDownShow = false
+          this.rainTime = 10
+          return
+        }
+        this.timer--
+      }, 1000)
     },
     showDownTip () {
       if (this.redBagStartTimer > 10) {
@@ -882,6 +894,9 @@ export default {
       .v-mark {
         top: 0;
       }
+    }
+    .vjs-loading-spinner {
+      top: 28%;
     }
     .v-x5-title {
       display: none;

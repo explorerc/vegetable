@@ -554,14 +554,14 @@ export default {
       display: block;
       color: #999999;
       text-align: center;
-      top: 50%;
+      top: 260px;
       left: 50%;
       transform: translate(-50%, -50%);
-      img{
+      img {
         width: 180px;
         height: 180px;
       }
-      p{
+      p {
         margin-top: 20px;
         line-height: 24px;
       }

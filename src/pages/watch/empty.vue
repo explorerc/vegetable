@@ -1,6 +1,7 @@
 <template>
   <div class="isEmpty">
-    <img src="../../assets/image/empty@2x.png" alt="">
+    <img src="../../assets/image/empty@2x.png"
+         alt="">
     <p>
       该活动尚未发布
     </p>
