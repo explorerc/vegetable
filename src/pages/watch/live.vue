@@ -689,7 +689,7 @@ export default {
       background: #fc5659;
       border-radius: 200px;
       color: #fff;
-      font-size: 12px;
+      font-size: 24px;
       text-align: center;
     }
   }
@@ -703,18 +703,19 @@ export default {
       height: 30px;
       line-height: 35px;
       top: 0;
+      font-size: 24px;
     }
   }
 }
 /* 可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
 .goods-fade-enter-active {
-  transition: all .1s ease;
+  transition: all 0.1s ease;
   animation: goods-fade-in 0.1s;
 }
 .goods-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  animation: goods-fade-in .3s reverse;
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  animation: goods-fade-in 0.3s reverse;
 }
 .goods-fade-enter, .goods-fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
@@ -722,10 +723,10 @@ export default {
   opacity: 0;
 }
 @keyframes goods-fade-in {
-  0%{
+  0% {
     transform: scale(0);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
