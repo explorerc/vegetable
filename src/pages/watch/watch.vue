@@ -759,9 +759,10 @@ export default {
     },
     /* 刷新页面或者后进入时 */
     initRedBagInfo () {
-      this.$post(activityService.GET_NOW_RED_BAG_INFO, {
+      let p = {
         activity_id: this.activityId
-      }).then((res) => {
+      }
+      this.$post(activityService.GET_NOW_RED_BAG_INFO, p).then((res) => {
         if (res.data) {
           this.red_packet_id = res.data.red_packet_uuid
           if (res.data.time) {
