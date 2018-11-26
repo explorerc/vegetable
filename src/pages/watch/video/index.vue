@@ -315,7 +315,7 @@ export default {
                 })
               } else {
                 document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
-                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '16vw'
+                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '18.667vw'
               }
               // window.VhallPlayer.play()
               // this.dealWithVideo()
@@ -385,7 +385,7 @@ export default {
             })
           } else {
             document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
-            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '16vw'
+            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '18.667vw'
           }
           console.log('----------开始播放----------')
         })
@@ -558,7 +558,7 @@ export default {
       display: block;
       color: #999999;
       text-align: center;
-      top: 260px;
+      top: 280px;
       left: 50%;
       transform: translate(-50%, -50%);
       img {
@@ -587,7 +587,7 @@ export default {
   }
   .v-click-modal {
     position: absolute;
-    top: 120px;
+    top: 140px;
     left: 0;
     width: 100%;
     height: 422px;
@@ -596,7 +596,7 @@ export default {
   .control-box-div {
     position: absolute;
     left: 0;
-    top: 462px;
+    top: 482px;
     height: 80px;
     line-height: 80px;
     // background-color: rgba(0, 0, 0, 0.75);
@@ -635,7 +635,7 @@ export default {
   .v-mark {
     position: absolute;
     background-color: #222;
-    top: 120px;
+    top: 140px;
     left: 0;
     width: 100%;
     height: 422px;

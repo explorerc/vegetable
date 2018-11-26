@@ -722,7 +722,7 @@ export default {
     doScrollBottom () {
       this.scrollBottom(5)
     },
-    scrollBottom (speed = 1) {
+    scrollBottom (speed = 2) {
       let elm = document.querySelector('.bscroll')
       let maxTop = elm.scrollHeight - elm.offsetHeight
       let interId = setInterval(() => {
