@@ -1,18 +1,28 @@
 <template>
   <div class="v-activity-list">
-    <a :href="MOBILE_HOST+'user'" class="v-return-userinfo clearfix">
+    <a :href="MOBILE_HOST+'user'"
+       class="v-return-userinfo clearfix">
       <i class="iconfont icon-jiantouzuo fl"></i>我的活动
     </a>
-    <div class="v-list" ref="bscroll" @scroll="scrollEvent($event)">
+    <div class="v-list"
+         ref="bscroll"
+         @scroll="scrollEvent($event)">
       <ol class="bscroll-container">
-        <li  v-for="itemData in tableList" :key="itemData.id">
-          <a :href="MOBILE_HOST+'guide/'+itemData.id" class="clearfix">
+        <li v-for="itemData in tableList"
+            :key="itemData.id">
+          <a :href="MOBILE_HOST+'guide/'+itemData.id"
+             class="clearfix">
             <div class="v-activity-img fl">
-              <img :src="itemData.imgUrl" alt="">
-              <span v-if='itemData.status=="PREPARE"' class="live-state">预告</span>
-              <span v-if='itemData.status=="LIVING"' class="live-state"><i class="live-point"></i>直播中</span>
-              <span v-if='itemData.status=="PLAYBACK"' class="live-state">回放</span>
-              <span v-if='itemData.status=="FINISH"' class="live-state">结束</span>
+              <img :src="itemData.imgUrl"
+                   alt="">
+              <span v-if='itemData.status=="PREPARE"'
+                    class="live-state">预告</span>
+              <span v-if='itemData.status=="LIVING"'
+                    class="live-state"><i class="live-point"></i>直播中</span>
+              <span v-if='itemData.status=="PLAYBACK"'
+                    class="live-state">回放</span>
+              <span v-if='itemData.status=="FINISH"'
+                    class="live-state">结束</span>
             </div>
             <div class="v-content-block fr">
               <p class="v-title">
@@ -189,6 +199,7 @@ export default {
           img {
             width: 100%;
             height: 100%;
+            border-radius: 8px;
           }
           .live-state {
             display: block;

@@ -14,7 +14,8 @@
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
-             class="q-subject" >{{value.title}}<span v-if="value.required === 'Y'" class="v-red">*</span></div>
+             class="q-subject">{{value.title}}<span v-if="value.required === 'Y'"
+                class="v-red">*</span></div>
         <!-- 问题描述区 -->
         <component ref="content"
                    :is="QComs[value.type]"
@@ -43,7 +44,8 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
+        <div class="sort"
+             v-if="value.detail.format!='mobile'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -156,6 +158,18 @@ export default {
   // overflow: hidden;
   text-align: left;
   /deep/ {
+    input {
+      &::-moz-placeholder {
+        color: #555555;
+        opacity: 1;
+      }
+      &:-ms-input-placeholder {
+        color: #555555;
+      }
+      &::-webkit-input-placeholder {
+        color: #555555;
+      }
+    }
     .el-input__inner {
       border-radius: 4px;
     }

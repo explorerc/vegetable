@@ -251,6 +251,7 @@ export default {
     margin: 60px auto 50px;
     border: none;
     border-radius: 50px;
+    font-size: 30px;
   }
 }
 </style>

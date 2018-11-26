@@ -227,8 +227,8 @@
         }
         button {
           display: inline-block;
-          height: 40px;
-          line-height: 41px;
+          height: 80px;
+          line-height: 80px;
           white-space: nowrap;
           cursor: pointer;
           border: none;
@@ -242,7 +242,7 @@
           -ms-user-select: none;
           padding: 0 40px;
           margin: 0 20px;
-          border-radius: 19px;
+          border-radius: 40px;
           color: #222222;
           background: transparent;
           transition: all 0.3s;

@@ -1,11 +1,13 @@
 <template>
-  <transition name="fade" v-if="visible">
+  <transition name="fade"
+              v-if="visible">
     <div class="ve-message-box__wrapper">
       <div class="ve-message-box">
         <div class="ve-message-box__header">
           <div class="ve-message-box__title">邀请</div>
           <slot name="header"></slot>
-          <button type="button" @click.prevent="close()">
+          <button type="button"
+                  @click.prevent="close()">
             <i class="iconfont icon-close"></i>
           </button>
         </div>
@@ -13,100 +15,113 @@
           <p style="position: relative;">
             分享链接给朋友
             <transition name="success">
-              <i class="iconfont icon-successful" v-if="isSuccess"></i>
+              <i class="iconfont icon-successful"
+                 v-if="isSuccess"></i>
             </transition>
           </p>
           <p>
-            <input v-model="linkSrc" ref="linkInput">
-            <button type="button" class="copy-link" @click="copyLink">复制</button>
+            <input v-model="linkSrc"
+                   ref="linkInput">
+            <button type="button"
+                    class="copy-link"
+                    @click="copyLink">复制</button>
           </p>
           <p>
-            <button type="button" class="share-btn weibo" @click.stop="openLink(weiboLink)">
+            <button type="button"
+                    class="share-btn weibo"
+                    @click.stop="openLink(weiboLink)">
               <i class="iconfont icon-weibo"></i>
             </button>
-            <button type="button" class="share-btn wxchart" @click.stop="shareWx">
+            <button type="button"
+                    class="share-btn wxchart"
+                    @click.stop="shareWx">
               <i class="iconfont icon-weixin"></i>
             </button>
-            <button type="button" class="share-btn qq" @click.stop="openLink(qqLink)">
+            <button type="button"
+                    class="share-btn qq"
+                    @click.stop="openLink(qqLink)">
               <i class="iconfont icon-10"></i>
             </button>
           </p>
           <transition name="fade">
-            <div v-if="qrCode" >
-              <img :src="qrCode" alt="二维码" style="display: block;margin: 10px auto;">
+            <div v-if="qrCode">
+              <img :src="qrCode"
+                   alt="二维码"
+                   style="display: block;margin: 10px auto;">
               <p>打开微信，点击底部的“发现”，使用 “扫一扫” 即可将网页分享到我的朋友圈</p>
             </div>
           </transition>
         </div>
       </div>
-      <div class="ve-modal" @click.prevent="close()"></div>
+      <div class="ve-modal"
+           @click.prevent="close()"></div>
     </div>
   </transition>
 </template>
 
 <script>
-  export default {
-    name: 'Share',
-    data () {
-      return {
-        visible: true,
-        isSuccess: false,
-        linkSrc: '',
-        qrCode: '',
-        qqLink: '',
-        weiboLink: ''
-      }
-    },
-    props: {
-      shareLink: {
-        type: Object,
-        default: {
-          link: '',
-          data: {
-            title: '-',
-            summary: '-',
-            desc: '-',
-            pic: '-'
-          }
+export default {
+  name: 'Share',
+  data () {
+    return {
+      visible: true,
+      isSuccess: false,
+      linkSrc: '',
+      qrCode: '',
+      qqLink: '',
+      weiboLink: ''
+    }
+  },
+  props: {
+    shareLink: {
+      type: Object,
+      default: {
+        link: '',
+        data: {
+          title: '-',
+          summary: '-',
+          desc: '-',
+          pic: '-'
         }
-      }
-    },
-    watch: {
-      shareLink: {
-        handler (newVal) {
-          this.linkSrc = newVal.link
-          this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.link + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary.substr(0, 10) + '&desc=' + newVal.data.desc.substr(0, 10) + '&pic=' + newVal.data.pic
-          this.weiboLink = 'http://service.weibo.com/share/share.php?url=' + newVal.link + '&title=' + newVal.data.desc + '&pic=' + newVal.data.pic + '&appkey=&searchPic=false'
-        },
-        immediate: true,
-        deep: true
-      }
-    },
-    methods: {
-      close () {
-        this.$emit('close')
-      },
-      copyLink () {
-        this.$refs.linkInput.select()
-        if (document.execCommand('copy')) {
-          document.execCommand('copy')
-          this.$refs.linkInput.blur()
-          this.isSuccess = true
-          let st = setTimeout(() => {
-            this.isSuccess = false
-            clearTimeout(st)
-          }, 500)
-        }
-      },
-      shareWx () {
-        this.qrCode = '//aliqr.e.vhall.com/qr.png?t=' + this.shareLink.link
-      },
-      openLink (url) {
-        console.log(url)
-        window.open(url)
       }
     }
+  },
+  watch: {
+    shareLink: {
+      handler (newVal) {
+        this.linkSrc = newVal.link
+        this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.link + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary.substr(0, 10) + '&desc=' + newVal.data.desc.substr(0, 10) + '&pic=' + newVal.data.pic
+        this.weiboLink = 'http://service.weibo.com/share/share.php?url=' + newVal.link + '&title=' + newVal.data.desc + '&pic=' + newVal.data.pic + '&appkey=&searchPic=false'
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  methods: {
+    close () {
+      this.$emit('close')
+    },
+    copyLink () {
+      this.$refs.linkInput.select()
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+        this.$refs.linkInput.blur()
+        this.isSuccess = true
+        let st = setTimeout(() => {
+          this.isSuccess = false
+          clearTimeout(st)
+        }, 500)
+      }
+    },
+    shareWx () {
+      this.qrCode = '//aliqr.e.vhall.com/qr.png?t=' + this.shareLink.link
+    },
+    openLink (url) {
+      console.log(url)
+      window.open(url)
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -161,7 +176,7 @@
     width: 410px;
     padding-bottom: 10px;
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 8px;
     border: 1px solid #ebeef5;
     font-size: 16px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);

@@ -11,6 +11,7 @@ export default class LivePuller extends BasePuller {
     super(appId, rootEleId, token)
     this.type = 'live'
     this.roomId = roomId
+    this.isUseMSE = true
   }
 
   initLivePlayer (autoplay = false, isAndroid = false, completionBK = null) {
@@ -21,6 +22,7 @@ export default class LivePuller extends BasePuller {
     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
     let _videoAttr = {}
     if (!isiOS && (u.match(/MicroMessenger/i) || u.match(/QQ/i))) {
+      this.isUseMSE = false
       _videoAttr = {
         'x5-video-player-type': 'h5',
         'x5-video-orientation': 'landscape|portrait',
@@ -34,6 +36,7 @@ export default class LivePuller extends BasePuller {
         type: 'live',
         videoNode: this.rootEleId,
         videoAttr: _videoAttr,
+        isUseMSE: this.isUseMSE,
         complete: () => {
           // console.log('3播放器初始化完成')
           // completionBK && completionBK()
