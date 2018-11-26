@@ -6,7 +6,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  mounted () {
+    document.addEventListener('focusout', function (e) {
+      let top = document.body.scrollTop
+      document.body.scrollTop = top + 1
+    })
+  }
+}
 </script>
 
 <style lang='scss'>
@@ -19,6 +26,17 @@ export default {}
   left: 0;
   overflow: hidden;
   font-size: 28px;
+  /deep/ {
+    input {
+      -webkit-appearance: none;
+    }
+    .com-input[data-v-2c8862b0] input:hover {
+      border-color: #888888;
+    }
+    .el-select .el-input.is-focus .el-input__inner {
+      border-color: #888888;
+    }
+  }
 }
 
 .box {
