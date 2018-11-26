@@ -216,16 +216,12 @@ export default {
       height: 100%;
       padding: 85px 50px 50px;
       .single-select-wrap {
-        position: static;
         .el-radio__original {
           display: none;
         }
         .el-checkbox__original {
           display: none;
         }
-      }
-      .q-edit-content {
-        position: static;
       }
     }
 
