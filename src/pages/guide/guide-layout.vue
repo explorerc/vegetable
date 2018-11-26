@@ -43,6 +43,7 @@ export default {
     }
   },
   created: function () {
+    this.share()
     if (this.isWx()) {
       this.share()
     }
