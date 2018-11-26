@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 @import 'assets/css/mixin.scss';
 #app {
   width: 100%;
@@ -26,18 +26,6 @@ export default {
   left: 0;
   overflow: hidden;
   font-size: 28px;
-
-  /deep/ {
-    input {
-      -webkit-appearance: none;
-    }
-    .com-input[data-v-2c8862b0] input:hover {
-      border-color: #888888;
-    }
-    .el-select .el-input.is-focus .el-input__inner {
-      border-color: #888888;
-    }
-  }
 }
 
 .box {

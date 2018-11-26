@@ -918,7 +918,7 @@ export default {
   }
 
   p {
-    font-size: 14px;
+    font-size: 32px;
     color: #222;
     text-align: center;
     margin: 30px auto 100px;
