@@ -720,7 +720,7 @@ export default {
     cancelClick () {
       this.$emit('closeChatBox', true)
     },
-    scrollBottom (speed = 4) {
+    scrollBottom (speed = 2) {
       let elm = document.querySelector('.bscroll')
       let maxTop = elm.scrollHeight - elm.offsetHeight
       let interId = setInterval(() => {
