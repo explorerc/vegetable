@@ -2,7 +2,7 @@
   <div class="iskicked">
     <img src="../../assets/image/kicied@2x.png" alt="">
     <p>
-      抱歉，您已被主持人提出房间
+      抱歉，您已被主持人踢出房间
       <br/>
       如有疑问请联系活动主办方
     </p>
@@ -16,13 +16,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.iskicked{
-  img{
+.iskicked {
+  img {
     width: 218px;
     display: block;
     margin: 280px auto 0;
   }
-  p{
+  p {
     font-size: 32px;
     color: #222222;
     text-align: center;
