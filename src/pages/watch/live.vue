@@ -171,7 +171,7 @@
     <com-login @login="loginSuccess"></com-login>
     <!--弹框-->
     <message-box v-if="taoShow"
-                 width="100%"
+                 width="80%"
                  header=''
                  confirmText=''
                  class="v-questions-box tao-show"
@@ -893,6 +893,7 @@ export default {
 }
 .tao-show /deep/ {
   .ve-message-box {
+    border-radius: 8px;
     .ve-message-box__container {
       .v-content {
         text-align: center;
@@ -918,7 +919,7 @@ export default {
   }
 
   p {
-    font-size: 14px;
+    font-size: 32px;
     color: #222;
     text-align: center;
     margin: 30px auto 100px;

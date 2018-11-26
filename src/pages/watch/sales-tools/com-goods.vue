@@ -172,7 +172,7 @@
         height: 100%;
         background-color: white;
         img {
-          border-radius: 4px;
+          border-radius: 10px;
           float: left;
           width: 220px;
           height: 220px;

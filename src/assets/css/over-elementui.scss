@@ -1,5 +1,5 @@
-@import "./variable";
-$color-ui-components:#4B5AFE;
+@import './variable';
+$color-ui-components: #4b5afe;
 
 .el-select {
   .el-input__inner {
@@ -40,7 +40,7 @@ $color-ui-components:#4B5AFE;
   background: $color-ui-components;
 }
 
-.el-radio__input.is-checked+.el-radio__label {
+.el-radio__input.is-checked + .el-radio__label {
   color: $color-ui-components;
 }
 
@@ -57,13 +57,13 @@ $color-ui-components:#4B5AFE;
   color: #555;
 }
 
-.el-table--enable-row-hover .el-table__body tr:hover>td {
-  background-color: #F0F1FE;
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #f0f1fe;
 }
 
 .el-switch__core {
-  border: 1px solid #DEE1FF;
-  background: #DEE1FF;
+  border: 1px solid #dee1ff;
+  background: #dee1ff;
 }
 
 .el-switch.is-checked .el-switch__core {
@@ -137,4 +137,14 @@ $color-ui-components:#4B5AFE;
 .el-table th,
 .el-table tr {
   background-color: transparent;
+}
+
+input {
+  -webkit-appearance: none;
+}
+.com-input input:hover {
+  border-color: #888888 !important;
+}
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #888888 !important;
 }

@@ -1,4 +1,4 @@
-@import "./variable";
+@import './variable';
 
 @mixin tl($direction: left) {
   text-align: $direction;
@@ -15,13 +15,14 @@
   -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
   -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
-  @include border
+  @include border;
 }
 
 @mixin button-normal(
   $bg-color: $color-default,
   $hover-color: $color-default-hover,
-  $active-color: $color-default-active) {
+  $active-color: $color-default-active
+) {
   height: 40px;
   line-height: 40px;
   border-radius: 20px;
@@ -32,10 +33,10 @@
   background-color: $bg-color;
   box-sizing: border-box;
   &:hover {
-    transition: background-color .3s, opacity .1s;
+    transition: background-color 0.3s, opacity 0.1s;
     cursor: pointer;
     background-color: $hover-color;
-    opacity: .9;
+    opacity: 0.9;
   }
   &:active {
     background-color: $active-color;
@@ -45,7 +46,11 @@
 
 /* 默认按钮 */
 @mixin default-button() {
-  @include button-normal($color-fff, $color-default-hover, $color-default-active);
+  @include button-normal(
+    $color-fff,
+    $color-default-hover,
+    $color-default-active
+  );
   border: solid 1px #888888;
   background-color: transparent;
   color: #555;
@@ -59,39 +64,39 @@
 @mixin primary-button() {
   @include button-normal();
   &[disabled] {
-    opacity: .3;
+    opacity: 0.3;
     cursor: no-drop;
   }
 }
 
 /* 红色按钮 */
 @mixin red-button() {
-  @include button-normal($color-red, $color-red-hover, $color-red-active)
+  @include button-normal($color-red, $color-red-hover, $color-red-active);
 }
 
 /* 蓝色按钮 */
 @mixin blue-button() {
-  @include button-normal($color-blue, $color-blue-hover, $color-blue-active)
+  @include button-normal($color-blue, $color-blue-hover, $color-blue-active);
 }
 
 .default-button {
-  @include default-button
+  @include default-button;
 }
 
 .primary-button {
-  @include primary-button
+  @include primary-button;
 }
 
 .red-button {
-  @include red-button
+  @include red-button;
 }
 
 .blue-button {
-  @include blue-button
+  @include blue-button;
 }
 
 @mixin linear($color1: #000, $color2: #fff, $angle: 180deg) {
-  background: ($color1+$color2)/2;
+  background: ($color1 + $color2)/2;
   background: linear-gradient($angle, $color1, $color2);
 }
 
@@ -105,7 +110,13 @@
   white-space: nowrap;
 }
 
-@mixin flex($justify: flex-start, $align-items: center, $dir: row, $wrap: nowrap, $align-content: stretch) {
+@mixin flex(
+  $justify: flex-start,
+  $align-items: center,
+  $dir: row,
+  $wrap: nowrap,
+  $align-content: stretch
+) {
   display: flex;
   flex-flow: $dir $wrap;
   justify-content: $justify;

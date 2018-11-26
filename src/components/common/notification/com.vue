@@ -42,12 +42,12 @@ export default {
     handleClose (e) {
       this.$emit('close')
     },
-    afterEnter () {},
+    afterEnter () { },
     afterLeave () {
       this.$emit('closed')
     },
-    createTask () {},
-    clearTask () {}
+    createTask () { },
+    clearTask () { }
   },
   computed: {
     style () {
@@ -72,12 +72,12 @@ export default {
   display: inline-block;
   position: relative;
   line-height: 1.5;
-  background: #fff;
+  background: rgba(34, 34, 34, 0.7);
   padding: 16px 20px;
   border-radius: 4px;
   width: 380px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 16px;
+  font-size: 28px;
   z-index: 3000;
   .header {
     color: rgba(0, 0, 0, 0.85);
@@ -86,6 +86,7 @@ export default {
       margin-bottom: 8px;
     }
     .icon-close {
+      color: #fff;
       position: absolute;
       cursor: pointer;
       top: 14px;
@@ -93,9 +94,9 @@ export default {
     }
   }
   .content {
-    color: rgba(0, 0, 0, 0.65);
+    color: #fff;
     padding: 0;
-    font-size: 14px;
+    font-size: 28px;
   }
 }
 </style>
