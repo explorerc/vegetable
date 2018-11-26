@@ -198,7 +198,8 @@ export default {
 .v-vercode /deep/ {
   width: 100%;
   #captcha {
-    margin-bottom: 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
   .v-input-from {
     width: 100%;

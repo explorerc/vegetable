@@ -21,7 +21,8 @@
          v-else-if="playType=='end'">
       <span class="end-box"
             v-if="role!=='master'">
-          <img :src="require('assets/image/watch_liveEnd@2x.png')" alt="">
+        <img :src="require('assets/image/watch_liveEnd@2x.png')"
+             alt="">
         <p>您来晚了，直播已结束了～</p>
       </span>
     </div>
@@ -314,7 +315,7 @@ export default {
                 })
               } else {
                 document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
-                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '16vw'
+                document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '18.667vw'
               }
               // window.VhallPlayer.play()
               // this.dealWithVideo()
@@ -372,6 +373,9 @@ export default {
       this.$nextTick(() => {
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
         this.playComps.initLivePlayer(false, true, () => {
+          document.querySelector('.vjs-tech').addEventListener('pause', () => {
+            this.isPlay = false
+          })
           if (this.isX5()) {
             document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
               this.changeX5ExitFullScreen()
@@ -381,7 +385,7 @@ export default {
             })
           } else {
             document.getElementsByClassName('vjs-tech')[0].style['height'] = '56.267vw'
-            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '16vw'
+            document.getElementsByClassName('vjs-tech')[0].style['margin-top'] = '18.667vw'
           }
           console.log('----------开始播放----------')
         })
@@ -554,7 +558,7 @@ export default {
       display: block;
       color: #999999;
       text-align: center;
-      top: 260px;
+      top: 280px;
       left: 50%;
       transform: translate(-50%, -50%);
       img {
@@ -583,7 +587,7 @@ export default {
   }
   .v-click-modal {
     position: absolute;
-    top: 120px;
+    top: 140px;
     left: 0;
     width: 100%;
     height: 422px;
@@ -592,7 +596,7 @@ export default {
   .control-box-div {
     position: absolute;
     left: 0;
-    top: 462px;
+    top: 482px;
     height: 80px;
     line-height: 80px;
     // background-color: rgba(0, 0, 0, 0.75);
@@ -631,7 +635,7 @@ export default {
   .v-mark {
     position: absolute;
     background-color: #222;
-    top: 120px;
+    top: 140px;
     left: 0;
     width: 100%;
     height: 422px;

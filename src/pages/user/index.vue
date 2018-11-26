@@ -178,7 +178,9 @@ export default {
     width: 100%;
     height: 275px;
     padding: 45px 0;
-    background-color: yellow;
+    background: url('~assets/image/userHead.png');
+    background-position: center;
+    background-size: cover;
     img {
       display: block;
       width: 120px;

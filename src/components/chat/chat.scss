@@ -107,7 +107,6 @@
       vertical-align: middle;
     }
   }
-
 }
 
 @keyframes marsquee {
@@ -136,7 +135,8 @@
 
     dl {
       position: relative;
-      padding: 0px 40px;
+      padding: 0px 30px;
+
       dt {
         width: 50px;
         height: 50px;
@@ -210,7 +210,8 @@
                 height: 16px;
                 display: inline-block;
                 // background: url('~assets/image/qq_s.png') no-repeat;
-                background: url('~assets/image/chat-kickout.png') no-repeat center;
+                background: url('~assets/image/chat-kickout.png') no-repeat
+                  center;
                 background-size: contain;
                 margin-right: 10px;
                 position: relative;
@@ -226,7 +227,8 @@
                 }
               }
 
-              &.kick i {}
+              &.kick i {
+              }
 
               &.mute i {
                 background-image: url('~assets/image/chat.png');
@@ -263,7 +265,6 @@
           color: $color-blue;
           background: rgba(240, 241, 254, 1);
           border-radius: 100px;
-          float: right;
         }
       }
 
@@ -275,7 +276,6 @@
         max-width: 550px;
         word-break: break-all;
         display: inline-block;
-
         img {
           width: 26px;
           height: 26px;
@@ -306,6 +306,7 @@
 
       dd {
         float: right;
+        margin-top: 4px;
       }
 
       .name {
@@ -326,77 +327,90 @@
         float: right;
       }
     }
+
     li .sales-tool-box {
       position: relative;
       width: 400px;
-      height:80px;
+      height: 80px;
       background: url('~assets/image/bg_card.png') no-repeat center;
-      background-size:contain;
-      border-radius:0px 100px 100px 0px;
-      padding:8px 30px;
+      background-size: contain;
+      border-radius: 0px 100px 100px 0px;
+      padding: 8px 30px;
       font-size: 16px;
-      transition: all .3s ease-in-out;
-      color:#fff;
+      transition: all 0.3s ease-in-out;
+      color: #fff;
       margin-top: 30px;
-      &::before{
-        content:'';
-        width:120px;
-        height:120px;
+
+      &::before {
+        content: '';
+        width: 120px;
+        height: 120px;
         position: absolute;
         background: url('~assets/image/tools-chat-card.png') no-repeat center;
-        background-size:contain;
+        background-size: contain;
         top: -34px;
         right: -20px;
       }
+
       &:hover {
         box-shadow: 2px 3px 7px #e2e2e2;
-        transition: all .3s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
+
       span {
-        font-size:14px;
-        color:#fff;
+        font-size: 22px;
+        color: #fff;
       }
+
       em {
-        color:$color-default;
+        color: $color-default;
         cursor: pointer;
       }
+
       &.RED_PACKET_PUSH {
         background-image: url('~assets/image/bg_redpack.png');
+
         em {
-          color:$color-error;
-        }
-        &::before{
-          background-image:url('~assets/image/tools-chat-redpack.png')
+          color: $color-error;
         }
 
+        &::before {
+          background-image: url('~assets/image/tools-chat-redpack.png');
+        }
       }
+
       &.GOODS_PUSH {
         background-image: url('~assets/image/bg_good.png');
+
         em {
-          color:$color-error;
-        }
-        &::before{
-          background-image:url('~assets/image/tools-chat-good.png');
-           right: -15px;
+          color: $color-error;
         }
 
+        &::before {
+          background-image: url('~assets/image/tools-chat-good.png');
+          right: -15px;
+        }
       }
+
       &.NAIRE {
         background-image: url('~assets/image/bg_survey.png');
+
         em {
-          color:$color-error;
-        }
-        &::before{
-          background-image:url('~assets/image/tools-chat-ques.png')
+          color: $color-error;
         }
 
+        &::before {
+          background-image: url('~assets/image/tools-chat-ques.png');
+        }
       }
+
       .name {
-        width:270px;;
+        width: 270px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
         text-align: left;
+        font-size: 26px;
       }
     }
   }

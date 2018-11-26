@@ -152,25 +152,32 @@
       position: relative;
       width: 100%;
       padding: 30px;
+      background-color: white;
       span.index {
         position: absolute;
         top: 30px;
         left: 30px;
-        background-color: #ffd021;
-        color: $color-font;
+        background-color: #222222;
+        color: white;
         width: 50px;
         height: 30px;
         line-height: 30px;
         text-align: center;
         border-radius: 0 0 50% 0;
-        z-index: 1000;
+        z-index: 1;
+        opacity: 0.8;
       }
-      img {
-        border-radius: 4px;
-        float: left;
-        width: 220px;
-        height: 220px;
-        margin-right: 20px;
+      .cov_img{
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        img {
+          border-radius: 4px;
+          float: left;
+          width: 220px;
+          height: 220px;
+          margin-right: 20px;
+        }
       }
       div {
         /*padding: 10px 15px;*/

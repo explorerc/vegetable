@@ -10,11 +10,47 @@
       <div class="v-nav">
         <!--操作区-->
         <div class="icon-list">
-          <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
-          <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
-          <span class='ques' v-if="questionStatus.iconShow" @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
+          <span class='goods'
+                @click="showGoods"
+                v-if="goodsLen"><em>{{goodsLen}}</em>商品</span>
+          <span class='redpack'
+                v-if="downTimer"
+                @click='clickRedpack'><em></em>红包</span>
+          <span class='ques'
+                v-if="questionStatus.iconShow"
+                @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
         </div>
         <!--操作区-->
+        <div class="msg-Box">
+          <!--商品推送-->
+          <transition name="goods-fade">
+            <div class="goods_small_popover"
+                 v-if="goodsSmallPopoverShow">
+              <div @click="goInfo(goodsSmallDetails, 'push')">
+                <img class="cover_img"
+                     :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                <div>
+                  <p class="item-price">
+                    <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
+                     <del>￥{{goodsSmallDetails.price}}</del>-->
+                    <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
+                    <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
+                    <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
+                    <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                    <i v-show="goodsSmallDetails.price === '0.00'"></i>
+                  </p>
+                  <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
+                </div>
+                <i class="el-icon-close"
+                   @click.stop="goodsSmallPopoverShow = false"></i>
+              </div>
+              <i></i>
+            </div>
+          </transition>
+          <!--商品推送-->
+          <i></i>
+        </div>
+        <!--商品推送-->
         <com-tabs :value.sync="tabValue"
                   @change="tabChange">
           <com-tab label="活动简介"
@@ -30,7 +66,7 @@
                        :type="playType"
                        :isWatch="isWatch"
                        :sendBoxShow="true"
-                       @magInfo ="magInfo"
+                       @magInfo="magInfo"
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"
                        @clickTools="clickTools"></chating>
@@ -53,55 +89,31 @@
                 </div>
               </template>
             </template>
-            <template v-else-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
-              <div class="v-chat-control v-noLogin"
-                   id="sendBoxBtn">
-                需要登录才能参与聊天
-                <span @click="doLogin">登录</span>
-              </div>
-            </template>
-            <div class="msg-Box">
-              <!--商品推送-->
-              <transition name="goods-fade">
-                <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
-                  <div @click="goInfo(goodsSmallDetails, 'push')">
-                    <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
-                    <div>
-                      <p class="item-price">
-                       <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
-                        <del>￥{{goodsSmallDetails.price}}</del>-->
-                        <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
-                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
-                        <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
-                        <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
-                        <i v-show="goodsSmallDetails.price === '0.00'"></i>
-                      </p>
-                      <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
-                    </div>
-                    <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
-                  </div>
-                  <i></i>
-                </div>
-              </transition>
-              <!--商品推送-->
-              <i></i>
-            </div>
-            <!--商品推送-->
           </com-tab>
         </com-tabs>
+        <template v-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
+          <div class="v-chat-control v-noLogin not-login"
+               id="sendBoxBtn">
+            需要登录才能参与聊天
+            <span @click="doLogin">登录</span>
+          </div>
+        </template>
         <!-- <a class="v-subscribe"
            href="javascript:;">
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
       <!--商品祥情-->
       <transition name="fade">
-        <div class="goodsInfo" v-if="goodsInfoShow">
-          <p><span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down" @click="closeGoods"></i></p>
+        <div class="goodsInfo"
+             v-if="goodsInfoShow">
+          <p><span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down"
+               @click="closeGoods"></i></p>
           <div>
             <h4>{{goodsSmallDetails.title}}</h4>
             <el-carousel>
               <el-carousel-item v-for="(item,ind) in goodsSmallDetails.image">
-                <img :src="`${$imgHost}/${item.name}`" alt="">
+                <img :src="`${$imgHost}/${item.name}`"
+                     alt="">
               </el-carousel-item>
             </el-carousel>
             <p>{{goodsSmallDetails.describe}}</p>
@@ -120,11 +132,17 @@
         </div>
       </transition>
       <transition name="fade">
-        <comGoods class="goodsList" :goodsMsg='goodsMsg' v-show="goodsListShow" @closeGoodList = 'closeGoodList' @goodsInfo="goInfo" @goodsCount="goodsCount"></comGoods>
+        <comGoods class="goodsList"
+                  :goodsMsg='goodsMsg'
+                  v-show="goodsListShow"
+                  @closeGoodList='closeGoodList'
+                  @goodsInfo="goInfo"
+                  @goodsCount="goodsCount"></comGoods>
       </transition>
     </div>
     <!-- 推荐卡片 -->
-    <div class="wrap-cover" v-if="cardData.show"></div>
+    <div class="wrap-cover"
+         v-if="cardData.show"></div>
     <transition name="top-bottom"
                 mode="out-in">
       <com-cards v-if="cardData.show"
@@ -145,7 +163,8 @@
                  class="v-questions-submission-box"
                  @handleClick="hiddenQuestions">
       <div class="v-content">
-        <img src="../../assets/image/success@2x.png" alt="">
+        <img src="../../assets/image/success@2x.png"
+             alt="">
         <p>已提交问卷，感谢您的参与</p>
       </div>
     </message-box>
@@ -158,9 +177,10 @@
                  class="v-questions-box tao-show"
                  @handleClick="taoShowBox">
       <div class="v-content">
-        <img src="~assets/image/tao.png" alt="">
+        <img src="~assets/image/tao.png"
+             alt="">
         <p>
-         请打开 <br><span style="color: #2878FF">{{goodsSmallDetails.tao}}</span> <br>购买商品
+          请打开 <br><span style="color: #2878FF">{{goodsSmallDetails.tao}}</span> <br>购买商品
         </p>
 
       </div>
@@ -689,7 +709,7 @@ export default {
       background: #fc5659;
       border-radius: 200px;
       color: #fff;
-      font-size: 12px;
+      font-size: 24px;
       text-align: center;
     }
   }
@@ -702,19 +722,21 @@ export default {
       width: 40px;
       height: 30px;
       line-height: 35px;
+      right: -10px;
       top: 0;
+      font-size: 24px;
     }
   }
 }
 /* 可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
 .goods-fade-enter-active {
-  transition: all .1s ease;
+  transition: all 0.1s ease;
   animation: goods-fade-in 0.1s;
 }
 .goods-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  animation: goods-fade-in .3s reverse;
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  animation: goods-fade-in 0.3s reverse;
 }
 .goods-fade-enter, .goods-fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
@@ -722,25 +744,26 @@ export default {
   opacity: 0;
 }
 @keyframes goods-fade-in {
-  0%{
+  0% {
     transform: scale(0);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
 .goods_small_popover /deep/ {
   position: absolute;
   bottom: 105px;
-  left: 0;
-  border-radius: 4px;
+  left: 22px;
+  border-radius: 8px;
   z-index: 1000;
-  width: 470px;
+  width: 605px;
   height: 140px;
   background-color: white;
   box-shadow: 2px 10px 20px 5px rgba(0, 0, 0, 0.15);
   div {
     .cover_img {
+      border: 1px solid #cccccc;
       width: 140px;
       height: 140px;
       float: left;
@@ -764,11 +787,11 @@ export default {
       }
       .item-price {
         span {
-          font-size: 22px;
+          font-size: 28px;
           color: #fc5659;
         }
         del {
-          font-size: 18px;
+          font-size: 22px;
           color: rgba(136, 136, 136, 1);
         }
       }
@@ -908,6 +931,21 @@ export default {
     .ve-message-box__btns {
       display: none;
     }
+  }
+}
+.not-login /deep/ {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  line-height: 89px;
+  padding: 0 40px;
+  border-top: 1px solid #e2e2e2;
+  background-color: white;
+  text-align: center;
+  span {
+    color: #4b5afe;
   }
 }
 </style>

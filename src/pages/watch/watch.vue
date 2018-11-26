@@ -9,6 +9,7 @@
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
       <span class="logo"
+            style="border: solid 1px #e2e2e2;"
             v-if="!logoImg"></span>
       <span class="logo"
             :style="{backgroundImage:`url(${customLogo})`}"></span>
@@ -19,7 +20,7 @@
       <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
         <a href="/m/user"
-           class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i>我的</a>
+           class="fr v-my v-right"><i class="v-showpsd iconfont icon-awodeicon-"></i></a>
         <!-- <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
@@ -29,12 +30,12 @@
          href="javascript:;"
          @click="doLogin()"
          class="fr v-my v-right">
-        <i class="v-showpsd iconfont icon-wode_icon"></i>登录</a>
+        <i class="v-showpsd iconfont icon-awodeicon-"></i></a>
 
       <a href="javascript:;"
          class="fr v-right"
          @click="subscribe">
-        <i class="v-showpsd iconfont icon-dingyue_icon"></i>订阅</a>
+        <i class="v-showpsd iconfont icon-adingyueicon"></i></a>
     </div>
     <component :is="currentView"
                :paasParams="vhallParams"
@@ -720,7 +721,7 @@ export default {
       if (!param.password) {
         delete param.password
       }
-      return this.$post(activityService.GET_RED_BAG, {
+      return this.$config({ handlers: true }).$post(activityService.GET_RED_BAG, {
         ...param
       }).then((res) => {
         if (res.code === 200 && res.data) {
@@ -846,43 +847,45 @@ export default {
 @import 'assets/css/mixin.scss';
 .v-watch {
   /deep/ {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
     &.v-x5-div {
       .v-x5-title {
         display: block !important;
       }
       .v-hearder {
-        top: 120px !important;
+        top: 140px !important;
       }
       .v-click-modal {
-        top: 220px !important;
+        top: 240px !important;
       }
       .v-function-box {
-        top: 642px !important;
+        top: 662px !important;
       }
       .control-box-div {
-        top: 562px !important;
+        top: 582px !important;
       }
       .v-video-box {
         .v-mark-img {
-          top: 220px;
+          top: 240px;
         }
         video {
-          object-position: 0 220px !important;
+          object-position: 0 240px !important;
           margin-top: 0 !important;
         }
       }
     }
     &.v-close-x5-div {
       video {
-        object-position: 0 120px !important;
+        object-position: 0 140px !important;
       }
     }
     &.v-other-div {
       .v-video-box {
         .v-mark-img {
-          top: 220px;
+          top: 240px;
         }
         video {
           margin-top: 0 !important;
@@ -899,6 +902,17 @@ export default {
       .v-mark {
         top: 0;
       }
+    }
+    .login-container {
+      .com-dialog {
+        position: absolute;
+        .dialog-wrap {
+          top: 51%;
+        }
+      }
+    }
+    .vjs-loading-spinner {
+      top: 24%;
     }
     .v-x5-title {
       display: none;
@@ -920,19 +934,18 @@ export default {
       left: 0;
       z-index: 1;
       width: 100%;
-      height: 120px;
+      height: 140px;
       background-color: #fff;
-      padding: 0 30px 0 130px;
+      padding: 0 38px 0 140px;
       font-size: 24px;
       .logo {
         display: block;
         position: absolute;
         top: 50%;
-        left: 26px;
+        left: 34px;
         height: 84px;
         width: 84px;
         margin-top: -40px;
-        line-height: 80px;
         font-size: 30px;
         font-weight: bold;
         text-align: center;
@@ -941,40 +954,45 @@ export default {
         background-repeat: no-repeat;
         background-size: cover;
       }
+      .v-right{
+        margin-top: 4px;
+      }
       .ac-title {
         display: block;
-        width: 62%;
+        width: 82%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        line-height: 40px;
-        margin-top: 20px;
+        line-height: 50px;
+        margin-top: 22px;
+        font-size: 28px;
+        font-weight: bold;
       }
       .v-status {
+        display: inline-block;
         color: #fff;
         text-align: center;
         background-color: rgba(10, 10, 10, 0.8);
         border-radius: 50px;
-        padding: 8px 13px;
-        margin-right: 20px;
+        padding: 2px 20px 4px 15px;
+        margin-right: 24px;
+        font-size: 22px;
         i {
           display: inline-block;
           width: 10px;
           height: 10px;
           background-color: #fc5659;
           border-radius: 50%;
-          margin-right: 10px;
+          margin-right: 8px;
           vertical-align: middle;
         }
       }
       .v-onlineNum {
         padding: 8px 0;
-      }
-      .v-right {
-        margin-top: -16px;
+        color: #555;
       }
       .v-my {
-        margin-left: 36px;
+        margin-left: 30px;
       }
       i {
         vertical-align: middle;
@@ -983,7 +1001,7 @@ export default {
     .v-function-box {
       width: 100%;
       position: absolute;
-      top: 542px;
+      top: 562px;
       bottom: 0;
       z-index: 3;
       background-color: #fff;
@@ -1073,6 +1091,7 @@ export default {
         .v-introduction {
           width: 100%;
           padding: 40px;
+          margin-bottom: 90px;
         }
         .chat-content {
           width: 100%;
