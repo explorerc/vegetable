@@ -109,7 +109,7 @@ export default {
     }
     .el-radio__input {
       float: left;
-      margin-top: 5px;
+      margin-top: 6px;
     }
     .el-radio__label {
       .com-input {
@@ -133,7 +133,7 @@ export default {
     .item-text {
       width: 100%;
       display: inline-block;
-      font-size: 30px;
+      font-size: 22px;
       margin-top: 9px;
       word-break: break-all;
       white-space: normal;

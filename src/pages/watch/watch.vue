@@ -846,8 +846,10 @@ export default {
 @import 'assets/css/mixin.scss';
 .v-watch {
   /deep/ {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
     &.v-x5-div {
       .v-x5-title {
         display: block !important;
@@ -898,6 +900,14 @@ export default {
       }
       .v-mark {
         top: 0;
+      }
+    }
+    .login-container {
+      .com-dialog {
+        position: absolute;
+        .dialog-wrap {
+          top: 51%;
+        }
       }
     }
     .vjs-loading-spinner {

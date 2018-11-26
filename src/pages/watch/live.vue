@@ -10,9 +10,15 @@
       <div class="v-nav">
         <!--操作区-->
         <div class="icon-list">
-          <span class='goods' @click="showGoods"  v-if="goodsLen" ><em>{{goodsLen}}</em>商品</span>
-          <span class='redpack' v-if="downTimer" @click='clickRedpack'><em></em>红包</span>
-          <span class='ques' v-if="questionStatus.iconShow" @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
+          <span class='goods'
+                @click="showGoods"
+                v-if="goodsLen"><em>{{goodsLen}}</em>商品</span>
+          <span class='redpack'
+                v-if="downTimer"
+                @click='clickRedpack'><em></em>红包</span>
+          <span class='ques'
+                v-if="questionStatus.iconShow"
+                @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
         </div>
         <!--操作区-->
         <com-tabs :value.sync="tabValue"
@@ -30,7 +36,7 @@
                        :type="playType"
                        :isWatch="isWatch"
                        :sendBoxShow="true"
-                       @magInfo ="magInfo"
+                       @magInfo="magInfo"
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"
                        @clickTools="clickTools"></chating>
@@ -63,12 +69,14 @@
             <div class="msg-Box">
               <!--商品推送-->
               <transition name="goods-fade">
-                <div class="goods_small_popover" v-if="goodsSmallPopoverShow">
+                <div class="goods_small_popover"
+                     v-if="goodsSmallPopoverShow">
                   <div @click="goInfo(goodsSmallDetails, 'push')">
-                    <img class="cover_img" :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+                    <img class="cover_img"
+                         :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
                     <div>
                       <p class="item-price">
-                       <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
+                        <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
                         <del>￥{{goodsSmallDetails.price}}</del>-->
                         <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
                         <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
@@ -78,7 +86,8 @@
                       </p>
                       <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
                     </div>
-                    <i class="el-icon-close" @click.stop="goodsSmallPopoverShow = false"></i>
+                    <i class="el-icon-close"
+                       @click.stop="goodsSmallPopoverShow = false"></i>
                   </div>
                   <i></i>
                 </div>
@@ -95,13 +104,16 @@
       </div>
       <!--商品祥情-->
       <transition name="fade">
-        <div class="goodsInfo" v-if="goodsInfoShow">
-          <p><span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down" @click="closeGoods"></i></p>
+        <div class="goodsInfo"
+             v-if="goodsInfoShow">
+          <p><span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down"
+               @click="closeGoods"></i></p>
           <div>
             <h4>{{goodsSmallDetails.title}}</h4>
             <el-carousel>
               <el-carousel-item v-for="(item,ind) in goodsSmallDetails.image">
-                <img :src="`${$imgHost}/${item.name}`" alt="">
+                <img :src="`${$imgHost}/${item.name}`"
+                     alt="">
               </el-carousel-item>
             </el-carousel>
             <p>{{goodsSmallDetails.describe}}</p>
@@ -120,11 +132,17 @@
         </div>
       </transition>
       <transition name="fade">
-        <comGoods class="goodsList" :goodsMsg='goodsMsg' v-show="goodsListShow" @closeGoodList = 'closeGoodList' @goodsInfo="goInfo" @goodsCount="goodsCount"></comGoods>
+        <comGoods class="goodsList"
+                  :goodsMsg='goodsMsg'
+                  v-show="goodsListShow"
+                  @closeGoodList='closeGoodList'
+                  @goodsInfo="goInfo"
+                  @goodsCount="goodsCount"></comGoods>
       </transition>
     </div>
     <!-- 推荐卡片 -->
-    <div class="wrap-cover" v-if="cardData.show"></div>
+    <div class="wrap-cover"
+         v-if="cardData.show"></div>
     <transition name="top-bottom"
                 mode="out-in">
       <com-cards v-if="cardData.show"
@@ -145,7 +163,8 @@
                  class="v-questions-submission-box"
                  @handleClick="hiddenQuestions">
       <div class="v-content">
-        <img src="../../assets/image/success@2x.png" alt="">
+        <img src="../../assets/image/success@2x.png"
+             alt="">
         <p>已提交问卷，感谢您的参与</p>
       </div>
     </message-box>
@@ -158,9 +177,10 @@
                  class="v-questions-box tao-show"
                  @handleClick="taoShowBox">
       <div class="v-content">
-        <img src="~assets/image/tao.png" alt="">
+        <img src="~assets/image/tao.png"
+             alt="">
         <p>
-         请打开 <br><span style="color: #2878FF">{{goodsSmallDetails.tao}}</span> <br>购买商品
+          请打开 <br><span style="color: #2878FF">{{goodsSmallDetails.tao}}</span> <br>购买商品
         </p>
 
       </div>
@@ -702,6 +722,7 @@ export default {
       width: 40px;
       height: 30px;
       line-height: 35px;
+      right:-10px;
       top: 0;
       font-size: 24px;
     }

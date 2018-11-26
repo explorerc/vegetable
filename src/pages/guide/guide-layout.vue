@@ -129,6 +129,9 @@ export default {
     display: block;
     width: 100%;
     padding: 30px;
+    .input-form {
+      margin-bottom: 30px;
+    }
     .primary-button {
       display: block;
       width: 490px;

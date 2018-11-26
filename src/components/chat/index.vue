@@ -78,7 +78,7 @@
       </ol>
       <transition v-if="tipsShow && tipsCount > 0">
         <span class="msg-tips"
-              @click='scrollBottom'>有{{tipsCount}}条新消息
+              @click='doScrollBottom'>有{{tipsCount}}条新消息
           <i class="iconfont icon-xiangxia"></i>
         </span>
       </transition>
@@ -97,10 +97,10 @@
             <!-- <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div> -->
           </template>
 
-<template v-else>
-  <span @click='sendAction'
-        class='send-btn fr'>发送</span>
-</template>
+          <template v-else>
+            <span @click='sendAction'
+                  class='send-btn fr'>发送</span>
+          </template>
           <div class="fr"
                v-if="joinInfo.roleName === 'HOST' && !isWatch">
             <i class='icon-swap'
@@ -118,25 +118,25 @@
           </div>
         </div>
         <div class="bottom clearfix">
-<template v-if='swapAnnounce'>
-  <com-input :value.sync="value"
-             :placeholder="chatPlaceholder"
-             :max-length="140"
-             class='inp'
-             :isCharacter=true
-             type="textarea">
-  </com-input>
-</template>
+          <template v-if='swapAnnounce'>
+            <com-input :value.sync="value"
+                       :placeholder="chatPlaceholder"
+                       :max-length="140"
+                       class='inp'
+                       :isCharacter=true
+                       type="textarea">
+            </com-input>
+          </template>
 
-<template v-else>
-  <com-input :value.sync="valueAnnounce"
-             :placeholder="announcePlaceholder"
-             :max-length="140"
-             class='inp'
-             :isCharacter=true
-             type="textarea">
-  </com-input>
-</template>
+          <template v-else>
+            <com-input :value.sync="valueAnnounce"
+                       :placeholder="announcePlaceholder"
+                       :max-length="140"
+                       class='inp'
+                       :isCharacter=true
+                       type="textarea">
+            </com-input>
+          </template>
           <div class="v-emoji">
             <i class='iconfont icon-biaoqing'
                @click.stop='changeFace'
@@ -687,7 +687,6 @@ export default {
           }
         })
       }
-
       this.chatData.push(obj)
       if (!this.tipsShow && !this.stopScroll) {
         const _that = this
@@ -719,6 +718,9 @@ export default {
     },
     cancelClick () {
       this.$emit('closeChatBox', true)
+    },
+    doScrollBottom () {
+      this.scrollBottom(5)
     },
     scrollBottom (speed = 1) {
       let elm = document.querySelector('.bscroll')

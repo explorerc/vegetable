@@ -107,7 +107,6 @@
       vertical-align: middle;
     }
   }
-
 }
 
 @keyframes marsquee {
@@ -136,7 +135,7 @@
 
     dl {
       position: relative;
-      padding: 0px 40px;
+      padding: 0px 30px;
 
       dt {
         width: 50px;
@@ -211,7 +210,8 @@
                 height: 16px;
                 display: inline-block;
                 // background: url('~assets/image/qq_s.png') no-repeat;
-                background: url('~assets/image/chat-kickout.png') no-repeat center;
+                background: url('~assets/image/chat-kickout.png') no-repeat
+                  center;
                 background-size: contain;
                 margin-right: 10px;
                 position: relative;
@@ -227,7 +227,8 @@
                 }
               }
 
-              &.kick i {}
+              &.kick i {
+              }
 
               &.mute i {
                 background-image: url('~assets/image/chat.png');
@@ -264,7 +265,6 @@
           color: $color-blue;
           background: rgba(240, 241, 254, 1);
           border-radius: 100px;
-          float: right;
         }
       }
 
@@ -276,7 +276,6 @@
         max-width: 550px;
         word-break: break-all;
         display: inline-block;
-
         img {
           width: 26px;
           height: 26px;
@@ -307,6 +306,7 @@
 
       dd {
         float: right;
+        margin-top: 4px;
       }
 
       .name {
@@ -337,7 +337,7 @@
       border-radius: 0px 100px 100px 0px;
       padding: 8px 30px;
       font-size: 16px;
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
       color: #fff;
       margin-top: 30px;
 
@@ -354,7 +354,7 @@
 
       &:hover {
         box-shadow: 2px 3px 7px #e2e2e2;
-        transition: all .3s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
 
       span {
@@ -375,9 +375,8 @@
         }
 
         &::before {
-          background-image: url('~assets/image/tools-chat-redpack.png')
+          background-image: url('~assets/image/tools-chat-redpack.png');
         }
-
       }
 
       &.GOODS_PUSH {
@@ -391,7 +390,6 @@
           background-image: url('~assets/image/tools-chat-good.png');
           right: -15px;
         }
-
       }
 
       &.NAIRE {
@@ -402,14 +400,12 @@
         }
 
         &::before {
-          background-image: url('~assets/image/tools-chat-ques.png')
+          background-image: url('~assets/image/tools-chat-ques.png');
         }
-
       }
 
       .name {
         width: 270px;
-        ;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
