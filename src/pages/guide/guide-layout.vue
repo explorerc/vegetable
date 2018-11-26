@@ -100,7 +100,7 @@ export default {
           this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share@2x.png')
         }
       })
-      console.log(this.wxShare)
+      alert(this.wxShare.shareData.shareDataimgUrl)
       wxShareFunction(this.wxShare)
     },
     isWx () {
