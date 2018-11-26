@@ -77,7 +77,7 @@ export default {
   border-radius: 4px;
   width: 380px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 16px;
+  font-size: 28px;
   z-index: 3000;
   .header {
     color: rgba(0, 0, 0, 0.85);
@@ -96,7 +96,7 @@ export default {
   .content {
     color: #fff;
     padding: 0;
-    font-size: 14px;
+    font-size: 28px;
   }
 }
 </style>
