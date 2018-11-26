@@ -20,7 +20,7 @@
       <span class="v-onlineNum">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
         <a href="/m/user"
-           class="fr v-my v-right"><i class="v-showpsd iconfont icon-guanwang"></i></a>
+           class="fr v-my v-right"><i class="v-showpsd iconfont icon-awodeicon-"></i></a>
         <!-- <a v-if="isShowSite"
            :href="`/m/site/${activityId}`"
            class="fr v-my">
@@ -30,12 +30,12 @@
          href="javascript:;"
          @click="doLogin()"
          class="fr v-my v-right">
-        <i class="v-showpsd iconfont icon-guanwang"></i></a>
+        <i class="v-showpsd iconfont icon-awodeicon-"></i></a>
 
       <a href="javascript:;"
          class="fr v-right"
          @click="subscribe">
-        <i class="v-showpsd iconfont icon-guanwang"></i></a>
+        <i class="v-showpsd iconfont icon-adingyueicon"></i></a>
     </div>
     <component :is="currentView"
                :paasParams="vhallParams"
@@ -953,8 +953,8 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        line-height: 58px;
-        margin-top: 20px;
+        line-height: 50px;
+        margin-top: 22px;
         font-size: 28px;
         font-weight: bold;
       }
