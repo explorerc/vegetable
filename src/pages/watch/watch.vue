@@ -718,7 +718,7 @@ export default {
         red_packet_id: this.red_packet_id
       }
       return new Promise((resolve) => {
-        this.$config({handlers: true}).$post(activityService.GET_RED_BAG, {
+        this.$config({ handlers: true }).$post(activityService.GET_RED_BAG, {
           ...param
         }).then((res) => {
           if (res.code === 200 && res.data) {
