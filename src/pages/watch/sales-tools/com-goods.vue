@@ -157,14 +157,15 @@
         position: absolute;
         top: 30px;
         left: 30px;
-        background-color: #ffd021;
-        color: $color-font;
+        background-color: #222222;
+        color: white;
         width: 50px;
         height: 30px;
         line-height: 30px;
         text-align: center;
         border-radius: 0 0 50% 0;
-        z-index: 1000;
+        z-index: 1;
+        opacity: 0.8;
       }
       .cov_img{
         width: 100%;
