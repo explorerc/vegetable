@@ -198,60 +198,74 @@ export default {
   z-index: 10;
   font-size: 24px;
   color: #222;
-  .v-close {
-    font-size: 30px;
-    color: #555;
-    display: block;
-    width: 170px;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
-    z-index: 100;
-  }
-  .v-content {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
-    padding: 85px 50px 50px;
-  }
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  /deep/ {
+    .v-close {
+      font-size: 30px;
+      color: #555;
+      display: block;
+      width: 170px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      z-index: 100;
+    }
+    .v-content {
+      height: 100%;
+      padding: 85px 50px 50px;
+      .single-select-wrap {
+        position: static;
+        .el-radio__original {
+          display: none;
+        }
+        .el-checkbox__original {
+          display: none;
+        }
+      }
+      .q-edit-content {
+        position: static;
+      }
+    }
 
-  img {
-    margin: 0 auto;
-    display: block;
-    max-width: 100%;
-    max-height: 140px;
-  }
+    img {
+      margin: 0 auto;
+      display: block;
+      max-width: 100%;
+      max-height: 140px;
+    }
 
-  .v-title {
-    word-break: break-all;
-    text-align: center;
-    margin: 50px auto 0;
-    font-size: 36px;
-  }
+    .v-title {
+      word-break: break-all;
+      text-align: center;
+      margin: 50px auto 0;
+      font-size: 36px;
+    }
 
-  .v-summary {
-    word-break: break-all;
-    text-align: center;
-    margin: 20px auto 0;
-    border-bottom: 1px solid #ffd021;
-    padding-bottom: 24px;
-  }
-  .el-select .el-input__inner {
-    border: 1px solid #e2e2e2;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .v-save {
-    width: 300px;
-    height: 60px;
-    line-height: 60px;
-    background-color: #ffd021;
-    color: #222;
-    margin: 60px auto 50px;
-    border: none;
-    border-radius: 50px;
-    font-size: 30px;
+    .v-summary {
+      word-break: break-all;
+      text-align: center;
+      margin: 20px auto 0;
+      border-bottom: 1px solid #ffd021;
+      padding-bottom: 24px;
+    }
+    .el-select .el-input__inner {
+      border: 1px solid #e2e2e2;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .v-save {
+      width: 300px;
+      height: 60px;
+      line-height: 60px;
+      background-color: #ffd021;
+      color: #222;
+      margin: 60px auto 50px;
+      border: none;
+      border-radius: 50px;
+      font-size: 30px;
+    }
   }
 }
 </style>

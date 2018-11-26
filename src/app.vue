@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 @import 'assets/css/mixin.scss';
 #app {
   width: 100%;
@@ -26,6 +26,7 @@ export default {
   left: 0;
   overflow: hidden;
   font-size: 28px;
+
   /deep/ {
     input {
       -webkit-appearance: none;

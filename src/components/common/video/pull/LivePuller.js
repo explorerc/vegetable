@@ -36,7 +36,7 @@ export default class LivePuller extends BasePuller {
         type: 'live',
         videoNode: this.rootEleId,
         videoAttr: _videoAttr,
-        isUseMSE: this.isUseMSE,
+        videoType: 'hls',
         complete: () => {
           // console.log('3播放器初始化完成')
           // completionBK && completionBK()
