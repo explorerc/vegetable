@@ -457,6 +457,7 @@ export default {
         this.questions.description = res.data.description
         this.naireId = res.data.id
         this.dragData = res.data.detail
+        this.questionStatus.iconShow = true
         this.questionsShow = true
       }).catch((err) => {
         if (err.code === 15110) {
