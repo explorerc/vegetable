@@ -715,19 +715,20 @@ export default {
     sendRedBag () {
       let param = {
         activity_id: this.activityId,
-        red_packet_id: this.red_packet_id,
-        password: ''
+        red_packet_id: this.red_packet_id
       }
-      if (!param.password) {
-        delete param.password
-      }
-      return this.$config({ handlers: true }).$post(activityService.GET_RED_BAG, {
-        ...param
-      }).then((res) => {
-        if (res.code === 200 && res.data) {
-          this.redBagShow = true
-          this.redBagResultInfo = res.data
-        }
+      return new Promise((resolve) => {
+        this.$config({handlers: true}).$post(activityService.GET_RED_BAG, {
+          ...param
+        }).then((res) => {
+          if (res.code === 200 && res.data) {
+            this.redBagShow = true
+            this.redBagResultInfo = res.data
+          }
+          resolve(res)
+        }).catch((error) => {
+          resolve(error)
+        })
       })
     },
     queryRedBagrecordList () {
