@@ -85,7 +85,7 @@
           <p class="red-bag-info"
              v-else-if="redBagInfo.condition==1">开奖前分享直播间参与红包雨活动</p>
           <p class="red-bag-info tip-info"
-             v-else-if="redBagInfo.condition==2">参与条件：开奖前发送口令参与红包雨活动</p>
+             v-else-if="redBagInfo.condition==2">开奖前在直播聊天区发送口令参与红包雨活动</p>
           <p class="red-bag-info"
              v-else-if="redBagInfo.condition==3">开奖前填写问卷调查参与红包雨活动</p>
           <span class="red-bag-tip"
