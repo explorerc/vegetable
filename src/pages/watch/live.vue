@@ -9,7 +9,7 @@
          class="v-function-box">
       <div class="v-nav">
         <!--操作区-->
-        <div class="icon-list">
+        <div class="icon-list" v-if="playType!=='end'">
           <span class='goods'
                 @click="showGoods"
                 v-if="goodsLen"><em>{{goodsLen}}</em>商品</span>
