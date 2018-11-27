@@ -145,6 +145,7 @@ export default {
         margin-top: 5px;
         word-break: break-all;
         white-space: normal;
+        color: #222222;
       }
     }
   }

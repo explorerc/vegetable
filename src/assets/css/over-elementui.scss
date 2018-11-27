@@ -21,6 +21,7 @@ $color-ui-components: #4b5afe;
 
   .el-select-dropdown__item {
     span {
+      color: #222222;
       font-size: 28px;
     }
   }
@@ -73,15 +74,16 @@ $color-ui-components: #4b5afe;
 
 .el-date-table td.available {
   color: $color-font;
+  font-size: 26px;
 }
 
 .el-date-table td.current:not(.disabled) span {
-  background-color: $color-default;
+  background-color: $color-default !important;
   color: $color-font;
 }
 
 .el-date-table td.today span {
-  color: $color-default;
+  color: $color-default !important;
 }
 
 .el-date-table td.available:hover {
@@ -147,4 +149,11 @@ input {
 }
 .el-select .el-input.is-focus .el-input__inner {
   border-color: #888888 !important;
+}
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
+  border-color: #888888 !important;
+}
+.el-radio__input.is-checked + .el-radio__label {
+  color: #222222 !important;
 }
