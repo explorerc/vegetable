@@ -17,7 +17,7 @@
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
-      <span class="v-onlineNum">{{showPersonCount}}人在线</span>
+      <span class="v-onlineNum" v-if="activityInfo.setting.showOnlineNum=='Y'">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
         <a href="/m/user"
            class="fr v-my v-right"><i class="v-showpsd iconfont icon-awodeicon-"></i></a>
