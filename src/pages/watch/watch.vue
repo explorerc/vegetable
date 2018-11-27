@@ -78,7 +78,7 @@
            class="red-bag-box">
         <i class="iconfont icon-close"
            @click="handleRedBagClick"></i>
-        <div class="red-bag-content">
+        <div class="red-bag-content red-bag-content-mid">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <p class="red-bag-info "
              v-if="redBagInfo.condition==0">手速越快，红可能越大哦~</p>
@@ -1202,6 +1202,9 @@ export default {
     margin-left: -35vw;
     padding: 0 20px;
   }
+  .red-bag-content-mid {
+    top: 60%;
+  }
 
   &.get-red-bag {
     background-image: url('../../assets/image/red-bag-bg-success@2x.png');
@@ -1346,7 +1349,7 @@ export default {
 
     li {
       width: 100%;
-      padding: 20px;
+      padding: 0 20px 20px 20px;
       text-align: left;
       .head-icon {
         display: inline-block;
@@ -1384,7 +1387,7 @@ export default {
   .none-data {
     display: block;
     width: 100%;
-    line-height: 80px;
+    line-height: 50px;
     text-align: center;
     color: #8e9198;
     font-size: 28px;
