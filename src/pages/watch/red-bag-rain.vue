@@ -124,15 +124,15 @@
         let width = document.body.clientWidth
         let height = document.body.clientHeight
         let rotate = false
-        for (let i = 0; i < (this.density * 100); i++) {
+        for (let i = 0; i < (this.density * 80); i++) {
           rotate = !rotate
           this.redBagList.push({
             uuid: `uuid_${Math.random()}`,
             rotate: rotate ? this.random(0, 30) : -this.random(0, 30),
-            speed: this.random(6, 10),
+            speed: this.random(5, 10),
             left: this.random(0, width - 60),
             top: -this.random(0, height) * 2,
-            scale: this.random(5, 7) / 10
+            scale: this.random(4, 7) / 10
           })
         }
         for (let i = 0; i < (this.density * 20); i++) {
@@ -144,7 +144,7 @@
             scale: this.random(5, 8) / 10
           })
         }
-        for (let i = 0; i < (this.density * 20); i++) {
+        for (let i = 0; i < (this.density * 10); i++) {
           this.meteorList.push({
             left: this.random(0, width - 50),
             top: this.random(0, height),
