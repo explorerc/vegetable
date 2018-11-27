@@ -177,6 +177,11 @@ export default {
             })
           }
         })
+      } else {
+        this.$toast({
+          content: '您没有将必填项目填写完整，请返回修改',
+          position: 'center'
+        })
       }
     },
     colse () {
