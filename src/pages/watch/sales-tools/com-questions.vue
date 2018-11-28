@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     defaultImg () {
-      return this.questions.imgUrl ? this.$imgHost + '/' + this.questions.imgUrl : ''
+      return this.questions.imgUrl ? this.$imgHost + '/' + this.questions.imgUrl + '?x-oss-process=image/resize,m_fill,h_140,w_700' : ''
     }
   },
   methods: {
