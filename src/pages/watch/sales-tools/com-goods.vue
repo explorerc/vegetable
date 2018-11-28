@@ -195,12 +195,12 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           span {
-            font-size: 22px;
+            font-size: 32px;
             color: rgba(252, 86, 89, 1);
           }
           del {
             margin-left: 4px;
-            font-size: 18px;
+            font-size: 26px;
             color: rgba(136, 136, 136, 1);
           }
         }

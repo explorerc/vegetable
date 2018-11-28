@@ -137,6 +137,7 @@ export default {
       margin-top: 9px;
       word-break: break-all;
       white-space: normal;
+      color: #222222;
     }
   }
 }

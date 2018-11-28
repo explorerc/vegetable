@@ -227,6 +227,12 @@ export default {
         .el-checkbox__original {
           display: none;
         }
+        .q-edit-content {
+          input {
+            font-size: 28px;
+            color: #222222;
+          }
+        }
       }
     }
 
@@ -241,7 +247,7 @@ export default {
       word-break: break-all;
       text-align: center;
       margin: 50px auto 0;
-      font-size: 36px;
+      font-size: 30px;
     }
 
     .v-summary {
