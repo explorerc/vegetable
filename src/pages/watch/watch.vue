@@ -1092,7 +1092,6 @@ export default {
         .v-introduction {
           width: 100%;
           padding: 40px;
-          margin-bottom: 90px;
         }
         .chat-content {
           width: 100%;
