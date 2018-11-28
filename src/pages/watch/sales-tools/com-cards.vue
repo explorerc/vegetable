@@ -1,6 +1,6 @@
 <template>
   <div class="cards-wrap">
-    <img :src="imgHost+'/'+cardData.pic" >
+    <div class="cov_img" :style="{backgroundImage:`url(${imgHost}/${cardData.pic})`}"></div>
     <div class="desc">{{cardData.desc}}</div>
     <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><el-button  round class='btn primary-button' @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</el-button></a>
     <i class="close" @click='close'></i>
@@ -47,7 +47,6 @@ export default {
   width: 552px;
   height: 460px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
   height: auto;
   position: fixed;
   top: 50%;
@@ -58,10 +57,11 @@ export default {
   box-shadow: 0 0 10px rgba(34, 34, 34, 0.5);
   z-index: 9999;
   padding-bottom: 40px;
-  border-radius: 4px;
-  img {
+  .cov_img {
     width: 100%;
     height: 250px;
+    background: no-repeat center;
+    background-size: cover;
   }
   a {
     display: inline-block;
