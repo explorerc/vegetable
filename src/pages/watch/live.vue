@@ -10,15 +10,15 @@
       <div class="v-nav">
         <!--操作区-->
         <div class="icon-list" v-if="playType!=='end'">
-          <span class='goods'
-                @click="showGoods"
-                v-if="goodsLen"><em>{{goodsLen}}</em>商品</span>
           <span class='redpack'
                 v-if="downTimer"
                 @click='clickRedpack'><em></em>红包</span>
           <span class='ques'
                 v-if="questionStatus.iconShow"
                 @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
+          <span class='goods'
+                @click="showGoods"
+                v-if="goodsLen"><em>{{goodsLen}}</em>商品</span>
         </div>
         <!--操作区-->
         <div class="msg-Box">
@@ -71,6 +71,13 @@
                        @isMute="isMute($event)"
                        @clickTools="clickTools"></chating>
             </div>
+            <template v-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
+              <div class="v-chat-control v-noLogin"
+                   id="sendBoxBtn">
+                需要登录才能参与聊天
+                <span @click="doLogin">登录</span>
+              </div>
+            </template>
             <template v-if='(playType === "live" || playType === "warm"  || playType === "pre") && isLogin'>
               <template v-if='isMuteShow'>
                 <div class="v-chat-control v-noLogin"
@@ -91,13 +98,6 @@
             </template>
           </com-tab>
         </com-tabs>
-        <template v-if='(playType === "live" || playType === "warm" || playType === "pre") && !isLogin'>
-          <div class="v-chat-control v-noLogin not-login"
-               id="sendBoxBtn">
-            需要登录才能参与聊天
-            <span @click="doLogin">登录</span>
-          </div>
-        </template>
         <!-- <a class="v-subscribe"
            href="javascript:;">
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
@@ -313,6 +313,15 @@ export default {
             _that.$refs.chatbox.scrollBottom(10)
           }, 200)
         }
+        this.$nextTick(() => {
+          let iconList = document.querySelector('.icon-list')
+          iconList.style.bottom = '50px'
+        })
+      } else {
+        this.$nextTick(() => {
+          let iconList = document.querySelector('.icon-list')
+          iconList.style.bottom = '0'
+        })
       }
     },
     // /* 初始化，获取权限 */
@@ -688,7 +697,7 @@ export default {
 }
 .icon-list /deep/ {
   position: absolute;
-  bottom: 90px;
+  bottom: 0;
   right: 22px;
   z-index: 1;
   span {
@@ -935,7 +944,7 @@ export default {
     }
   }
 }
-.not-login /deep/ {
+/*.not-login /deep/ {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -949,5 +958,5 @@ export default {
   span {
     color: #4b5afe;
   }
-}
+}*/
 </style>
