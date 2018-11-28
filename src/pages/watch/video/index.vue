@@ -23,7 +23,7 @@
             v-if="role!=='master'">
         <img :src="require('assets/image/watch_liveEnd@2x.png')"
              alt="">
-        <p>您来晚了，直播已结束了～</p>
+        <p>直播已结束，感谢观看</p>
       </span>
     </div>
     <div class="play-video-box"
