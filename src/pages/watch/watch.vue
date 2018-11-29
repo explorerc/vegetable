@@ -81,7 +81,7 @@
         <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <p class="red-bag-info "
-             v-if="redBagInfo.condition==0">手速越快，红可能越大哦~</p>
+             v-if="redBagInfo.condition==0">手速越快，红包可能越大哦~</p>
           <p class="red-bag-info"
              v-else-if="redBagInfo.condition==1">开奖前分享直播间参与红包雨活动</p>
           <p class="red-bag-info tip-info"
