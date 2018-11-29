@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import 'assets/css/mixin.scss';
+@import "assets/css/mixin.scss";
 #app {
   width: 100%;
   height: 100%;
@@ -26,6 +26,7 @@ export default {
   left: 0;
   overflow: hidden;
   font-size: 28px;
+  color: #222222;
 }
 
 .box {

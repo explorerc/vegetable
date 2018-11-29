@@ -89,6 +89,9 @@ export default {
         this.timer = setInterval(() => {
           this.time--
           if (this.time === 0) {
+            this.verify = false
+            this.captchaKey = ''
+            this.captchaIns.refresh()
             clearInterval(this.timer)
             this.time = 60
           }

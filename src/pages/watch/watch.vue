@@ -78,7 +78,7 @@
            class="red-bag-box">
         <i class="iconfont icon-close"
            @click="handleRedBagClick"></i>
-        <div class="red-bag-content red-bag-content-mid">
+        <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <p class="red-bag-info "
              v-if="redBagInfo.condition==0">手速越快，红可能越大哦~</p>
@@ -635,7 +635,7 @@ export default {
           }
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + this.$staticHost + require('assets/image/share@2x.png')
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share@2x.png')
         }
       })
       console.log(this.wxShare)
@@ -955,7 +955,7 @@ export default {
         background-repeat: no-repeat;
         background-size: cover;
       }
-      .v-right{
+      .v-right {
         margin-top: 4px;
       }
       .ac-title {
