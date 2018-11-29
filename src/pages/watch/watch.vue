@@ -647,7 +647,7 @@ export default {
           }
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/sharelogo1.jpg')
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https://static.vhallyun.com/mp-prod/cd/07/cd07b91439a0cbd45b0ad693219bbc3e.jpg'
         }
       })
       console.log(this.wxShare)
