@@ -48,8 +48,8 @@
           <span>当前余额</span><span class="money"
                 :class="{small:user.balance-0>1000000}">￥{{user.balance}}</span>
         </span>
-        <com-button @click="goWithdraw"
-                    class="primary-button withdraw">提现</com-button>
+        <!-- <com-button @click="goWithdraw"
+                    class="primary-button withdraw">提现</com-button> -->
       </div>
     </div>
     <div class="v-list"

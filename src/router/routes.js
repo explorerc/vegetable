@@ -32,6 +32,7 @@ const user = () => import('src/pages/user')
 const activityList = () => import('src/pages/user/activity-list')
 const userInfoEdit = () => import('src/pages/user/edit')
 const withdraw = () => import('src/pages/user/withdraw')
+const viewWithdrawDetail = () => import('src/pages/user/withDrawList')
 const testSuccess = () => import('src/pages/test/success')
 const testFail = () => import('src/pages/test/fail')
 
@@ -127,6 +128,11 @@ export default [
     path: '/withdraw',
     name: 'withdraw',
     component: withdraw
+  },
+  {
+    path: '/viewWithdrawDetail',
+    name: 'viewWithdrawDetail',
+    component: viewWithdrawDetail
   },
   {
     path: '/userInfoEdit/:type',

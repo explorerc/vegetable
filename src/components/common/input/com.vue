@@ -58,6 +58,7 @@ export default {
       type: String,
       default: 'input'
     },
+    max: [Number, String],
     maxLength: Number,
     rows: {
       type: Number,
@@ -150,7 +151,14 @@ export default {
         this.$emit('input', this.innerValue)
         return
       }
-      if (this.isMobile) {
+      if (this.type === 'float') {
+        let match = value.match(/\d{1,8}(\.\d{0,2})?/)
+        let _value = match ? match[0] : ''
+        if (this.max && _value - 0 > this.max - 0) {
+          _value = this.max
+        }
+        this.innerValue = _value
+      } else if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)

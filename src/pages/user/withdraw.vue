@@ -2,7 +2,8 @@
   <div class="withdraw-wrap"
        v-show="isReady">
     <div class="header">
-      <router-link to="/user">
+      <router-link class="back"
+                   to="/user">
         <i class="iconfont icon-jiantouzuo fl"></i>
       </router-link>
       收益提现
@@ -24,12 +25,15 @@
       <div class="balance-input">
         <span>￥</span>
         <com-input v-model="withDrawValue"
+                   type="float"
+                   :max="money"
                    @focus="focusValue"
                    @blur="blurValue"></com-input>
       </div>
     </div>
     <div class="withdraw-btns">
-      <com-button :disabled="btnDisabled">提现</com-button>
+      <com-button :disabled="btnDisabled"
+                  @click="doWithDraw">提现</com-button>
     </div>
   </div>
 </template>
@@ -71,6 +75,13 @@ export default {
     }
   },
   methods: {
+    doWithDraw () {
+      this.$post(userService.POST_COMMIT_WITHDRAW, { fee: this.withDrawValue }).then((res) => {
+        this.$toast({
+          'content': '提现成功'
+        })
+      })
+    },
     focusValue () {
       if (this.withDrawValue === '0') {
         this.withDrawValue = ''
@@ -102,6 +113,10 @@ export default {
       line-height: 80px;
       text-align: center;
       font-size: 32px;
+      .back {
+        position: absolute;
+        left: 0;
+      }
       .icon-jiantouzuo {
         width: 40px;
         display: inline-block;

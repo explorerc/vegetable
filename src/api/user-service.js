@@ -8,5 +8,7 @@ export default {
   POST_UPDATE_MOBILE: '/user/consumer-user/update-mobile',
   POST_CHANGE_PASSWORD: '/user/business-user/update-password',
   GET_CENTER_INFO: '/user/consumer-user/center-info', // 获取个人中心信息
-  POST_CENTER_UPDATE: '/user/consumer-user/update' // 更新个人中心信息
+  POST_CENTER_UPDATE: '/user/consumer-user/update', // 更新个人中心信息
+  POST_COMMIT_WITHDRAW: '/user/bill/consumer-commit-withdraw', // 提现
+  GET_WITHDRAW_LIST: '/user/bill/consumer-withdraw-list' // 明细
 }
