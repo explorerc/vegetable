@@ -38,9 +38,9 @@ const config = {
     BUILD_ENV: 'prod',
     API_PATH: '/m/api',
     SUB_DIR: 'static',
-    PUBLIC_PATH: '//zhike1.vhall.com/m/',
+    PUBLIC_PATH: '//zhike.vhall.com/m/',
     IMGHOST: '//static.vhallyun.com',
-    MOBILE_HOST: '//zhike1.vhall.com/m/'
+    MOBILE_HOST: '//zhike.vhall.com/m/'
   }
 }
 
