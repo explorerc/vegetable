@@ -2,7 +2,7 @@ import wx from 'weixin-js-sdk'
 import EventBus from 'src/utils/eventBus.js'
 export default function wxShare (wxShare) {
   wx.config({
-    debug: false,
+    debug: true,
     appId: wxShare.wxShareData.appId,
     timestamp: wxShare.wxShareData.timestamp,
     nonceStr: wxShare.wxShareData.nonceStr,
@@ -18,6 +18,7 @@ export default function wxShare (wxShare) {
     ]
   })
   wx.ready(function () {
+    alert(wxShare.shareData.shareDataimgUrl)
     wx.checkJsApi({
       jsApiList: [
         'onMenuShareTimeline',
