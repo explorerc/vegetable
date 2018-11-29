@@ -772,16 +772,17 @@ export default {
   width: 605px;
   height: 140px;
   background-color: white;
+  border-top: 1px solid #e2e2e2;
   box-shadow: 2px 10px 20px 5px rgba(0, 0, 0, 0.15);
   div {
     .cover_img {
-      border: 1px solid #cccccc;
+      border: 1px solid #e2e2e2;
       width: 140px;
       height: 140px;
       float: left;
       margin-right: 4px;
       background: no-repeat center;
-      background-size: cover;
+      background-size: contain;
     }
     i {
       position: absolute;
@@ -862,11 +863,12 @@ export default {
     }
     .el-carousel {
       border-radius: 10px;
+      border: 1px solid #e2e2e2;
       .buyImg {
         width: 100%;
         height: 100%;
         background: no-repeat center;
-        background-size: cover;
+        background-size: contain;
       }
     }
     p {

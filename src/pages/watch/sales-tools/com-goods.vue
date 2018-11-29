@@ -169,7 +169,8 @@
       }
       .cov_img{
         background: white no-repeat center;
-        background-size: cover;
+        background-size: contain;
+        border: 1px solid #e2e2e2;
         border-radius: 10px;
         float: left;
         width: 220px;
