@@ -381,15 +381,25 @@ export default {
       storeLoginInfo: types.LOGIN_INFO
     }),
     subscribe () {
-      if (this.loginInfo) {
-        if (this.loginInfo.email) {
-          this.sendSubScribe()
+      this.$post(activityService.POST_SUBSCRIBE_STATUS, { businessUserId: this.businessUserId }).then((res) => {
+        if (res.data.status === 'SUBSCRIBE') {
+          this.$messageBox({
+            header: '提示',
+            content: '您已订阅',
+            confirmText: '确定'
+          })
         } else {
-          this.subscribeShow = true
+          if (this.loginInfo) {
+            if (this.loginInfo.email) {
+              this.sendSubScribe()
+            } else {
+              this.subscribeShow = true
+            }
+          } else {
+            this.doLogin()
+          }
         }
-      } else {
-        this.doLogin()
-      }
+      })
     },
     emailFocus () {
       this.errorTips = ''
