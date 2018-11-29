@@ -20,7 +20,7 @@ export default {
 <style lang="scss" scoped>
 .isEmpty {
   img {
-    width: 218px;
+    width: 150px;
     display: block;
     margin: 280px auto 0;
   }

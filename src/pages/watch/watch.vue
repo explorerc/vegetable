@@ -78,7 +78,7 @@
            class="red-bag-box">
         <i class="iconfont icon-close"
            @click="handleRedBagClick"></i>
-        <div class="red-bag-content red-bag-content-mid">
+        <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <p class="red-bag-info "
              v-if="redBagInfo.condition==0">手速越快，红可能越大哦~</p>
