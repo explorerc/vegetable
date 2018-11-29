@@ -98,7 +98,7 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share@2x.png')
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share@2x.jpg')
         }
       })
       wxShareFunction(this.wxShare)
@@ -126,7 +126,7 @@ export default {
     display: block;
     width: 100%;
     height: 790px;
-    background-image: url("../../assets/image/guide.jpg");
+    background-image: url('../../assets/image/guide.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
