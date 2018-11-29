@@ -562,8 +562,8 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       img {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
       }
       p {
         margin-top: 20px;
