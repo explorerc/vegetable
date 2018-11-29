@@ -3,10 +3,8 @@
     <a @click="colse"
        class="v-close">收起<i class="iconfont icon-Up"></i></a>
     <div class="v-content">
-      <img :src="defaultImg"
-           alt=""
-           v-if="defaultImg"
-           class="v-question-img">
+      <div class="v-question-img"
+           :style="{'background-image':`url(${defaultImg})`}"></div>
       <p class="v-title">
         {{questions.title}}
       </p>
@@ -220,6 +218,14 @@ export default {
     .v-content {
       height: 100%;
       padding: 85px 50px 50px;
+      .v-question-img {
+        margin: 0 auto;
+        display: block;
+        width: 100%;
+        height: 140px;
+        background-position: center;
+        background-size: cover;
+      }
       .single-select-wrap {
         .el-radio__original {
           display: none;

@@ -2,15 +2,16 @@
   <div class="container">
     <template v-if="imgUrl">
       <!--<img :src="defaultImg"-->
-           <!--alt=""-->
-           <!--class="v-guid-img">-->
-      <div class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
+      <!--alt=""-->
+      <!--class="v-guid-img">-->
+      <div class="v-guid-img img-bg"
+           :style="{backgroundImage:`url(${defaultImg})`}"></div>
     </template>
     <template v-else>
       <div class="v-guid-img"></div>
       <!--<img src="../../assets/image/guide.jpg"-->
-           <!--alt=""-->
-           <!--class="v-guid-img">-->
+      <!--alt=""-->
+      <!--class="v-guid-img">-->
     </template>
     <router-view class="app-view"></router-view>
   </div>
@@ -98,7 +99,7 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share@2x.png')
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share_default.jpg')
         }
       })
       wxShareFunction(this.wxShare)
