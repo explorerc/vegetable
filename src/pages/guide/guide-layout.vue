@@ -1,14 +1,16 @@
 <template>
   <div class="container">
-    <template v-if="defaultImg">
-      <img :src="defaultImg"
-           alt=""
-           class="v-guid-img">
+    <template v-if="imgUrl">
+      <!--<img :src="defaultImg"-->
+           <!--alt=""-->
+           <!--class="v-guid-img">-->
+      <div class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
     </template>
     <template v-else>
-      <img src="../../assets/image/guide.jpg"
-           alt=""
-           class="v-guid-img">
+      <div class="v-guid-img"></div>
+      <!--<img src="../../assets/image/guide.jpg"-->
+           <!--alt=""-->
+           <!--class="v-guid-img">-->
     </template>
     <router-view class="app-view"></router-view>
   </div>
@@ -124,6 +126,10 @@ export default {
     display: block;
     width: 100%;
     height: 790px;
+    background-image: url("../../assets/image/guide.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
   .app-view /deep/ {
     display: block;
