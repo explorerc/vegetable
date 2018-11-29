@@ -17,7 +17,8 @@
       <span class="v-status">
         <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
       </span>
-      <span class="v-onlineNum" v-if="activityInfo.setting.showOnlineNum=='Y'">{{showPersonCount}}人在线</span>
+      <span class="v-onlineNum"
+            v-if="activityInfo.setting.showOnlineNum=='Y'">{{showPersonCount}}人在线</span>
       <template v-if="loginInfo">
         <a href="/m/user"
            class="fr v-my v-right"><i class="v-showpsd iconfont icon-awodeicon-"></i></a>
@@ -78,7 +79,8 @@
            class="red-bag-box">
         <i class="iconfont icon-close"
            @click="handleRedBagClick"></i>
-        <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
+        <div class="red-bag-content red-bag-content-mid"
+             style="top: 53%;">
           <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
           <p class="red-bag-info "
              v-if="redBagInfo.condition==0">手速越快，红包可能越大哦~</p>
@@ -635,7 +637,7 @@ export default {
           }
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share_default.jpg')
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/sharelogo1.jpg')
         }
       })
       console.log(this.wxShare)
@@ -845,7 +847,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import 'assets/css/mixin.scss';
+@import "assets/css/mixin.scss";
 .v-watch {
   /deep/ {
     position: absolute;
@@ -951,7 +953,7 @@ export default {
         font-weight: bold;
         text-align: center;
         border-radius: 50%;
-        background-image: url('../../assets/image/avatar@2x.png');
+        background-image: url("../../assets/image/avatar@2x.png");
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -1027,7 +1029,7 @@ export default {
             &.active {
               color: #4b5afe;
               &::after {
-                content: '';
+                content: "";
                 display: block;
                 width: 70px;
                 height: 3px;
@@ -1187,7 +1189,7 @@ export default {
   position: relative;
   width: 100vw;
   height: 130vw;
-  background-image: url('../../assets/image/red-bag-bg@2x.png');
+  background-image: url("../../assets/image/red-bag-bg@2x.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1206,7 +1208,7 @@ export default {
   }
 
   &.get-red-bag {
-    background-image: url('../../assets/image/red-bag-bg-success@2x.png');
+    background-image: url("../../assets/image/red-bag-bg-success@2x.png");
     background-size: contain;
     background-repeat: no-repeat;
     .red-bag-content {
@@ -1360,7 +1362,7 @@ export default {
         border: solid 1px $color-bd;
         text-align: center;
         vertical-align: middle;
-        background-image: url('../../assets/image/avatar@2x.png');
+        background-image: url("../../assets/image/avatar@2x.png");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;

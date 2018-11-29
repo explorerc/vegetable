@@ -158,7 +158,7 @@ export default {
         if (res.data) {
           this.wxShare.shareData.title = res.data.title ? res.data.title : ''
           this.wxShare.shareData.shareDatadesc = res.data.description ? res.data.description : ''
-          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/share_default.jpg')
+          this.wxShare.shareData.shareDataimgUrl = res.data.imgUrl ? 'https:' + this.$imgHost + '/' + res.data.imgUrl : 'https:' + require('assets/image/sharelogo1.jpg')
         }
       })
       wxShareFunction(this.wxShare)
