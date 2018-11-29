@@ -6,8 +6,8 @@
          @click="goInfo({goods_id:ite.goods_id,type:0})"
          :key="`top${indr}`" v-show="ite.added === '1' && ite.top === '1'">
       <span class="index" style="font-size: 10px">TOP</span>
-      <div class="cov_img">
-        <img class="cover_img" :src="`${$imgHost}/${ite.image}`">
+      <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
+        <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
       </div>
       <div>
         <h4 class="item-title">{{ite.title}}</h4>
@@ -25,8 +25,8 @@
          @click="goInfo({goods_id:ite.goods_id,type:0})"
          v-show="ite.added === '1' && ite.top !== '1'">
       <span class="index">{{ite.number<10?`0${ite.number}`:ite.number}} </span>
-      <div class="cov_img">
-        <img class="cover_img" :src="`${$imgHost}/${ite.image}`">
+      <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
+        <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
       </div>
       <div>
         <h4 class="item-title">{{ite.title}}</h4>
@@ -168,16 +168,13 @@
         opacity: 0.8;
       }
       .cov_img{
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        img {
-          border-radius: 10px;
-          float: left;
-          width: 220px;
-          height: 220px;
-          margin-right: 20px;
-        }
+        background: white no-repeat center;
+        background-size: cover;
+        border-radius: 10px;
+        float: left;
+        width: 220px;
+        height: 220px;
+        margin-right: 20px;
       }
       div {
         /*padding: 10px 15px;*/

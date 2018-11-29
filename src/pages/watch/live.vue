@@ -27,8 +27,9 @@
             <div class="goods_small_popover"
                  v-if="goodsSmallPopoverShow">
               <div @click="goInfo(goodsSmallDetails, 'push')">
-                <img class="cover_img"
-                     :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">
+               <!-- <img
+                     :src="`${$imgHost}/${goodsSmallDetails.image[0].name}`">-->
+                <div class="cover_img" :style="{backgroundImage:`url(${$imgHost}/${goodsSmallDetails.image[0].name})`}"></div>
                 <div>
                   <p class="item-price">
                     <!-- <span>￥{{goodsSmallDetails.preferential}}</span>
@@ -112,8 +113,9 @@
             <h4>{{goodsSmallDetails.title}}</h4>
             <el-carousel>
               <el-carousel-item v-for="(item,ind) in goodsSmallDetails.image">
-                <img :src="`${$imgHost}/${item.name}`"
-                     alt="">
+               <!-- <img :src="`${$imgHost}/${item.name}`"
+                     alt="">-->
+                <div class="buyImg" :style="{backgroundImage:`url(${$imgHost}/${item.name})`}"></div>
               </el-carousel-item>
             </el-carousel>
             <p>{{goodsSmallDetails.describe}}</p>
@@ -778,6 +780,8 @@ export default {
       height: 140px;
       float: left;
       margin-right: 4px;
+      background: no-repeat center;
+      background-size: cover;
     }
     i {
       position: absolute;
@@ -858,9 +862,11 @@ export default {
     }
     .el-carousel {
       border-radius: 10px;
-      img {
+      .buyImg {
         width: 100%;
         height: 100%;
+        background: no-repeat center;
+        background-size: cover;
       }
     }
     p {
