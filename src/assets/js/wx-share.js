@@ -18,7 +18,7 @@ export default function wxShare (wxShare) {
     ]
   })
   wx.ready(function () {
-    alert(wxShare.shareData.shareDataimgUrl)
+    wxShare.shareData.shareDataimgUrl = 'https://zhike.vhall.com/m/static/img/share@2x.png'
     wx.checkJsApi({
       jsApiList: [
         'onMenuShareTimeline',
