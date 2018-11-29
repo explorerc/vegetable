@@ -55,7 +55,7 @@
               <dt class='avatar'
                   v-else>{{item.name&&item.name.substr(0,1)}}</dt>
               <dd>
-                <div class="name">{{item.name}}
+                <div class="name">{{item.name.length > 10 ? item.name.substr(0,10)+ '...' : item.name}}
                   <em v-if="item.detail.role">{{item.detail.role}}</em>
                 </div>
                 <div class="txt"
