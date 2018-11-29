@@ -23,7 +23,7 @@
           v-if="maxLength&&(type==='input')">
       <i class="length"
          v-text="isCharacter?innerValue.length:(innerValue?innerValue.gbLength():0)"
-         :style="{ color: limitColor }" >0</i>/
+         :style="{ color: limitColor }">0</i>/
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -80,6 +80,7 @@ export default {
   },
   data () {
     return {
+      num: '',
       isMobile: false,
       innerValue: '',
       showDelete: false,
