@@ -1104,6 +1104,9 @@ export default {
         .v-introduction {
           width: 100%;
           padding: 40px;
+          img {
+            max-width: 100%;
+          }
         }
         .chat-content {
           width: 100%;
