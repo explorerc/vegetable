@@ -9,8 +9,10 @@
 export default {
   mounted () {
     document.addEventListener('focusout', function (e) {
-      let top = document.body.scrollTop
-      document.body.scrollTop = top + 1
+      setTimeout(() => {
+        let top = document.body.scrollTop
+        document.body.scrollTop = top + 10
+      }, 100)
     })
   }
 }
