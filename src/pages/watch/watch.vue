@@ -857,7 +857,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 .v-watch {
   /deep/ {
     position: absolute;
@@ -963,7 +963,7 @@ export default {
         font-weight: bold;
         text-align: center;
         border-radius: 50%;
-        background-image: url("../../assets/image/avatar@2x.png");
+        background-image: url('../../assets/image/avatar@2x.png');
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -1039,7 +1039,7 @@ export default {
             &.active {
               color: #4b5afe;
               &::after {
-                content: "";
+                content: '';
                 display: block;
                 width: 70px;
                 height: 3px;
@@ -1181,11 +1181,12 @@ export default {
       .ve-message-box__btns {
         margin: 0 auto;
         text-align: center;
-        width: 528px;
+        width: 80%;
         .button--primary {
           margin: 0 auto;
           display: block;
           width: 528px;
+          width: 100%;
           height: 94px;
           line-height: 94px;
           border-radius: 8px;
@@ -1199,7 +1200,7 @@ export default {
   position: relative;
   width: 100vw;
   height: 130vw;
-  background-image: url("../../assets/image/red-bag-bg@2x.png");
+  background-image: url('../../assets/image/red-bag-bg@2x.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1218,7 +1219,7 @@ export default {
   }
 
   &.get-red-bag {
-    background-image: url("../../assets/image/red-bag-bg-success@2x.png");
+    background-image: url('../../assets/image/red-bag-bg-success@2x.png');
     background-size: contain;
     background-repeat: no-repeat;
     .red-bag-content {
@@ -1234,8 +1235,9 @@ export default {
     }
 
     .red-bag-money {
-      font-size: 32px;
+      font-size: 52px;
       color: #ec0827;
+      padding-right: 20px;
     }
     .detail-top {
       margin-top: 190px;
@@ -1372,7 +1374,7 @@ export default {
         border: solid 1px $color-bd;
         text-align: center;
         vertical-align: middle;
-        background-image: url("../../assets/image/avatar@2x.png");
+        background-image: url('../../assets/image/avatar@2x.png');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
