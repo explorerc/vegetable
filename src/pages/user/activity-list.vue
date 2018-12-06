@@ -13,8 +13,9 @@
           <a :href="MOBILE_HOST+'guide/'+itemData.id"
              class="clearfix">
             <div class="v-activity-img fl">
-              <img :src="itemData.imgUrl"
-                   alt="">
+              <div class="img" :style="{'background-image':`url(${itemData.imgUrl})`}"></div>
+              <!-- <img :src="itemData.imgUrl"
+                   alt=""> -->
               <span v-if='itemData.status=="PREPARE"'
                     class="live-state">预告</span>
               <span v-if='itemData.status=="LIVING"'
@@ -196,10 +197,13 @@ export default {
           width: 323px;
           height: 182px;
           position: relative;
-          img {
+          .img {
             width: 100%;
             height: 100%;
             border-radius: 8px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
           }
           .live-state {
             display: block;

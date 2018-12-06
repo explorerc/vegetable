@@ -260,6 +260,7 @@ export default {
       height: 120px;
       border-radius: 50%;
       margin: 0 auto 20px;
+      background: #fff;
     }
     p {
       text-align: center;
