@@ -34,13 +34,14 @@
       <div class="mode-item fr"
            @click="overEvent"
            v-if="playType!='live'">
-        <span class="quality-info">画质</span>
+        <span class="quality-info" v-if="qualitys.length<=0">原画</span>
+        <span class="quality-info" v-else>{{qualitys[selectQuality]|fmtQuality}}</span>
         <transition name="fade">
           <div class="qualitys-box"
                v-if="showQualityBlock">
             <span :class="{'quality-item':true,active:selectQuality==idx}"
                   v-for="(item,idx) in qualitys"
-                  @click.stop="selectQualityFn(idx)">{{item}}</span>
+                  @click.stop="selectQualityFn(idx)">{{item|fmtQuality}}</span>
           </div>
         </transition>
       </div>
@@ -161,6 +162,16 @@ export default {
       handler (newVal) {
         this.selectQuality = this.qualitys.indexOf(newVal)
       }
+    }
+  },
+  filters: {
+    fmtQuality (val) {
+      if (val === 'a') {
+        return '音频'
+      } else if (val === 'same') {
+        return '原画'
+      }
+      return val
     }
   },
   methods: {
@@ -313,7 +324,6 @@ export default {
         background-color: #222;
         border-radius: 15px;
         opacity: 0.9;
-        font-size: 28px;
       }
       .qualitys-box {
         position: absolute;
@@ -326,7 +336,7 @@ export default {
         background-color: rgba(20, 20, 20, 0.5);
         .quality-item {
           display: block;
-          line-height: 30px;
+          line-height: 50px;
           &:hover {
             cursor: pointer;
             opacity: 0.9;
