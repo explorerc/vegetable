@@ -627,6 +627,10 @@ export default {
     },
     async share () { // 微信分享
       let _url = window.location.href
+      let shareId = this.joinInfo.activityUserId ? this.joinInfo.activityUserId : ''
+      this.wxShare.shareUser = {
+        shareId: shareId || ''
+      }
       await this.$config({ handlers: true }).$get(activityService.GET_SHARESIGN, { // 获取微信分享签名等信息
         url: encodeURIComponent(_url)
       }).then((res) => {
