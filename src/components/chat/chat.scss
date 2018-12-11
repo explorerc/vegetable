@@ -277,8 +277,8 @@
         position: relative;
 
         img {
-          width: 26px;
-          height: 26px;
+          width: 40px;
+          height: 40px;
           display: inline-block;
         }
       }
@@ -558,12 +558,15 @@
           bottom: 85px;
           left: -22px;
           width: 620px;
+          height: 256px;
           background: #fff;
           z-index: 10;
-
+          overflow-y: scroll;
+          padding-top: 10px;
           img {
-            width: 38px;
-            height: 38px;
+            width: 48px;
+            height: 48px;
+            margin: 6px;
             float: left;
             cursor: pointer;
           }
