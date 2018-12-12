@@ -8,35 +8,33 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <span class="logo"
-            style="border: solid 1px #e2e2e2;"
-            v-if="!logoImg"></span>
-      <span class="logo"
-            :style="{backgroundImage:`url(${customLogo})`}"></span>
-      <span class="ac-title">{{activityInfo.title}}</span>
-      <span class="v-status">
-        <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
-      </span>
-      <span class="v-onlineNum"
-            v-if="activityInfo.setting&&activityInfo.setting.showOnlineNum=='Y'">{{showPersonCount}}人在线</span>
-      <template v-if="loginInfo">
-        <a href="/m/user"
-           class="fr v-my v-right"><i class="v-showpsd iconfont icon-awodeicon-"></i></a>
-        <!-- <a v-if="isShowSite"
-           :href="`/m/site/${activityId}`"
-           class="fr v-my">
-          <i class="v-showpsd iconfont icon-guanwang"></i>官网</a> -->
-      </template>
-      <a v-else
-         href="javascript:;"
-         @click="doLogin()"
-         class="fr v-my v-right">
-        <i class="v-showpsd iconfont icon-awodeicon-"></i></a>
+      <img class="header-logo"
+           v-if="customLogo"
+           :src="customLogo">
+      <div class="header-content">
+        <span class="ac-title">{{activityInfo.title}}</span>
+        <span class="v-status">
+          <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
+        </span>
+        <span class="v-onlineNum"
+              v-if="activityInfo.setting&&activityInfo.setting.showOnlineNum=='Y'">{{showPersonCount}}人在线</span>
+      </div>
+      <div class="header-right">
+        <template v-if="loginInfo">
+          <a href="/m/user"
+             class="fr v-my v-right"><i class="v-showpsd iconfont icon-awodeicon-"></i></a>
+        </template>
+        <a v-else
+           href="javascript:;"
+           @click="doLogin()"
+           class="fr v-my v-right">
+          <i class="v-showpsd iconfont icon-awodeicon-"></i></a>
 
-      <a href="javascript:;"
-         class="fr v-right"
-         @click="subscribe">
-        <i class="v-showpsd iconfont icon-adingyueicon"></i></a>
+        <a href="javascript:;"
+           class="fr v-right"
+           @click="subscribe">
+          <i class="v-showpsd iconfont icon-adingyueicon"></i></a>
+      </div>
     </div>
     <component :is="currentView"
                :paasParams="vhallParams"
@@ -474,14 +472,14 @@ export default {
       })
       await this.initRoomPaas()
       this.initMsgServe()
-      // /* 获取自定义主题 */
-      // this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
-      //   activityId: this.$route.params.id
-      // }).then((res) => {
-      //   if (res.code === 200) {
-      //     this.logoImg = res.data.logoUrl
-      //   }
-      // })
+      /* 获取自定义主题 */
+      this.$config({ handlers: true }).$post(activityService.GET_CUSTOM_LOGO, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        if (res.code === 200) {
+          this.logoImg = res.data.logoUrl
+        }
+      })
       setTimeout(() => {
         this.share()
       }, 1000)
@@ -508,7 +506,7 @@ export default {
         }
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
-        this.logoImg = res.data.brand ? res.data.brand.wapLogo : '' // 自定义logo
+        // this.logoImg = res.data.brand ? res.data.brand.wapLogo : '' // 自定义logo
         this.companyName = res.data.businessUserInfo.company
         this.imgUrl = res.data.businessUserInfo.avatar
         this.isShowSite = res.data.template
@@ -862,6 +860,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import 'assets/css/mixin.scss';
+.header-logo{
+  position: relative;
+  top: 14px;
+  display: inline-block;
+  height: 84px;
+  max-width: 160px;
+  margin-right: 20px;
+}
+.header-content{
+  display: inline-block;
+}
+.header-right{
+  position: absolute;
+  top: 50%;
+  right: 38px;
+}
 .v-watch {
   /deep/ {
     position: absolute;
@@ -953,7 +967,7 @@ export default {
       width: 100%;
       height: 140px;
       background-color: #fff;
-      padding: 0 38px 0 140px;
+      padding: 0 38px;
       font-size: 24px;
       .logo {
         display: block;
@@ -982,7 +996,7 @@ export default {
         white-space: nowrap;
         line-height: 50px;
         margin-top: 22px;
-        font-size: 28px;
+        font-size: 26px;
         font-weight: bold;
       }
       .v-status {
