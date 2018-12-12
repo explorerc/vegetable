@@ -1,5 +1,8 @@
 <template>
   <div class="play-container">
+    <span class="end-box default-auto-box" v-if="isAuto">
+        <i class="iconfont icon-yinpin"></i>
+    </span>
     <div class="play-video-box"
          :id="playBoxId"
          v-if="playType=='pre'">
@@ -94,7 +97,8 @@ export default {
       controlPsoition: '1.333vw',
       qualitys: [], // 视频质量
       currentQuality: '',
-      isPlayState: false
+      isPlayState: false,
+      isAuto: false // 是否是音频
     }
   },
   props: {
@@ -493,6 +497,7 @@ export default {
       } else if (controlType === 'volumeSize') { // 声音大小
         this.changeVolume(e.value)
       } else if (controlType === 'selectQuality') { // 画面质量
+        this.isAuto = (e.value === 'a' || false)
         window.VhallPlayer.setQuality(e.value)
       } else if (controlType === 'fullScree') { // 全屏控制
         this.fullScree(e.value)
@@ -541,6 +546,34 @@ export default {
 .play-container /deep/ {
   position: relative;
   height: 100%;
+  .end-box {
+    position: absolute;
+    display: block;
+    color: #999999;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    p {
+      margin-top: 20px;
+      line-height: 24px;
+    }
+  }
+  .default-auto-box{
+    border: solid 2px #fff;
+    border-radius: 50%;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    line-height: 66px;
+    text-align: center;
+    background-color: rgba(0,0,0,.3);
+    .icon-yinpin{
+      color: #fff;
+      font-size: 50px;
+    }
+  }
   .play-video-box {
     height: 100%;
     overflow: hidden;
