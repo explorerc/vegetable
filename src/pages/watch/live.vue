@@ -472,7 +472,7 @@ export default {
         this.questionsShow = true
       }).catch((err) => {
         if (err.code === 15110) {
-          this.questionsSubmissionShow = true
+          this.questionsSubmissionShow = false
           this.questionStatus.iconShow = true
           this.questionStatus.redIcon = false
         } else {

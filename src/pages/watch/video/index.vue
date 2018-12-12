@@ -1,8 +1,5 @@
 <template>
   <div class="play-container">
-    <span class="end-box default-auto-box" v-if="isAuto">
-        <i class="iconfont icon-yinpin"></i>
-    </span>
     <div class="play-video-box"
          :id="playBoxId"
          v-if="playType=='pre'">
@@ -41,7 +38,11 @@
        @click="playVideo"></i>
     <div class="v-click-modal"
          @click="modalClick"
-         v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')"></div>
+         v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')">
+      <span class="end-box default-auto-box" v-if="isAuto">
+        <i class="iconfont icon-yinpin"></i>
+      </span>
+    </div>
     <div class="control-box-div">
       <div class="control-video-box"
            v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')">
@@ -59,6 +60,9 @@
     <div v-if="!isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
          class="v-mark"
          @click="startPlay">
+      <div class="image-bg"
+           v-if="imageSrc"
+           :style="{backgroundImage:`url(${imageSrc})`}"></div>
       <i class="iconfont icon-bofang_anniu"></i>
     </div>
   </div>
@@ -674,6 +678,17 @@ export default {
     height: 422px;
     z-index: 3;
     text-align: center;
+    .image-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-color: #fff;
+    }
     i {
       display: block;
       position: absolute;
