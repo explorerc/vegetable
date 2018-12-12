@@ -142,6 +142,7 @@
                @click.stop='changeFace'
                title='表情'></i>
             <div class="face-box"
+                 @click.stop=''
                  v-if="faceOpen">
               <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`"
                    @click.stop="inFace(index)"
