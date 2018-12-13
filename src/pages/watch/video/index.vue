@@ -64,7 +64,7 @@
       <div class="image-bg"
            v-if="imageSrc"
            :style="{backgroundImage:`url(${imageSrc})`}"></div>
-      <i class="iconfont icon-bofang_anniu"></i>
+      <i class="iconfont icon-bofang_anniu" v-if="playLoading"></i>
     </div>
   </div>
 </template>
@@ -103,6 +103,7 @@ export default {
       qualitys: [], // 视频质量
       currentQuality: '',
       isPlayState: false,
+      playLoading: false,
       isAuto: false // 是否是音频
     }
   },
@@ -315,6 +316,7 @@ export default {
             videoAttr: _videoAttr,
             complete: () => {
               this.playBtnShow = false
+              this.playLoading = true
               this.qualitys = window.VhallPlayer.getQualitys()
               if (this.isX5()) {
                 document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
@@ -381,6 +383,7 @@ export default {
         window.playComps.destroy()
       }
       this.$nextTick(() => {
+        this.playLoading = true
         this.playComps = new LivePuller(this.roomPaas.appId, this.roomPaas.liveRoom, this.playBoxId, this.roomPaas.token)
         this.playComps.initLivePlayer(false, true, () => {
           document.querySelector('.vjs-tech').addEventListener('pause', () => {
