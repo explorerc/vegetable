@@ -45,21 +45,19 @@ export default {
 .cards-wrap {
   text-align: center;
   width: 552px;
-  height: 460px;
   background: rgba(255, 255, 255, 1);
   height: auto;
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -221px;
-  margin-left: -276px;
+  transform: translate(-50%,-50%);
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(34, 34, 34, 0.5);
   z-index: 9999;
   padding-bottom: 40px;
   .cov_img {
     width: 100%;
-    height: 250px;
+    height: 460px;
     background: no-repeat center;
     background-size: cover;
   }
