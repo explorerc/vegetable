@@ -196,7 +196,7 @@ export default {
     },
     overEvent () {
       // debugger
-      this.showQualityBlock = true
+      this.showQualityBlock = !this.showQualityBlock
     },
     outEvent () {
       // debugger
@@ -224,10 +224,10 @@ export default {
       return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
     },
     selectQualityFn (idx) {
+      this.showQualityBlock = false
       if (this.selectQuality === idx) return
       this.selectQuality = idx
       this.changeControl(controlTypes.selectQuality, this.qualitys[idx])
-      this.showQualityBlock = false
     },
     changeControlStatus () {
       this.controlBoxIsShow = true
@@ -334,6 +334,7 @@ export default {
         text-align: center;
         transform: translateY(-100%);
         background-color: rgba(20, 20, 20, 0.5);
+        border-radius: 4px;
         .quality-item {
           display: block;
           line-height: 50px;
@@ -363,7 +364,7 @@ export default {
         border-radius: 50%;
         position: absolute;
         top: 12px;
-        left: 16px;
+        left: 28px;
       }
       .el-slider__runway {
         border-radius: 1px;
@@ -373,7 +374,7 @@ export default {
       }
       .el-slider__button-wrapper {
         position: relative;
-        top: -18px;
+        top: -20px;
         transition: opacity 0.2s;
         &:before {
           position: absolute;
@@ -382,7 +383,7 @@ export default {
           width: 32px;
           height: 32px;
           top: 6px;
-          left: 10px;
+          left: 22px;
           border-radius: 50%;
           background-color: rgba(255, 208, 33, 0.3);
         }
