@@ -40,7 +40,8 @@
          @click="modalClick"
          v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')">
       <span class="end-box default-auto-box" v-if="isAuto">
-        <i class="iconfont icon-yinpin"></i>
+        <i class="iconfont icon-yinpinx"></i>
+        <span>音频模式</span>
       </span>
     </div>
     <div class="control-box-div">
@@ -566,17 +567,19 @@ export default {
     }
   }
   .default-auto-box{
-    border: solid 2px #fff;
-    border-radius: 50%;
-    padding: 10px;
-    width: 100px;
-    height: 100px;
-    line-height: 66px;
-    text-align: center;
-    background-color: rgba(0,0,0,.3);
-    .icon-yinpin{
-      color: #fff;
-      font-size: 50px;
+    top: 50px;
+    left: 110px;
+    border-radius: 5px;
+    height: 40px;
+    line-height: 36px;
+    text-align: left;
+    background-color: rgba(0, 0, 0, .5);
+    color: #fff;
+    padding: 0 40px;
+    .icon-yinpinx{
+      color: #1BCAB7;
+      margin-right: 4px;
+      font-size: 28px;
     }
   }
   .play-video-box {
