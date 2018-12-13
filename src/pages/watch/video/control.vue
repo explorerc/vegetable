@@ -100,7 +100,7 @@ export default {
       selectQuality: 0,
       current: 0,
       progress: 0,
-      controlBoxIsShow: true, // 是否显示控制条
+      controlBoxIsShow: false, // 是否显示控制条
       interval: null // 倒计时
     }
   },
