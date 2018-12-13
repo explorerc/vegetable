@@ -135,7 +135,7 @@ export default {
       activityInfo: state => state.activityInfo
     }),
     imageSrc () {
-      return this.imageUrl ? `${this.$imgHost}/${this.imageUrl}` : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
+      return this.imageUrl ? `${this.$imgHost}/${this.imageUrl}` : `${process.env.PUBLIC_PATH}${process.env.SUB_DIR}/img/default-zhike.jpg`
     }
   },
   created () {
