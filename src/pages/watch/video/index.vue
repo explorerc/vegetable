@@ -273,6 +273,7 @@ export default {
     /* 初始化直播 */
     initLivePlay () {
       if (this.role === 'watcher') { // 观看端
+        this.imageUrl = this.activityInfo.imgUrl
         this.initPuller()
       }
     },
