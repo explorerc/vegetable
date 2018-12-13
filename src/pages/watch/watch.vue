@@ -1048,7 +1048,7 @@ export default {
         height: 100%;
         .tab-header {
           // padding-right: 160px; //关注开放时再打开
-          border-bottom: 1px solid #f5f5f5;
+          border-bottom: 1px solid #d4d4d4;
           margin: 0;
           .tab-item {
             width: 50%;
@@ -1100,6 +1100,10 @@ export default {
             line-height: 89px;
             padding: 0 40px;
             border-top: 1px solid #e2e2e2;
+            .icon-biaoqing{
+              font-size: 36px !important;
+              vertical-align: middle;
+            }
             .v-chat-clickbox {
               display: inline-block;
               width: 600px;
