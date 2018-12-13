@@ -256,8 +256,9 @@
         }
 
         em {
-          height: 30px;
-          padding: 0 15px;
+          display: inline-block;
+          //height: 36px;
+          padding: 5px 15px;
           font-size: 22px;
           line-height: 30px;
           color: $color-blue;

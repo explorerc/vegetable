@@ -986,7 +986,10 @@ export default {
         background-size: cover;
       }
       .v-right {
-        margin-top: 4px;
+        margin-top: 0;
+        .v-showpsd,.iconfont {
+          font-size: 42px !important;
+        }
       }
       .ac-title {
         display: block;
@@ -996,7 +999,7 @@ export default {
         white-space: nowrap;
         line-height: 50px;
         margin-top: 22px;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: bold;
       }
       .v-status {
@@ -1084,6 +1087,7 @@ export default {
         }
         .tab-content {
           height: 100%;
+          background-color: #fff;
           &:last-child {
             background-color: #fff;
           }
