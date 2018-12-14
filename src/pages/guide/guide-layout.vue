@@ -1,18 +1,7 @@
 <template>
   <div class="container">
-    <template v-if="imgUrl">
-      <!--<img :src="defaultImg"-->
-      <!--alt=""-->
-      <!--class="v-guid-img">-->
-      <div class="v-guid-img img-bg"
-           :style="{backgroundImage:`url(${defaultImg})`}"></div>
-    </template>
-    <template v-else>
-      <div class="v-guid-img"></div>
-      <!--<img src="../../assets/image/guide.jpg"-->
-      <!--alt=""-->
-      <!--class="v-guid-img">-->
-    </template>
+    <div v-if="showGuidImg" class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
+    <div v-else class="v-guid-img"></div>
     <router-view class="app-view"></router-view>
   </div>
 </template>
@@ -25,6 +14,7 @@ export default {
   data () {
     return {
       name: '',
+      showGuidImg: false,
       wxShare: { // 微信分享数据
         wxShareData: {
           appId: '',
@@ -53,7 +43,8 @@ export default {
   },
   computed: {
     defaultImg () {
-      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+      if (!this.imgUrl) return `${process.env.PUBLIC_PATH}${process.env.SUB_DIR}/img/guide.jpg`
+      return this.$imgHost + '/' + this.imgUrl
     }
   },
   methods: {
@@ -74,6 +65,7 @@ export default {
         iframe.addEventListener('load', d)
         document.body.appendChild(iframe)
         this.imgUrl = res.data.guide ? res.data.guide.imgUrl : ''
+        this.showGuidImg = true
       }).catch(() => {
         this.$router.replace('/empty')
       })
@@ -127,7 +119,6 @@ export default {
     display: block;
     width: 100%;
     height: 790px;
-    background-image: url("../../assets/image/guide.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
