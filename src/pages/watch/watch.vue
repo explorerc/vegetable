@@ -1008,7 +1008,7 @@ export default {
         text-align: center;
         background-color: rgba(10, 10, 10, 0.8);
         border-radius: 50px;
-        padding: 2px 20px 4px 15px;
+        padding: 0 10px 0 10px;
         margin-right: 24px;
         font-size: 22px;
         i {
@@ -1017,7 +1017,7 @@ export default {
           height: 10px;
           background-color: #fc5659;
           border-radius: 50%;
-          margin-right: 8px;
+          margin-right: 6px;
           vertical-align: middle;
         }
       }

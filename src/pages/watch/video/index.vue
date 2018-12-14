@@ -64,7 +64,7 @@
       <div class="image-bg"
            v-if="imageSrc"
            :style="{backgroundImage:`url(${imageSrc})`}"></div>
-      <i class="iconfont icon-bofang_anniu" v-if="playLoading"></i>
+      <i class="play-btn" v-if="playLoading"></i>
     </div>
   </div>
 </template>
@@ -696,7 +696,7 @@ export default {
       background-repeat: no-repeat;
       background-color: #fff;
     }
-    i {
+    /*i {
       display: block;
       position: absolute;
       top: 50%;
@@ -712,6 +712,18 @@ export default {
       line-height: 130px;
       font-size: 75px;
       color: #fff;
+    }*/
+    i {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -65px;
+      margin-left: -65px;
+      width: 130px;
+      height: 130px;
+      background-image: url("../../../assets/image/play-btn.png");
+      background-size: cover;
     }
   }
 }
