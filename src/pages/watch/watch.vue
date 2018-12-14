@@ -987,7 +987,10 @@ export default {
         background-size: cover;
       }
       .v-right {
-        margin-top: 4px;
+        margin-top: 0;
+        .v-showpsd,.iconfont {
+          font-size: 42px !important;
+        }
       }
       .ac-title {
         display: block;
@@ -997,7 +1000,7 @@ export default {
         white-space: nowrap;
         line-height: 50px;
         margin-top: 22px;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: bold;
       }
       .v-status {
@@ -1006,7 +1009,7 @@ export default {
         text-align: center;
         background-color: rgba(10, 10, 10, 0.8);
         border-radius: 50px;
-        padding: 2px 20px 4px 15px;
+        padding: 0 10px 0 10px;
         margin-right: 24px;
         font-size: 22px;
         i {
@@ -1015,7 +1018,7 @@ export default {
           height: 10px;
           background-color: #fc5659;
           border-radius: 50%;
-          margin-right: 8px;
+          margin-right: 6px;
           vertical-align: middle;
         }
       }
@@ -1046,7 +1049,7 @@ export default {
         height: 100%;
         .tab-header {
           // padding-right: 160px; //关注开放时再打开
-          border-bottom: 1px solid #f5f5f5;
+          border-bottom: 1px solid #d4d4d4;
           margin: 0;
           .tab-item {
             width: 50%;
@@ -1085,6 +1088,7 @@ export default {
         }
         .tab-content {
           height: 100%;
+          background-color: #fff;
           &:last-child {
             background-color: #fff;
           }
@@ -1097,6 +1101,10 @@ export default {
             line-height: 89px;
             padding: 0 40px;
             border-top: 1px solid #e2e2e2;
+            .icon-biaoqing{
+              font-size: 36px !important;
+              vertical-align: middle;
+            }
             .v-chat-clickbox {
               display: inline-block;
               width: 600px;
