@@ -765,6 +765,7 @@ export default {
 }
 .goods_small_popover /deep/ {
   position: absolute;
+  overflow: hidden;
   bottom: 105px;
   left: 22px;
   border-radius: 8px;
@@ -780,7 +781,7 @@ export default {
       width: 140px;
       height: 140px;
       float: left;
-      margin-right: 4px;
+      margin-right: 20px;
       background: no-repeat center;
       background-size: contain;
     }
@@ -794,7 +795,7 @@ export default {
       height: 26px;
       line-height: 26px;
       .item-title {
-        font-size: 14px;
+        font-size: 24px;
         line-height: 30px;
         height: 60px;
         margin-top: 10px;
