@@ -61,7 +61,7 @@
           </com-tab>
           <com-tab label="互动聊天"
                    :index="2">
-            <div class="chat-content">
+            <div :class='{"chat-content":true,live:playType=="live",end:playType=="end"}'>
               <chating ref="chatbox"
                        :class="{showKeyboard:sendBoxShow}"
                        :type="playType"
