@@ -1063,7 +1063,7 @@ export default {
                 content: '';
                 display: block;
                 width: 70px;
-                height: 3px;
+                height: 4px;
                 background-color: #4b5afe;
                 border-radius: 3px;
                 position: absolute;
@@ -1162,6 +1162,12 @@ export default {
         top: 0;
         right: 0;
       }
+      /*.icon-list {*/
+        /*.goods {*/
+          /*width: 80px;*/
+          /*height: 80px;*/
+        /*}*/
+      /*}*/
     }
     .ve-message-box {
       &::before {
