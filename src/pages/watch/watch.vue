@@ -870,6 +870,7 @@ export default {
 }
 .header-content{
   display: inline-block;
+  max-width: 60%;
 }
 .header-right{
   position: absolute;
