@@ -551,6 +551,7 @@ export default {
     },
     showGoods () {
       this.goodsListShow = true
+      this.goodsSmallPopoverShow = false
     },
     closeGoodList () {
       this.goodsListShow = false
@@ -799,9 +800,11 @@ export default {
         line-height: 30px;
         height: 60px;
         margin-top: 10px;
+        padding-left: 4px;
         overflow: hidden;
       }
       .item-price {
+        margin-top: 10px;
         span {
           font-size: 28px;
           color: #fc5659;
