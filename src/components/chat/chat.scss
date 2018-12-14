@@ -364,11 +364,12 @@
       background: url('~assets/image/bg_card.png') no-repeat center;
       background-size: contain;
       border-radius: 0px 100px 100px 0px;
-      padding: 8px 30px;
+      padding: 5px 30px 11px;
       font-size: 16px;
       transition: all 0.3s ease-in-out;
       color: #fff;
       margin-top: 30px;
+      margin-left: -1px;
 
       &::before {
         content: '';
@@ -389,6 +390,8 @@
       span {
         font-size: 22px;
         color: #fff;
+        display: inline-block;
+        margin-top: -3px;
       }
 
       em {
@@ -412,7 +415,7 @@
         background-image: url('~assets/image/bg_good.png');
 
         em {
-          color: $color-error;
+          color: $color-default;
         }
 
         &::before {
@@ -535,6 +538,7 @@
           cursor: pointer;
           display: inline-block;
           color: #888;
+          font-size: 36px;
         }
 
         .icon-swap {

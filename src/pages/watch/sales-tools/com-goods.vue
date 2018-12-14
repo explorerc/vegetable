@@ -163,7 +163,7 @@
         height: 30px;
         line-height: 30px;
         text-align: center;
-        border-radius: 0 0 50% 0;
+        border-radius: 0 0 20px 0;
         z-index: 1;
         opacity: 0.8;
       }
