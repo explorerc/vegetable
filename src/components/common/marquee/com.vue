@@ -76,7 +76,7 @@ export default {
     height: 50px;
     line-height: 50px;
     color: white;
-    font-size: 14px;
+    font-size: 28px;
     z-index: 100;
     background-color: #4b5afe;
     overflow: hidden;

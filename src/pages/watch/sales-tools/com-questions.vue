@@ -217,7 +217,7 @@ export default {
     }
     .v-content {
       height: 100%;
-      padding: 85px 50px 50px;
+      padding: 85px 45px 50px;
       .v-question-img {
         margin: 0 auto;
         display: block;
@@ -227,6 +227,12 @@ export default {
         background-size: cover;
       }
       .single-select-wrap {
+        .question-content {
+          padding: 30px 0 0 0;
+        }
+        .q-edit {
+          padding: 0;
+        }
         .el-radio__original {
           display: none;
         }
@@ -253,15 +259,16 @@ export default {
       word-break: break-all;
       text-align: center;
       margin: 50px auto 0;
-      font-size: 30px;
+      font-size: 36px;
     }
 
     .v-summary {
       word-break: break-all;
       text-align: center;
-      margin: 20px auto 0;
+      margin: 15px auto 0;
       border-bottom: 1px solid #ffd021;
       padding-bottom: 24px;
+      font-size: 28px;
     }
     .el-select .el-input__inner {
       border: 1px solid #e2e2e2;
