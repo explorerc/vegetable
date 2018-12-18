@@ -17,7 +17,7 @@ export default {
       const tab = panel.$slots.label || <span>{panel.label}</span>
       const classNames = {
         'tab-item': true,
-        active: this.currentName === panel.index
+        active: this.panels.length === 1 ? false : this.currentName === panel.index
       }
       return (
         <li class={classNames} on-click={() => { this.handleClick(panel.index) }}>
@@ -35,6 +35,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tab-header-wrap{
+  text-align: center;
+}
 .tab-item {
   display: inline-block;
   padding: 0 20px;

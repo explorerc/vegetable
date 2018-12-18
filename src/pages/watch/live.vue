@@ -54,13 +54,13 @@
         <!--商品推送-->
         <com-tabs :value.sync="tabValue"
                   @change="tabChange">
-          <com-tab label="活动简介"
+          <com-tab v-if="activityInfo.description" label="活动简介"
                    :index="1">
             <div class="v-introduction"
                  v-html="activityInfo.description"></div>
           </com-tab>
           <com-tab label="互动聊天"
-                   :index="2">
+                   :index="activityInfo.description?2:1">
             <div :class='{"chat-content":true,live:playType=="live",end:playType=="end"}'>
               <chating ref="chatbox"
                        :class="{showKeyboard:sendBoxShow}"
