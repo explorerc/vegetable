@@ -1,7 +1,7 @@
 <template>
   <div class="btn-container" v-if="value.enable">
     <div ref="target" class="btn-content">
-      <a target="_black" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
+      <a target="_black" :href="value.hrefType === '_sub' ? `${MOBILE_HOST}guide/${id}` : value.link | voidLink" ><com-button :styles="styles">{{value.text}}</com-button></a>
     </div>
   </div>
 </template>
@@ -11,6 +11,12 @@ import editMixin from './mixin'
 
 export default {
   mixins: [editMixin],
+  data () {
+    return {
+      id: this.$route.params.id,
+      MOBILE_HOST: process.env.MOBILE_HOST
+    }
+  },
   computed: {
     styles () {
       return {
