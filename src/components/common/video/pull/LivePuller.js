@@ -52,8 +52,13 @@ export default class LivePuller extends BasePuller {
             window.VhallPlayer.play()
           }
         },
-        error: () => {
-          this.initPuller()
+        error: (e) => {
+          console.error(`拉流失败：${e}`)
+          window.VhallPlayer.destroy()
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.initLivePlayer(autoplay, isAndroid, completionBK)
+          }, 3000)
         }
       })
 
