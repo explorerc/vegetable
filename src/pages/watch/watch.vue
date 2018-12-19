@@ -75,22 +75,22 @@
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box">
-        <i class="iconfont icon-close"
-           @click="handleRedBagClick"></i>
-        <div class="red-bag-content red-bag-content-mid"
-             style="top: 53%;">
-          <p class="red-bag-title">红包雨还剩{{downTimer|fmtTimer}}到来</p>
-          <p class="red-bag-info "
-             v-if="redBagInfo.condition==0">手速越快，红包可能越大哦~</p>
-          <p class="red-bag-info"
-             v-else-if="redBagInfo.condition==1">开奖前分享直播间参与红包雨活动</p>
-          <p class="red-bag-info tip-info"
-             v-else-if="redBagInfo.condition==2">开奖前在直播聊天区发送口令参与红包雨活动</p>
-          <p class="red-bag-info"
-             v-else-if="redBagInfo.condition==3">开奖前填写问卷调查参与红包雨活动</p>
-          <span class="red-bag-tip"
-                v-if="redBagInfo.condition==2">口令：{{redBagInfo.password}}</span>
+        <span class="close-btn" @click="handleRedBagClick">
+          <i class="iconfont icon-close"></i>
+        </span>
+        <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
+          <p class="red-bag-title" style="font-size: 20px;">红包雨还剩{{downTimer|fmtTimer}}到来</p>
+          <p class="red-bag-info" v-if="redBagInfo.condition==0">手速越快，抢到的红包越大哦~</p>
+          <p class="red-bag-info" v-else-if="redBagInfo.condition==1">分享直播链接参与红包雨</p>
+          <p class="red-bag-info" v-if="redBagInfo.condition==2" style="margin: 0 0 10px 0;font-size: 12px;">发送口令参与红包雨</p>
+          <p class="red-bag-info tip-info" v-if="redBagInfo.condition==2">
+            <span class="red-bag-tip">{{redBagInfo.password}}</span>
+          </p>
+          <p class="red-bag-info" v-else-if="redBagInfo.condition==3">填写问卷参与红包雨</p>
         </div>
+        <span class="red-bag-info-btn" v-if="redBagInfo.condition==1" @click="immShare">马上分享</span>
+        <span class="red-bag-info-btn" v-if="redBagInfo.condition==2" @click="copyPassword">复制口令</span>
+        <span class="red-bag-info-btn" v-if="redBagInfo.condition==3" @click="immInputQuestions">马上填写</span>
       </div>
     </message-box>
     <!-- 红包雨 -- 倒计时-->
@@ -98,8 +98,9 @@
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box">
-        <i class="iconfont icon-close"
-           @click="handleRedBagClick"></i>
+        <span class="close-btn" @click="handleRedBagClick">
+          <i class="iconfont icon-close"></i>
+        </span>
         <div class="red-bag-content">
           <p class="red-bag-title">红包雨降临倒计时</p>
           <span class="time-down">{{timer}}</span>
@@ -113,8 +114,9 @@
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box get-red-bag">
-        <i class="iconfont icon-close"
-           @click="handleRedBagClick"></i>
+        <span class="close-btn" @click="handleRedBagClick">
+          <i class="iconfont icon-close"></i>
+        </span>
         <div class="red-bag-content">
           <p class="red-bag-title">恭喜您抢到</p>
           <span class="red-bag-money">￥{{redBagResultInfo.amount}}</span>
@@ -696,6 +698,29 @@ export default {
       })
       this.initRedBagInfo()
     },
+    immInputQuestions () { // 填写问卷
+      this.handleRedBagClick()
+      EventBus.$emit('showQuestion')
+    },
+    copyPassword () { // 复制口令
+      this.redBagInfo.password.copyClipboard((msg) => {
+        this.handleRedBagClick()
+        if (msg === 'success') {
+          this.$toast({
+            content: '复制成功',
+            position: 'center'
+          })
+        } else {
+          this.$toast({
+            content: '复制失败，请手动复制',
+            position: 'center'
+          })
+        }
+      })
+    },
+    immShare () {
+      this.handleRedBagClick()
+    },
     handleRedBagClick (e) {
       this.redBagTipShow = false
       this.redBagTimeDownShow = false
@@ -781,6 +806,7 @@ export default {
       this.$config({ handlers: true }).$post(activityService.GET_NOW_RED_BAG_INFO, p).then((res) => {
         if (res.data) {
           this.red_packet_id = res.data.red_packet_uuid
+          this.redBagInfo = { condition: res.data.condition, password: res.data.password }
           if (res.data.time) {
             // 减去1秒纠正查询接口时间误差
             this.autoTime = (res.data.time - 1) / 60
@@ -1230,6 +1256,10 @@ export default {
         }
       }
     }
+    .custom-box{
+      top: 48%;
+      padding-bottom: 30px;
+    }
   }
 }
 .red-bag-box {
@@ -1241,7 +1271,30 @@ export default {
   background-position: center center;
   background-repeat: no-repeat;
   color: #ffd021;
-
+  .close-btn{
+    display: block;
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    line-height: 38px;
+    left: 50%;
+    margin-left: -26px;
+    bottom: -30px;
+    padding: 4px;
+    border: solid 2px #fff;
+    border-radius: 50%;
+    text-align: center;
+    opacity: .9;
+    &:hover{
+      cursor: pointer;
+      opacity: .8;
+    }
+    .icon-close{
+      font-size: 30px;
+      font-weight: bold;
+      color: #fff;
+    }
+  }
   .red-bag-content {
     position: absolute;
     top: 52%;
@@ -1250,19 +1303,32 @@ export default {
     margin-left: -35vw;
     padding: 0 20px;
   }
+  .red-bag-info-btn{
+    display: block;
+    position: absolute;
+    left: 184px;
+    bottom: 120px;
+    width: 390px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 34px;
+    text-align: center;
+    background-color: $color-default;
+    color: #333;
+    &:hover{
+      cursor: pointer;
+      background-color: $color-default-hover;
+    }
+  }
   .red-bag-content-mid {
     top: 60%;
   }
-
   &.get-red-bag {
     background-image: url('../../assets/image/red-bag-bg-success@2x.png');
     background-size: contain;
     background-repeat: no-repeat;
     .red-bag-content {
       top: 30%;
-    }
-    .icon-close {
-      top: 86px;
     }
     .red-bag-title {
       font-size: 6vw;
@@ -1309,25 +1375,7 @@ export default {
         font-size: 28px;
       }
     }
-
-    .icon-close {
-      top: 10px;
-      right: 10px;
-      color: #ffd021;
-    }
   }
-
-  .icon-close {
-    position: absolute;
-    top: 14%;
-    right: 12%;
-    font-size: 40px;
-    &:hover {
-      cursor: pointer;
-      opacity: 0.8;
-    }
-  }
-
   .red-bag-title {
     font-size: 6vw;
     line-height: 10vw;
@@ -1339,12 +1387,14 @@ export default {
 
     &.tip-info {
       background-color: #d90b25;
-      padding: 15px;
+      padding: 20px;
       margin: 6vw 0;
       border-radius: 3px;
       color: #fff;
       opacity: 0.8;
       font-size: 28px;
+      height: 34vw;
+      width: 66vw;
     }
 
     .login-link {
@@ -1361,16 +1411,9 @@ export default {
 
   .red-bag-tip {
     display: inline-block;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    color: #333;
-    font-size: 14px;
-    background-color: #ffd021;
-    border-radius: 30px;
-    padding: 0 30px;
-    margin-top: 10px;
-    font-size: 28px;
+    color: #fff;
+    font-size: 30px;
+    line-height: 30px;
   }
 
   .time-down {
