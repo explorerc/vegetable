@@ -1365,6 +1365,11 @@ export default {
       line-height: 10vw;
       color: #fff;
     }
+    .icon-close{
+      font-size: 34px;
+      font-weight: bold;
+      float: right;
+    }
     .top-content {
       background-color: #fff;
       border-radius: 10px;
