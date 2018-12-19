@@ -177,6 +177,7 @@ export default {
 
 <style scoped lang="scss">
 .template-container {
+  -webkit-overflow-scrolling: touch;
   overflow: auto;
   height: 100%;
   .header {

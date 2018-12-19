@@ -88,6 +88,7 @@ export default {
   }
 }
 .template1-container /deep/ {
+  -webkit-overflow-scrolling: touch;
   .panel-container {
     i {
       font-style: italic;
@@ -176,6 +177,8 @@ export default {
                   .com-button {
                     padding: 0;
                     line-height: 56px;
+                    width:100%;
+                    height:100%;
                   }
                 }
               }

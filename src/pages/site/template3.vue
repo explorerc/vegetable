@@ -93,6 +93,7 @@ export default {
 
 <style scoped lang="scss">
 .template3-container /deep/ {
+  -webkit-overflow-scrolling: touch;
   .panel-container {
     i {
       font-style: italic;

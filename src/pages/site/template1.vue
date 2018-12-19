@@ -88,6 +88,7 @@ export default {
   }
 }
 .template1-container /deep/ {
+  -webkit-overflow-scrolling: touch;
   .panel-container {
     i {
       font-style: italic;
