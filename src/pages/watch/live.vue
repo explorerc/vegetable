@@ -202,6 +202,7 @@ import comCards from './sales-tools/com-cards'
 import comGoods from './sales-tools/com-goods'
 import comQuestions from './sales-tools/com-questions'
 import questionService from 'src/api/questionnaire-service'
+import EventBus from 'src/utils/eventBus'
 export default {
   props: {
     domShow: Boolean
@@ -413,6 +414,9 @@ export default {
             this.goodsMsg = msg
             break
         }
+      })
+      EventBus.$on('showQuestion', (data) => {
+        this.getQuestionsStatus()
       })
     },
     isMute (val) {
