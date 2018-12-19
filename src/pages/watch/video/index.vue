@@ -470,12 +470,14 @@ export default {
       alert('请把手机横评放置')
     },
     horizontalScreen () {
+      window.VhallPlayer.setFullScreen(true)
       // 横屏
       this.isShowCover = false
       this.height = '100%'
       this.controlPsoition = '9.333vw'
     },
     herticalScreen () {
+      window.VhallPlayer.setFullScreen(false)
       // 竖屏
       this.isShowCover = true
       this.height = '56.267vw'
@@ -569,18 +571,18 @@ export default {
       line-height: 24px;
     }
   }
-  .default-auto-box{
+  .default-auto-box {
     top: 50px;
     left: 110px;
     border-radius: 5px;
     height: 40px;
     line-height: 36px;
     text-align: left;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
     padding: 0 40px;
-    .icon-yinpinx{
-      color: #1BCAB7;
+    .icon-yinpinx {
+      color: #1bcab7;
       margin-right: 4px;
       font-size: 28px;
     }
@@ -722,7 +724,7 @@ export default {
       margin-left: -65px;
       width: 130px;
       height: 130px;
-      background-image: url("../../../assets/image/play-btn.png");
+      background-image: url('../../../assets/image/play-btn.png');
       background-size: cover;
     }
   }
