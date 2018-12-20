@@ -523,9 +523,11 @@ export default {
       } else {
         this.tipsShow = false
       }
-      console.log(this.$refs.bscroll.scrollTop + '---' + height + '---')
-      if (this.$refs.bscroll.scrollTop + 500 >= height) {
-        this.getHistroy(this.historyPage += 1)
+      if (this.activityInfo.status === 'PLAYBACK') {
+        console.log(this.$refs.bscroll.scrollTop + '---' + height + '---')
+        if (this.$refs.bscroll.scrollTop + 500 >= height) {
+          this.getHistroy(this.historyPage += 1)
+        }
       }
     }, 50)
     // 拉取最近聊天纪律

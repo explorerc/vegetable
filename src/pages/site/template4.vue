@@ -29,7 +29,7 @@
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
-    <div class="support">微吼直播提供技术支持</div>
+    <div class="support">微吼知客提供技术支持</div>
   </div>
 </template>
 
@@ -177,8 +177,8 @@ export default {
                   .com-button {
                     padding: 0;
                     line-height: 56px;
-                    width:100%;
-                    height:100%;
+                    width: 100%;
+                    height: 100%;
                   }
                 }
               }
