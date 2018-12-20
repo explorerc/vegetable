@@ -530,8 +530,12 @@ export default {
         }
       }
     }, 50)
+    // 发送口令
+    EventBus.$on('sendPassword', (msg) => {
+      this.value = msg
+      this.sendAction()
+    })
     // 拉取最近聊天纪律
-
     this.getHistroy(this.historyPage)
     // this.initSdk()
     // const _that = this

@@ -89,7 +89,7 @@
           <p class="red-bag-info" v-else-if="redBagInfo.condition==3">填写问卷参与红包雨</p>
         </div>
         <span class="red-bag-info-btn" v-if="redBagInfo.condition==1" @click="immShare">马上分享</span>
-        <span class="red-bag-info-btn" v-if="redBagInfo.condition==2" @click="copyPassword">复制口令</span>
+        <span class="red-bag-info-btn" v-if="redBagInfo.condition==2" @click="sendPassword">发送口令</span>
         <span class="red-bag-info-btn" v-if="redBagInfo.condition==3" @click="immInputQuestions">马上填写</span>
       </div>
     </message-box>
@@ -702,21 +702,9 @@ export default {
       this.handleRedBagClick()
       EventBus.$emit('showQuestion')
     },
-    copyPassword () { // 复制口令
-      this.redBagInfo.password.copyClipboard((msg) => {
-        this.handleRedBagClick()
-        if (msg === 'success') {
-          this.$toast({
-            content: '复制成功',
-            position: 'center'
-          })
-        } else {
-          this.$toast({
-            content: '复制失败，请手动输入',
-            position: 'center'
-          })
-        }
-      })
+    sendPassword () { // 发送口令
+      this.redBagTipShow = false
+      EventBus.$emit('sendPassword', this.redBagInfo.password)
     },
     immShare () {
       this.handleRedBagClick()
