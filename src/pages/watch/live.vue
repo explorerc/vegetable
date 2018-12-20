@@ -416,7 +416,7 @@ export default {
         }
       })
       EventBus.$on('showQuestion', (data) => {
-        this.getQuestionsStatus()
+        this.getQuestions()
       })
     },
     isMute (val) {
