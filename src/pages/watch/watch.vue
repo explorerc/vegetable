@@ -712,7 +712,7 @@ export default {
           })
         } else {
           this.$toast({
-            content: '复制失败，请手动复制',
+            content: '复制失败，请手动输入',
             position: 'center'
           })
         }
