@@ -256,6 +256,7 @@ export default {
       goodsListShow: false,
       activityId: this.$route.params.id,
       taoShow: false,
+      showQuestion: false,
       goodsLen: 0
     }
   },
@@ -396,6 +397,7 @@ export default {
             this.getCardDetails(msg.recommend_card_id)
             break
           case 'NAIRE':
+            this.showQuestion = false
             console.log('--发送问卷--消息--')
             if (this.currentQuestionId === msg.id && this.questionsShow) {
             } else {
@@ -415,7 +417,8 @@ export default {
             break
         }
       })
-      EventBus.$on('showQuestion', (data) => {
+      EventBus.$on('showQuestion', () => {
+        this.showQuestion = true
         this.getQuestions()
       })
     },
@@ -466,20 +469,25 @@ export default {
         activityId: this.$route.params.id,
         visitorId: this.visitorId
       }).then((res) => {
-        this.questionStatus.redIcon = true
-        this.questions.imgUrl = res.data.imgUrl
-        this.questions.title = res.data.title
-        this.questions.description = res.data.description
-        this.naireId = res.data.id
-        this.dragData = res.data.detail
-        this.questionStatus.iconShow = true
-        this.questionsShow = true
+        if (res.data) {
+          this.showQuestion = false
+          this.questionStatus.redIcon = true
+          this.questions.imgUrl = res.data.imgUrl
+          this.questions.title = res.data.title
+          this.questions.description = res.data.description
+          this.naireId = res.data.id
+          this.dragData = res.data.detail
+          this.questionStatus.iconShow = true
+          this.questionsShow = true
+        }
       }).catch((err) => {
         if (err.code === 15110) {
+          this.questionsSubmissionShow = this.showQuestion || false
           this.questionsSubmissionShow = false
           this.questionStatus.iconShow = true
           this.questionStatus.redIcon = false
         } else {
+          this.showQuestion = false
           this.$messageBox({
             header: '提示',
             content: err.msg,
@@ -600,6 +608,7 @@ export default {
       this.goodsListShow = true
     },
     clickQues () {
+      this.showQuestion = true
       this.getQuestions()
     },
     goodsVisit (params) {
