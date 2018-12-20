@@ -202,6 +202,9 @@ export default {
       aBScroll: null,
       imgHost: process.env.IMGHOST + '/',
       scrollEvent: null,
+      historyPage: 1,
+      isEmpty: false,
+      historyParams: {},
       // imgHost: process.env.IMGHOST + '/'
       /* 表情数组 */
       faceArr: [{
@@ -346,7 +349,7 @@ export default {
         '[右哼哼]': '47'
       },
       {
-        '[哈欠]': '48'
+        '[打哈欠]': '48'
       },
       {
         '[鄙视]': '49'
@@ -495,6 +498,7 @@ export default {
     ...mapState('liveMager', {
       roomPaas: state => state.roomPaas,
       activityInfo: state => state.activityInfo, // 活动信息
+      liveInfo: state => state.liveInfo, // 活动信息
       joinInfo: state => state.joinInfo // 参会信息
     }),
     ...mapState('tokenMager', {
@@ -513,16 +517,22 @@ export default {
         this.tipsCount = 0
       }
       let height = document.getElementsByClassName('chat-list')[0].offsetHeight
-      let wrapHeight = document.getElementsByClassName('live')[0].offsetHeight
+      let wrapHeight = document.getElementsByClassName('bscroll')[0].offsetHeight
       if ((height * 0.5 > wrapHeight) && (height * 0.5 > this.$refs.bscroll.scrollTop)) {
         this.tipsShow = true
       } else {
         this.tipsShow = false
       }
+      if (this.activityInfo.status === 'PLAYBACK') {
+        console.log(this.$refs.bscroll.scrollTop + '---' + height + '---')
+        if (this.$refs.bscroll.scrollTop + 500 >= height) {
+          this.getHistroy(this.historyPage += 1)
+        }
+      }
     }, 50)
     // 拉取最近聊天纪律
 
-    this.getHistroy()
+    this.getHistroy(this.historyPage)
     // this.initSdk()
     // const _that = this
     // setTimeout(function () {
@@ -689,7 +699,7 @@ export default {
         })
       }
       this.chatData.push(obj)
-      if (!this.tipsShow && !this.stopScroll) {
+      if (!this.tipsShow && !this.stopScroll && this.activityInfo.status !== 'PLAYBACK') {
         const _that = this
         setTimeout(function () {
           _that.scrollBottom()
@@ -748,14 +758,29 @@ export default {
         this.faceOpen = false
       }
     },
-    getHistroy () {
-      this.$get(activityService.GET_MESSAGELIST, {
-        activityId: this.activityId
-      }).then((res) => {
-        res.data.forEach(item => {
-          this.reArrange(item)
+    getHistroy (page) {
+      if (this.activityInfo.status === 'PLAYBACK') { // 回放拉取所有的 并分页
+        this.historyParams = {
+          activityId: this.activityId,
+          page: page,
+          endTime: '2018-12-19 20:19:37'// this.liveInfo.systemTime
+        }
+        console.log('加载第' + page + '页聊天')
+      } else {
+        this.historyParams = {
+          activityId: this.activityId
+        }
+      }
+      if (!this.isEmpty) {
+        this.$get(activityService.GET_MESSAGELIST, this.historyParams).then((res) => {
+          if (res.data.length <= 0) {
+            this.isEmpty = true
+          }
+          res.data.forEach(item => {
+            this.reArrange(item)
+          })
         })
-      })
+      }
     },
     muteAll () {
       const data = {

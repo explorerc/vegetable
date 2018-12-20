@@ -886,7 +886,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import 'assets/css/mixin.scss';
-.header-logo{
+.header-logo {
   position: relative;
   top: 14px;
   display: inline-block;
@@ -894,11 +894,11 @@ export default {
   max-width: 160px;
   margin-right: 20px;
 }
-.header-content{
+.header-content {
   display: inline-block;
   max-width: 60%;
 }
-.header-right{
+.header-right {
   position: absolute;
   top: 50%;
   right: 38px;
@@ -1014,7 +1014,8 @@ export default {
       }
       .v-right {
         margin-top: 0;
-        .v-showpsd,.iconfont {
+        .v-showpsd,
+        .iconfont {
           font-size: 42px !important;
         }
       }
@@ -1127,7 +1128,7 @@ export default {
             line-height: 89px;
             padding: 0 40px;
             border-top: 1px solid #e2e2e2;
-            .icon-biaoqing{
+            .icon-biaoqing {
               font-size: 36px !important;
               vertical-align: middle;
             }
@@ -1190,10 +1191,10 @@ export default {
         right: 0;
       }
       /*.icon-list {*/
-        /*.goods {*/
-          /*width: 80px;*/
-          /*height: 80px;*/
-        /*}*/
+      /*.goods {*/
+      /*width: 80px;*/
+      /*height: 80px;*/
+      /*}*/
       /*}*/
     }
     .ve-message-box {
