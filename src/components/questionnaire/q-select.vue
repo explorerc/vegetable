@@ -104,6 +104,9 @@ export default {
     margin-bottom: 0;
   }
   /deep/ {
+    input.el-input__inner{
+      line-height: 1.2 !important;
+    }
     .error-msg {
       position: absolute;
       color: #fc5659;
