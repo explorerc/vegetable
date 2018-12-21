@@ -91,7 +91,7 @@
         </div>
       </mt-loadmore>
     </div>
-    <div class="v-send-box-bg"
+    <!-- <div class="v-send-box-bg"
          v-show='(type === "live" || type === "warm"  || type === "pre") && isLogin && sendBoxShow'>
       <div class="send-box clearfix"
            id="sendBox">
@@ -102,7 +102,6 @@
             聊天
           </span>
           <template v-if='(mute || allMuted) && isWatch'>
-            <!-- <div class='mute-box'>{{allMuted ? '已开启全体禁言' : '您已被禁言'}}</div> -->
           </template>
 
           <template v-else>
@@ -160,7 +159,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- <div class='send-box not-login' v-else-if='type === "live" && !isLogin'>
       需要登录才能参与聊天 <span @click='loginHandler'>登录</span>
     </div> -->
@@ -541,6 +540,11 @@ export default {
     // 发送口令
     EventBus.$on('sendPassword', (msg) => {
       this.value = msg
+      this.sendAction()
+    })
+    // 接受消息 解决iPhone手机 bug
+    EventBus.$on('sendMsg', (msg) => {
+      this.value = msg.content
       this.sendAction()
     })
   },

@@ -1,0 +1,510 @@
+<template>
+    <div class="v-send-box-bg" v-show='chatOpen'>
+      <div class="send-box clearfix" :class='{"open":sendOpen}'
+           id="sendBox">
+        <div class="top">
+          <span @click="cancelClick"
+                class="cancel-btn fl">取消</span>
+          <span class="v-title">聊天</span>
+          <span @click='send'class='send-btn fr'>发送</span>
+        </div>
+        <div class="bottom clearfix">
+            <com-input :value.sync="value"
+                       :placeholder="chatPlaceholder"
+                       :max-length="140"
+                       class='inp'
+                       :isCharacter=true
+                       type="textarea">
+            </com-input>
+          <div class="v-emoji">
+            <i class='iconfont icon-biaoqing'
+               @click.stop='changeFace'
+               title='表情'></i>
+            <div class="face-box"
+                 @click.stop=''
+                 v-if="faceOpen">
+              <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`"
+                   @click.stop="inFace(index)"
+                   v-for="(item,index) in faceArr"
+                   :key="index">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+import EventBus from 'src/utils/eventBus.js'
+export default {
+  data () {
+    return {
+      chatOpen: false,
+      sendOpen: false,
+      value: '',
+      faceOpen: false,
+      chatPlaceholder: '输入想说的话…', /* 表情数组 */
+      faceArr: [
+        {
+          '[微笑]': '1'
+        },
+        {
+          '[撇嘴]': '2'
+        },
+        {
+          '[色]': '3'
+        },
+        {
+          '[发呆]': '4'
+        },
+        {
+          '[得意]': '5'
+        },
+        {
+          '[流泪]': '6'
+        },
+        {
+          '[害羞]': '7'
+        },
+        {
+          '[闭嘴]': '8'
+        },
+        {
+          '[睡]': '9'
+        },
+        {
+          '[哭]': '10'
+        },
+        {
+          '[尴尬]': '11'
+        },
+        {
+          '[发怒]': '12'
+        },
+        {
+          '[调皮]': '13'
+        },
+        {
+          '[呲牙]': '14'
+        },
+        {
+          '[惊讶]': '15'
+        },
+        {
+          '[难过]': '16'
+        },
+        {
+          '[酷]': '17'
+        },
+        {
+          '[汗]': '18'
+        },
+        {
+          '[抓狂]': '19'
+        },
+        {
+          '[吐]': '20'
+        },
+        {
+          '[偷笑]': '21'
+        },
+        {
+          '[愉快]': '22'
+        },
+        {
+          '[白眼]': '23'
+        },
+        {
+          '[傲慢]': '24'
+        },
+        {
+          '[饥饿]': '25'
+        },
+        {
+          '[困]': '26'
+        },
+        {
+          '[惊恐]': '27'
+        },
+        {
+          '[流汗]': '28'
+        },
+        {
+          '[憨笑]': '29'
+        },
+        {
+          '[悠闲]': '30'
+        },
+        {
+          '[奋斗]': '31'
+        },
+        {
+          '[咒骂]': '32'
+        },
+        {
+          '[疑问]': '33'
+        },
+        {
+          '[嘘]': '34'
+        },
+        {
+          '[晕]': '35'
+        },
+        {
+          '[疯了]': '36'
+        },
+        {
+          '[衰]': '37'
+        },
+        {
+          '[骷髅]': '38'
+        },
+        {
+          '[敲打]': '39'
+        },
+        {
+          '[再见]': '40'
+        },
+        {
+          '[擦汗]': '41'
+        },
+        {
+          '[抠鼻]': '42'
+        },
+        {
+          '[鼓掌]': '43'
+        },
+        {
+          '[糗大了]': '44'
+        },
+        {
+          '[坏笑]': '45'
+        },
+        {
+          '[左哼哼]': '46'
+        },
+        {
+          '[右哼哼]': '47'
+        },
+        {
+          '[打哈欠]': '48'
+        },
+        {
+          '[鄙视]': '49'
+        },
+        {
+          '[委屈]': '50'
+        },
+        {
+          '[快哭了]': '51'
+        },
+        {
+          '[阴险]': '52'
+        },
+        {
+          '[亲亲]': '53'
+        },
+        {
+          '[吓]': '54'
+        },
+        {
+          '[可怜]': '55'
+        },
+        {
+          '[菜刀]': '56'
+        },
+        {
+          '[西瓜]': '57'
+        },
+        {
+          '[啤酒]': '58'
+        },
+        {
+          '[篮球]': '59'
+        },
+        {
+          '[乒乓]': '60'
+        },
+        {
+          '[咖啡]': '61'
+        },
+        {
+          '[饭]': '62'
+        },
+        {
+          '[猪头]': '63'
+        },
+        {
+          '[玫瑰]': '64'
+        },
+        {
+          '[凋谢]': '65'
+        },
+        {
+          '[嘴唇]': '66'
+        },
+        {
+          '[爱心]': '67'
+        },
+        {
+          '[心碎]': '68'
+        },
+        {
+          '[蛋糕]': '69'
+        },
+        {
+          '[闪电]': '70'
+        },
+        {
+          '[炸弹]': '71'
+        },
+        {
+          '[刀]': '72'
+        },
+        {
+          '[足球]': '73'
+        },
+        {
+          '[瓢虫]': '74'
+        },
+        {
+          '[便便]': '75'
+        },
+        {
+          '[月亮]': '76'
+        },
+        {
+          '[太阳]': '77'
+        },
+        {
+          '[礼物]': '78'
+        },
+        {
+          '[拥抱]': '79'
+        },
+        {
+          '[强]': '80'
+        },
+        {
+          '[弱]': '81'
+        },
+        {
+          '[握手]': '82'
+        },
+        {
+          '[胜利]': '83'
+        },
+        {
+          '[抱拳]': '84'
+        },
+        {
+          '[勾引]': '85'
+        },
+        {
+          '[拳头]': '86'
+        },
+        {
+          '[差劲]': '87'
+        },
+        {
+          '[爱你]': '88'
+        },
+        {
+          '[NO]': '89'
+        },
+        {
+          '[OK]': '90'
+        }
+      ]
+    }
+  },
+  mounted () {
+    EventBus.$on('chatOpen', () => {
+      this.chatOpen = true
+      setTimeout(() => {
+        this.sendOpen = true
+      }, 50)
+    })
+    EventBus.$on('chatClose', () => {
+      this.sendOpen = false
+    })
+  },
+  methods: {
+    changeFace () {
+      this.faceOpen = !this.faceOpen
+    },
+    cancelClick () {
+      this.chatOpen = false
+      this.sendOpen = false
+    },
+    send () {
+      EventBus.$emit('sendMsg', {
+        content: this.value
+      })
+      this.cancelClick()
+      this.value = ''
+    },
+    /* 选择表情 */
+    inFace (index) {
+      for (let key in this.faceArr[index]) {
+        this.value += key
+      }
+      this.faceOpen = !this.faceOpen
+      document.getElementsByClassName('inp')[0].children[0].focus()
+    }
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+.v-send-box-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9998;
+  .send-box {
+    margin: 0 auto;
+    width: 620px;
+    height: 440px;
+    position: absolute;
+    top: 3300px;
+    left: 50%;
+    margin-left: -310px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 9999;
+    transition: all 0.3s ease-in-out;
+    &.open {
+      transition: all 0.3s ease-in-out;
+      top: 330px;
+    }
+    .top {
+      width: 100%;
+      height: 80px;
+      line-height: 80px;
+      background: #efefef;
+      padding: 0 36px;
+      text-align: center;
+
+      .mute-all {
+        position: absolute;
+        cursor: pointer;
+        right: 60px;
+        top: 50%;
+        margin-top: -10px;
+        width: 20px;
+        height: 20px;
+        border-radius: 100px;
+        background: url('~assets/image/broadcast.png') no-repeat center;
+        background-size: contain;
+
+        &:hover {
+          background-image: url('~assets/image/broadcast-hover.png');
+        }
+      }
+
+      .send-btn {
+        color: #4b5afe;
+        font-size: 28px;
+        cursor: pointer;
+      }
+
+      .cancel-btn {
+        color: #555555;
+        font-size: 28px;
+        cursor: pointer;
+      }
+
+      .v-title {
+        color: #222222;
+        font-size: 32px;
+      }
+    }
+    .bottom {
+      width: 100%;
+      height: 360px;
+      left: 50%;
+
+      .mute-box {
+        cursor: not-allowed;
+        line-height: 50px;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .v-emoji {
+        position: absolute;
+        left: 30px;
+        bottom: 20px;
+
+        .icon-biaoqing {
+          vertical-align: middle;
+          cursor: pointer;
+          display: inline-block;
+          color: #888;
+          font-size: 36px;
+        }
+
+        .icon-swap {
+          position: absolute;
+          cursor: pointer;
+          right: 16px;
+          top: 50%;
+          margin-top: -10px;
+          width: 20px;
+          height: 20px;
+          border-radius: 100px;
+          background: url('~assets/image/broadcast.png') no-repeat center;
+          background-size: contain;
+
+          &:hover {
+            background-image: url('~assets/image/broadcast-hover.png');
+          }
+        }
+
+        .face-box {
+          position: absolute;
+          bottom: 70px;
+          left: -22px;
+          width: 620px;
+          height: 270px;
+          background: #fff;
+          z-index: 10;
+          overflow-y: scroll;
+          padding-top: 10px;
+          img {
+            width: 48px;
+            height: 48px;
+            margin: 6px;
+            float: left;
+            cursor: pointer;
+          }
+        }
+      }
+      .inp /deep/ {
+        width: 100%;
+        height: 100%;
+        padding: 28px 30px 100px;
+        border: none;
+        textarea {
+          border: none;
+        }
+        .limit {
+          bottom: 20px;
+          z-index: 9;
+          font-size: 28px;
+          right: 30px;
+          color: #555;
+        }
+      }
+    }
+  }
+}
+</style>

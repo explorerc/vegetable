@@ -142,6 +142,8 @@
                   @goodsCount="goodsCount"></comGoods>
       </transition>
     </div>
+    <!-- H5页面聊天弹出框 -->
+    <send-h5></send-h5>
     <!-- 推荐卡片 -->
     <div class="wrap-cover"
          v-if="cardData.show"></div>
@@ -191,6 +193,7 @@
 </template>
 <script>
 import PlayVideo from './video/index' // 直播推流回放组件 // 直播推流回放组件
+import SendH5 from 'components/chat/send' // 聊天
 import Chating from 'components/chat' // 聊天
 import { mapMutations, mapState } from 'vuex'
 import * as types from '../../store/mutation-types.js'
@@ -208,7 +211,7 @@ export default {
     domShow: Boolean
   },
   mixins: [loginMixin],
-  components: { PlayVideo, Chating, comCards, comQuestions, comGoods },
+  components: { PlayVideo, Chating, comCards, comQuestions, comGoods, SendH5 },
   data () {
     return {
       playType: '', // 直播(live), 回放(vod), 暖场(warm)
@@ -432,12 +435,12 @@ export default {
     },
     chatClick () {
       // 点击弹出聊天窗口
-      this.sendBoxShow = true
+      EventBus.$emit('chatOpen')
       document.getElementsByClassName('inp')[0].children[0].focus()
     },
     closeChatBox () {
       // 关闭聊天窗口
-      this.sendBoxShow = false
+      EventBus.$emit('chatClose')
     },
     loginSuccess (res) {
       this.storeLoginInfo(res)
