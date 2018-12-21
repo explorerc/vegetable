@@ -115,6 +115,10 @@ export default {
     // }
     this.startInit = true
     this.initMsgServe()
+    // 没有直播简介直接拉取最近聊天纪律
+    if (!this.activityInfo.description) {
+      this.initHistroy()
+    }
   },
   created () {
     // this.initToken()
@@ -138,18 +142,8 @@ export default {
       storeJoinInfo: types.JOIN_INFO
     }),
     tabChange () {
-      let _self = this
-      if (_self.tabValue === 2) {
-        // if (!_self.$refs.chatbox.aBScroll) {
-        _self.$refs.chatbox.getHistroy(1, () => {
-          _self.$nextTick(() => {
-            this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
-            if (!_self.$refs.chatbox.tipsShow) {
-              _self.$refs.chatbox.doScrollBottom()
-            }
-          })
-        })
-        // }
+      if (this.tabValue === 2) {
+        this.initHistroy()
       }
     },
     // /* 初始化，获取权限 */
@@ -223,6 +217,17 @@ export default {
     },
     loginHandler () {
       this.$emit('showLogin')
+    },
+    initHistroy () {
+      let _self = this
+      _self.$refs.chatbox.getHistroy(1, () => {
+        _self.$nextTick(() => {
+          this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
+          if (!_self.$refs.chatbox.tipsShow) {
+            _self.$refs.chatbox.doScrollBottom()
+          }
+        })
+      })
     }
   }
 }

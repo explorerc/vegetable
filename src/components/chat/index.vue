@@ -535,28 +535,12 @@ export default {
       } else {
         this.tipsShow = false
       }
-      // if (this.activityInfo.status === 'PLAYBACK') {
-      //   console.log(this.$refs.bscroll.scrollTop + '---' + height + '---')
-      //   if (this.$refs.bscroll.scrollTop + 500 >= height) {
-      //     this.getHistroy(this.historyPage += 1)
-      //   }
-      // }
     }, 50)
     // 发送口令
     EventBus.$on('sendPassword', (msg) => {
       this.value = msg
       this.sendAction()
     })
-    // 拉取最近聊天纪律
-    // this.getHistroy(this.historyPage)
-    // this.initSdk()
-    // const _that = this
-    // setTimeout(function () {
-    //   _that.initInfo()
-    // }, 500)
-    // this.service.regHandler('BEGIN_LIVE', this.listenAnnounce)
-    // this.service.regHandler('FINISH_LIVE', this.listenAnnounce)
-    // this.service.regHandler('INCREMENT_ONLINE', this.listenIncrease)
   },
   methods: {
     loadTop () {
@@ -820,7 +804,7 @@ export default {
         this.$get(activityService.GET_MESSAGELIST, this.historyParams).then((res) => {
           if (res.data.length <= 0) {
             this.isEmpty = true
-            if (successFn) successFn()
+            if (successFn) successFn('end')
           }
           if (this.activityInfo.status === 'PLAYBACK') {
             console.log('加载第' + this.historyParams.page + '页聊天')
@@ -828,6 +812,7 @@ export default {
               this.reArrange(item)
             })
             this.$nextTick((res) => {
+              if (this.isEmpty) return
               this.scrollTo()
             })
           } else {
