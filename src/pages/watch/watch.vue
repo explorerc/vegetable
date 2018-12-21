@@ -1164,6 +1164,9 @@ export default {
               left: 0;
             }
           }
+          &.vod {
+            bottom: 20px;
+          }
         }
       }
       .v-subscribe {
@@ -1245,7 +1248,7 @@ export default {
         }
       }
     }
-    .custom-box{
+    .custom-box {
       top: 48%;
       padding-bottom: 30px;
     }
@@ -1260,7 +1263,7 @@ export default {
   background-position: center center;
   background-repeat: no-repeat;
   color: #ffd021;
-  .close-btn{
+  .close-btn {
     display: block;
     position: absolute;
     width: 52px;
@@ -1273,12 +1276,12 @@ export default {
     border: solid 2px #fff;
     border-radius: 50%;
     text-align: center;
-    opacity: .9;
-    &:hover{
+    opacity: 0.9;
+    &:hover {
       cursor: pointer;
-      opacity: .8;
+      opacity: 0.8;
     }
-    .icon-close{
+    .icon-close {
       font-size: 30px;
       font-weight: bold;
       color: #fff;
@@ -1292,7 +1295,7 @@ export default {
     margin-left: -35vw;
     padding: 0 20px;
   }
-  .red-bag-info-btn{
+  .red-bag-info-btn {
     display: block;
     position: absolute;
     left: 184px;
@@ -1304,7 +1307,7 @@ export default {
     text-align: center;
     background-color: $color-default;
     color: #333;
-    &:hover{
+    &:hover {
       cursor: pointer;
       background-color: $color-default-hover;
     }
@@ -1354,7 +1357,7 @@ export default {
       line-height: 10vw;
       color: #fff;
     }
-    .icon-close{
+    .icon-close {
       font-size: 34px;
       font-weight: bold;
       float: right;

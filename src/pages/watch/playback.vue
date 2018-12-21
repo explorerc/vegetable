@@ -17,10 +17,11 @@
           </com-tab>
           <com-tab label="互动聊天"
                    :index="activityInfo.description?2:1">
-            <div :class='{"chat-content":true,live:playType=="live",end:playType=="end"}'>
+            <div :class='{"chat-content":true,live:playType=="live",end:playType=="end",vod:playType=="vod"}'>
               <chating ref="chatbox"
                        :type="playType"
                        :isWatch="isWatch"
+                       :scrollDis='scrollDis'
                        :sendBoxShow="sendBoxShow"
                        @closeChatBox="closeChatBox"
                        @isMute="isMute($event)"></chating>
@@ -76,6 +77,7 @@ export default {
   components: { PlayVideo, Chating },
   data () {
     return {
+      scrollDis: 0,
       playType: '', // 直播(live), 回放(vod), 暖场(warm)
       startInit: false,
       tabValue: 1,
@@ -136,17 +138,18 @@ export default {
       storeJoinInfo: types.JOIN_INFO
     }),
     tabChange () {
-      if (this.tabValue === 2) {
-        if (!this.$refs.chatbox.aBScroll) {
-          this.$refs.chatbox.initScroll()
-          this.$refs.chatbox.getHistroy()
-        }
-        if (!this.$refs.chatbox.tipsShow) {
-          const _that = this
-          setTimeout(function () {
-            _that.$refs.chatbox.scrollBtm()
-          }, 200)
-        }
+      let _self = this
+      if (_self.tabValue === 2) {
+        // if (!_self.$refs.chatbox.aBScroll) {
+        _self.$refs.chatbox.getHistroy(1, () => {
+          _self.$nextTick(() => {
+            this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
+            if (!_self.$refs.chatbox.tipsShow) {
+              _self.$refs.chatbox.doScrollBottom()
+            }
+          })
+        })
+        // }
       }
     },
     // /* 初始化，获取权限 */

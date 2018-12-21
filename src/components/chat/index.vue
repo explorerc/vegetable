@@ -489,6 +489,10 @@ export default {
     }
   },
   props: {
+    scrollDis: { // 容器高度 用于判断下拉刷新滚动距离
+      type: Number,
+      default: 800
+    },
     type: { // 活动状态 LIVE直播 VOD回放
       type: String,
       default: 'live'
@@ -531,12 +535,12 @@ export default {
       } else {
         this.tipsShow = false
       }
-      if (this.activityInfo.status === 'PLAYBACK') {
-        console.log(this.$refs.bscroll.scrollTop + '---' + height + '---')
-        if (this.$refs.bscroll.scrollTop + 500 >= height) {
-          this.getHistroy(this.historyPage += 1)
-        }
-      }
+      // if (this.activityInfo.status === 'PLAYBACK') {
+      //   console.log(this.$refs.bscroll.scrollTop + '---' + height + '---')
+      //   if (this.$refs.bscroll.scrollTop + 500 >= height) {
+      //     this.getHistroy(this.historyPage += 1)
+      //   }
+      // }
     }, 50)
     // 发送口令
     EventBus.$on('sendPassword', (msg) => {
@@ -544,7 +548,7 @@ export default {
       this.sendAction()
     })
     // 拉取最近聊天纪律
-    this.getHistroy(this.historyPage)
+    // this.getHistroy(this.historyPage)
     // this.initSdk()
     // const _that = this
     // setTimeout(function () {
@@ -725,7 +729,11 @@ export default {
           }
         })
       }
-      this.chatData.push(obj)
+      if (this.activityInfo.status === 'PLAYBACK') {
+        this.chatData.unshift(obj)
+      } else {
+        this.chatData.push(obj)
+      }
       if (!this.tipsShow && !this.stopScroll && this.activityInfo.status !== 'PLAYBACK') {
         const _that = this
         setTimeout(function () {
@@ -772,6 +780,17 @@ export default {
       }, 0)
       this.tipsCount = 0
     },
+    scrollTo (dis, speed = 10) {
+      let elm = document.querySelector('.bscroll')
+      // let maxTop = elm.scrollHeight - elm.offsetHeight
+      let interId = setInterval(() => {
+        if (elm.scrollTop < this.scrollDis - elm.offsetHeight) {
+          elm.scrollTop += speed
+        } else {
+          clearInterval(interId)
+        }
+      }, 0)
+    },
     /* 选择表情 */
     inFace (index) {
       for (let key in this.faceArr[index]) {
@@ -792,7 +811,6 @@ export default {
           page: page,
           endTime: '2018-12-19 20:19:37'// this.liveInfo.systemTime
         }
-        console.log('加载第' + page + '页聊天')
       } else {
         this.historyParams = {
           activityId: this.activityId
@@ -804,9 +822,19 @@ export default {
             this.isEmpty = true
             if (successFn) successFn()
           }
-          res.data.forEach(item => {
-            this.reArrange(item)
-          })
+          if (this.activityInfo.status === 'PLAYBACK') {
+            console.log('加载第' + this.historyParams.page + '页聊天')
+            res.data.reverse().forEach(item => {
+              this.reArrange(item)
+            })
+            this.$nextTick((res) => {
+              this.scrollTo()
+            })
+          } else {
+            res.data.forEach(item => {
+              this.reArrange(item)
+            })
+          }
           if (successFn) successFn()
         })
       }

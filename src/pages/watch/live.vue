@@ -61,7 +61,7 @@
           </com-tab>
           <com-tab label="互动聊天"
                    :index="activityInfo.description?2:1">
-            <div :class='{"chat-content":true,live:playType=="live",end:playType=="end"}'>
+            <div :class='{"chat-content":true,live:playType=="live",end:playType=="end",vod:playType=="vod"}'>
               <chating ref="chatbox"
                        :class="{showKeyboard:sendBoxShow}"
                        :type="playType"
@@ -984,6 +984,5 @@ export default {
   }
 }*/
 .icon-biaoqing {
-
 }
 </style>
