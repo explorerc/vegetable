@@ -41,6 +41,7 @@ export default function wxShare (wxShare) {
           : ''), // 分享链接
       imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
+        alert('onMenuShareTimeline:success')
         // 用户确认分享后执行的回调函数
         _log.track(Vhall_User_Actions.SHARE, {
           event: 3
@@ -62,6 +63,7 @@ export default function wxShare (wxShare) {
           : ''), // 分享链接
       imgUrl: wxShare.shareData.shareDataimgUrl, // 分享图标
       success: function () {
+        alert('onMenuShareAppMessage:success')
         // 用户确认分享后执行的回调函数
         _log.track(Vhall_User_Actions.SHARE, {
           event: 2

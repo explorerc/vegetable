@@ -315,6 +315,7 @@ export default {
     this.activityId = queryId
     this.initPage()
     EventBus.$on('red_packet', (data) => {
+      alert('red_packet:' + JSON.stringify(data))
       if (this.red_packet_id) {
         let _data = {
           red_packet_id: this.red_packet_id,
