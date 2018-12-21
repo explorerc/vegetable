@@ -287,6 +287,10 @@ export default {
     this.startInit = true
     this.initMsgServe()
     this.getQuestionsStatus()
+    // 没有直播简介直接拉取最近聊天纪律
+    if (!this.activityInfo.description) {
+      this.initHistroy()
+    }
   },
   created () {
     // this.initToken()
@@ -613,6 +617,10 @@ export default {
     goodsVisit (params) {
       params.activity_id = this.activityId
       this.$get(activityService.GOODS_VISIT, params)
+    },
+    initHistroy () {
+      let _self = this
+      _self.$refs.chatbox.getHistroy(1)
     }
   }
 }

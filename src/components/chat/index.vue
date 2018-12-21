@@ -42,7 +42,7 @@
          :class="type !== 'live'? 'vod' : 'live'"
          @mouseover="stopScroll = true"
          @mouseout="stopScroll = false">
-      <mt-loadmore :autoFill="false" :top-method="loadTop" ref="loadmore">
+      <mt-loadmore :autoFill="false" :top-method="loadTop" ref="loadmore" >
         <ol class='chat-list bscroll-container'>
           <li v-for='(item,idx) in chatData'
               :data-joinId="item.id"
@@ -83,9 +83,11 @@
         </span>
         </transition>
         <div slot="top" class="mint-loadmore-top">
-          <span v-show="topStatus === ''" :class="{ 'rotate': topStatus === 'drop' }">下拉加载更多 ↓</span>
-          <span v-show="topStatus === 'loading'">Loading...</span>
-          <span v-show="topStatus === 'ending'">没有数据了</span>
+          <template v-if='activityInfo.status === "PLAYBACK"'>
+            <span v-show="topStatus === ''" :class="{ 'rotate': topStatus === 'drop' }">下拉加载更多 ↓</span>
+            <span v-show="topStatus === 'loading'">Loading...</span>
+            <span v-show="topStatus === 'ending'">没有数据了</span>
+          </template>
         </div>
       </mt-loadmore>
     </div>
@@ -544,6 +546,10 @@ export default {
   },
   methods: {
     loadTop () {
+      if (this.activityInfo.status !== 'PLAYBACK') {
+        this.$refs.loadmore.onTopLoaded()
+        return
+      }
       this.topStatus = 'loading'
       if (this.isEmpty) {
         this.topStatus = 'ending'
