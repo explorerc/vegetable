@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import 'mint-ui/lib/style.css'
 import App from './app.vue'
 import store from './store'
 import router from './router'
@@ -17,6 +18,7 @@ import Button from './components/common/button'
 import Tabs from './components/common/tabs'
 import PlayVideo from './components/common/play-video'
 import Ajax from './utils/_ajax'
+import { Loadmore } from 'mint-ui'
 
 Vue.use(Notification)
 Vue.use(Input)
@@ -30,6 +32,8 @@ Vue.use(Button)
 Vue.use(Tabs)
 Vue.use(PlayVideo)
 Vue.use(Ajax)
+
+Vue.component(Loadmore.name, Loadmore)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'

@@ -41,47 +41,53 @@
          ref="bscroll"
          :class="type !== 'live'? 'vod' : 'live'"
          @mouseover="stopScroll = true"
-         @mouseout="stopScroll = false"
-         @scroll="scrollEvent($event)">
-      <ol class='chat-list bscroll-container'>
-        <li v-for='(item,idx) in chatData'
-            :data-joinId="item.id"
-            :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}"
-            :key="idx"
-            v-if="item.detail.type !== 'RED_PACKET_JOIN'">
-          <template v-if='item.msgType === "chat"'>
-            <dl class='clearfix'>
-              <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
-              <dt class='avatar'
-                  v-else>{{item.name&&item.name.substr(0,1)}}</dt>
-              <dd>
-                <div class="name">{{item.name.length > 10 ? item.name.substr(0,10)+ '...' : item.name}}
-                  <em v-if="item.detail.role">{{item.detail.role}}</em>
-                </div>
-                <div class="txt"
-                     v-html="item.detail.txt"></div>
-              </dd>
-            </dl>
-          </template>
+         @mouseout="stopScroll = false">
+      <mt-loadmore :autoFill="false" :top-method="loadTop" ref="loadmore">
+        <ol class='chat-list bscroll-container'>
+          <li v-for='(item,idx) in chatData'
+              :data-joinId="item.id"
+              :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}"
+              :key="idx"
+              v-if="item.detail.type !== 'RED_PACKET_JOIN'">
+            <template v-if='item.msgType === "chat"'>
+              <dl class='clearfix'>
+                <dt v-if="item.avatar !== null && item.avatar !== '' && item.avatar !== '//static.vhallyun.com/public/static/img/null.png'"><img :src="`${imgHost}${item.avatar}`"> </dt>
+                <dt class='avatar'
+                    v-else>{{item.name&&item.name.substr(0,1)}}</dt>
+                <dd>
+                  <div class="name">{{item.name.length > 10 ? item.name.substr(0,10)+ '...' : item.name}}
+                    <em v-if="item.detail.role">{{item.detail.role}}</em>
+                  </div>
+                  <div class="txt"
+                       v-html="item.detail.txt"></div>
+                </dd>
+              </dl>
+            </template>
 
-          <template v-else>
-            <div :class='item.detail.type'
-                 class="sales-tool-box">
-              <div class='name'>{{item.detail.nickname}}</div>
-              <span v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em @click='moreInfo("goods",item.detail.goods_id)'>商品</em>，赶快看看吧</span>
-              <span v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了 <em @click='moreInfo("cards",item.detail.recommend_card_id)'>卡片</em>，赶快分享吧</span>
-              <span v-if="item.detail.type === 'NAIRE'">推送了 <em @click='moreInfo("ques",item.detail.recommend_card_id)'>问卷</em>，赶快参与吧</span>
-              <span v-if="item.detail.type === 'RED_PACKET_PUSH'">推送了 <em @click='moreInfo("redpack",item.detail.recommend_card_id)'>红包雨</em>，赶快去抢吧</span>
-            </div>
-          </template>
-        </li>
-      </ol>
-      <transition v-if="tipsShow && tipsCount > 0">
+            <template v-else>
+              <div :class='item.detail.type'
+                   class="sales-tool-box">
+                <div class='name'>{{item.detail.nickname}}</div>
+                <span v-if="item.detail.type === 'GOODS_PUSH'">推送了 <em @click='moreInfo("goods",item.detail.goods_id)'>商品</em>，赶快看看吧</span>
+                <span v-if="item.detail.type === 'RECOMMEND_CARD_PUSH'">推送了 <em @click='moreInfo("cards",item.detail.recommend_card_id)'>卡片</em>，赶快分享吧</span>
+                <span v-if="item.detail.type === 'NAIRE'">推送了 <em @click='moreInfo("ques",item.detail.recommend_card_id)'>问卷</em>，赶快参与吧</span>
+                <span v-if="item.detail.type === 'RED_PACKET_PUSH'">推送了 <em @click='moreInfo("redpack",item.detail.recommend_card_id)'>红包雨</em>，赶快去抢吧</span>
+              </div>
+            </template>
+          </li>
+        </ol>
+        <transition v-if="tipsShow && tipsCount > 0">
         <span class="msg-tips"
               @click='doScrollBottom'>有{{tipsCount}}条新消息
           <i class="iconfont icon-xiangxia"></i>
         </span>
-      </transition>
+        </transition>
+        <div slot="top" class="mint-loadmore-top">
+          <span v-show="topStatus === ''" :class="{ 'rotate': topStatus === 'drop' }">下拉加载更多 ↓</span>
+          <span v-show="topStatus === 'loading'">Loading...</span>
+          <span v-show="topStatus === 'ending'">没有数据了</span>
+        </div>
+      </mt-loadmore>
     </div>
     <div class="v-send-box-bg"
          v-show='(type === "live" || type === "warm"  || type === "pre") && isLogin && sendBoxShow'>
@@ -171,6 +177,7 @@ import {
 import * as types from 'src/store/mutation-types'
 // import BScroll from 'better-scroll'
 import activityService from 'src/api/activity-service'
+
 export default {
   name: 'chat',
   data () {
@@ -181,6 +188,7 @@ export default {
         channelId: '',
         accountId: ''
       },
+      topStatus: '',
       activityId: this.$route.params.id,
       value: '',
       valueAnnounce: '',
@@ -547,6 +555,21 @@ export default {
     // this.service.regHandler('INCREMENT_ONLINE', this.listenIncrease)
   },
   methods: {
+    loadTop () {
+      this.topStatus = 'loading'
+      if (this.isEmpty) {
+        this.topStatus = 'ending'
+        let st = setTimeout(() => {
+          clearTimeout(st)
+          this.$refs.loadmore.onTopLoaded()
+        }, 1000)
+        return
+      }
+      this.historyPage++
+      this.getHistroy(this.historyPage, (e) => {
+        this.$refs.loadmore.onTopLoaded()
+      })
+    },
     ...mapMutations('tokenMager', {
       setChatParams: types.CHAT_PARAMS
     }),
@@ -762,7 +785,7 @@ export default {
         this.faceOpen = false
       }
     },
-    getHistroy (page) {
+    getHistroy (page, successFn) {
       if (this.activityInfo.status === 'PLAYBACK') { // 回放拉取所有的 并分页
         this.historyParams = {
           activityId: this.activityId,
@@ -779,10 +802,12 @@ export default {
         this.$get(activityService.GET_MESSAGELIST, this.historyParams).then((res) => {
           if (res.data.length <= 0) {
             this.isEmpty = true
+            if (successFn) successFn()
           }
           res.data.forEach(item => {
             this.reArrange(item)
           })
+          if (successFn) successFn()
         })
       }
     },
