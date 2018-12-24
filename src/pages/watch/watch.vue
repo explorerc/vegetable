@@ -80,8 +80,9 @@
         </span>
         <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title" style="font-size: 20px;">红包雨还剩{{downTimer|fmtTimer}}到来</p>
+          <!-- <p class="red-bag-info" v-if="!loginInfo">您还未<span class="login-link" @click="clickLoginUser">登录</span>无法参与红包雨活动</p> -->
           <p class="red-bag-info" v-if="redBagInfo.condition==0">手速越快，抢到的红包越大哦~</p>
-          <p class="red-bag-info" v-else-if="redBagInfo.condition==1">分享直播链接参与红包雨</p>
+          <p class="red-bag-info" v-if="redBagInfo.condition==1">分享直播链接参与红包雨</p>
           <p class="red-bag-info" v-if="redBagInfo.condition==2" style="margin: 0 0 10px 0;font-size: 12px;">发送口令参与红包雨</p>
           <p class="red-bag-info tip-info" v-if="redBagInfo.condition==2">
             <span class="red-bag-tip">{{redBagInfo.password}}</span>
@@ -868,6 +869,10 @@ export default {
         _log.track(Vhall_User_Actions.LEAVE)
         console.log('回放播放完成了')
       })
+    },
+    clickLoginUser () {
+      this.redBagTipShow = false
+      this.doLogin()
     }
   }
 }
