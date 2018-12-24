@@ -201,7 +201,8 @@ export default {
   z-index: 10;
   font-size: 24px;
   color: #222;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   /deep/ {
     .v-close {
