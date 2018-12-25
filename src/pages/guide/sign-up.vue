@@ -51,8 +51,8 @@
                      :placeholder='item.placeholder'
                      :errorMsg.sync="item.errorMsg"></com-input>
         </template>
-        <button class="primary-button"
-                @click="submitAppoint">提交</button>
+        <button class="static-btn primary-button" @click="submitAppoint" :class="{'opc0':!floatSubmit}">提交</button>
+        <button class="pos-btn primary-button" @click="submit" v-show='floatSubmit'>提交</button>
       </div>
       <div class="v-operation"
            v-else>
@@ -78,8 +78,8 @@
                                :maxLength="6"
                                :errorMsg.sync="codeError"
                                codeType="CONSUMER_USER_LOGIN"></com-verification-code>
-        <button class="primary-button"
-                @click="submit">提交</button>
+        <button class="static-btn primary-button" @click="submit" :class="{'opc0':!floatSubmit}">提交</button>
+        <button class="pos-btn primary-button" @click="submit" v-show='floatSubmit' >提交</button>
       </div>
       <p class="v-explain">
         我已阅读并遵守
@@ -128,11 +128,27 @@ export default {
       selectVal: [], // 下拉
       agreementShow: false, // 用户协议是否显示
       appointIsClick: true, // 报名是否可点击
-      isClick: true // 无条件是否可点击
+      isClick: true, // 无条件是否可点击
+      topDis: 0, // 用于切换提交按钮的出现
+      wrapDis: 0,
+      floatSubmit: true
     }
   },
   mounted () {
     this.getInfo()
+    let _wrap = document.getElementsByClassName('container')[0]
+    _wrap.onscroll = () => {
+      this.topDis = document.getElementsByClassName('static-btn')[0].offsetTop
+      // console.log(_wrap.scrollTop)
+      // console.log(this.topDis)
+      if (_wrap.scrollTop > this.topDis - window.outerHeight) {
+        // alert('appear')
+        this.floatSubmit = false
+      } else {
+        // alert('disappear')
+        this.floatSubmit = true
+      }
+    }
   },
   components: {
     'com-input': ComInput,
@@ -150,6 +166,11 @@ export default {
     }
   },
   watch: {
+    'this.$ref.container.scrollTop': {
+      handler (newVal) {
+        console.log(newVal)
+      }
+    }
   },
   methods: {
     getCode (val) {
@@ -494,20 +515,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-signup /deep/ {
-  position: absolute;
-  top: 790px;
+  position: static;
+  // top: 790px;
   width: 100%;
-  bottom: 0;
+  // bottom: 0;
   .v-wrap {
-    position: absolute;
-    -webkit-overflow-scrolling: touch;
-    top: 50%;
+    position: static;
+    // top: 50%;
     overflow: auto;
     max-height: 100%;
     padding: 30px;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
+    // left: 0;
+    // right: 0;
+    // transform: translateY(-50%);
     .com-input {
       input {
         font-size: 28px;
@@ -541,6 +561,18 @@ export default {
         }
       }
     }
+  }
+  .pos-btn {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: -245px !important;
+  }
+  .static-btn {
+    opacity: 0;
+  }
+  .static-btn.opc0 {
+    opacity: 1;
   }
 }
 </style>
