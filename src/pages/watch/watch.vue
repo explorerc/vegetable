@@ -80,22 +80,23 @@
         </span>
         <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title" style="font-size: 20px;">红包雨还剩{{downTimer|fmtTimer}}到来</p>
-          <!-- <p class="red-bag-info" v-if="!loginInfo">您还未<span class="login-link" @click="clickLoginUser">登录</span>无法参与红包雨活动</p> -->
-          <p class="red-bag-info" v-if="redBagInfo.condition==0">手速越快，抢到的红包越大哦~</p>
-          <p class="red-bag-info" v-if="redBagInfo.condition==1">分享直播链接参与红包雨</p>
-          <p class="red-bag-info" v-if="redBagInfo.condition==2" style="margin: 0 0 10px 0;font-size: 12px;">发送口令参与红包雨</p>
-          <p class="red-bag-info tip-info" v-if="redBagInfo.condition==2">
+          <p class="red-bag-info" v-if="!loginInfo">快来<span class="login-link" @click="clickLoginUser">登录</span>参与红包雨领取现金吧</p>
+          <p class="red-bag-info" v-if="loginInfo && redBagInfo.condition==0">手速越快，抢到的红包越大哦~</p>
+          <p class="red-bag-info" v-if="loginInfo && redBagInfo.condition==1">分享直播链接参与红包雨</p>
+          <p class="red-bag-info" v-if="loginInfo && redBagInfo.condition==2" style="margin: 0 0 10px 0;font-size: 12px;">发送口令参与红包雨</p>
+          <p class="red-bag-info tip-info" v-if="loginInfo && redBagInfo.condition==2">
             <span class="red-bag-tip">{{redBagInfo.password}}</span>
           </p>
           <p class="red-bag-info" v-else-if="redBagInfo.condition==3">填写问卷参与红包雨</p>
         </div>
-        <span class="red-bag-info-btn" v-if="redBagInfo.condition==1" @click="immShare">马上分享</span>
-        <span class="red-bag-info-btn" v-if="redBagInfo.condition==2" @click="sendPassword">发送口令</span>
-        <span class="red-bag-info-btn" v-if="redBagInfo.condition==3" @click="immInputQuestions">马上填写</span>
+        <span class="red-bag-info-btn" v-if="!loginInfo" @click="clickLoginUser">马上登录</span>
+        <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==1" @click="immShare">马上分享</span>
+        <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==2" :class='{"isSent":isSent}' @click="sendPassword(isSent)">{{isSent ? `您已成功发送口令` : `发送口令`}}</span>
+        <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==3" @click="immInputQuestions">马上填写</span>
       </div>
     </message-box>
     <!-- 红包雨 -- 倒计时-->
-    <message-box v-if="redBagTimeDownShow"
+    <message-box v-if="loginInfo && redBagTimeDownShow"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box">
@@ -157,7 +158,7 @@
         </div>
       </div>
     </message-box>
-    <RedBagRain :rainTime="rainTime"
+    <RedBagRain v-show='loginInfo' :rainTime="rainTime"
                 @endRain="endRainHandler"
                 @selectOk="selectRedBag"></RedBagRain>
     <com-login @login="loginSuccess"></com-login>
@@ -262,7 +263,8 @@ export default {
       timer: 10,
       timerInterval: 0,
       redBagStartTimer: 0,
-      redBagStartTimerInterval: 0
+      redBagStartTimerInterval: 0,
+      isSent: false
     }
   },
   mounted () {
@@ -703,14 +705,17 @@ export default {
       this.handleRedBagClick()
       EventBus.$emit('showQuestion')
     },
-    sendPassword () { // 发送口令
+    sendPassword (arg) { // 发送口令
+      if (arg) return
       this.redBagTipShow = false
       EventBus.$emit('sendPassword', this.redBagInfo.password)
+      this.isSent = true
     },
     immShare () {
       this.handleRedBagClick()
     },
     handleRedBagClick (e) {
+      this.isSent = false
       this.redBagTipShow = false
       this.redBagTimeDownShow = false
       this.redBagShow = false
@@ -1315,6 +1320,13 @@ export default {
     &:hover {
       cursor: pointer;
       background-color: $color-default-hover;
+    }
+    &.isSent {
+      background: rgba(238, 238, 238, 0.8);
+      &:hover {
+        cursor: default;
+        background: rgba(238, 238, 238, 0.8);
+      }
     }
   }
   .red-bag-content-mid {
