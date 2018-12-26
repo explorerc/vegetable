@@ -136,16 +136,14 @@ export default {
   },
   mounted () {
     this.getInfo()
+    // 两个提交按钮来回切换
     let _wrap = document.getElementsByClassName('container')[0]
     _wrap.onscroll = () => {
+      this.countCount = _wrap.scrollTop
       this.topDis = document.getElementsByClassName('static-btn')[0].offsetTop
-      // console.log(_wrap.scrollTop)
-      // console.log(this.topDis)
-      if (_wrap.scrollTop > this.topDis - window.outerHeight) {
-        // alert('appear')
+      if (_wrap.scrollTop > this.topDis - document.getElementsByTagName('body')[0].offsetHeight) {
         this.floatSubmit = false
       } else {
-        // alert('disappear')
         this.floatSubmit = true
       }
     }
