@@ -32,6 +32,7 @@ export default {
   },
   data () {
     return {
+      refer: undefined,
       com: '',
       isPreview: true,
       share: {
@@ -80,6 +81,10 @@ export default {
       await this.$config({ handlers: true }).$get(activityService.GET_LIVEINFO, {
         activityId: this.tid
       }).then((res) => {
+        this.refer = this.$route.query.refer
+        if (this.refer) {
+          localStorage.setItem(`refer_${this.tid}`, this.refer)
+        }
         let activity = res.data.activity
         this.share.title = res.data.activity.title
         this.share.des = res.data.activity.description
@@ -122,7 +127,13 @@ export default {
               _log.set('consumer_uid', login.consumerUserId)
             }
             _log.set('activity_id', activity.id)
-            _log.track(Vhall_User_Actions.ENTER)
+            if (this.refer !== undefined) {
+              _log.track(Vhall_User_Actions.ENTER, {
+                event: parseInt(this.refer)
+              })
+            } else {
+              _log.track(Vhall_User_Actions.ENTER)
+            }
           })
           let data = JSON.parse(res.data.value)
           this.com = `t${data.tid}`
