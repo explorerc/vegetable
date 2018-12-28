@@ -3,7 +3,7 @@
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" :class="item.type" v-for="(item,index) in value.list" :key="'block1_item'+index">
-          <a target="_black" :href="item.hrefType === '_sub' ? `${MOBILE_HOST}guide/${id}` : value.link | voidLink">
+          <a target="_black" :href="item.hrefType === '_sub' ? `${MOBILE_HOST}subscribe/${id}` : item.link | voidLink">
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="block1-bg"></div>
             <div class="content"  v-html="item.content">

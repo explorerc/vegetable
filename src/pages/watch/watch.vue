@@ -96,7 +96,7 @@
       </div>
     </message-box>
     <!-- 红包雨 -- 倒计时-->
-    <message-box v-if="loginInfo && redBagTimeDownShow"
+    <message-box v-if="redBagTimeDownShow"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box">
@@ -106,8 +106,10 @@
         <div class="red-bag-content">
           <p class="red-bag-title">红包雨降临倒计时</p>
           <span class="time-down">{{timer}}</span>
-          <p class="red-bag-info">点击屏幕上落下的红包，手速越快红包越大！</p>
+          <p class="red-bag-info" style='position:relative;bottom:20vm;' v-if="!loginInfo">快来<span class="login-link" @click="clickLoginUser">登录</span>参与红包雨领取现金吧</p>
+          <p class="red-bag-info" v-else>点击屏幕上落下的红包，手速越快红包越大！</p>
         </div>
+        <span class="red-bag-info-btn" v-if="!loginInfo" @click="clickLoginUser">马上登录</span>
       </div>
     </message-box>
     <!-- 红包雨 -- 抢到红包 -->

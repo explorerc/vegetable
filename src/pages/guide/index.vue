@@ -350,10 +350,12 @@ export default {
         _log.set('activity_id', this.$route.params.id)
         _log.set('visitor_id', res.data.visitorId)
         if (this.refer !== undefined) {
+          debugger
           _log.track(Vhall_User_Actions.ENTER, {
             event: parseInt(this.refer)
           })
         } else {
+          debugger
           _log.track(Vhall_User_Actions.ENTER)
         }
         this.visitorObj.visitorId = res.data.visitorId

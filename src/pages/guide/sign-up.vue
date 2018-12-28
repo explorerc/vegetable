@@ -6,51 +6,35 @@
       </p>
       <div class="v-operation"
            v-if="activity.viewCondition === 'APPOINT'">
-        <template v-for="item in questionList">
-          <template v-if="item.ext === 'phone'">
-            <com-input :inputVal.sync="user.phone"
-                       :placeholder='item.placeholder'
-                       :errorMsg.sync="item.errorMsg"
-                       :maxLength="11"
-                       v-if="user.isDisabled"
-                       isDisabled="disabled"></com-input>
-            <com-input :inputVal.sync="item.val"
-                       :placeholder='item.placeholder'
-                       type="mobile"
-                       :errorMsg.sync="item.errorMsg"
-                       :maxLength="11"
-                       v-else></com-input>
-            <com-verification-code :inputVal.sync="code"
-                                   :code.sync="code"
-                                   v-if="!user.isDisabled"
-                                   :phone="item.val"
-                                   @inputFocus="getCode($event)"
-                                   :isGetCode="isGetCode"
-                                   placeholder='请输入验证码'
-                                   :maxLength="6"
-                                   :errorMsg.sync="codeError"
-                                   codeType="APPLY_ACTIVITY"></com-verification-code>
-          </template>
-          <com-input v-else-if="item.ext === 'email'"
-                     :inputVal.sync="item.val"
-                     :placeholder='item.placeholder'
-                     :errorMsg.sync="item.errorMsg"></com-input>
-          <com-input v-else-if="item.ext === 'integer'"
-                     :inputVal.sync="item.val"
-                     :placeholder='item.placeholder'
-                     :errorMsg.sync="item.errorMsg"></com-input>
-          <com-select v-else-if="item.ext === 'select'"
-                      :selectOptions="item.detail.list"
-                      @selected="selected($event, item.id)"></com-select>
-          <com-input v-else-if="item.ext === 'text'"
-                     :inputVal.sync="item.val"
-                     :placeholder='item.placeholder'
-                     :errorMsg.sync="item.errorMsg"></com-input>
-          <com-input v-else-if="item.ext === 'name'"
-                     :inputVal.sync="item.val"
-                     :placeholder='item.placeholder'
-                     :errorMsg.sync="item.errorMsg"></com-input>
-        </template>
+        <div v-for="item in questionList">
+          <div v-if="item.ext === 'phone'">
+            <span class='label'>{{item.title}}<i v-if='item.required === "Y"'>*</i></span>
+            <com-input :inputVal.sync="user.phone" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg" :maxLength="11" v-if="user.isDisabled" isDisabled="disabled"></com-input>
+            <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' type="mobile" :errorMsg.sync="item.errorMsg" :maxLength="11" v-else></com-input>
+            <com-verification-code :inputVal.sync="code" :code.sync="code" v-if="!user.isDisabled" :phone="item.val" @inputFocus="getCode($event)" :isGetCode="isGetCode" placeholder='请输入验证码' :maxLength="6" :errorMsg.sync="codeError" codeType="APPLY_ACTIVITY"></com-verification-code>
+          </div>
+          <div v-else-if="item.ext === 'email'">
+            <span class='label'>{{item.title}}<i v-if='item.required === "Y"'>*</i></span>
+            <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+          </div>
+          <div v-else-if="item.ext === 'integer'">
+            <span class='label'>{{item.title}}<i v-if='item.required === "Y"'>*</i></span>
+            <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+          </div>
+          <div class='select-box' v-else-if="item.ext === 'select'">
+            <span class='label'>{{item.title}}<i v-if='item.required === "Y"'>*</i></span>
+            <com-select class='sign-select' :class="{'error':item.errorMsg.length}" :selectOptions="item.detail.list" @selected="selected($event, item.id)"></com-select>
+            <span class='selectError' v-if='item.errorMsg.length'>{{item.errorMsg}}</span>
+          </div>
+          <div v-else-if="item.ext === 'text'">
+            <span class='label'>{{item.title}}<i v-if='item.required === "Y"'>*</i></span>
+            <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+          </div>
+          <div v-else-if="item.ext === 'name'">
+            <span class='label'>{{item.title}}<i v-if='item.required === "Y"'>*</i></span>
+            <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
+          </div>
+        </div>
         <button class="static-btn primary-button" @click="submitAppoint" :class="{'opc0':!floatSubmit}">提交</button>
         <button class="pos-btn primary-button" @click="submit" v-show='floatSubmit'>提交</button>
       </div>
@@ -215,6 +199,12 @@ export default {
         obj['answer'] = val
         this.selectVal.push(obj)
       }
+      this.questionList.forEach((item, idx) => {
+        if (item.id * 1 === id) {
+          item.val = val
+          item.errorMsg = ''
+        }
+      })
     },
     submitAppoint () {
       let isVerification = true
@@ -226,12 +216,18 @@ export default {
       if (!this.appointIsClick) {
         return false
       }
-      this.questionList.forEach(element => {
-        if (isVerification && !this.verification(element.val, element.required, element.ext)) {
+      this.questionList.forEach((element, idx) => {
+        if (isVerification && !this.verification(element.val, element.required, element.ext, idx)) {
           switch (element.ext) {
             case 'phone': element.errorMsg = '请正确填写手机号'
               break
             case 'email': element.errorMsg = '请正确填写邮箱'
+              break
+            case 'integer': element.errorMsg = '请正确填写数字'
+              break
+            case 'name': element.errorMsg = '请填写姓名'
+              break
+            case 'select': element.errorMsg = '请选择下拉选项'
               break
             default: element.errorMsg = '请正确填写表格'
               break
@@ -469,7 +465,7 @@ export default {
         })
       })
     },
-    verification (val, isRequired, type) {
+    verification (val, isRequired, type, idx) {
       let phoneReg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
       let emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
       let integerReg = /^[0-9]*$/
@@ -571,6 +567,41 @@ export default {
   }
   .static-btn.opc0 {
     opacity: 1;
+  }
+  .v-operation {
+    .label {
+      display: block;
+      color: #222;
+      font-size: 30px;
+      margin-bottom: 10px;
+      i {
+        position: relative;
+        top: 3px;
+        left: 10px;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: #fc5659;
+      }
+    }
+    .select-box {
+      position: relative;
+    }
+    .selectError {
+      bottom: -40px;
+      left: 10px;
+      position: absolute;
+      font-size: 28px;
+      color: #fc5659;
+    }
+  }
+  .input-form {
+    margin-bottom: 40px !important;
+  }
+  .sign-select.error .el-select {
+    border-color: #fc5659;
   }
 }
 </style>
