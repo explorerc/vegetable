@@ -2,41 +2,45 @@
   <div class="goods-box">
     <!--置顶-->
     <p class="header-title"><span>商品推荐 </span><i class="el-icon-arrow-down" @click="closeGoods"></i></p>
-    <div class='top_item' v-for="(ite,indr) in goodsList"
-         @click="goInfo({goods_id:ite.goods_id,type:0})"
-         :key="`top${indr}`" v-show="ite.added === '1' && ite.top === '1'">
-      <span class="index" style="font-size: 10px">TOP</span>
-      <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
-        <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
-      </div>
-      <div>
-        <h4 class="item-title">{{ite.title}}</h4>
-        <p class="item-price">
-          <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
-          <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
-          <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
-          <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
-          <i v-show="ite.price === '0.00'"></i>
-        </p>
-      </div>
-    </div>
-    <!--未置顶-->
-    <div class='item' v-for="(ite,ind) in goodsList"
-         @click="goInfo({goods_id:ite.goods_id,type:0})"
-         v-show="ite.added === '1' && ite.top !== '1'">
-      <span class="index">{{ite.number<10?`0${ite.number}`:ite.number}} </span>
-      <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
-        <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
-      </div>
-      <div>
-        <h4 class="item-title">{{ite.title}}</h4>
-        <p class="item-price">
-          <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
-          <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
-          <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
-          <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
-          <i v-show="ite.price === '0.00'"></i>
-        </p>
+    <div class="goods-list-box">
+      <div class="touch-scroll">
+        <div class='top_item' v-for="(ite,indr) in goodsList"
+             @click="goInfo({goods_id:ite.goods_id,type:0})"
+             :key="`top${indr}`" v-show="ite.added === '1' && ite.top === '1'">
+          <span class="index" style="font-size: 10px">TOP</span>
+          <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
+            <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
+          </div>
+          <div>
+            <h4 class="item-title">{{ite.title}}</h4>
+            <p class="item-price">
+              <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
+              <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
+              <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
+              <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
+              <i v-show="ite.price === '0.00'"></i>
+            </p>
+          </div>
+        </div>
+        <!--未置顶-->
+        <div class='item' v-for="(ite,ind) in goodsList"
+             @click="goInfo({goods_id:ite.goods_id,type:0})"
+             v-show="ite.added === '1' && ite.top !== '1'">
+          <span class="index">{{ite.number<10?`0${ite.number}`:ite.number}} </span>
+          <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
+            <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
+          </div>
+          <div>
+            <h4 class="item-title">{{ite.title}}</h4>
+            <p class="item-price">
+              <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
+              <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
+              <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
+              <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
+              <i v-show="ite.price === '0.00'"></i>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -134,6 +138,14 @@
     float: right;
   }
 }
+.goods-list-box{
+  height: calc(100% - 80px);
+  .touch-scroll{
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
 .goods-box {
   /deep/ {
     width: 100%;
@@ -141,8 +153,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    overflow-y: auto;
-    margin-bottom: 60px;
+    overflow: hidden;
     .item,
     .top_item {
       display: inline-block;

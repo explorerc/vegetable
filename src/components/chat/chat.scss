@@ -268,7 +268,7 @@
       }
 
       .txt {
-        padding: 7px 11px;
+        padding: 10px 14px;
         color: $color-font;
         background: rgba(239, 239, 239, 1);
         border-radius: 4px;
@@ -276,7 +276,7 @@
         word-break: break-all;
         display: inline-block;
         position: relative;
-
+        text-align: justify;
         img {
           width: 40px;
           height: 40px;
