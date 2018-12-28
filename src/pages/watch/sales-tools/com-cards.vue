@@ -2,7 +2,7 @@
   <div class="cards-wrap">
     <div class="cov_img" :style="{backgroundImage:`url(${imgHost}/${cardData.pic})`}"></div>
     <div class="desc">{{cardData.desc}}</div>
-    <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><el-button  round class='btn primary-button' @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</el-button></a>
+    <a v-if="cardData.btn_display === 'Y'" :href="cardData.btn_link" target="_blank"><button  round class='btn default-button primary-button' @click='view(cardData.recommend_card_id)'>{{cardData.btn_text}}</button></a>
     <i class="close" @click='close'></i>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(34, 34, 34, 0.5);
   z-index: 9999;
   padding-bottom: 40px;
@@ -60,6 +60,8 @@ export default {
     height: 460px;
     background: no-repeat center;
     background-size: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
   a {
     display: inline-block;
@@ -68,14 +70,17 @@ export default {
     word-break: break-all;
     color: $color-font-sub;
     padding: 30px;
-    font-size: 12px;
+    font-size: 28px;
     text-align: left;
   }
   .btn {
     padding: 0;
-    width: 180px;
+    min-width: 300px;
     height: 60px;
+    border-radius: 30px;
     line-height: 60px;
+    margin: 20px 0 10px 0;
+    font-size: 24px;
   }
   .close {
     cursor: pointer;

@@ -108,9 +108,11 @@
       <transition name="fade">
         <div class="goodsInfo"
              v-if="goodsInfoShow">
-          <p><span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down"
-               @click="closeGoods"></i></p>
-          <div>
+          <p class="good-header">
+            <span @click="goGoodsList">更多商品 </span><i class="el-icon-arrow-down"
+               @click="closeGoods"></i>
+          </p>
+          <div class="touch-scroll">
             <h4>{{goodsSmallDetails.title}}</h4>
             <el-carousel>
               <el-carousel-item v-for="(item,ind) in goodsSmallDetails.image">
@@ -717,7 +719,7 @@ export default {
     height: 422px;
   }
   p {
-    color: red;
+    color: #ccc;
   }
   .v-div {
     position: absolute;
@@ -881,7 +883,14 @@ export default {
   left: 0;
   overflow-y: auto;
   z-index: 10;
-  > p {
+  .touch-scroll{
+    height: calc(100% - 80px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+  }
+  .good-header {
     height: 80px;
     line-height: 80px;
     font-size: 30px;
