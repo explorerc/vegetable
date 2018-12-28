@@ -55,11 +55,6 @@
         <!--商品推送-->
         <com-tabs :value.sync="tabValue"
                   @change="tabChange">
-          <com-tab v-if="activityInfo.description" label="活动简介"
-                   :index="1">
-            <div class="v-introduction"
-                 v-html="activityInfo.description"></div>
-          </com-tab>
           <com-tab label="互动聊天"
                    :index="activityInfo.description?2:1">
             <div :class='{"chat-content":true,live:playType=="live",end:playType=="end",vod:playType=="vod"}'>
@@ -98,6 +93,11 @@
                 </div>
               </template>
             </template>
+          </com-tab>
+          <com-tab v-if="activityInfo.description" label="活动简介"
+                   :index="1">
+            <div class="v-introduction"
+                 v-html="activityInfo.description"></div>
           </com-tab>
         </com-tabs>
         <!-- <a class="v-subscribe"
@@ -812,18 +812,18 @@ export default {
 .goods_small_popover /deep/ {
   position: absolute;
   overflow: hidden;
-  bottom: 105px;
-  left: 22px;
+  bottom: 130px;
+  right: 22px;
   border-radius: 8px;
   z-index: 1000;
-  width: 605px;
+  width: 70%;
   height: 140px;
   background-color: white;
   border-top: 1px solid #e2e2e2;
   box-shadow: 2px 10px 20px 5px rgba(0, 0, 0, 0.15);
   div {
     .cover_img {
-      border: 1px solid #e2e2e2;
+      border-right: 1px solid #e2e2e2;
       width: 140px;
       height: 140px;
       float: left;
@@ -855,6 +855,7 @@ export default {
           color: #fc5659;
         }
         del {
+          margin-left: 16px;
           font-size: 22px;
           color: rgba(136, 136, 136, 1);
         }
@@ -869,7 +870,6 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  overflow-y: auto;
   z-index: 10;
 }
 .goodsInfo /deep/ {
