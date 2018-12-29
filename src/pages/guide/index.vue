@@ -479,20 +479,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-guid {
-  position: absolute;
-  top: 790px;
   width: 100%;
-  bottom: 0;
   .v-wrap {
-    position: absolute;
-    -webkit-overflow-scrolling: touch;
-    top: 50%;
-    overflow: auto;
     max-height: 100%;
     padding: 30px;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
   }
   .v-title {
     font-size: 40px;
