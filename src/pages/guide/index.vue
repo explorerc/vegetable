@@ -181,8 +181,11 @@
                       @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
               <a href="javascript:;"
                  class="v-registered"
+                 @click="jumpPage( MOBILE_HOST + 'CheckState/')">已报名</a>
+              <!-- <a href="javascript:;"
+                 class="v-registered"
                  @click="jumpPage( MOBILE_HOST + 'CheckState/')"
-                 v-if="!this.user.phone">已报名</a>
+                 v-if="!this.user.phone">已报名</a> -->
             </template>
           </template>
           <template v-else>
