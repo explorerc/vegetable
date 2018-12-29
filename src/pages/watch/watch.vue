@@ -338,6 +338,7 @@ export default {
     window.addEventListener(
       'onorientationchange' in window ? 'orientationchange' : 'resize',
       function () {
+        alert(1)
         if (window.orientation === 90 || window.orientation === -90) {
           // 想把下面的alert换成能够控制v-show的代码
           // if (!_this.isX5()) {
