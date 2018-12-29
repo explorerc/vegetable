@@ -389,6 +389,9 @@ export default {
           document.querySelector('.vjs-tech').addEventListener('pause', () => {
             this.isPlay = false
           })
+          document.querySelector('.vjs-tech').addEventListener('play', () => {
+            this.isPlay = true
+          })
           if (this.isX5()) {
             document.getElementsByClassName('vjs-tech')[0].addEventListener('x5videoexitfullscreen', () => {
               this.changeX5ExitFullScreen()
