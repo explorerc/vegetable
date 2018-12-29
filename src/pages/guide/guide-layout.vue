@@ -1,8 +1,10 @@
 <template>
   <div class="container">
-    <div v-if="showGuidImg" class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
-    <div v-else class="v-guid-img"></div>
-    <router-view class="app-view"></router-view>
+    <div>
+      <div v-if="showGuidImg" class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
+      <div v-else class="v-guid-img"></div>
+      <router-view class="app-view"></router-view>
+    </div>
   </div>
 </template>
 

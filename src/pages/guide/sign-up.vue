@@ -575,12 +575,12 @@ export default {
     left: 50%;
     margin-left: -245px !important;
   }
-  .static-btn {
-    opacity: 0;
-  }
-  .static-btn.opc0 {
-    opacity: 1;
-  }
+  // .static-btn {
+  //   opacity: 0;
+  // }
+  // .static-btn.opc0 {
+  //   opacity: 1;
+  // }
   .v-operation {
     .label {
       display: block;
