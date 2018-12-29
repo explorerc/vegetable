@@ -36,7 +36,9 @@
           </div>
         </div>
         <button class="static-btn primary-button" @click="submitAppoint" :class="{'opc0':!floatSubmit}">提交</button>
-        <button class="pos-btn primary-button" @click="submit" v-show='floatSubmit'>提交</button>
+        <transition name='fade'>
+          <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
+        </transition>
       </div>
       <div class="v-operation"
            v-else>
@@ -63,7 +65,9 @@
                                :errorMsg.sync="codeError"
                                codeType="CONSUMER_USER_LOGIN"></com-verification-code>
         <button class="static-btn primary-button" @click="submit" :class="{'opc0':!floatSubmit}">提交</button>
-        <button class="pos-btn primary-button" @click="submit" v-show='floatSubmit' >提交</button>
+        <transition name='fade'>
+          <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
+        </transition>
       </div>
       <p class="v-explain">
         我已阅读并遵守
@@ -556,8 +560,17 @@ export default {
       }
     }
   }
-  .pos-btn {
+  .float-btn-box {
+    width: 100%;
     position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 165px;
+    background: #fff;
+    box-shadow: 0 0px 15px #ccc;
+  }
+  .pos-btn {
+    position: absolute;
     bottom: 0;
     left: 50%;
     margin-left: -245px !important;
