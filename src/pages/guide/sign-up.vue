@@ -35,10 +35,10 @@
             <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
           </div>
         </div>
-        <button class="static-btn primary-button" @click="submitAppoint" :class="{'opc0':!floatSubmit}">提交</button>
-        <transition name='fade'>
+        <button class="static-btn primary-button" @click="submitAppoint" >提交</button>
+        <!-- <transition name='fade'>
           <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
-        </transition>
+        </transition> -->
       </div>
       <div class="v-operation"
            v-else>
@@ -64,10 +64,10 @@
                                :maxLength="6"
                                :errorMsg.sync="codeError"
                                codeType="CONSUMER_USER_LOGIN"></com-verification-code>
-        <button class="static-btn primary-button" @click="submit" :class="{'opc0':!floatSubmit}">提交</button>
-        <transition name='fade'>
+        <button class="static-btn primary-button" @click="submit" >提交</button>
+        <!-- <transition name='fade'>
           <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
-        </transition>
+        </transition> -->
       </div>
       <p class="v-explain">
         我已阅读并遵守
