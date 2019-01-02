@@ -1,5 +1,5 @@
 <template>
-  <div class="v-guid">
+  <div class="v-guid" :class='{"isLoading":isLoading}'>
     <div class="v-wrap">
       <p class="v-title">
         {{activity.title}}
@@ -309,6 +309,7 @@ export default {
         channelId: '',
         accountId: ''
       },
+      isLoading: true,
       visitorObj: {} // 游客信息
     }
   },
@@ -433,6 +434,7 @@ export default {
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
         this.refer = this.$route.query.refer
+        this.isLoading = false
         if (this.refer !== undefined) {
           localStorage.setItem(`refer_${this.$route.params.id}`, this.refer)
         }
@@ -482,6 +484,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-guid {
+  &.isLoading {
+    opacity: 0;
+  }
   width: 100%;
   .v-wrap {
     max-height: 100%;

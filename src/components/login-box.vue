@@ -132,6 +132,7 @@
         this.time = 60
         this.verify = false
         this.captchaKey = ''
+        this.code = ''
         this.captchaIns && this.captchaIns.refresh()
         clearInterval(this.timer)
       },
@@ -174,63 +175,63 @@
 </script>
 
 <style lang="scss" scoped>
-  .login-container /deep/ {
-    .captcha {
-      margin-bottom: 30px;
-    }
-    .dialog-wrap {
-      width: 600px;
-      padding-bottom: 20px;
-      border-radius: 10px;
-      .dialog-body {
-        padding: 30px 40px 10px;
-        .rule {
-          font-size: 28px;
-          a {
-            color: #0000ff;
-          }
-          padding-bottom: 30px;
+.login-container /deep/ {
+  .captcha {
+    margin-bottom: 30px;
+  }
+  .dialog-wrap {
+    width: 600px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    .dialog-body {
+      padding: 30px 40px 10px;
+      .rule {
+        font-size: 28px;
+        a {
+          color: #0000ff;
         }
-        .mobile {
-          margin-bottom: 30px;
-          height: 80px;
-          width: 100%;
+        padding-bottom: 30px;
+      }
+      .mobile {
+        margin-bottom: 30px;
+        height: 80px;
+        width: 100%;
+      }
+      .code-box {
+        height: 80px;
+        margin-bottom: 30px;
+        .code {
+          height: 100%;
+          display: inline-block;
+          width: 342px;
+          vertical-align: middle;
         }
-        .code-box{
-          height: 80px;
-          margin-bottom: 30px;
-          .code {
-            height: 100%;
-            display: inline-block;
-            width: 342px;
-            vertical-align: middle;
-          }
-          .codeBtn {
-            display: inline-block;
-            width: 170px;
-            height: 100%;
-            padding-top: -0;
-            padding-bottom: 0;
-            font-size: 20px;
-            text-align: center;
-            vertical-align: middle;
-            &:disabled {
-              border-color: #e2e2e2;
-              background-color: #e2e2e2;
-            }
+        .codeBtn {
+          display: inline-block;
+          width: 170px;
+          height: 100%;
+          padding-top: -0;
+          padding-bottom: 0;
+          font-size: 20px;
+          text-align: center;
+          vertical-align: middle;
+          &:disabled {
+            border-color: #e2e2e2;
+            background-color: #e2e2e2;
           }
         }
       }
-      .footer {
-        padding: 0 40px 20px;
-        display: inline-block;
+    }
+    .footer {
+      padding: 0 40px 20px;
+      display: inline-block;
+      width: 100%;
+      button {
         width: 100%;
-        button {
-          width: 100%;
-          height: 80px;
-          font-size: 28px;
-        }
+        height: 80px;
+        font-size: 28px;
       }
     }
   }
+}
 </style>
