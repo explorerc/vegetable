@@ -74,7 +74,7 @@ export default {
         document.title = res.data.guide ? res.data.guide.title : res.data.activity.title
         var iframe = document.createElement('iframe')
         iframe.style.display = 'none'
-        iframe.setAttribute('src', '/')
+        iframe.setAttribute('src', '/favicon.ico')
         var d = function () {
           setTimeout(function () {
             iframe.removeEventListener('load', d)
