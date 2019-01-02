@@ -4,6 +4,9 @@
       <div v-if="showGuidImg" class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
       <div v-else class="v-guid-img"></div>
       <router-view class="app-view"></router-view>
+      <transition type='fade'>
+        <agreement v-if='agreementShow'></agreement>
+      </transition>
     </div>
   </div>
 </template>
@@ -11,6 +14,8 @@
 <script>
 import wxShareFunction from '../../assets/js/wx-share.js'
 import activityService from 'src/api/activity-service'
+import agreement from './agreement.vue'
+import EventBus from 'src/utils/eventBus'
 // import { mapState } from 'vuex'
 export default {
   data () {
@@ -34,14 +39,26 @@ export default {
           shareId: '' // 分享者id
         }
       },
-      imgUrl: ''
+      imgUrl: '',
+      agreementShow: false
     }
+  },
+  components: {
+    agreement
   },
   created: function () {
     if (this.isWx()) {
       this.share()
     }
     this.getInfo()
+  },
+  mounted () {
+    EventBus.$on('agreementClose', () => {
+      this.agreementShow = false
+    })
+    EventBus.$on('agreementOpen', () => {
+      this.agreementShow = true
+    })
   },
   computed: {
     defaultImg () {
