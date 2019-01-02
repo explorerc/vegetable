@@ -718,7 +718,6 @@ export default {
       this.handleRedBagClick()
     },
     handleRedBagClick (e) {
-      this.isSent = false
       this.redBagTipShow = false
       this.redBagTimeDownShow = false
       this.redBagShow = false
@@ -835,6 +834,7 @@ export default {
         this.initRedBayRainTimer(10)
       } else {
         this.redBagTipShow = true
+        this.isSent = false
         // 红包雨活动已推送,倒计时
         this.redBagStartTimer = parseInt(this.autoTime * 60)
         this.redBagStartTimerInterval = setInterval(() => {
