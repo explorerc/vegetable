@@ -251,7 +251,7 @@ export default {
       logoImg: '',
       red_packet_id: '',
       redBagTipShow: false,
-      redBagNoneShow: true,
+      redBagNoneShow: false,
       redBagShow: false,
       redBagTimeDownShow: false,
       redBagrecordList: [],
