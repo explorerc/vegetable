@@ -4,7 +4,7 @@
       <img :src="imageData"/>
       <span>{{selectBagList.length}}</span>
     </span>
-    <span class="rain-time">剩余时间　{{redBagTimer}}</span>
+    <span class="rain-time">剩余时间　{{redBagTime}}s</span>
     <img class="red-bag-item" v-for="(redBag,idx) in redBagList"
          :src="imageData"
          @click="selectRed(idx,$event)"
@@ -80,13 +80,6 @@
         default: 0.5
       }
     },
-    computed: {
-      redBagTimer () {
-        let m = ((this.redBagTime / 60 % 60 >> 0) + '').padStart(2, 0)
-        let s = ((this.redBagTime % 60 >> 0) + '').padStart(2, 0)
-        return `${m}:${s}`
-      }
-    },
     watch: {
       rainTime (newVal) {
         if (newVal) {
@@ -95,8 +88,8 @@
         } else {
           this.redBagList = []
           this.jinbiList = []
-          this.meteorList = []
-          this.bigMeteorList = []
+          // this.meteorList = []
+          // this.bigMeteorList = []
           this.selectBagList = []
         }
       },
@@ -118,8 +111,8 @@
       dealWithRain () {
         this.redBagList = []
         this.jinbiList = []
-        this.meteorList = []
-        this.bigMeteorList = []
+        // this.meteorList = []
+        // this.bigMeteorList = []
         this.selectBagList = []
         let width = document.body.clientWidth
         let height = document.body.clientHeight
@@ -144,18 +137,18 @@
             scale: this.random(5, 8) / 10
           })
         }
-        for (let i = 0; i < (this.density * 10); i++) {
-          this.meteorList.push({
-            left: this.random(0, width - 50),
-            top: this.random(0, height),
-            scale: this.random(5, 8) / 10
-          })
-          this.bigMeteorList.push({
-            left: this.random(0, width - 50),
-            top: this.random(0, height),
-            scale: this.random(5, 8) / 10
-          })
-        }
+        // for (let i = 0; i < (this.density * 10); i++) {
+        //   this.meteorList.push({
+        //     left: this.random(0, width + 50),
+        //     top: this.random(0, height + 50),
+        //     scale: this.random(5, 8) / 10
+        //   })
+        //   this.bigMeteorList.push({
+        //     left: this.random(0, width + 50),
+        //     top: this.random(0, height + 50),
+        //     scale: this.random(5, 8) / 10
+        //   })
+        // }
         this.$nextTick(() => {
           let si = setInterval(() => {
             if (this.redBagTime === 0) {
@@ -193,10 +186,11 @@
     .rain-num {
       display: inline-block;
       position: absolute;
-      top: 20px;
+      top: 80px;
       left: 100px;
       z-index: 1001;
       color: #FFD021;
+      text-shadow: 0 0 10px #FFD021;
       img {
         display: inline-block;
         width: 40px;
@@ -208,11 +202,12 @@
       display: block;
       position: absolute;
       width: 100%;
-      top: 20px;
+      top: 80px;
       left: 0;
       color: #FFD021;
       text-align: center;
       z-index: 10;
+      text-shadow: 0 0 10px #FFD021;
     }
     .red-bag-item {
       user-select: none;
@@ -238,6 +233,8 @@
       animation: mymove 5s infinite linear;
       z-index: 999998;
       background-image: url("../../assets/image/jibi.png");
+      background-repeat: no-repeat;
+      background-size: contain;
       width: 60px;
       height: 66px;
     }

@@ -138,7 +138,7 @@
            @click="handleRedBagClick"></i>
         <p class="red-bag-title">天呐，您与红包擦肩而过～</p>
         <div class="top-content">
-          <p class="red-bag-title">（手气榜 TOP5）</p>
+          <p class="red-bag-title"><i class="iconfont icon-maisuizuo"></i>手气榜 TOP5<i class="iconfont icon-maisuiyou"></i></p>
           <ul class="red-bag-list">
             <li v-if="redBagrecordList.length<=0">
               <span class="none-data">暂无数据</span>
@@ -1301,7 +1301,7 @@ export default {
   .red-bag-content {
     position: absolute;
     top: 52%;
-    left: 50%;
+    left: 50.6%;
     width: 70vw;
     margin-left: -35vw;
     padding: 0 20px;
@@ -1498,6 +1498,7 @@ export default {
     text-align: center;
     color: #8e9198;
     font-size: 28px;
+    margin-bottom: 20px;
   }
 }
 </style>
