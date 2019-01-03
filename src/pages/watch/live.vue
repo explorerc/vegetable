@@ -12,7 +12,8 @@
         <div class="icon-list" v-if="playType!=='end'">
           <span class='redpack'
                 v-if="downTimer"
-                @click='clickRedpack'><em></em>红包<em class="red-bag-btn-timer">{{downTimer|fmtTimer}}</em></span>
+                @click='clickRedpack'><em></em>红包<i class="red-bag-btn-timer">{{downTimer|fmtTimer}}</i>
+          </span>
           <span class='ques'
                 v-if="questionStatus.iconShow"
                 @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
@@ -772,19 +773,22 @@ export default {
       font-size: 24px;
     }
   }
-  .red-bag-btn-timer {
-    display: block;
-    position: absolute;
-    left: 2px;
-    top: 60px;
-    width: 100%;
-    height: 30px;
-    text-align: center;
-    background-color: #fc5659;
-    border-radius: 90px;
-    font-size: 12px;
-    line-height: 35px;
-    color: #fff;
+  .redpack{
+    position: relative;
+    .red-bag-btn-timer {
+      display: block;
+      position: absolute;
+      left: 2px;
+      bottom: -18px;
+      width: 100%;
+      height: 30px;
+      text-align: center;
+      background-color: #fc5659;
+      border-radius: 90px;
+      font-size: 24px;
+      line-height: 36px;
+      color: #fff;
+    }
   }
 }
 /* 可以设置不同的进入和离开动画 */

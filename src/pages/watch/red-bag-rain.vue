@@ -1,10 +1,10 @@
 <template>
   <div class="red-bag-rain" v-if="rainTime">
     <span class="rain-num">
-      <!-- <img :src="imageData"/> -->
-      <span>已抢到 {{selectBagList.length}} 个红包</span>
+      <img :src="imageData"/>
+      <span>{{selectBagList.length}}</span>
     </span>
-    <span class="rain-time">{{redBagTimer}}s</span>
+    <span class="rain-time">剩余时间　{{redBagTime}}s</span>
     <img class="red-bag-item" v-for="(redBag,idx) in redBagList"
          :src="imageData"
          @click="selectRed(idx,$event)"
@@ -80,17 +80,6 @@
         default: 0.5
       }
     },
-    computed: {
-      redBagTimer () {
-        let m = ((this.redBagTime / 60 % 60 >> 0) + '').padStart(2, 0)
-        let s = ((this.redBagTime % 60 >> 0) + '').padStart(2, 0)
-        if (m * 1 > 0) {
-          return `${m}:${s}`
-        } else {
-          return `${s}`
-        }
-      }
-    },
     watch: {
       rainTime (newVal) {
         if (newVal) {
@@ -99,8 +88,8 @@
         } else {
           this.redBagList = []
           this.jinbiList = []
-          this.meteorList = []
-          this.bigMeteorList = []
+          // this.meteorList = []
+          // this.bigMeteorList = []
           this.selectBagList = []
         }
       },
@@ -122,8 +111,8 @@
       dealWithRain () {
         this.redBagList = []
         this.jinbiList = []
-        this.meteorList = []
-        this.bigMeteorList = []
+        // this.meteorList = []
+        // this.bigMeteorList = []
         this.selectBagList = []
         let width = document.body.clientWidth
         let height = document.body.clientHeight
@@ -148,18 +137,18 @@
             scale: this.random(5, 8) / 10
           })
         }
-        for (let i = 0; i < (this.density * 10); i++) {
-          this.meteorList.push({
-            left: this.random(0, width - 50),
-            top: this.random(0, height),
-            scale: this.random(5, 8) / 10
-          })
-          this.bigMeteorList.push({
-            left: this.random(0, width - 50),
-            top: this.random(0, height),
-            scale: this.random(5, 8) / 10
-          })
-        }
+        // for (let i = 0; i < (this.density * 10); i++) {
+        //   this.meteorList.push({
+        //     left: this.random(0, width + 50),
+        //     top: this.random(0, height + 50),
+        //     scale: this.random(5, 8) / 10
+        //   })
+        //   this.bigMeteorList.push({
+        //     left: this.random(0, width + 50),
+        //     top: this.random(0, height + 50),
+        //     scale: this.random(5, 8) / 10
+        //   })
+        // }
         this.$nextTick(() => {
           let si = setInterval(() => {
             if (this.redBagTime === 0) {
@@ -186,97 +175,96 @@
 </script>
 
 <style lang="scss" scoped>
-.red-bag-rain {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  .rain-num {
-    display: inline-block;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1001;
-    color: #ffd021;
-    font-size: 46px;
-    text-shadow: 0px 0px 18px rgba(255, 208, 33, 1);
-    img {
-      display: inline-block;
-      width: 40px;
-      height: 50px;
-      vertical-align: middle;
-    }
-  }
-  .rain-time {
-    display: block;
-    position: absolute;
+  .red-bag-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    top: 20px;
-    left: 0;
-    color: #ffd021;
-    text-align: center;
-    z-index: 10;
-    font-size: 46px;
-    text-shadow: 0px 0px 18px rgba(255, 208, 33, 1);
-  }
-  .red-bag-item {
-    user-select: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: inline-block;
-    animation: mymove 5s infinite linear;
-    z-index: 999999;
-    &:hover {
-      cursor: pointer;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 1000;
+    .rain-num {
+      display: inline-block;
+      position: absolute;
+      top: 80px;
+      left: 100px;
+      z-index: 1001;
+      color: #FFD021;
+      text-shadow: 0 0 10px #FFD021;
+      img {
+        display: inline-block;
+        width: 40px;
+        height: 50px;
+        vertical-align: middle;
+      }
     }
-    &:active {
-      opacity: 0.9;
+    .rain-time {
+      display: block;
+      position: absolute;
+      width: 100%;
+      top: 80px;
+      left: 0;
+      color: #FFD021;
+      text-align: center;
+      z-index: 10;
+      text-shadow: 0 0 10px #FFD021;
+    }
+    .red-bag-item {
+      user-select: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      animation: mymove 5s infinite linear;
+      z-index: 999999;
+      &:hover {
+        cursor: pointer;
+      }
+      &:active {
+        opacity: .9;
+      }
+    }
+    .jinbi {
+      user-select: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      animation: mymove 5s infinite linear;
+      z-index: 999998;
+      background-image: url("../../assets/image/jibi.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 60px;
+      height: 66px;
+    }
+    .meteor {
+      user-select: none;
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 999997;
     }
   }
-  .jinbi {
-    user-select: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: inline-block;
-    animation: mymove 5s infinite linear;
-    z-index: 999998;
-    background-image: url('../../assets/image/jibi.png');
-    width: 60px;
-    height: 66px;
-  }
-  .meteor {
-    user-select: none;
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 999997;
-  }
-}
 
-.hidden-red {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+  .hidden-red {
+    opacity: 0;
+    transition: opacity .3s;
+  }
 
-@keyframes mymove {
-  to {
-    top: 110vh;
+  @keyframes mymove {
+    to {
+      top: 110vh;
+    }
   }
-}
 
-@keyframes myMeteorMove {
-  from {
-    left: 30vh;
+  @keyframes myMeteorMove {
+    from {
+      left: 30vh;
+    }
+    to {
+      top: 100vh;
+    }
   }
-  to {
-    top: 100vh;
-  }
-}
 </style>
