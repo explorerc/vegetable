@@ -191,6 +191,11 @@ export default {
             top: 180px;
             right: 0;
           }
+          img {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }

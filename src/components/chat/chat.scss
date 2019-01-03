@@ -129,10 +129,12 @@
   height: 100%;
   width: 100%;
   position: relative;
-
+  padding-bottom:10px;
+  .mint-loadmore {
+    overflow: visible;
+  }
   .chat-list {
     // overflow-y: scroll;
-
     dl {
       position: relative;
       padding: 0px 30px;
