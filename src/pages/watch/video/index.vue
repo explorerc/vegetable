@@ -1,15 +1,15 @@
 <template>
   <div class="play-container">
-    <div class="play-video-box"
+    <!-- <div class="play-video-box pre"
          :id="playBoxId"
          v-if="playType=='pre'">
       <img v-if="imageSrc"
            :src="imageSrc"
            class="v-mark-img">
-    </div>
+    </div> -->
     <div class="play-video-box"
          :id="playBoxId"
-         v-else-if="playType=='live'"></div>
+         v-if="playType=='live'"></div>
     <div class="play-video-box"
          :id="playBoxId"
          v-else-if="playType=='vod'">
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div v-if="!isPlay && (playType=='vod'||playType=='live' || playType=='warm')"
+    <div v-if="!isPlay && (playType=='vod'||playType=='live' || playType=='warm' || playType=='pre')"
          class="v-mark"
          @click="startPlay">
       <div class="image-bg"
