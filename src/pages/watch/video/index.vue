@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div v-if="!isPlay && (playType=='vod'||playType=='live' || playType=='warm' || playType=='pre')"
+    <div v-show="!isPlay && (playType=='vod'||playType=='live' || playType=='warm' || playType=='pre')"
          class="v-mark"
          @click="startPlay">
       <div class="image-bg"
@@ -249,7 +249,7 @@ export default {
         return
       }
       this.isPlay = !this.isPlay
-      this.imageUrl = ''
+      // this.imageUrl = ''
       this.qualitys = window.VhallPlayer.getQualitys()
       window.VhallPlayer.play()
       if (this.playType !== 'live') {
@@ -284,7 +284,7 @@ export default {
         activityId: this.$route.params.id
       }).then((res) => {
         if (res.data) {
-          this.imageUrl = res.data.cover
+          this.imageUrl = res.data.cover.length ? res.data.cover : this.activityInfo.imgUrl
           if (res.data.replay.type === 'LINK') { // 外链
             this.outLineLink = res.data.replay.link
           } else if (res.data.replay.type === 'VIDEO' || res.data.replay.type === 'SLICE') { // 回放视频
