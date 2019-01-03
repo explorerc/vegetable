@@ -1,5 +1,5 @@
 <template>
-  <div class="v-guid">
+  <div class="v-guid" :class='{"isLoading":isLoading}'>
     <div class="v-wrap">
       <p class="v-title">
         {{activity.title}}
@@ -181,8 +181,11 @@
                       @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
               <a href="javascript:;"
                  class="v-registered"
+                 @click="jumpPage( MOBILE_HOST + 'CheckState/')">已报名</a>
+              <!-- <a href="javascript:;"
+                 class="v-registered"
                  @click="jumpPage( MOBILE_HOST + 'CheckState/')"
-                 v-if="!this.user.phone">已报名</a>
+                 v-if="!this.user.phone">已报名</a> -->
             </template>
           </template>
           <template v-else>
@@ -306,6 +309,7 @@ export default {
         channelId: '',
         accountId: ''
       },
+      isLoading: true,
       visitorObj: {} // 游客信息
     }
   },
@@ -430,6 +434,7 @@ export default {
         this.viewLimit.finishTime = res.data.viewLimit.finishTime
         this.extChannel = res.data.activity.extChannelRoom
         this.refer = this.$route.query.refer
+        this.isLoading = false
         if (this.refer !== undefined) {
           localStorage.setItem(`refer_${this.$route.params.id}`, this.refer)
         }
@@ -479,20 +484,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .v-guid {
-  position: absolute;
-  top: 790px;
+  &.isLoading {
+    opacity: 0;
+  }
   width: 100%;
-  bottom: 0;
   .v-wrap {
-    position: absolute;
-    -webkit-overflow-scrolling: touch;
-    top: 50%;
-    overflow: auto;
     max-height: 100%;
     padding: 30px;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
   }
   .v-title {
     font-size: 40px;

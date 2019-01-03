@@ -76,7 +76,7 @@
       <div slot="msgBox"
            class="red-bag-box">
         <span class="close-btn" @click="handleRedBagClick">
-          <i class="iconfont icon-close"></i>
+          <i class="iconfont icon-delete"></i>
         </span>
         <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title" style="font-size: 20px;">红包雨还剩{{downTimer|fmtTimer}}到来</p>
@@ -91,23 +91,25 @@
         </div>
         <span class="red-bag-info-btn" v-if="!loginInfo" @click="clickLoginUser">马上登录</span>
         <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==1" @click="immShare">马上分享</span>
-        <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==2" :class='{"isSent":isSent}' @click="sendPassword(isSent)">{{isSent ? `您已成功发送口令` : `发送口令`}}</span>
+        <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==2" @click="sendPassword(isSent)">{{isSent ? `您已成功发送口令` : `发送口令`}}</span>
         <span class="red-bag-info-btn" v-if="loginInfo && redBagInfo.condition==3" @click="immInputQuestions">马上填写</span>
       </div>
     </message-box>
     <!-- 红包雨 -- 倒计时-->
-    <message-box v-if="loginInfo && redBagTimeDownShow"
+    <message-box v-if="redBagTimeDownShow"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
            class="red-bag-box">
         <span class="close-btn" @click="handleRedBagClick">
-          <i class="iconfont icon-close"></i>
+          <i class="iconfont icon-delete"></i>
         </span>
         <div class="red-bag-content">
-          <p class="red-bag-title">红包雨降临倒计时</p>
+          <p class="red-bag-title" style="margin-top: 6vw;">红包雨降临倒计时</p>
           <span class="time-down">{{timer}}</span>
-          <p class="red-bag-info">点击屏幕上落下的红包，手速越快红包越大！</p>
+          <p class="red-bag-info" style='position:relative;bottom:20vm;' v-if="!loginInfo">快来<span class="login-link" @click="clickLoginUser">登录</span>参与红包雨领取现金吧</p>
+          <p class="red-bag-info" style="width: 65%;margin: 0 auto;" v-else>点击屏幕上落下的红包 手速越快红包越大！</p>
         </div>
+        <span class="red-bag-info-btn" v-if="!loginInfo" @click="clickLoginUser">马上登录</span>
       </div>
     </message-box>
     <!-- 红包雨 -- 抢到红包 -->
@@ -117,7 +119,7 @@
       <div slot="msgBox"
            class="red-bag-box get-red-bag">
         <span class="close-btn" @click="handleRedBagClick">
-          <i class="iconfont icon-close"></i>
+          <i class="iconfont icon-delete"></i>
         </span>
         <div class="red-bag-content">
           <p class="red-bag-title">恭喜您抢到</p>
@@ -132,29 +134,33 @@
                  type="noneModal"
                  @handleClick="handleRedBagClick">
       <div slot="msgBox"
-           class="red-bag-box red-bag-top"
-           style="background-color: #fff;">
-        <i class="iconfont icon-close"
-           @click="handleRedBagClick"></i>
-        <p class="red-bag-title">天呐，您与红包擦肩而过～</p>
-        <div class="top-content">
-          <p class="red-bag-title"><i class="iconfont icon-maisuizuo"></i>手气榜 TOP5<i class="iconfont icon-maisuiyou"></i></p>
-          <ul class="red-bag-list">
-            <li v-if="redBagrecordList.length<=0">
-              <span class="none-data">暂无数据</span>
-            </li>
-            <li v-else
-                v-for="redBagInfo in redBagrecordList">
+           class="red-bag-box red-bag-top">
+        <!--<i class="iconfont icon-delete"-->
+           <!--@click="handleRedBagClick"></i>-->
+        <span class="close-btn" @click="handleRedBagClick">
+          <i class="iconfont icon-delete"></i>
+        </span>
+        <div class="red-bag-result">
+          <p class="red-bag-title">天呐，您与红包擦肩而过～</p>
+          <div class="top-content">
+            <p class="red-bag-title"><i class="iconfont icon-maisuizuo"></i>手气榜 TOP5<i class="iconfont icon-maisuiyou"></i></p>
+            <ul class="red-bag-list">
+              <li v-if="redBagrecordList.length<=0">
+                <span class="none-data">暂无数据</span>
+              </li>
+              <li v-else
+                  v-for="redBagInfo in redBagrecordList">
               <span class="head-icon"
                     v-if="!redBagInfo.avatar"></span>
-              <span class="head-icon"
-                    v-else
-                    :style="{backgroundImage: `url(${$imgHost}/${redBagInfo.avatar})`}"></span>
-              <span class="nick-name">{{redBagInfo.nick_name}}</span>
-              <span class="red-bag-money fr">￥{{redBagInfo.amount}}</span>
-            </li>
+                <span class="head-icon"
+                      v-else
+                      :style="{backgroundImage: `url(${$imgHost}/${redBagInfo.avatar})`}"></span>
+                <span class="nick-name">{{redBagInfo.nick_name}}</span>
+                <span class="red-bag-money fr">￥{{redBagInfo.amount}}</span>
+              </li>
 
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </message-box>
@@ -245,7 +251,7 @@ export default {
       logoImg: '',
       red_packet_id: '',
       redBagTipShow: false,
-      redBagNoneShow: false,
+      redBagNoneShow: true,
       redBagShow: false,
       redBagTimeDownShow: false,
       redBagrecordList: [],
@@ -716,7 +722,6 @@ export default {
       this.handleRedBagClick()
     },
     handleRedBagClick (e) {
-      this.isSent = false
       this.redBagTipShow = false
       this.redBagTimeDownShow = false
       this.redBagShow = false
@@ -833,6 +838,7 @@ export default {
         this.initRedBayRainTimer(10)
       } else {
         this.redBagTipShow = true
+        this.isSent = false
         // 红包雨活动已推送,倒计时
         this.redBagStartTimer = parseInt(this.autoTime * 60)
         this.redBagStartTimerInterval = setInterval(() => {
@@ -1260,7 +1266,7 @@ export default {
       }
     }
     .custom-box {
-      top: 48%;
+      top: 44%;
       padding-bottom: 30px;
     }
   }
@@ -1279,23 +1285,23 @@ export default {
     position: absolute;
     width: 52px;
     height: 52px;
-    line-height: 38px;
     left: 50%;
     margin-left: -26px;
-    bottom: -30px;
-    padding: 4px;
-    border: solid 2px #fff;
-    border-radius: 50%;
+    bottom: -20px;
     text-align: center;
-    opacity: 0.9;
     &:hover {
       cursor: pointer;
       opacity: 0.8;
     }
+    .icon-delete{
+      font-size: 54px;
+      color: #fff;
+    }
     .icon-close {
       font-size: 30px;
-      font-weight: bold;
+      font-weight: 900;
       color: #fff;
+      line-height: 30px;
     }
   }
   .red-bag-content {
@@ -1318,6 +1324,7 @@ export default {
     text-align: center;
     background-color: $color-default;
     color: #333;
+    opacity: .9;
     &:hover {
       cursor: pointer;
       background-color: $color-default-hover;
@@ -1352,7 +1359,7 @@ export default {
       padding-right: 20px;
     }
     .detail-top {
-      margin-top: 190px;
+      margin-top: 220px;
       font-size: 48px;
     }
     .detail-bottom {
@@ -1363,13 +1370,19 @@ export default {
 
   &.red-bag-top {
     width: 80vw;
-    padding: 30px;
     height: auto;
     margin-bottom: -2px;
     color: #333;
-    background-color: #ec0627;
-    background: linear-gradient(#ff6700, #fe0025);
     border-radius: 10px;
+    padding-bottom: 50px;
+    background-image: none;
+    .red-bag-result{
+      width: 100%;
+      padding: 30px;
+      border-radius: 10px;
+      background-color: #ec0627;
+      background: linear-gradient(#ff6700, #fe0025);
+    }
     .red-bag-title {
       font-size: 28px;
       line-height: 10vw;
@@ -1377,7 +1390,7 @@ export default {
     }
     .icon-close {
       font-size: 34px;
-      font-weight: bold;
+      font-weight: 900;
       float: right;
     }
     .top-content {
@@ -1403,13 +1416,13 @@ export default {
     &.tip-info {
       background-color: #d90b25;
       padding: 20px;
-      margin: 6vw 0;
-      border-radius: 3px;
+      margin: 3.6vw 0;
+      border-radius: 8px;
       color: #fff;
       opacity: 0.8;
       font-size: 28px;
       height: 34vw;
-      width: 66vw;
+      width: 65vw;
     }
 
     .login-link {
@@ -1429,11 +1442,12 @@ export default {
     color: #fff;
     font-size: 30px;
     line-height: 30px;
+    margin-top: 40px;
   }
 
   .time-down {
     display: inline-block;
-    margin: 10px 0 30px 0;
+    margin: 20px 0 80px 0;
     font-size: 72px;
     color: #fff;
   }
@@ -1458,6 +1472,10 @@ export default {
       width: 100%;
       padding: 0 20px 20px 20px;
       text-align: left;
+      border: solid 1px #e2e2e2;
+      &:last-child{
+        border: none;
+      }
       .head-icon {
         display: inline-block;
         width: 90px;

@@ -1,13 +1,10 @@
 <template>
   <div class="v-select">
-    <el-select v-model="val" placeholder="请选择">
-      <el-option
-        v-for="item in selectOptions"
-        :key="item.id"
-        :label="item.value"
-        :value="item.key">
-      </el-option>
-    </el-select>
+    <select v-model="val">
+      <option value="">请选择</option>
+      <option v-for="item in selectOptions" :key="item.id" :value="item.key">{{item.value}}</option>
+    </select>
+    <i class="iconfont icon-wenjuan_xialatixialajiantou-"></i>
   </div>
 </template>
 <script>
@@ -27,9 +24,6 @@
     created () {
     },
     watch: {
-      // selectValue: function () {
-      //   this.val = this.selectValue
-      // },
       val: function () {
         this.$emit('selected', this.val)
       }
@@ -40,18 +34,42 @@
 </script>
 <style lang="scss" scoped>
 .v-select /deep/ {
+  position: relative;
   width: 100%;
   margin-bottom: 50px;
-  .el-select {
+  select {
+    display: inline-block;
     width: 100%;
     height: 90px;
-    line-height: 88px;
+    line-height: 1.2 !important;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    .el-input__inner {
-      color: #888;
-      padding: 0 20px;
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    transition: all 0.3s;
+    padding: 0 10px;
+    -webkit-appearance: none;
+    font-size: 28px;
+    &:focus {
+      border: 1px solid #888;
     }
+  }
+  .iconfont {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s;
+    transform: translateY(-50%);
+    transform-origin: 50% 20%;
+    color: #ccc;
+  }
+  select:focus + i.iconfont {
+    transform: rotate(180deg);
   }
 }
 </style>

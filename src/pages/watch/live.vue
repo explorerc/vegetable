@@ -12,10 +12,8 @@
         <div class="icon-list" v-if="playType!=='end'">
           <span class='redpack'
                 v-if="downTimer"
-                @click='clickRedpack'><em></em>红包
-               <i class="red-bag-btn-timer">{{downTimer|fmtTimer}}</i>
+                @click='clickRedpack'><em></em>红包<i class="red-bag-btn-timer">{{downTimer|fmtTimer}}</i>
           </span>
-
           <span class='ques'
                 v-if="questionStatus.iconShow"
                 @click='clickQues'><em v-if="questionStatus.redIcon"></em>问卷</span>
@@ -787,8 +785,8 @@ export default {
       text-align: center;
       background-color: #fc5659;
       border-radius: 90px;
-      font-size: 12px;
-      line-height: 35px;
+      font-size: 24px;
+      line-height: 36px;
       color: #fff;
     }
   }

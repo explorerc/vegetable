@@ -98,14 +98,15 @@ export default {
       }).catch((err) => {
         this.isClick = true
         if (err.code === 12004) {
-          this.$refs.codeCom.refreshCode()
-          this.code = ''
           this.phoneError = err.msg
+          this.code = ''
+          if (this.$refs.codeDom) {
+            this.$refs.codeCom.refreshCode()
+          }
         } else if (err.code === 10020) {
           this.code = ''
           this.codeError = err.msg
         } else {
-          this.$refs.codeCom.refreshCode()
           this.$messageBox({
             header: '提示',
             content: err.msg,
@@ -116,6 +117,9 @@ export default {
               }
             }
           })
+          if (this.$refs.codeDom) {
+            this.$refs.codeCom.refreshCode()
+          }
         }
       })
     },
