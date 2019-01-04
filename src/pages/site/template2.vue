@@ -454,7 +454,7 @@ export default {
     .block1-group {
       .block1-item {
         width: 200px;
-        height: 90px;
+        min-height: 90px;
         margin-right: 30px;
         margin-bottom: 30px;
         border: 1px solid rgba(226, 226, 226, 1);
@@ -467,6 +467,10 @@ export default {
           margin: auto;
         }
       }
+    }
+    .block1-content .block1-group .block1-item.top .content {
+      word-break: break-all;
+      position: static;
     }
   }
   .section9 {
