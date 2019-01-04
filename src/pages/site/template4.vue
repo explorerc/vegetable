@@ -324,7 +324,7 @@ export default {
       width: 750px;
       .block1-item {
         width: 120px;
-        height: 120px;
+        min-height: 120px;
         margin-right: 126px;
         margin-bottom: 72px;
         &:nth-of-type(3) {
@@ -336,6 +336,10 @@ export default {
           margin: auto;
         }
       }
+    }
+    .block1-content .block1-group .block1-item .content {
+      word-break: break-all;
+      position: static;
     }
   }
   .section7 {

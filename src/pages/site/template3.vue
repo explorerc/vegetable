@@ -191,7 +191,7 @@ export default {
         }
         img {
           width: 350px;
-          height: auto;
+          height: 440px;
           margin: auto;
         }
       }
@@ -341,6 +341,10 @@ export default {
           margin-right: 0;
         }
       }
+    }
+    .block1-content .block1-group .block1-item.top .content{
+      word-break: break-all;
+      position:static;
     }
   }
   .section7 {

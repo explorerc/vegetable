@@ -5,7 +5,7 @@
         <el-carousel-item :class="item.type"  v-for="(item,index) in value.list" :key="'block2_item_'+index">
           <a target="_black" :href="item.hrefType === '_sub' ? `${MOBILE_HOST}guide/${id}` : item.link | voidLink"  >
             <div v-if="item.bgColor" class="left-area" :style="{backgroundColor:item.bgColor}"></div>
-            <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
+            <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:`https://${item.img}`">
             <div class="content"  >
               <div v-html="item.content"></div>
               <com-btn v-if="value.showBtn" :edit="value.enable" v-model="item.btn"></com-btn>
@@ -44,8 +44,8 @@ export default {
     return {
       active: -1,
       id: this.$route.params.id,
-      MOBILE_HOST: process.env.MOBILE_HOST,
-      host: process.env.IMGHOST + '/',
+      MOBILE_HOST: `https:${process.env.MOBILE_HOST}`,
+      host: `https:${process.env.IMGHOST}` + '/',
       autoplay: true
     }
   },

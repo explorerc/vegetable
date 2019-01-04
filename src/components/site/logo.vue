@@ -15,6 +15,11 @@ export default {
       host: process.env.IMGHOST + '/'
     }
   },
+  mounted () {
+    console.log(this.url)
+    console.log(this.host)
+    console.log(this.value.url)
+  },
   methods: {
     uploadLoad (data) {
       let ret = JSON.parse(data.data)
@@ -28,7 +33,7 @@ export default {
       if (this.value.url.indexOf('mp') === 0) {
         return this.host + this.value.url
       } else {
-        return this.value.url
+        return `https://${this.value.url}`
       }
     }
   }

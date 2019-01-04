@@ -252,7 +252,7 @@ export default {
     })
   },
   mounted () {
-    this.getHistroy()
+    // this.getHistroy()
     if (!this.isWatch) {
       this.isLogin = true
     }

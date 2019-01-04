@@ -293,10 +293,8 @@ export default {
     this.startInit = true
     this.initMsgServe()
     this.getQuestionsStatus()
-    // 没有直播简介直接拉取最近聊天纪律
-    if (!this.activityInfo.description) {
-      this.initHistroy()
-    }
+    // 拉取最近聊天纪律
+    this.initHistroy()
   },
   created () {
     // this.initToken()
@@ -773,7 +771,7 @@ export default {
       font-size: 24px;
     }
   }
-  .redpack{
+  .redpack {
     position: relative;
     .red-bag-btn-timer {
       display: block;
@@ -886,7 +884,7 @@ export default {
   left: 0;
   overflow-y: auto;
   z-index: 10;
-  .touch-scroll{
+  .touch-scroll {
     height: calc(100% - 80px);
     overflow-x: hidden;
     overflow-y: auto;
