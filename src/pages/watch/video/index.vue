@@ -39,10 +39,12 @@
     <div class="v-click-modal"
          @click="modalClick"
          v-if="(playType=='vod'&&!outLineLink) || playType=='warm' || (playType=='live'&&role=='watcher')">
-      <span class="end-box default-auto-box" v-if="isAuto">
-        <i class="iconfont icon-yinpinx"></i>
-        <span>音频模式</span>
-      </span>
+      <div class="auto-image-bg" v-if="isAuto" :style="{backgroundImage:`url(${imageAutoSrc})`}">
+        <span class="end-box default-auto-box">
+          <i class="iconfont icon-yinpinx"></i>
+          <span>音频模式</span>
+        </span>
+      </div>
     </div>
     <div class="control-box-div">
       <div class="control-video-box"
@@ -86,6 +88,7 @@ export default {
       playComps: {},
       playBtnShow: false,
       imageUrl: '',
+      imageAutoUrl: '',
       recordId: '', // 视频id
       outLineLink: '', // 外链
       playBoxId: `play-vides-${Math.random()}`,
@@ -138,6 +141,9 @@ export default {
     }),
     imageSrc () {
       return this.imageUrl ? `${this.$imgHost}/${this.imageUrl}` : `${process.env.PUBLIC_PATH}${process.env.SUB_DIR}/img/default-zhike.jpg`
+    },
+    imageAutoSrc () {
+      return this.imageAutoUrl ? `${this.$imgHost}/${this.imageAutoUrl}` : `${process.env.PUBLIC_PATH}${process.env.SUB_DIR}/img/default-zhike.jpg`
     }
   },
   created () {
@@ -202,6 +208,7 @@ export default {
         this.initLivePlay()
       } else if (this.playType === 'pre') {
         this.imageUrl = this.activityInfo.imgUrl
+        this.imageAutoUrl = this.activityInfo.imgUrl
       } else if (this.playType === 'warm') { // 暖场
         this.queryWarmInfo()
       } else if (this.playType === 'vod') { // 回放
@@ -276,6 +283,7 @@ export default {
     initLivePlay () {
       if (this.role === 'watcher') { // 观看端
         this.imageUrl = this.activityInfo.imgUrl
+        this.imageAutoUrl = this.activityInfo.imgUrl
         this.initPuller()
       }
     },
@@ -369,6 +377,7 @@ export default {
     queryWarmInfo () {
       const warm = this.activityInfo.warm
       this.imageUrl = warm.imgUrl
+      this.imageAutoUrl = warm.imgUrl
       this.playBtnShow = true
       this.filename = warm.filename
       this.recordId = warm.recordId
@@ -576,14 +585,15 @@ export default {
   }
   .default-auto-box {
     top: 50px;
-    left: 110px;
+    left: 120px;
     border-radius: 5px;
-    height: 40px;
-    line-height: 36px;
+    height: 50px;
+    line-height: 50px;
     text-align: left;
     background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
-    padding: 0 40px;
+    padding: 0 20px;
+    font-size: 28px;
     .icon-yinpinx {
       color: #1bcab7;
       margin-right: 4px;
@@ -641,6 +651,16 @@ export default {
     width: 100%;
     height: 422px;
     z-index: 2;
+    .auto-image-bg{
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
   }
   .control-box-div {
     position: absolute;
