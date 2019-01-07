@@ -23,13 +23,18 @@ export default {
 <style lang='scss' scoped>
 .v-agreement /deep/ {
   .ve-message-box {
-    height: 560px;
+    max-height: 50vh;
+    padding-bottom: 30px;
     .ve-message-box__header {
       padding-top: 50px;
     }
     .ve-message-box__container {
+      padding: 0 30px;
       height: 480px;
-      overflow-y: auto;
+      overflow-y: scroll;
+    }
+    p{
+      text-align: justify;
     }
   }
   .ve-message-box__btns {

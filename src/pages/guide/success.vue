@@ -29,8 +29,20 @@
       <span v-if="activity.viewCondition === 'APPOINT'">报名成功</span>
       <span v-else-if="activity.viewCondition === 'NONE'">预约成功</span>
     </p>
-    <p v-if="activity.status != 'FINISH'">活动将于
-      <span class="v-red">{{activity.startTime}}</span>准时开播</p>
+    <!--<p v-if="activity.status != 'FINISH'">活动将于<span class="v-red">{{activity.startTime}}</span>准时开播</p>-->
+    <p class="sub-txt" v-if="activity.status != 'FINISH'">直播开始前我们会发送提醒消息，请注意查收</p>
+    <template v-if="isWxSubscribeShow">
+      <div class="wx-accounts-box" v-if="isWXqq">
+        <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNjU0MjkzNQ==&scene=126#wechat_redirect">
+          <button class="default-button primary-button">关注公众号</button>
+        </a>
+        <p class="tip-title sub-txt">如果您希望收到活动开播提醒</p>
+      </div>
+      <div class="wx-accounts-box" v-else>
+        <img class="qr-code-img" src="../../assets/image/wx-qr-code.jpg">
+        <div class="qr-code-tip sub-txt">扫描二维码，接收开播提醒</div>
+      </div>
+    </template>
   </div>
 </template>
 <script>
@@ -51,8 +63,10 @@ export default {
         status: '', // 当前活动状态 LIVING 直播中
         startTime: '', // 当前活动开始时间
         countDown: '',
-        extChannel: '' // sdk消息频道
+        extChannel: '', // sdk消息频道
+        openWechatSubscribe: 'Y'
       },
+      isWxSubscribeShow: false,
       user: {
         phone: '', // 无条件观看用户手机
         isApplay: false, // 是否已经报名
@@ -64,21 +78,18 @@ export default {
         channelId: '',
         accountId: ''
       },
+      isWXqq: false,
       visitorObj: {} // 游客信息
     }
   },
-  mounted () {
-  },
-  components: {
-  },
   created () {
+    this.isWxSubscribeShow = false
     this.getInfo()
+    this.isWXqq = this.isWx()
   },
   computed: mapState('tokenMager', {
     chatParams: state => state.chatParams
   }),
-  watch: {
-  },
   methods: {
     ...mapMutations('tokenMager', {
       setChatParams: types.CHAT_PARAMS
@@ -128,6 +139,8 @@ export default {
         this.activity.status = res.data.activity.status
         this.activity.startTime = res.data.activity.startTime
         this.activity.countDown = res.data.activity.countDown
+        this.activity.openWechatSubscribe = res.data.businessUserInfo.openWechatSubscribe
+        this.isWxSubscribeShow = res.data.businessUserInfo.openWechatSubscribe === 'Y'
         this.user.isApplay = res.data.joinInfo.isApplay
         this.user.isOrder = res.data.joinInfo.isOrder
         this.extChannel = res.data.activity.extChannelRoom
@@ -154,6 +167,15 @@ export default {
         this.$router.replace('/empty')
       })
       // this.getToken()
+    },
+    isWx () {
+      var ua = navigator.userAgent.toLowerCase()
+      var isWeixin = ua.indexOf('micromessenger') !== -1
+      if (isWeixin) {
+        return true
+      } else {
+        return false
+      }
     }
     // ,
     // getToken () {
@@ -210,12 +232,50 @@ export default {
       color: #fc5659;
     }
   }
+  .sub-txt{
+    font-size: 28px;
+    color: #555;
+  }
   .primary-button {
     width: 490px;
     height: 90px;
     border-radius: 50px;
     display: block;
     margin: 25px auto 5px;
+    font-size: 32px;
+  }
+  .wx-accounts-box{
+    width: 90%;
+    margin: 20px auto 0 auto;
+    padding: 20px 0;
+    border-radius: 10px;
+    text-align: center;
+    .tip-title{
+      width: 400px;
+      margin: 0 auto;
+      line-height: 1;
+      padding-top: 10px;
+    }
+    .primary-button{
+      display: block;
+      width: 400px;
+      margin: 0 auto;
+      height: 80px;
+      line-height: 80px;
+      font-size: 28px;
+    }
+    .qr-code-img{
+      display: inline-block;
+      width: 160px;
+      height: 160px;
+      border: solid 1px #e2e2e2;
+      vertical-align: middle;
+    }
+    .qr-code-tip{
+      margin-top: 10px;
+      text-align: center;
+      line-height: 2;
+    }
   }
 }
 </style>

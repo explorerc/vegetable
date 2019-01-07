@@ -1425,11 +1425,9 @@ export default {
     }
 
     .login-link {
-      color: $color-blue;
-
+      color: #fff;
       &:hover {
         cursor: pointer;
-        color: $color-blue-hover;
         text-decoration: underline;
         transition: color 0.2s;
       }
