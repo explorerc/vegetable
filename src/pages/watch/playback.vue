@@ -34,7 +34,7 @@
                      id="sendBoxBtn">
                   <i class="iconfont icon-biaoqing"></i>
                   <span class="v-chat-clickbox">
-                    输入文字聊天
+                    请输入聊天内容
                   </span>
                 </div>
               </template>
