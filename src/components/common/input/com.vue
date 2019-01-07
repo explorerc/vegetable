@@ -275,7 +275,7 @@
       }
     }
     .limit {
-      font-size: 14px;
+      font-size: 28px;
       color: #555555;
       position: absolute;
       top: 50%;
