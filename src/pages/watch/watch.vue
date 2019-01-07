@@ -1112,8 +1112,9 @@ export default {
           bottom: 0px;
           right: 0;
           left: 0;
-          overflow-x: hidden;
-          overflow-y: auto;
+          /*overflow-x: hidden;*/
+          /*overflow-y: auto;*/
+          overflow: hidden;
           background-color: #f5f5f5;
           word-break: break-all;
         }
@@ -1144,7 +1145,7 @@ export default {
               padding: 0 20px;
               border-radius: 8px;
               background-color: #f5f5f5;
-              color: #888888;
+              color: #bfbfbf;
               margin-left: 20px;
             }
             .icon-biaoqing {

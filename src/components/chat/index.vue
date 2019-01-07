@@ -206,7 +206,7 @@ export default {
       timer: null,
       isLogin: false,
       stopScroll: false,
-      chatPlaceholder: '输入想说的话…',
+      chatPlaceholder: '请输入聊天内容',
       announcePlaceholder: '请输入公告内容',
       aBScroll: null,
       imgHost: process.env.IMGHOST + '/',
@@ -360,7 +360,7 @@ export default {
         password: this.value
       })
       this.value = ''
-      this.chatPlaceholder = '输入想说的话…'
+      this.chatPlaceholder = '请输入聊天内容…'
       this.faceOpen = false
       this.$emit('closeChatBox', true)
     },

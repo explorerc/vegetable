@@ -44,7 +44,7 @@ export default {
       sendOpen: false,
       value: '',
       faceOpen: false,
-      chatPlaceholder: '输入想说的话…', /* 表情数组 */
+      chatPlaceholder: '请输入聊天内容', /* 表情数组 */
       faceArr: faceJs.faceArr
     }
   },
