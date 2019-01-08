@@ -310,9 +310,9 @@
         overflow: hidden;
       }
       .v-save {
-        width: 300px;
-        height: 60px;
-        line-height: 60px;
+        width: 80%;
+        height: 90px;
+        line-height: 90px;
         background-color: #ffd021;
         color: #222;
         margin: 60px auto 50px;

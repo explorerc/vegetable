@@ -206,7 +206,7 @@ export default {
       .el-input__inner {
         border: 1px solid #e2e2e2;
         height: 90px;
-        line-height: 90px;
+        line-height: 1.2;
       }
       .el-icon-arrow-up {
         line-height: 10px;
