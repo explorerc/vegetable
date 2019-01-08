@@ -158,12 +158,14 @@
     </transition>
 
     <!-- 问卷 -->
-    <comQuestions :dragData="dragData"
-                  v-if="questionsShow"
-                  :naireId="naireId"
-                  :visitorId="visitorId"
-                  :questions="questions"
-                  @questionSuccess="questionSuccess"> </comQuestions>
+    <transition name="left-right">
+      <comQuestions :dragData="dragData"
+                    v-if="questionsShow"
+                    :naireId="naireId"
+                    :visitorId="visitorId"
+                    :questions="questions"
+                    @questionSuccess="questionSuccess"> </comQuestions>
+    </transition>
     <message-box v-if="questionsSubmissionShow"
                  header=''
                  confirmText='提交'

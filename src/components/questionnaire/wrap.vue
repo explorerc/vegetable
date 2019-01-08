@@ -183,7 +183,7 @@ export default {
       width: 100% !important;
       input {
         height: 90px;
-        line-height: 90px;
+        line-height: 1.2;
         font-size: 28px;
         border-radius: 4px !important;
       }
@@ -206,7 +206,7 @@ export default {
       .el-input__inner {
         border: 1px solid #e2e2e2;
         height: 90px;
-        line-height: 90px;
+        line-height: 1.2;
       }
       .el-icon-arrow-up {
         line-height: 10px;
@@ -216,7 +216,7 @@ export default {
       width: 100%;
       .el-input__inner {
         height: 90px;
-        line-height: 90px;
+        line-height: 1.2;
       }
       .el-input__icon {
         line-height: 90px;
