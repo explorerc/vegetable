@@ -1,8 +1,11 @@
 <template>
   <div class="v-signup">
     <div class="v-wrap">
-      <p class="v-title">
-        为了更好的接收活动直播提醒，请填写如下信息：
+      <p class="v-title"  v-if='activity.viewCondition === "APPOINT"'>
+        请填写报名表单，参加此次直播活动。
+      </p>
+      <p class="v-title"  v-else>
+        活动预约后，您将在开播前收到开播提醒，确保不会错过精彩内容。
       </p>
       <div class="v-operation"
            v-if="activity.viewCondition === 'APPOINT'">
@@ -35,7 +38,8 @@
             <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
           </div>
         </div>
-        <button class="static-btn primary-button" @click="submitAppoint" :disabled="!checkAgreement">提交</button>
+        <button class="static-btn primary-button" @click="submitAppoint" :disabled="!checkAgreement">立即报名</button>
+        <div @click='back' class='back'>返回</div>
         <!-- <transition name='fade'>
           <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
         </transition> -->
@@ -64,13 +68,14 @@
                                :maxLength="6"
                                :errorMsg.sync="codeError"
                                codeType="CONSUMER_USER_LOGIN"></com-verification-code>
-        <button class="static-btn primary-button" @click="submit" >提交</button>
+        <button class="static-btn primary-button" @click="submit" >立即预约</button>
+        <div @click='back' class='back'>返回</div>
         <!-- <transition name='fade'>
           <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
         </transition> -->
       </div>
       <p class="v-explain">
-        <el-checkbox v-model="checkAgreement">我已阅读并遵守<span class="v-blue" @click="showAgreement()">《服务条款》</span></el-checkbox>
+        <el-checkbox v-model="checkAgreement">我已阅读并遵守</el-checkbox><span class="v-blue" @click="showAgreement()">《服务条款》</span>
       </p>
     </div>
   </div>
@@ -497,6 +502,9 @@ export default {
         obj[item.id] = item.val
       })
       return JSON.stringify(obj)
+    },
+    back () {
+      this.$router.replace('/guide/' + this.$route.params.id)
     }
   }
 }
@@ -614,6 +622,10 @@ export default {
       position: relative;
       top: 0.5px;
     }
+  }
+  .back {
+    text-align: center;
+    margin-bottom: 40px;
   }
 }
 </style>

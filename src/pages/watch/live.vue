@@ -319,12 +319,14 @@ export default {
     }),
     tabChange () {
       if (this.tabValue === 2) {
-        if (!this.$refs.chatbox.tipsShow) {
-          const _that = this
-          setTimeout(function () {
-            _that.$refs.chatbox.scrollBottom(10)
-          }, 200)
-        }
+        // if (!this.$refs.chatbox.tipsShow) {
+        //   alert(1)
+        //   const _that = this
+        //   setTimeout(function () {
+        //     _that.$refs.chatbox.scrollBottom(10)
+        //   }, 200)
+        // }
+        this.$refs.chatbox.scrollToBtm()
         this.$nextTick(() => {
           let iconList = document.querySelector('.icon-list')
           iconList.style.bottom = '50px'
@@ -436,8 +438,11 @@ export default {
     },
     chatClick () {
       // 点击弹出聊天窗口
-      EventBus.$emit('chatOpen')
-      document.getElementsByClassName('inp')[0].children[0].focus()
+      EventBus.$emit('chatOpen', 'openFace')
+      // debugger
+      // this.$nextTick(() => {
+      //   document.getElementsByClassName('v-send-box-bg')[0].click()
+      // })
     },
     closeChatBox () {
       // 关闭聊天窗口

@@ -1,5 +1,5 @@
 <template>
-    <div class="v-send-box-bg" v-show='chatOpen'>
+    <div class="v-send-box-bg" v-show='chatOpen' >
       <div class="send-box clearfix" :class='{"open":sendOpen}'
            id="sendBox">
         <div class="top">
@@ -49,10 +49,14 @@ export default {
     }
   },
   mounted () {
-    EventBus.$on('chatOpen', () => {
+    EventBus.$on('chatOpen', (openFace) => {
       this.chatOpen = true
       setTimeout(() => {
         this.sendOpen = true
+        document.getElementsByClassName('inp')[0].children[0].focus()
+        if (openFace) {
+          this.changeFace()
+        }
       }, 50)
     })
     EventBus.$on('chatClose', () => {
@@ -61,6 +65,7 @@ export default {
   },
   methods: {
     changeFace () {
+      debugger
       this.faceOpen = !this.faceOpen
     },
     cancelClick () {
@@ -73,6 +78,7 @@ export default {
       })
       this.cancelClick()
       this.value = ''
+      document.getElementsByClassName('inp')[0].children[0].blur()
     },
     /* 选择表情 */
     inFace (index) {
@@ -112,7 +118,7 @@ export default {
     transition: all 0.3s ease-in-out;
     &.open {
       transition: all 0.3s ease-in-out;
-      top: 330px;
+      top: 130px;
     }
     .top {
       width: 100%;

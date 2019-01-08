@@ -48,10 +48,10 @@
             <template v-else>
               <!-- 未报名 -->
               <button class="primary-button"
-                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
+                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">报名</button>
               <a href="javascript:;"
                  class="v-registered"
-                 @click="jumpPage( MOBILE_HOST + 'CheckState/')" >已报名</a>
+                 @click="jumpPage( MOBILE_HOST + 'CheckState/')" >已报名入口</a>
             </template>
           </template>
           <template v-else>
@@ -85,7 +85,7 @@
             <template v-else>
               <button class="primary-button"
                       @click="jumpPage( MOBILE_HOST + 'CheckState/')"
-                      v-if="!this.user.phone">报名验证</button>
+                      v-if="!this.user.phone">已报名入口</button>
               <button class="primary-button v-disabled"
                       v-else>报名已截止</button>
             </template>
@@ -177,7 +177,7 @@
             <template v-else>
               <!-- 未报名 -->
               <button class="primary-button"
-                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
+                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">报名</button>
               <a href="javascript:;"
                  class="v-registered"
                  @click="jumpPage( MOBILE_HOST + 'CheckState/')">已报名</a>
@@ -227,7 +227,7 @@
             <template v-else>
               <button class="primary-button"
                       @click="jumpPage( MOBILE_HOST + 'CheckState/')"
-                      v-if="!this.user.phone">报名验证</button>
+                      v-if="!this.user.phone">已报名入口</button>
               <button class="primary-button v-disabled"
                       v-else>报名已截止</button>
             </template>

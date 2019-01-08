@@ -4,7 +4,7 @@
       <div v-if="showGuidImg" class="v-guid-img img-bg" :style="{backgroundImage:`url(${defaultImg})`}"></div>
       <div v-else class="v-guid-img"></div>
       <router-view class="app-view"></router-view>
-      <transition type='fade'>
+      <transition name="right-left" mode="out-in">
         <agreement v-if='agreementShow'></agreement>
       </transition>
     </div>

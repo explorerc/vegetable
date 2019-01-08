@@ -226,128 +226,128 @@
 </script>
 
 <style lang="scss" scoped>
-  .com-input /deep/ {
-    position: relative;
+.com-input /deep/ {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 90px;
+  .error-msg {
+    display: block;
+    position: absolute;
+    color: #fc5659;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  input {
     display: inline-block;
     width: 100%;
-    height: 90px;
-    .error-msg {
-      display: block;
-      position: absolute;
-      color: #fc5659;
-      padding-left: 10px;
-      font-size: 14px;
+    height: 100%;
+    font-size: 28px;
+    line-height: 1.2 !important;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+    padding: 0 10px;
+    &.error {
+      border-color: #fc5659;
     }
-    input {
-      display: inline-block;
-      width: 100%;
-      height: 100%;
-      font-size: 28px;
-      line-height: 1.2 !important;
-      color: rgba(0, 0, 0, 0.65);
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      transition: all 0.3s;
-      padding: 0 10px;
-      &.error {
-        border-color: #fc5659;
-      }
-      &:hover {
-        border-color: #4b5afe;
-      }
-      /*&:focus {*/
-      /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
-      /*}*/
-      &::-moz-placeholder {
-        color: #bfbfbf;
-        opacity: 1;
-      }
-      &:-ms-input-placeholder {
-        color: #bfbfbf;
-      }
-      &::-webkit-input-placeholder {
-        color: #bfbfbf;
-      }
-      &[disabled] {
-        cursor: not-allowed;
-      }
+    &:hover {
+      border-color: #4b5afe;
     }
-    .limit {
-      font-size: 28px;
-      color: #555555;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 8px;
-      .length {
-        color: #4b5afe;
-      }
-      &.area {
-        transform: none;
-        top: auto;
-        bottom: 10px;
-      }
+    /*&:focus {*/
+    /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
+    /*}*/
+    &::-moz-placeholder {
+      color: #bfbfbf;
+      opacity: 1;
     }
-    .icon-search {
-      color: #555555;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 12px;
+    &:-ms-input-placeholder {
+      color: #bfbfbf;
     }
-    .icon-right-center {
-      color: #555555;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 8px;
-      cursor: pointer;
+    &::-webkit-input-placeholder {
+      color: #bfbfbf;
     }
-    .icon-delete {
-      @extend .icon-right-center;
-    }
-    .icon-guanbi-yanjing {
-      @extend .icon-right-center;
-    }
-    .icon-faxian-yanjing {
-      @extend .icon-right-center;
-    }
-
-    textarea {
-      display: inline-block;
-      padding: 4px 11px;
-      width: 100%;
-      height: 100%;
-      font-size: 14px;
-      line-height: 1.5;
-      color: rgba(0, 0, 0, 0.65);
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      transition: all 0.3s;
-      font-size: inherit;
-      &.error {
-        border-color: #fc5659;
-      }
-      &:hover {
-        border-color: #4b5afe;
-      }
-      &::-moz-placeholder {
-        color: #bfbfbf;
-        opacity: 1;
-      }
-      &:-ms-input-placeholder {
-        color: #bfbfbf;
-      }
-      &::-webkit-input-placeholder {
-        color: #bfbfbf;
-      }
-      &[disabled] {
-        cursor: not-allowed;
-      }
+    &[disabled] {
+      cursor: not-allowed;
     }
   }
+  .limit {
+    font-size: 28px;
+    color: #555555;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    .length {
+      color: #4b5afe;
+    }
+    &.area {
+      transform: none;
+      top: auto;
+      bottom: 10px;
+    }
+  }
+  .icon-search {
+    color: #555555;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 12px;
+  }
+  .icon-right-center {
+    color: #555555;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    cursor: pointer;
+  }
+  .icon-delete {
+    @extend .icon-right-center;
+  }
+  .icon-guanbi-yanjing {
+    @extend .icon-right-center;
+  }
+  .icon-faxian-yanjing {
+    @extend .icon-right-center;
+  }
+
+  textarea {
+    display: inline-block;
+    padding: 4px 11px;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-size: inherit;
+    &.error {
+      border-color: #fc5659;
+    }
+    &:hover {
+      border-color: #4b5afe;
+    }
+    &::-moz-placeholder {
+      color: #bfbfbf;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: #bfbfbf;
+    }
+    &::-webkit-input-placeholder {
+      color: #bfbfbf;
+    }
+    &[disabled] {
+      cursor: not-allowed;
+    }
+  }
+}
 </style>

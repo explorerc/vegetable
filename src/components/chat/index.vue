@@ -91,79 +91,6 @@
         </div>
       </mt-loadmore>
     </div>
-    <!-- <div class="v-send-box-bg"
-         v-show='(type === "live" || type === "warm"  || type === "pre") && isLogin && sendBoxShow'>
-      <div class="send-box clearfix"
-           id="sendBox">
-        <div class="top">
-          <span @click="cancelClick"
-                class="cancel-btn fl">取消</span>
-          <span class="v-title">
-            聊天
-          </span>
-          <template v-if='(mute || allMuted) && isWatch'>
-          </template>
-
-          <template v-else>
-            <span @click='sendAction'
-                  class='send-btn fr'>发送</span>
-          </template>
-          <div class="fr"
-               v-if="joinInfo.roleName === 'HOST' && !isWatch">
-            <i class='icon-swap'
-               title='切换发送聊天/公告'
-               @click='swapAnnounce ? swapAnnounce = false : swapAnnounce = true'></i>
-            <div class='switch-box'>
-              <span>全体禁言</span>
-              <el-switch class='switch'
-                         v-model="allMuted"
-                         inactive-color="#DEE1FF"
-                         :width="32"
-                         active-color="#FFD021"
-                         @change="muteAll"></el-switch>
-            </div>
-          </div>
-        </div>
-        <div class="bottom clearfix">
-          <template v-if='swapAnnounce'>
-            <com-input :value.sync="value"
-                       :placeholder="chatPlaceholder"
-                       :max-length="140"
-                       class='inp'
-                       :isCharacter=true
-                       type="textarea">
-            </com-input>
-          </template>
-
-          <template v-else>
-            <com-input :value.sync="valueAnnounce"
-                       :placeholder="announcePlaceholder"
-                       :max-length="140"
-                       class='inp'
-                       :isCharacter=true
-                       type="textarea">
-            </com-input>
-          </template>
-          <div class="v-emoji">
-            <i class='iconfont icon-biaoqing'
-               @click.stop='changeFace'
-               title='表情'></i>
-            <div class="face-box"
-                 @click.stop=''
-                 v-if="faceOpen">
-              <img :src="`//cnstatic01.e.vhall.com/static/img/arclist/Expression_${index+1}@2x.png`"
-                   @click.stop="inFace(index)"
-                   v-for="(item,index) in faceArr"
-                   :key="index">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class='send-box not-login' v-else-if='type === "live" && !isLogin'>
-      需要登录才能参与聊天 <span @click='loginHandler'>登录</span>
-    </div> -->
-
   </div>
 </template>
 
@@ -344,7 +271,7 @@ export default {
         this.chatPlaceholder = '聊天内容不能为空'
         return false
       }
-      const role = this.joinInfo.roleName === 'HOST' ? '主持人' : '' // 主持人发送
+      const role = this.joinInfo.roleName === 'HOST' ? '发起人' : '' // 发起人发送
       ChatService.OBJ.activityId = this.activityId
       const obj = {
         // avatar: this.joinInfo.avatar, // 头像
@@ -504,6 +431,14 @@ export default {
         }
       }, 0)
       this.tipsCount = 0
+    },
+    scrollToBtm () { // 直接滚动到底部
+      let elm = document.querySelector('.bscroll')
+      let maxTop
+      this.$nextTick(() => {
+        maxTop = elm.scrollHeight - elm.offsetHeight
+        elm.scrollTop = maxTop
+      })
     },
     scrollTo (dis, speed = 10) {
       let elm = document.querySelector('.bscroll')

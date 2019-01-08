@@ -26,6 +26,7 @@
                            ref="codeCom"></com-verification-code>
     <button class="primary-button"
             @click="submit">提交</button>
+    <div @click='back' class='back'>返回</div>
   </div>
 </template>
 <script>
@@ -256,12 +257,19 @@ export default {
       }).catch(() => {
         this.$router.replace('/empty')
       })
+    },
+    back () {
+      this.$router.replace('/guide/' + this.$route.params.id)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .v-checkState {
+  .back {
+    text-align: center;
+    margin-bottom: 40px;
+  }
 }
 </style>
 
