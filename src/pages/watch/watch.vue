@@ -8,9 +8,14 @@
     <div v-show="domShow"
          class="v-hearder clearfix"
          @orientationchange="orientationchange($event)">
-      <img class="header-logo"
-           v-if="customLogo"
-           :src="customLogo">
+        <div class="logo-box">
+          <img class="header-logo"
+              v-if="customLogo"
+              :src="customLogo">
+          <img class="header-logo"
+              v-else
+              src="../../assets/image/logo.png">
+        </div>
       <div class="header-content">
         <span class="ac-title">{{activityInfo.title}}</span>
         <span class="v-status">
@@ -891,11 +896,18 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/mixin.scss';
 .header-logo {
+  // width: 100%;
+  max-width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.logo-box {
+  float: left;
   position: relative;
-  top: 14px;
-  display: inline-block;
-  height: 84px;
-  max-width: 160px;
+  height: 100%;
+  width: 100px;
   margin-right: 20px;
 }
 .header-content {
@@ -1294,7 +1306,7 @@ export default {
       cursor: pointer;
       opacity: 0.8;
     }
-    .icon-delete{
+    .icon-delete {
       font-size: 54px;
       color: #fff;
     }
@@ -1325,7 +1337,7 @@ export default {
     text-align: center;
     background-color: $color-default;
     color: #333;
-    opacity: .9;
+    opacity: 0.9;
     &:hover {
       cursor: pointer;
       background-color: $color-default-hover;
@@ -1377,7 +1389,7 @@ export default {
     border-radius: 10px;
     padding-bottom: 50px;
     background-image: none;
-    .red-bag-result{
+    .red-bag-result {
       width: 100%;
       padding: 30px;
       border-radius: 10px;
@@ -1472,7 +1484,7 @@ export default {
       padding: 0 20px 20px 20px;
       text-align: left;
       border: solid 1px #e2e2e2;
-      &:last-child{
+      &:last-child {
         border: none;
       }
       .head-icon {
