@@ -132,7 +132,7 @@
         if (result) {
           data.extData = JSON.stringify(data.extData)
           data.naireData = JSON.stringify(data.naireData)
-          this.$config({handlers: true}).$post(questionService.POST_QUESTION, data).then((res) => {
+          this.$config({ handlers: true }).$post(questionService.POST_QUESTION, data).then((res) => {
             EventBus.$emit('red_packet', {
               condition: 3
             })
@@ -220,107 +220,107 @@
 </script>
 
 <style lang='scss' scoped>
-  .v-questions-from {
-    text-align: center;
-    background-color: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 10;
-    font-size: 24px;
-    color: #222;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    /deep/ {
-      .v-close {
-        font-size: 30px;
-        color: #555;
-        display: block;
-        width: 170px;
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        cursor: pointer;
-        z-index: 100;
-      }
-      .v-content {
-        height: 100%;
-        padding: 85px 45px 50px;
-        .v-question-img {
-          margin: 0 auto;
-          display: block;
-          width: 100%;
-          height: 140px;
-          background-position: center;
-          background-size: cover;
-        }
-        .v-questions {
-          margin-top: 30px;
-        }
-        .single-select-wrap {
-          .question-content {
-            padding: 0 0 30px 0;
-          }
-          .q-edit {
-            padding: 0;
-          }
-          .el-radio__original {
-            display: none;
-          }
-          .el-checkbox__original {
-            display: none;
-          }
-          .q-edit-content {
-            input {
-              font-size: 28px;
-              color: #222222;
-            }
-          }
-        }
-      }
-
-      img {
+.v-questions-from {
+  text-align: center;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  font-size: 24px;
+  color: #222;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /deep/ {
+    .v-close {
+      font-size: 30px;
+      color: #555;
+      display: block;
+      width: 170px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      z-index: 100;
+    }
+    .v-content {
+      height: 100%;
+      padding: 85px 45px 50px;
+      .v-question-img {
         margin: 0 auto;
         display: block;
-        max-width: 100%;
-        max-height: 140px;
+        width: 100%;
+        height: 140px;
+        background-position: center;
+        background-size: cover;
       }
-
-      .v-title {
-        word-break: break-all;
-        text-align: center;
-        margin: 50px auto 0;
-        font-size: 36px;
+      .v-questions {
+        margin-top: 30px;
       }
-
-      .v-summary {
-        word-break: break-all;
-        text-align: center;
-        margin: 15px auto 0;
-        border-bottom: 1px solid #ffd021;
-        padding-bottom: 24px;
-        font-size: 28px;
-      }
-      .el-select .el-input__inner {
-        border: 1px solid #e2e2e2;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .v-save {
-        width: 80%;
-        height: 90px;
-        line-height: 90px;
-        background-color: #ffd021;
-        color: #222;
-        margin: 60px auto 50px;
-        border: none;
-        border-radius: 50px;
-        font-size: 30px;
+      .single-select-wrap {
+        .question-content {
+          padding: 0 0 30px 0;
+        }
+        .q-edit {
+          padding: 0;
+        }
+        .el-radio__original {
+          display: none;
+        }
+        .el-checkbox__original {
+          display: none;
+        }
+        .q-edit-content {
+          input {
+            font-size: 28px;
+            color: #222222;
+          }
+        }
       }
     }
+
+    img {
+      margin: 0 auto;
+      display: block;
+      max-width: 100%;
+      max-height: 140px;
+    }
+
+    .v-title {
+      word-break: break-all;
+      text-align: center;
+      margin: 50px auto 0;
+      font-size: 36px;
+    }
+
+    .v-summary {
+      word-break: break-all;
+      text-align: center;
+      margin: 15px auto 0;
+      border-bottom: 1px solid #ffd021;
+      padding-bottom: 24px;
+      font-size: 28px;
+    }
+    .el-select .el-input__inner {
+      border: 1px solid #e2e2e2;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .v-save {
+      width: 80%;
+      height: 90px;
+      line-height: 90px;
+      background-color: #ffd021;
+      color: #222;
+      margin: 60px auto 50px;
+      border: none;
+      border-radius: 50px;
+      font-size: 30px;
+    }
   }
+}
 </style>
 

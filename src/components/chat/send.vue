@@ -65,7 +65,6 @@ export default {
   },
   methods: {
     changeFace () {
-      debugger
       this.faceOpen = !this.faceOpen
     },
     cancelClick () {

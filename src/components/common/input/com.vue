@@ -348,39 +348,38 @@
     @extend .icon-right-center;
   }
 
-    textarea {
-      display: inline-block;
-      padding: 4px 20px;
-      width: 100%;
-      height: 100%;
-      font-size: 14px;
-      line-height: 1.5;
-      color: rgba(0, 0, 0, 0.65);
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      transition: all 0.3s;
-      font-size: inherit;
-      &.error {
-        border-color: #fc5659;
-      }
-      &:hover {
-        border-color: #4b5afe;
-      }
-      &::-moz-placeholder {
-        color: #bfbfbf;
-        opacity: 1;
-      }
-      &:-ms-input-placeholder {
-        color: #bfbfbf;
-      }
-      &::-webkit-input-placeholder {
-        color: #bfbfbf;
-      }
-      &[disabled] {
-        cursor: not-allowed;
-      }
+  textarea {
+    display: inline-block;
+    padding: 4px 20px;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-size: inherit;
+    &.error {
+      border-color: #fc5659;
+    }
+    &:hover {
+      border-color: #4b5afe;
+    }
+    &::-moz-placeholder {
+      color: #bfbfbf;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: #bfbfbf;
+    }
+    &::-webkit-input-placeholder {
+      color: #bfbfbf;
+    }
+    &[disabled] {
+      cursor: not-allowed;
     }
   }
 }
