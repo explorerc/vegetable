@@ -250,7 +250,7 @@
       border: 1px solid #d9d9d9;
       border-radius: 4px;
       transition: all 0.3s;
-      padding: 0 10px;
+      padding: 0 20px;
       &.error {
         border-color: #fc5659;
       }
@@ -317,7 +317,7 @@
 
     textarea {
       display: inline-block;
-      padding: 4px 11px;
+      padding: 4px 20px;
       width: 100%;
       height: 100%;
       font-size: 14px;

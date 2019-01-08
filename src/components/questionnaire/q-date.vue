@@ -70,10 +70,11 @@ export default {
   /deep/ {
     .error-msg {
       position: absolute;
+      bottom: -30px;
       color: #fc5659;
       padding-left: 10px;
       line-height: 20px;
-      font-size: 12px;
+      font-size: 28px;
     }
   }
 }
