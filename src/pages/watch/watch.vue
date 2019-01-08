@@ -17,7 +17,7 @@
           <i v-if="activityStatus === '直播中'"></i>{{activityStatus}}
         </span>
         <span class="v-onlineNum"
-              v-if="activityInfo.setting&&activityInfo.setting.showOnlineNum=='Y'">{{showPersonCount}}人</span>
+              v-if="activityInfo.setting&&activityInfo.setting.showOnlineNum=='Y'">观看人次: {{showPersonCount}}</span>
       </div>
       <div class="header-right">
         <template v-if="loginInfo">
@@ -1040,10 +1040,11 @@ export default {
         text-align: center;
         background-color: rgba(10, 10, 10, 0.8);
         border-radius: 50px;
-        padding: 0 10px 0 12px;
+        padding: 4px 10px 4px 12px;
         margin-right: 10px;
         font-size: 22px;
         i {
+          position: relative;
           display: inline-block;
           width: 10px;
           height: 10px;
@@ -1057,6 +1058,7 @@ export default {
       .v-onlineNum {
         padding: 8px 0;
         color: #555;
+        vertical-align: middle;
       }
       .v-my {
         margin-left: 30px;
