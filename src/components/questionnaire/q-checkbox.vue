@@ -142,8 +142,8 @@ export default {
       .item-text {
         width: 100%;
         display: inline-block;
-        font-size: 22px;
-        margin-top: 5px;
+        font-size: 28px;
+        margin-top: 2px;
         word-break: break-all;
         white-space: normal;
         color: #222222;

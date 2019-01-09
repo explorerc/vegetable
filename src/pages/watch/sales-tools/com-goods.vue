@@ -17,7 +17,8 @@
               <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
               <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
               <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
-              <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
+              <!--<del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>-->
+              <span v-show="ite.preferential !== '0.00'" class="del-price">￥<span class="del-line">{{ite.price}}</span></span>
               <i v-show="ite.price === '0.00'"></i>
             </p>
           </div>
@@ -36,7 +37,8 @@
               <span v-show="ite.preferential !== '0.00' && ite.price !== '0.00'">￥{{ite.preferential}}</span>
               <span v-show="ite.preferential === '0.00' && ite.price !== '0.00'">￥{{ite.price}}</span>
               <span v-show="ite.preferential === '0.00' && ite.price === '0.00'">免费</span>
-              <del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>
+              <!--<del v-show="ite.preferential !== '0.00'">￥{{ite.price}}</del>-->
+              <span v-show="ite.preferential !== '0.00'" class="del-price">￥<span class="del-line">{{ite.price}}</span></span>
               <i v-show="ite.price === '0.00'"></i>
             </p>
           </div>
@@ -174,7 +176,7 @@
         height: 30px;
         line-height: 30px;
         text-align: center;
-        border-radius: 0 0 20px 0;
+        border-radius: 0 0 10px 0;
         z-index: 1;
         opacity: 0.8;
       }
@@ -207,10 +209,26 @@
             font-size: 32px;
             color: rgba(252, 86, 89, 1);
           }
-          del {
+          .del-price {
             margin-left: 4px;
             font-size: 26px;
             color: rgba(136, 136, 136, 1);
+            .del-line{
+              position: relative;
+              display: inline-block;
+              font-size: 26px;
+              color: rgba(136, 136, 136, 1);
+              &:after{
+                content: '';
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 2px;
+                width: 100%;
+                height: 1px;
+                background-color: #555;
+              }
+            }
           }
         }
         .item-des {
@@ -262,10 +280,26 @@
             font-size: 22px;
             color: rgba(252, 86, 89, 1);
           }
-          del {
+          .del-price {
             margin-left: 15px;
             font-size: 18px;
             color: rgba(136, 136, 136, 1);
+            .del-line{
+              position: relative;
+              display: inline-block;
+              font-size: 18px;
+              color: rgba(136, 136, 136, 1);
+              &:after{
+                content: '';
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 2px;
+                width: 100%;
+                height: 1px;
+                background-color: #555;
+              }
+            }
           }
         }
         .item-des {
