@@ -84,9 +84,9 @@
               </template>
               <template v-else>
                 <div class="v-chat-control"
-                     id="sendBoxBtn">
-                  <i class="iconfont icon-biaoqing"  @click="chatClick('openFace')"></i>
-                  <span class="v-chat-clickbox" @click="chatClick()">
+                     id="sendBoxBtn" @click="chatClick('openFace')">
+                  <i class="iconfont icon-biaoqing"  ></i>
+                  <span class="v-chat-clickbox" @click.stop="chatClick()">
                     请输入聊天内容
                   </span>
                 </div>
