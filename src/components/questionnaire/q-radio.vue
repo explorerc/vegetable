@@ -103,6 +103,7 @@ export default {
       width: 100%;
       position: relative;
       margin-bottom: 15px;
+      vertical-align: center;
       // height: 40px;
       &.display {
         margin-bottom: 5px;
@@ -110,7 +111,7 @@ export default {
     }
     .el-radio__input {
       float: left;
-      margin-top: 6px;
+      margin-top: 8px;
     }
     .el-radio__label {
       .com-input {
@@ -134,8 +135,8 @@ export default {
     .item-text {
       width: 100%;
       display: inline-block;
-      font-size: 22px;
-      margin-top: 9px;
+      font-size: 28px;
+      margin-top: 6px;
       word-break: break-all;
       white-space: normal;
       color: #222222;

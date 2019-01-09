@@ -185,7 +185,7 @@
                  class="v-questions-box tao-show"
                  @handleClick="taoShowBox">
       <div class="v-content">
-        <img src="~assets/image/tao.png"
+        <img src="~assets/image/taobao.svg"
              alt="">
         <p>
           请打开 <br><span style="color: #2878FF">{{goodsSmallDetails.tao}}</span> <br>购买商品
