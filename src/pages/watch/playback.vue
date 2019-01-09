@@ -222,10 +222,11 @@ export default {
       let _self = this
       _self.$refs.chatbox.getHistroy(1, () => {
         _self.$nextTick(() => {
-          this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
-          if (!_self.$refs.chatbox.tipsShow) {
-            _self.$refs.chatbox.doScrollBottom()
-          }
+          // this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
+          // if (!_self.$refs.chatbox.tipsShow) {
+          //   _self.$refs.chatbox.doScrollBottom()
+          // }
+          this.$refs.chatbox.scrollToBtm()
         })
       })
     }

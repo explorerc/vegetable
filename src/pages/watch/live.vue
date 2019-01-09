@@ -84,10 +84,9 @@
               </template>
               <template v-else>
                 <div class="v-chat-control"
-                     @click="chatClick()"
                      id="sendBoxBtn">
-                  <i class="iconfont icon-biaoqing"></i>
-                  <span class="v-chat-clickbox">
+                  <i class="iconfont icon-biaoqing"  @click="chatClick('openFace')"></i>
+                  <span class="v-chat-clickbox" @click="chatClick()">
                     请输入聊天内容
                   </span>
                 </div>
@@ -292,6 +291,9 @@ export default {
     } else {
       this.playType = 'live'
     }
+    if (!this.activityInfo.description.length) { // 没有简介
+      this.$refs.chatbox.scrollToBtm()
+    }
     this.startInit = true
     this.initMsgServe()
     this.getQuestionsStatus()
@@ -419,7 +421,11 @@ export default {
             break
           case 'GOODS_PUSH':
             console.log('--商品推送--消息--')
-            // this.goodsLen += 1
+            // this.goodsList.forEach(element => {
+            //   if (element.goods_id * 1 !== msg.goods_id * 1) {
+            //     this.goodsLen += 1
+            //   }
+            // })
             this.getGoodsDetails(msg.goods_id)
             break
           case 'GOODS_ADDED':
@@ -438,9 +444,9 @@ export default {
       this.isMuteShow = val.isMute
       this.allMuted = val.type === 'allMuted'
     },
-    chatClick () {
+    chatClick (str) {
       // 点击弹出聊天窗口
-      EventBus.$emit('chatOpen', 'openFace')
+      EventBus.$emit('chatOpen', str)
       // debugger
       // this.$nextTick(() => {
       //   document.getElementsByClassName('v-send-box-bg')[0].click()
@@ -554,7 +560,7 @@ export default {
       // }
     },
     getGoodsDetails (id, type) {
-      this.goodsLen = this.goodsLen + 1
+      // this.goodsLen = this.goodsLen + 1
       this.$get(activityService.GET_WATCH_GOODS_DETAIL, { goods_id: id }).then(res => {
         if (res.code === 200) {
           if (!type) {

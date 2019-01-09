@@ -1,6 +1,8 @@
 <template>
   <div class="chat-wrap"
-       @click='boxClick'>
+       @click='boxClick'
+       ref='chatWrap'
+       >
     <div class="announce-box"
          v-if="announceShow">
       <svg class="icon"
@@ -40,10 +42,12 @@
     <div class="bscroll"
          ref="bscroll"
          :class="type !== 'live'? 'vod' : 'live'"
+         @scroll="scrollEvent($event)"
          @mouseover="stopScroll = true"
          @mouseout="stopScroll = false">
-      <mt-loadmore :autoFill="false" :top-method="loadTop" ref="loadmore" >
-        <ol class='chat-list bscroll-container'>
+      <div class='bscroll-content' ref="bscrollContent">
+        <mt-loadmore :autoFill="false" :top-method="loadTop" ref="loadmore" >
+        <ol class='chat-list bscroll-container' >
           <li v-for='(item,idx) in chatData'
               :data-joinId="item.id"
               :class="{'right': (joinInfo.consumerUserId ? joinInfo.consumerUserId : joinInfo.visitId) == item.id}"
@@ -63,7 +67,6 @@
                 </dd>
               </dl>
             </template>
-
             <template v-else>
               <div :class='item.detail.type'
                    class="sales-tool-box">
@@ -76,12 +79,6 @@
             </template>
           </li>
         </ol>
-        <transition v-if="tipsShow && tipsCount > 0">
-        <span class="msg-tips"
-              @click='doScrollBottom'>有{{tipsCount}}条新消息
-          <i class="iconfont icon-xiangxia"></i>
-        </span>
-        </transition>
         <div slot="top" class="mint-loadmore-top">
           <template v-if='activityInfo.status === "PLAYBACK"'>
             <span v-show="topStatus === ''" :class="{ 'rotate': topStatus === 'drop' }">下拉加载更多 ↓</span>
@@ -90,7 +87,14 @@
           </template>
         </div>
       </mt-loadmore>
+      </div>
     </div>
+    <transition name='fade'>
+      <span v-if="tipsShow && tipsCount > 0" class="msg-tips"
+            @click='doScrollBottom'>有{{tipsCount}}条新消息
+        <i class="iconfont icon-xiangxia"></i>
+      </span>
+    </transition>
   </div>
 </template>
 

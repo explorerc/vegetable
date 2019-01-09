@@ -1,7 +1,7 @@
 <template>
   <div class="v-select">
     <select v-model="val">
-      <option value="">请选择</option>
+      <option key="请选择" value="请选择">请选择</option>
       <option v-for="item in selectOptions" :key="item.id" :value="item.key">{{item.value}}</option>
     </select>
     <i class="iconfont icon-wenjuan_xialatixialajiantou-"></i>
@@ -14,7 +14,7 @@
     },
     data () {
       return {
-        val: ''
+        val: '请选择'
       }
     },
     mounted () {

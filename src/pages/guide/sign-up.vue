@@ -192,7 +192,7 @@ export default {
         if (this.selectVal[i]['questionId'] === id) {
           this.selectVal[i]['answer'] = val
           isCz = true
-          return false
+          // return false
         }
       }
       if (!isCz) {
@@ -251,7 +251,7 @@ export default {
           // obj.questionId = element.id
           // obj.answer = element.val
           data.answer.push(obj)
-        } else if (element.ext !== 'select') {
+        } else if (element.ext === 'select') {
           let obj = {}
           obj['id'] = element.id
           obj['val'] = element.val
@@ -479,10 +479,11 @@ export default {
       if (type === 'code') {
         return codeReg.test(val)
       }
-      if (val === '') {
-        if (isRequired === 'Y') {
-          return false
-        }
+      if (val === '请选择' && type === 'select' && isRequired === 'Y') {
+        return false
+      }
+      if (val === '' && isRequired === 'Y') {
+        return false
       } else {
         switch (type) {
           case 'phone': val = this.user.phone === '' ? val : this.user.phone
@@ -611,7 +612,7 @@ export default {
   .input-form {
     margin-bottom: 40px !important;
   }
-  .sign-select.error .el-select {
+  .sign-select.error select {
     border-color: #fc5659;
   }
   .v-explain {

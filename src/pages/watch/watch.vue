@@ -1196,8 +1196,9 @@ export default {
               left: 0;
             }
           }
-          &.vod {
-            bottom: 20px;
+          &.vod,
+          &.end {
+            bottom: 0;
           }
         }
       }

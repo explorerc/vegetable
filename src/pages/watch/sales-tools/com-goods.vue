@@ -48,7 +48,7 @@
 
 <script>
   import GoodsService from 'src/api/activity-service'
-
+  // import EventBus from 'src/utils/eventBus.js'
   export default {
     props: ['goodsMsg'],
     created () {
@@ -138,9 +138,9 @@
     float: right;
   }
 }
-.goods-list-box{
+.goods-list-box {
   height: calc(100% - 80px);
-  .touch-scroll{
+  .touch-scroll {
     height: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -178,7 +178,7 @@
         z-index: 1;
         opacity: 0.8;
       }
-      .cov_img{
+      .cov_img {
         background: white no-repeat center;
         background-size: contain;
         border: 1px solid #e2e2e2;

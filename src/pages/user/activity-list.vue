@@ -13,9 +13,8 @@
           <a :href="MOBILE_HOST+'guide/'+itemData.id"
              class="clearfix">
             <div class="v-activity-img fl">
-              <div class="img" :style="{'background-image':`url(${itemData.imgUrl})`}"></div>
-              <!-- <img :src="itemData.imgUrl"
-                   alt=""> -->
+              <div class="img" v-if='itemData.imgUrl.length' :style="{'background-image':`url(${itemData.imgUrl})`}"></div>
+              <img class="img" v-else src="../../assets/image/webinar_cover_empty_new.png" >
               <span v-if='itemData.status=="PREPARE"'
                     class="live-state">预告</span>
               <span v-if='itemData.status=="LIVING"'
@@ -119,7 +118,7 @@ export default {
           if (item.imgUrl) {
             item.imgUrl = this.$imgHost + '/' + item.imgUrl
           } else {
-            item.imgUrl = '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
+            item.imgUrl = ''
           }
           return item
         })
