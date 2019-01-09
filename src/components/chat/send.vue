@@ -55,7 +55,7 @@ export default {
         this.sendOpen = true
         document.getElementsByClassName('inp')[0].children[0].focus()
         if (openFace) {
-          this.changeFace()
+          this.faceOpen = true
         }
       }, 50)
     })
