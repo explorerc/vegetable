@@ -68,7 +68,7 @@
                                :maxLength="6"
                                :errorMsg.sync="codeError"
                                codeType="CONSUMER_USER_LOGIN"></com-verification-code>
-        <button class="static-btn primary-button" @click="submit" >立即预约</button>
+        <button class="static-btn primary-button" @click="submit" :disabled="!checkAgreement">立即预约</button>
         <div @click='back' class='back'>返回</div>
         <!-- <transition name='fade'>
           <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>

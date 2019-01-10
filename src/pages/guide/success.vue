@@ -30,7 +30,7 @@
       <span v-else-if="activity.viewCondition === 'NONE'">预约成功</span>
     </p>
     <!--<p v-if="activity.status != 'FINISH'">活动将于<span class="v-red">{{activity.startTime}}</span>准时开播</p>-->
-    <p class="sub-txt" v-if="activity.status != 'FINISH'">直播开始前我们会发送提醒消息，请注意查收</p>
+    <p class="sub-txt spe" v-if="activity.status != 'FINISH'">直播开始前我们会发送提醒消息，请注意查收</p>
     <template v-if="isWxSubscribeShow">
       <div class="wx-accounts-box" v-if="isWXqq">
         <p class="tip-title sub-txt">如果您希望收到活动开播提醒</p>
@@ -231,6 +231,9 @@ export default {
     .v-red {
       color: #fc5659;
     }
+    &.spe {
+      margin-top: 10px;
+    }
   }
   .sub-txt {
     font-size: 28px;
@@ -251,11 +254,13 @@ export default {
     border-radius: 10px;
     text-align: center;
     .tip-title {
+      color: #888;
       width: 400px;
       margin: 0 auto;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       line-height: 1;
-      padding-top: 10px;
+      padding-top: 30px;
+      font-size: 12px;
     }
     .primary-button {
       display: block;
