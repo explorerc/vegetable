@@ -56,6 +56,8 @@ export default {
         document.getElementsByClassName('inp')[0].children[0].focus()
         if (openFace) {
           this.faceOpen = true
+        } else {
+          this.faceOpen = false
         }
       }, 50)
     })
