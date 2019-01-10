@@ -262,7 +262,7 @@
       }
       .single-select-wrap {
         .question-content {
-          padding: 0 0 30px 0;
+          padding: 0 0 35px 0;
         }
         .q-edit {
           padding: 0;
