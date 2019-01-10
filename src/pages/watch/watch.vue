@@ -12,7 +12,7 @@
           <img class="header-logo"
               v-if="customLogo"
               :src="customLogo">
-          <img class="header-logo"
+          <img class="header-logo" :class='{"hideLogo":hideLogo}'
               v-else
               src="../../assets/image/logo_h5.png">
         </div>
@@ -275,7 +275,8 @@ export default {
       timerInterval: 0,
       redBagStartTimer: 0,
       redBagStartTimerInterval: 0,
-      isSent: false
+      isSent: false,
+      hideLogo: true
     }
   },
   mounted () {
@@ -495,6 +496,7 @@ export default {
         if (res.code === 200) {
           this.logoImg = res.data.logoUrl
         }
+        this.hideLogo = false
       })
       setTimeout(() => {
         this.share()
@@ -901,6 +903,10 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  opacity: 1;
+  &.hideLogo {
+    opacity: 0;
+  }
 }
 .logo-box {
   float: left;

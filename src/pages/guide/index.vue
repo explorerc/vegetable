@@ -177,7 +177,7 @@
             <template v-else>
               <!-- 未报名 -->
               <button class="primary-button"
-                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">报名</button>
+                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
               <a href="javascript:;"
                  class="v-registered"
                  @click="jumpPage( MOBILE_HOST + 'CheckState/')">已报名</a>

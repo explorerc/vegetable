@@ -260,7 +260,7 @@ export default {
       margin-bottom: 15px;
       line-height: 1;
       padding-top: 30px;
-      font-size: 12px;
+      font-size: 25px;
     }
     .primary-button {
       display: block;
