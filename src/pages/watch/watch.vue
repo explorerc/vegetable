@@ -14,7 +14,7 @@
               :src="customLogo">
           <img class="header-logo"
               v-else
-              src="../../assets/image/logo.png">
+              src="../../assets/image/logo_h5.png">
         </div>
       <div class="header-content">
         <span class="ac-title">{{activityInfo.title}}</span>
@@ -896,8 +896,7 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/mixin.scss';
 .header-logo {
-  // width: 100%;
-  max-width: 100px;
+  width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -907,7 +906,7 @@ export default {
   float: left;
   position: relative;
   height: 100%;
-  width: 100px;
+  width: 140px;
   margin-right: 20px;
 }
 .header-content {

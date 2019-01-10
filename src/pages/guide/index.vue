@@ -48,7 +48,7 @@
             <template v-else>
               <!-- 未报名 -->
               <button class="primary-button"
-                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">报名</button>
+                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即报名</button>
               <a href="javascript:;"
                  class="v-registered"
                  @click="jumpPage( MOBILE_HOST + 'CheckState/')" >已报名入口</a>
@@ -124,7 +124,7 @@
                     v-if="user.isOrder">已预约</button>
             <template v-else>
               <button class="primary-button"
-                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">预约</button>
+                      @click="jumpPage( MOBILE_HOST + 'SignUp/')">立即预约</button>
               <!-- <a href="javascript:;"
                class="v-registered"
                @click="jumpPage( MOBILE_HOST + 'CheckState/')"
