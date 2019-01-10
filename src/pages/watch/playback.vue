@@ -114,11 +114,18 @@ export default {
     //   this.playType = 'live'
     // }
     this.startInit = true
-    this.initMsgServe()
-    // 没有直播简介直接拉取最近聊天纪律
-    if (!this.activityInfo.description) {
-      this.initHistroy()
+    // this.initMsgServe()
+    // // 没有直播简介直接拉取最近聊天纪律
+    // if (!this.activityInfo.description) {
+    //   this.initHistroy()
+    // }
+    if (!this.activityInfo.description.length) { // 没有简介
+      setTimeout(() => {
+        this.$refs.chatbox.scrollToBtm()
+      }, 500)
     }
+    // 拉取最近聊天纪律
+    this.initHistroy()
   },
   created () {
     // this.initToken()
@@ -143,7 +150,8 @@ export default {
     }),
     tabChange () {
       if (this.tabValue === 2) {
-        this.initHistroy()
+        // this.initHistroy()
+        this.$refs.chatbox.scrollToBtm()
       }
     },
     // /* 初始化，获取权限 */
@@ -218,17 +226,22 @@ export default {
     loginHandler () {
       this.$emit('showLogin')
     },
+    // initHistroy () {
+    //   let _self = this
+    //   _self.$refs.chatbox.getHistroy(1, () => {
+    //     _self.$nextTick(() => {
+    //       // this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
+    //       // if (!_self.$refs.chatbox.tipsShow) {
+    //       //   _self.$refs.chatbox.doScrollBottom()
+    //       // }
+    //       this.$refs.chatbox.scrollToBtm()
+    //     })
+    //   })
+    // }
     initHistroy () {
       let _self = this
-      _self.$refs.chatbox.getHistroy(1, () => {
-        _self.$nextTick(() => {
-          // this.scrollDis = document.querySelector('.mint-loadmore').offsetHeight
-          // if (!_self.$refs.chatbox.tipsShow) {
-          //   _self.$refs.chatbox.doScrollBottom()
-          // }
-          this.$refs.chatbox.scrollToBtm()
-        })
-      })
+      _self.$refs.chatbox.getHistroy()
+      this.$refs.chatbox.scrollToBtm()
     }
   }
 }
