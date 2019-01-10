@@ -1,4 +1,5 @@
 <template>
+  <transition name='right-left'>
     <div class="v-send-box-bg" v-show='chatOpen' >
       <div class="send-box clearfix" :class='{"open":sendOpen}'
            id="sendBox">
@@ -32,6 +33,7 @@
         </div>
       </div>
     </div>
+  </transition>
 </template>
 
 <script>
@@ -104,12 +106,13 @@ export default {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 9998;
+  transition: all 0.3s ease-in-out;
   .send-box {
     margin: 0 auto;
     width: 620px;
     height: 440px;
     position: absolute;
-    top: 3300px;
+    top: 130px;
     left: 50%;
     margin-left: -310px;
     background-color: #fff;
@@ -117,10 +120,10 @@ export default {
     overflow: hidden;
     z-index: 9999;
     transition: all 0.3s ease-in-out;
-    &.open {
-      transition: all 0.3s ease-in-out;
-      top: 130px;
-    }
+    // &.open {
+    //   transition: all 0.3s ease-in-out;
+    //   top: 130px;
+    // }
     .top {
       width: 100%;
       height: 80px;
