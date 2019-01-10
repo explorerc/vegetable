@@ -1,6 +1,6 @@
 <template>
   <transition name='top-bottom'>
-    <div class="v-send-box-bg" v-show='chatOpen' >
+    <div class="v-send-box-bg" :class='{chatOpen:chatOpen}' >
       <div class="send-box clearfix" :class='{"open":sendOpen}'
            id="sendBox">
         <div class="top">
@@ -53,15 +53,16 @@ export default {
   mounted () {
     EventBus.$on('chatOpen', (openFace) => {
       this.chatOpen = true
-      setTimeout(() => {
-        this.sendOpen = true
+      // setTimeout(() => {
+      this.sendOpen = true
+      if (openFace) {
+        this.faceOpen = true
+        document.getElementsByClassName('inp')[0].children[0].blur()
+      } else {
+        this.faceOpen = false
         document.getElementsByClassName('inp')[0].children[0].focus()
-        if (openFace) {
-          this.faceOpen = true
-        } else {
-          this.faceOpen = false
-        }
-      }, 50)
+      }
+      // }, 50)
     })
     EventBus.$on('chatClose', () => {
       this.sendOpen = false
@@ -106,6 +107,10 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 9998;
+  transform: translateY(-100%);
+  &.chatOpen {
+    transform: translateY(0);
+  }
   // transition: all 0.3s ease-in-out;
   .send-box {
     margin: 0 auto;
