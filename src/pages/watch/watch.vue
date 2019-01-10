@@ -85,7 +85,7 @@
         </span>
         <div class="red-bag-content red-bag-content-mid" style="top: 53%;">
           <p class="red-bag-title" style="font-size: 20px;">红包雨还剩{{downTimer|fmtTimer}}到来</p>
-          <p class="red-bag-info" v-if="!loginInfo">快来<span class="login-link" @click="clickLoginUser">登录</span>参与红包雨领取现金吧</p>
+          <p class="red-bag-info" v-if="!loginInfo">快来登录参与红包雨领取现金吧</p>
           <p class="red-bag-info" v-if="loginInfo && redBagInfo.condition==0">手速越快，抢到的红包越大哦~</p>
           <p class="red-bag-info" v-if="loginInfo && redBagInfo.condition==1">分享直播链接参与红包雨</p>
           <p class="red-bag-info" v-if="loginInfo && redBagInfo.condition==2" style="margin: 0 0 10px 0;font-size: 12px;">发送口令参与红包雨</p>
