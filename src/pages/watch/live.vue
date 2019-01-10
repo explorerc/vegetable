@@ -104,7 +104,7 @@
           <i class="iconfont icon-dingyue"></i> 关注</a> -->
       </div>
       <!--商品祥情-->
-      <transition name="fade">
+      <transition name="right-left">
         <div class="goodsInfo"
              v-if="goodsInfoShow">
           <p class="good-header">
@@ -135,7 +135,7 @@
           </div>
         </div>
       </transition>
-      <transition name="fade">
+      <transition name="right-left">
         <comGoods class="goodsList"
                   :goodsMsg='goodsMsg'
                   v-show="goodsListShow"
