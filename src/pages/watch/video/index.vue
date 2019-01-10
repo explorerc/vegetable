@@ -258,10 +258,16 @@ export default {
       this.isPlay = !this.isPlay
       // this.imageUrl = ''
       this.qualitys = window.VhallPlayer.getQualitys()
+      this.currentQuality = this.qualitys[0]
       window.VhallPlayer.play()
       if (this.playType !== 'live') {
         this.dealWithVideo()
       }
+      // 兼容刚进入页面时只有音频的特殊情况
+      let st = setTimeout(() => {
+        clearTimeout(st)
+        this.isAuto = this.currentQuality === 'a'
+      }, 1000)
     },
     /* 改变直播使用设备 */
     changeLiveDevice () {
@@ -293,6 +299,7 @@ export default {
       }).then((res) => {
         if (res.data) {
           this.imageUrl = res.data.cover.length ? res.data.cover : this.activityInfo.imgUrl
+          this.imageAutoUrl = res.data.cover.length ? res.data.cover : this.activityInfo.imgUrl
           if (res.data.replay.type === 'LINK') { // 外链
             this.outLineLink = res.data.replay.link
           } else if (res.data.replay.type === 'VIDEO' || res.data.replay.type === 'SLICE') { // 回放视频

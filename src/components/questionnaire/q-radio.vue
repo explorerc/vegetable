@@ -104,10 +104,12 @@ export default {
       position: relative;
       margin-bottom: 15px;
       vertical-align: center;
-      margin-top: 20px;
+      &:first-child {
+        margin-top: 10px;
+      }
       // height: 40px;
       &.display {
-        margin-bottom: 5px;
+        margin-bottom: 30px;
       }
     }
     .el-radio__input {

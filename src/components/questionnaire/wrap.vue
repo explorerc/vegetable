@@ -273,7 +273,7 @@ export default {
         }
         .q-subject {
           font-size: 30px;
-          margin-bottom: 14px;
+          margin-bottom: 20px;
           font-weight: bold;
           word-break: break-all;
           &.error {

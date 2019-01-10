@@ -30,13 +30,13 @@
       <span v-else-if="activity.viewCondition === 'NONE'">预约成功</span>
     </p>
     <!--<p v-if="activity.status != 'FINISH'">活动将于<span class="v-red">{{activity.startTime}}</span>准时开播</p>-->
-    <p class="sub-txt" v-if="activity.status != 'FINISH'">直播开始前我们会发送提醒消息，请注意查收</p>
+    <p class="sub-txt spe" v-if="activity.status != 'FINISH'">直播开始前我们会发送提醒消息，请注意查收</p>
     <template v-if="isWxSubscribeShow">
       <div class="wx-accounts-box" v-if="isWXqq">
+        <p class="tip-title sub-txt">如果您希望收到活动开播提醒</p>
         <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNjU0MjkzNQ==&scene=126#wechat_redirect">
           <button class="default-button primary-button">关注公众号</button>
         </a>
-        <p class="tip-title sub-txt">如果您希望收到活动开播提醒</p>
       </div>
       <div class="wx-accounts-box" v-else>
         <img class="qr-code-img" src="../../assets/image/wx-qr-code.jpg">
@@ -231,8 +231,11 @@ export default {
     .v-red {
       color: #fc5659;
     }
+    &.spe {
+      margin-top: 10px;
+    }
   }
-  .sub-txt{
+  .sub-txt {
     font-size: 28px;
     color: #555;
   }
@@ -244,19 +247,22 @@ export default {
     margin: 25px auto 5px;
     font-size: 32px;
   }
-  .wx-accounts-box{
+  .wx-accounts-box {
     width: 90%;
-    margin: 20px auto 0 auto;
+    margin: 0px auto 0 auto;
     padding: 20px 0;
     border-radius: 10px;
     text-align: center;
-    .tip-title{
+    .tip-title {
+      color: #888;
       width: 400px;
       margin: 0 auto;
+      margin-bottom: 15px;
       line-height: 1;
-      padding-top: 10px;
+      padding-top: 30px;
+      font-size: 12px;
     }
-    .primary-button{
+    .primary-button {
       display: block;
       width: 400px;
       margin: 0 auto;
@@ -264,14 +270,14 @@ export default {
       line-height: 80px;
       font-size: 28px;
     }
-    .qr-code-img{
+    .qr-code-img {
       display: inline-block;
       width: 160px;
       height: 160px;
       border: solid 1px #e2e2e2;
       vertical-align: middle;
     }
-    .qr-code-tip{
+    .qr-code-tip {
       margin-top: 10px;
       text-align: center;
       line-height: 2;
