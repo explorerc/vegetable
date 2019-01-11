@@ -380,7 +380,7 @@ export default {
   .section8 {
     width: 100%;
     .panel {
-      padding: 50px 0;
+      // padding: 50px 0;
       text-align: center;
     }
     .mask {
