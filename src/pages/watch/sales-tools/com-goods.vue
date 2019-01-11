@@ -199,9 +199,9 @@
           overflow: hidden;
         }
         .item-price {
-          height: 26px;
-          line-height: 26px;
-          margin: 30px auto auto auto;
+          height: 40px;
+          line-height: 40px;
+          margin: 20px auto auto auto;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -339,6 +339,7 @@
     .el-carousel__item:nth-child(2n + 1) {
       background-color: #d3dce6;
     }
+
   }
 }
 </style>
