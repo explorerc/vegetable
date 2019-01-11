@@ -250,7 +250,7 @@ export default {
       text-align: left;
       padding-left: 5px;
       font-size: 30px;
-      font-weight: bold;
+      font-weight: 500;
     }
     .v-red {
       display: inline-block;
@@ -274,7 +274,7 @@ export default {
         .q-subject {
           font-size: 30px;
           margin-bottom: 20px;
-          font-weight: bold;
+          font-weight: 500;
           word-break: break-all;
           &.error {
             input {

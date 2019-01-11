@@ -38,7 +38,8 @@
                     <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
                     <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
                     <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
-                    <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                    <!--<del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>-->
+                    <span v-show="goodsSmallDetails.preferential !== '0.00'" class="del-price">￥<span class="del-line">{{goodsSmallDetails.price}}</span></span>
                     <i v-show="goodsSmallDetails.price === '0.00'"></i>
                   </p>
                   <h4 class="item-title">{{goodsSmallDetails.title}}</h4>
@@ -127,7 +128,8 @@
                 <span v-show="goodsSmallDetails.preferential !== '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.preferential}}</span>
                 <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price !== '0.00'">￥{{goodsSmallDetails.price}}</span>
                 <span v-show="goodsSmallDetails.preferential === '0.00' && goodsSmallDetails.price === '0.00'">免费</span>
-                <del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>
+                <!--<del v-show="goodsSmallDetails.preferential !== '0.00'">￥{{goodsSmallDetails.price}}</del>-->
+                <span v-show="goodsSmallDetails.preferential !== '0.00'" class="del-price">￥<span class="del-line">{{goodsSmallDetails.price}}</span></span>
                 <i v-show="goodsSmallDetails.price === '0.00'"></i>
               </div>
               <span @click="goBuy({goods_id:goodsSmallDetails.goods_id,type:1})">立即购买</span>
@@ -871,10 +873,14 @@ export default {
           font-size: 28px;
           color: #fc5659;
         }
-        del {
+        .del-price {
           margin-left: 16px;
           font-size: 22px;
           color: rgba(136, 136, 136, 1);
+          .del-line {
+            font-size: 22px;
+            color: rgba(136, 136, 136, 1);
+          }
         }
       }
     }
@@ -967,9 +973,15 @@ export default {
           color: white;
           font-size: 36px;
         }
-        del {
+        .del-price {
           margin-left: 5px;
           color: #888888;
+          .del-line {
+            color: #888888;
+            &:after {
+              background-color: #888;
+            }
+          }
         }
       }
       > span {

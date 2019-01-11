@@ -117,7 +117,7 @@ export default {
       }
       // height: 40px;
       &.display {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
       }
       .el-checkbox__input {
         float: left;
