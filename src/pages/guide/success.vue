@@ -32,13 +32,7 @@
     <!--<p v-if="activity.status != 'FINISH'">活动将于<span class="v-red">{{activity.startTime}}</span>准时开播</p>-->
     <p class="sub-txt spe" v-if="activity.status != 'FINISH'">直播开始前我们会发送提醒消息，请注意查收</p>
     <template v-if="isWxSubscribeShow">
-      <div class="wx-accounts-box" v-if="isWXqq">
-        <p class="tip-title sub-txt">如果您希望收到活动开播提醒</p>
-        <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNjU0MjkzNQ==&scene=126#wechat_redirect">
-          <button class="default-button primary-button">关注公众号</button>
-        </a>
-      </div>
-      <div class="wx-accounts-box" v-else>
+      <div class="wx-accounts-box">
         <img class="qr-code-img" src="../../assets/image/wx-qr-code.jpg">
         <div class="qr-code-tip sub-txt">扫描二维码，接收开播提醒</div>
       </div>
@@ -78,14 +72,12 @@ export default {
         channelId: '',
         accountId: ''
       },
-      isWXqq: false,
       visitorObj: {} // 游客信息
     }
   },
   created () {
     this.isWxSubscribeShow = false
     this.getInfo()
-    this.isWXqq = this.isWx()
   },
   computed: mapState('tokenMager', {
     chatParams: state => state.chatParams
