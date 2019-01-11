@@ -174,9 +174,16 @@ export default {
                   border: 1px solid rgba(255, 255, 255, 1);
                   background-color: transparent;
                   margin-top: 40px;
-                  .com-button {
+                  .btn-content {
                     padding: 0;
-                    line-height: 56px;
+                    display: inline-block;
+                    width: 100%;
+                    height: 100%;
+                  }
+                  .com-button {
+                    display: inline-block;
+                    padding: 0;
+                    line-height: 100%;
                     width: 100%;
                     height: 100%;
                   }
