@@ -6,9 +6,15 @@
       <com-nav class="nav" v-show="menuOpen" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
     <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
-      <div class="mask">
+      <!-- <div class="mask">
         <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
+      </div> -->
+    </com-panel>
+    <com-panel class="section8" :edit="editAble" v-model="data.section8Data.panel">
+      <div class="mask">
+        <com-font :edit="editAble" v-model="data.section8Data.font"></com-font>
+        <com-btn class="btn" :edit="editAble" v-model="data.section8Data.btn"></com-btn>
       </div>
     </com-panel>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
@@ -362,6 +368,41 @@ export default {
         display: inline-block;
         position: relative;
         padding-bottom: 40px;
+      }
+      .com-button {
+        min-width: 300px;
+        height: 60px;
+        border-radius: 60px;
+        font-size: 28px;
+      }
+    }
+  }
+  .section8 {
+    width: 100%;
+    .panel {
+      padding: 50px 0;
+      text-align: center;
+    }
+    .mask {
+      // height: 380px;
+      bottom: 0;
+      width: 100%;
+      padding: 0 46px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding-bottom: 20px;
+    }
+    .font-content {
+      margin-top: 26px;
+      text-align: left;
+      width: 100%;
+      min-height: 100px;
+    }
+    .btn {
+      display: block;
+      margin-top: 40px;
+      .btn-content {
+        display: inline-block;
+        position: relative;
       }
       .com-button {
         min-width: 300px;
