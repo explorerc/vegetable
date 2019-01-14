@@ -7,7 +7,7 @@
         <div class='top_item' v-for="(ite,indr) in goodsList"
              @click="goInfo({goods_id:ite.goods_id,type:0})"
              :key="`top${indr}`" v-show="ite.added === '1' && ite.top === '1'">
-          <span class="index" style="font-size: 10px">TOP</span>
+          <span class="index" style="font-size: 10px">TOP</span>z
           <div class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${ite.image})`}">
             <!--<img class="cover_img" :src="`${$imgHost}/${ite.image}`">-->
           </div>

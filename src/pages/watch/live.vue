@@ -547,7 +547,7 @@ export default {
       // console.log(res)
       // switch (res.type) {
       //   case 'goods':
-      //     this.getGoodsDetails(res.id, 'info')
+      //     this.getGoodsDetails(res.id, 'goods')
       //     this.goodsInfoShow = true
       //     break
       //   case 'cards':
