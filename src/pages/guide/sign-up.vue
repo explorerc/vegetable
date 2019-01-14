@@ -38,6 +38,9 @@
             <com-input :inputVal.sync="item.val" :placeholder='item.placeholder' :errorMsg.sync="item.errorMsg"></com-input>
           </div>
         </div>
+        <p class="v-explain">
+          <el-checkbox v-model="checkAgreement">我已阅读并遵守</el-checkbox><span class="v-blue" @click="showAgreement()">《服务条款》</span>
+        </p>
         <button class="static-btn primary-button" @click="submitAppoint" :disabled="!checkAgreement">立即报名</button>
         <div @click='back' class='back'>返回</div>
         <!-- <transition name='fade'>
@@ -68,15 +71,18 @@
                                :maxLength="6"
                                :errorMsg.sync="codeError"
                                codeType="CONSUMER_USER_LOGIN"></com-verification-code>
+        <p class="v-explain">
+          <el-checkbox v-model="checkAgreement">我已阅读并遵守</el-checkbox><span class="v-blue" @click="showAgreement()">《服务条款》</span>
+        </p>
         <button class="static-btn primary-button" @click="submit" :disabled="!checkAgreement">立即预约</button>
         <div @click='back' class='back'>返回</div>
         <!-- <transition name='fade'>
           <div v-show='floatSubmit' class='float-btn-box'><button class="pos-btn primary-button" @click="submit" >提交</button></div>
         </transition> -->
       </div>
-      <p class="v-explain">
-        <el-checkbox v-model="checkAgreement">我已阅读并遵守</el-checkbox><span class="v-blue" @click="showAgreement()">《服务条款》</span>
-      </p>
+      <!--<p class="v-explain">-->
+        <!--<el-checkbox v-model="checkAgreement">我已阅读并遵守</el-checkbox><span class="v-blue" @click="showAgreement()">《服务条款》</span>-->
+      <!--</p>-->
     </div>
   </div>
 </template>
@@ -538,10 +544,11 @@ export default {
       margin-bottom: 30px;
     }
     .v-explain {
-      text-align: center;
+      text-align: left;
       font-size: 28px;
       color: #555;
-      margin-top: 15px;
+      margin-top: -5px;
+      margin-bottom: 50px;
       .v-blue {
         color: #4b5afe;
       }
