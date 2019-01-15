@@ -1,11 +1,11 @@
 import axios from 'axios'
 import qs from 'qs'
-import {
-  Loading
-} from 'components/common/loading'
-import {
-  MessageBox
-} from 'components/common/message-box'
+// import {
+//   Loading
+// } from 'components/common/loading'
+// import {
+//   MessageBox
+// } from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -22,7 +22,7 @@ axios.interceptors.request.use(
   config => {
     config.params = config.params || {}
     if (config.params.__loading) {
-      Loading(true)
+      // Loading(true)
       delete config.params.__loading
     }
     if (config.method === 'post') {
@@ -35,14 +35,14 @@ axios.interceptors.request.use(
     return config
   },
   error => {
-    Loading(false)
+    // Loading(false)
     return Promise.reject(error)
   }
 )
 
 axios.interceptors.response.use(
   res => {
-    Loading(false)
+    // Loading(false)
     if (res.data.code !== 200) {
       return Promise.reject(res.data)
     }
@@ -58,15 +58,15 @@ export const ajax = (options) => {
   return axios(_options).then((res) => {
     return res.data
   }).catch((error) => {
-    Loading(false)
+    // Loading(false)
     console.log('出错了', error)
     if ((options.data && options.data.__errHandler) || (options.params && options.params.__errHandler)) {
       return Promise.resolve(error)
     } else {
-      MessageBox({
-        header: '提示',
-        content: error
-      })
+      // MessageBox({
+      //   header: '提示',
+      //   content: error
+      // })
       return new Promise(() => {})
     }
   })

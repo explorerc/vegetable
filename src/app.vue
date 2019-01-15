@@ -29,6 +29,7 @@ export default {
   overflow: hidden;
   font-size: 28px;
   color: #222222;
+  background-color: #efefef;
 }
 
 .box {

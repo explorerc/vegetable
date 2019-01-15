@@ -1,12 +1,5 @@
 import axios from 'axios'
 import qs from 'qs'
-import {
-  Loading
-} from 'components/common/loading'
-import {
-  MessageBox
-} from 'components/common/message-box'
-
 const BASE_URL = process.env.API_PATH
 
 const defaultOptions = {
@@ -28,7 +21,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   res => {
-    Loading(false)
+    // Loading(false)
     if (res.data.code && res.data.code !== 200) {
       return Promise.reject(res.data)
     }
@@ -70,15 +63,15 @@ class $Http {
     }
     let _options = Object.assign({}, defaultOptions, this.options)
     if (this.config.loading) {
-      Loading(true)
+      // Loading(true)
     }
     return axios(_options)
       .then(res => {
-        Loading(false)
+        // Loading(false)
         return res.data
       })
       .catch(err => {
-        Loading(false)
+        // Loading(false)
         if (this.config.handlers === true) {
           return Promise.reject(err)
         } else if (
@@ -91,13 +84,13 @@ class $Http {
           if (err.code === 10030) {
             this.target.$router.replace('/login')
           } else {
-            let errorMsg = err.msg || '网络异常'
-            MessageBox({
-              header: '提示',
-              content: errorMsg,
-              autoClose: 10,
-              confirmText: '知道了'
-            })
+            // let errorMsg = err.msg || '网络异常'
+            // MessageBox({
+            //   header: '提示',
+            //   content: errorMsg,
+            //   autoClose: 10,
+            //   confirmText: '知道了'
+            // })
           }
         }
         return new Promise(() => {})

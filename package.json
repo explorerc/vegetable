@@ -1,5 +1,5 @@
 {
-  "name": "fe_interaction_h5",
+  "name": "vegetable",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.vhall.com:marketing/fe_interaction_h5.git"
+    "url": "git@github.com:explorerc/vegetable.git"
   },
   "pre-commit": [],
   "author": "",
@@ -70,7 +70,7 @@
     "qs": "^6.5.2",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
-    "url-loader": "^1.0.1",
+    "url-loader": "^1.1.2",
     "vue-loader": "^15.2.6",
     "vue-style-loader": "^4.1.1",
     "vue-template-compiler": "^2.5.16",
