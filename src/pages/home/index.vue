@@ -1,24 +1,134 @@
 <template>
   <div class="home">
     <Carousel></Carousel>
-    <Search></Search>
+    <Search
+      :keyType="keyType"
+    ></Search>
+    <div class="vg-category-bg">
+      <div class="vg-category">
+        <ul class="cat-list">
+          <li v-for="item in vegetableType">
+            <div>
+              <i></i>
+            </div>
+            <span>{{item.name}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <GoodCard
+        :cardTitle="'今日特卖'"
+        :goods="discountGoods"
+      ></GoodCard>
+      <GoodCard
+        :cardTitle="'礼包嘉年华'"
+        :goods="discountGoods"
+      ></GoodCard>
+      <GoodCard
+        :cardTitle="'绿色蔬菜'"
+        :goods="discountGoods"
+      ></GoodCard>
+    </div>
   </div>
 </template>
 
 <script>
 import Carousel from '../../components/carousel'
 import Search from '../../components/search'
+import GoodCard from '../../components/good-card'
 export default {
-  components: { Carousel, Search },
+  components: { Carousel, Search, GoodCard },
   data () {
     return {
-      searchValue: '' // 查找的关键字
+      cardTitle: '',
+      vegetableType: [
+        { id: 1, name: '蔬菜' },
+        { id: 2, name: '水果' },
+        { id: 3, name: '肉类' },
+        { id: 4, name: '菌类' },
+        { id: 5, name: '水产' },
+        { id: 6, name: '原粮' },
+        { id: 7, name: '搭配' },
+        { id: 8, name: '礼盒' }
+      ],
+      discountGoods: [
+        { id: 1, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
+        { id: 2, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
+        { id: 3, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
+        { id: 4, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
+        { id: 5, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 }
+      ]
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .home /deep/ {
+  padding-bottom: 120px;
+  .vg-category-bg {
+    background-color: #fff;
+    .vg-category {
+      width: 90%;
+      margin: 0 auto;
+      background-color: #fff;
+      .cat-list {
+        li {
+          display: inline-block;
+          width: 25%;
+          margin-top: 10px;
+          text-align: center;
+          i {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background-size: 100% 100%;
+          }
+          &:nth-child(1) {
+            i {
+              background-image: url("../../assets/image/vegetable.png");
+            }
+          }
+          &:nth-child(2) {
+            i {
+              background-image: url("../../assets/image/fruit.png");
+            }
+          }
+          &:nth-child(3) {
+            i {
+              background-image: url("../../assets/image/meat.png");
+            }
+          }
+          &:nth-child(4) {
+            i {
+              background-image: url("../../assets/image/mushroom.png");
+            }
+          }
+          &:nth-child(5) {
+            i {
+              background-image: url("../../assets/image/seafood.png");
+            }
+          }
+          &:nth-child(6) {
+            i {
+              background-image: url("../../assets/image/rice.png");
+            }
+          }
+          &:nth-child(7) {
+            i {
+              background-image: url("../../assets/image/collocate.png");
+            }
+          }
+          &:nth-child(8) {
+            i {
+              background-image: url("../../assets/image/present.png");
+            }
+          }
+
+        }
+      }
+    }
+  }
 
 }
 </style>

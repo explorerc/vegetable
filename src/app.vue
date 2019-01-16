@@ -26,10 +26,11 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  overflow: hidden;
+  overflow: auto;
   font-size: 28px;
   color: #222222;
   background-color: #efefef;
+  /*background-color: #FFD021;*/
 }
 
 .box {
