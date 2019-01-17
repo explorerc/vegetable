@@ -6,7 +6,7 @@
         v-model="searchKey"
         type="search"
         @keypress="keySearch"
-        placeholder="请速入关键字进行搜索"
+        placeholder="请输入关键字进行搜索"
         :result.sync="searchResult">
     </div>
     <button @click="search()" class="search-btn">搜索</button>

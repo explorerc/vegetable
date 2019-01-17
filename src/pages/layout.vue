@@ -1,40 +1,12 @@
 <template>
   <div class="container">
-    <mt-tab-container v-model="active">
-      <mt-tab-container-item id="index">
-        <!--<mt-cell v-for="n in 10" title="tab-container 1"></mt-cell>-->
-        <Home></Home>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="record">
-        <Record></Record>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="cart">
-        <Cart></Cart>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="my">
-        <User></User>
-      </mt-tab-container-item>
-    </mt-tab-container>
-
-    <mt-tabbar v-model="selected = active" class="is-fixed">
-      <mt-tab-item @click.native.prevent="active = 'index'" id="index">
-        <i slot="icon" class="iconfont icon-shouye"></i>
-        首页
-      </mt-tab-item>
-      <mt-tab-item @click.native.prevent="active = 'record'" id="record">
-        <i slot="icon" class="iconfont icon-goumaijilu"></i>
-        购买记录
-      </mt-tab-item>
-      <mt-tab-item  @click.native.prevent="active = 'cart'" id="cart">
-        <i slot="icon" class="iconfont icon-gouwuche"></i>
-        篮子
-      </mt-tab-item>
-      <mt-tab-item  @click.native.prevent="active = 'my'" id="my">
-        <i slot="icon" class="iconfont icon-gerenzhongxin"></i>
-        个人中心
-      </mt-tab-item>
-    </mt-tabbar>
-
+    <headNav
+      :headTitle="headTitle"
+    ></headNav>
+    <keep-alive>
+      <component :is="currentTabComponent"></component>
+    </keep-alive>
+    <bottomNav @change="changMenu"></bottomNav>
   </div>
 </template>
 
@@ -43,17 +15,30 @@
   import Record from './record/index'
   import Cart from './cart/index'
   import User from './user/index'
+  import bottomNav from '../components/bottom-nav'
+  import headNav from '../components/head-nav'
   export default {
-    components: { Home, User, Record, Cart },
+    components: { Home, User, Record, Cart, bottomNav, headNav },
     name: 'layout',
     props: {
-      keyType: {
-        type: Number
-      }
     },
     data () {
       return {
-        active: 'index'
+        currentTabComponent: Home,
+        headTitle: '商城首页'
+      }
+    },
+    methods: {
+      changMenu (data) {
+        if (data === 'home') {
+          this.currentTabComponent = Home
+        } else if (data === 'user') {
+          this.currentTabComponent = User
+        } else if (data === 'record') {
+          this.currentTabComponent = Record
+        } else if (data === 'cart') {
+          this.currentTabComponent = Cart
+        }
       }
     }
   }
@@ -62,6 +47,7 @@
 <style scoped lang="scss">
 .container {
   overflow-y: auto;
+  padding-top: 80px;
   /deep/ {
     .mint-tabbar {
       .mint-tab-item{

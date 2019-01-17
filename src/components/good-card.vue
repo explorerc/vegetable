@@ -31,10 +31,7 @@
     methods: {
       goodInfo () {
         alert('123123')
-        // this.emit('goodInfo', {
-        //   'type': type,
-        //   'id': id
-        // })
+        // this.$router.replace('/salesTools/questionnaire/edit/' + this.activityId + '/' + naireId)
       }
     }
   }
