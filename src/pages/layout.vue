@@ -2,6 +2,7 @@
   <div class="container">
     <headNav
       :headTitle="headTitle"
+      :isHeadClose="isHeadClose"
     ></headNav>
     <keep-alive>
       <component :is="currentTabComponent"></component>
@@ -25,19 +26,24 @@
     data () {
       return {
         currentTabComponent: Home,
-        headTitle: '商城首页'
+        headTitle: '商城首页',
+        isHeadClose: true
       }
     },
     methods: {
       changMenu (data) {
         if (data === 'home') {
           this.currentTabComponent = Home
-        } else if (data === 'user') {
+          this.headTitle = '商城首页'
+        } else if (data === 'my') {
           this.currentTabComponent = User
+          this.headTitle = '个人中心'
         } else if (data === 'record') {
           this.currentTabComponent = Record
+          this.headTitle = '购买记录'
         } else if (data === 'cart') {
           this.currentTabComponent = Cart
+          this.headTitle = '篮子'
         }
       }
     }

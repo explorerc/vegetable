@@ -2,7 +2,7 @@
 
   <div class="bottom-nav">
     <mt-tabbar v-model="selected = active" class="is-fixed">
-      <mt-tab-item @click.native.prevent="sendMsgClick" id="home">
+      <mt-tab-item @click.native.prevent="home" id="home">
         <i slot="icon" class="iconfont icon-shouye"></i>
         首页
       </mt-tab-item>

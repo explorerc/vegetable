@@ -2,8 +2,8 @@
   <div class="head">
     <mt-header :title="headTitle" class="is-fixed">
       <router-link to="/" slot="left">
-        <mt-button icon="back" v-if="!isFirstPage">返回</mt-button>
-        <mt-button @click="handleClose" v-if="isFirstPage"  class="iconfont icon-close"></mt-button>
+        <mt-button class="iconfont icon-back" v-if="!isHeadClose"></mt-button>
+        <mt-button @click="handleClose" v-if="isHeadClose"  class="iconfont icon-close"></mt-button>
       </router-link>
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
@@ -13,14 +13,20 @@
 <script>
   export default {
     name: 'head-nav',
-    data () {},
+    data () {
+      return {}
+    },
     props: {
       headTitle: {
         type: String
       },
-      isFirstPage: {
+      isHeadClose: {
         type: Boolean,
         default: true
+      }
+    },
+    methods: {
+      handleClose () {
       }
     }
   }
@@ -37,6 +43,9 @@
       display: inline-block;
       height: 80px;
       line-height: 80px;
+    }
+    .mint-button {
+      line-height: 40px;
     }
   }
 }
