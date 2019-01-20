@@ -53,7 +53,7 @@
 <style scoped lang="scss">
 .container {
   overflow-y: auto;
-  padding-top: 80px;
+  padding: 80px 0 120px;
   /deep/ {
     .mint-tabbar {
       .mint-tab-item{

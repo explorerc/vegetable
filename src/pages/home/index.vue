@@ -66,7 +66,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home /deep/ {
-  padding-bottom: 120px;
   .vg-category-bg {
     background-color: #fff;
     .vg-category {
