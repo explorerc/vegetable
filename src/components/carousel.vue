@@ -15,9 +15,9 @@
     data () {
       return {
         imgList: [
-          {id: 0, idView: require('../assets/image/carousel1.jpg')},
-          {id: 1, name: '详情', idView: require('../assets/image/carousel2.jpg')},
-          {id: 2, name: '推荐', idView: require('../assets/image/carousel3.jpg')}
+          { id: 0, idView: require('../assets/image/carousel1.jpg') },
+          { id: 1, name: '详情', idView: require('../assets/image/carousel2.jpg') },
+          { id: 2, name: '推荐', idView: require('../assets/image/carousel3.jpg') }
         ]
       }
     }
