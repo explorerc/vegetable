@@ -5,20 +5,22 @@
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
-      <li v-for="item in cartLIst">
+      <li v-for="(item,idx) in cartLIst" @click="clickSelected(idx)">
         <div class="cart-item-top">
-          <input type="checkbox" name="goods" :value="item.goodId">
+          <input type="checkbox" name="goods" :value="item.goodId" :checked="item.isChecked">
           <img :src="item.goodImg" alt="" class="good-img">
           <div class="good-des">
             <p class="good-name">{{item.goodName}}</p>
-            <p class="price-box clearfix">
+            <div class="price-box clearfix">
               <span class="price">￥{{item.price}}</span>
-              <ChooseBtn
-                :goodsAmount="item.number"
-                @addNumberClick="addNumberClick(item.goodId,item.number)"
-                @minusNumberClick="minusNumberClick(item.goodId,item.number)"
-                class="fr"></ChooseBtn>
-            </p>
+              <div class="clearfix choose-box fr" style="display: inline-block" @click.stop="">
+                <ChooseBtn
+                  :goodsAmount="item.number"
+                  @addNumberClick="addNumberClick(item.goodId,item.number)"
+                  @minusNumberClick="minusNumberClick(item.goodId,item.number)"
+                  class=""></ChooseBtn>
+              </div>
+            </div>
           </div>
         </div>
       </li>
@@ -28,7 +30,6 @@
 </template>
 
 <script>
-
   import ChooseBtn from '../../components/choose-btn'
 
   export default {
@@ -43,42 +44,48 @@
             goodName: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2
+            number: 2,
+            isChecked: false
           },
           {
             goodId: 102,
             goodName: '绿鲜知三宝白菜约1kg火锅食材新鲜蔬菜绿鲜知三宝白菜约1kg 火锅食材 ',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2
+            number: 2,
+            isChecked: false
           },
           {
             goodId: 104,
             goodName: '商品3',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2
+            number: 2,
+            isChecked: false
           },
           {
             goodId: 105,
             goodName: '商品4',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 3
+            number: 3,
+            isChecked: false
           },
           {
             goodId: 107,
             goodName: '商品5',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 4
+            number: 4,
+            isChecked: false
           },
           {
             goodId: 107,
             goodName: '商品6',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 4
+            number: 4,
+            isChecked: false
           }
         ]
       }
@@ -86,9 +93,10 @@
     methods: {
       // 修改购物车中商品的数量
       minusNumberClick (goodid, number) {
+        debugger
+        console.log(goodid, number)
         // 根据id修改数据库中的数据
         // 然后返回购物车表数据库中的数据
-
       },
       addNumberClick (goodid, number) {
         // 根据id修改数据库中的数据
@@ -106,6 +114,9 @@
           }
           this.loading = false
         }, 2500)
+      },
+      clickSelected (idx) {
+        this.cartLIst[idx].isChecked = !this.cartLIst[idx].isChecked
       }
     },
     created () {

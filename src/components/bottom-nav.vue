@@ -6,6 +6,10 @@
         <i slot="icon" class="iconfont icon-shouye"></i>
         首页
       </mt-tab-item>
+      <mt-tab-item @click.native.prevent="active = 'kind'" id="kind">
+        <i slot="icon" class="iconfont icon-leimupinleifenleileibie"></i>
+        分类
+      </mt-tab-item>
       <mt-tab-item @click.native.prevent="active = 'record'" id="record">
         <i slot="icon" class="iconfont icon-goumaijilu"></i>
         购买记录

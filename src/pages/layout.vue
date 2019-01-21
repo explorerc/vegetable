@@ -18,8 +18,9 @@
   import User from './user/index'
   import bottomNav from '../components/bottom-nav'
   import headNav from '../components/head-nav'
+  import Kind from './kind/kind'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind },
     name: 'layout',
     props: {
     },
@@ -44,6 +45,9 @@
         } else if (data === 'cart') {
           this.currentTabComponent = Cart
           this.headTitle = '篮子'
+        } else if (data === 'kind') {
+          this.currentTabComponent = Kind
+          this.headTitle = '商品分类'
         }
       }
     }
