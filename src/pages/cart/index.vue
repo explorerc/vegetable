@@ -23,12 +23,25 @@
         return {
           goodsNum: 0, // 购物车中有多少件商品
           cartLIst: [
-            { goodId: 101, goodName: '商品1', price: '123', goodImg: 'http://bpic.588ku.com/original_pic/18/06/22/a2867218d13f2358a3669d97670ec8c7.jpg!/fw/254/quality/90/unsharp/true/compress/true', number: '2' },
-            { goodId: 102, goodName: '商品2', price: '123', goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp', number: '2' },
+            { goodId: 101, goodName: '商品1', price: '123', goodImg: 'https://img10.360buyimg.com/n7/jfs/t18418/237/556658165/172846/929b317e/5a96c27bNa2c5453d.jpg', number: '2' },
+            { goodId: 101, goodName: '商品1', price: '123', goodImg: 'https://img11.360buyimg.com/n7/jfs/t4048/252/288662110/127744/931a566e/58462cd6N653980df.jpg', number: '2' },
+            { goodId: 102, goodName: '商品2', price: '123', goodImg: 'https://img13.360buyimg.com/n7/jfs/t4237/72/338884735/326271/fabe0f8d/58b3c666N4d3ff37e.jpg', number: '2' },
             { goodId: 104, goodName: '商品3', price: '123', goodImg: '', number: '2' },
             { goodId: 105, goodName: '商品4', price: '123', goodImg: '', number: '2' },
             { goodId: 107, goodName: '商品5', price: '123', goodImg: '', number: '2' }
           ]
+        }
+      },
+      methods: {
+        loadMore () {
+          this.loading = true
+          setTimeout(() => {
+            let last = this.list[this.list.length - 1]
+            for (let i = 1; i <= 10; i++) {
+              this.list.push(last + i)
+            }
+            this.loading = false
+          }, 2500)
         }
       }
     }
