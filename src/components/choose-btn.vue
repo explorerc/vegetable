@@ -1,17 +1,16 @@
 <template>
-    <div class="choose-btn">
-        <div class="choose-amount">
-            <button class="minus" @click="minusNumberClick">-</button><input type="number" :value="goodsAmount"><button class="add" @click="addNumberClick">+</button>
-        </div>
+  <div class="choose-btn">
+    <div class="choose-amount">
+      <button class="minus" @click="minusNumberClick" :disabled="goodsAmount<=1">-</button><input type="number" :value="goodsAmount"><button class="add" @click="addNumberClick">+</button>
     </div>
+  </div>
 </template>
 
 <script>
   export default {
     name: 'choose-btn',
     data () {
-      return {
-      }
+      return {}
     },
     props: {
       goodsAmount: {
@@ -31,27 +30,35 @@
 </script>
 
 <style scoped lang="scss">
-.choose-btn {
+  .choose-btn {
     display: inline-block;
     font-size: 32px;
-    input,button {
-        border: none;
-        background-color: #fff;
-        padding: 10px 20px;
+    background-color: #fff;
+    input, button {
+      border: none;
+      padding: 10px 20px;
+      background-color: transparent;
     }
     .choose-amount {
+      .minus {
         border: 1px solid #8E9198;
-        .minus {
-            border-right: 1px solid #8E9198;
+        border-radius: 10px 0 0 10px;
+        &[disabled] {
+          opacity: 0.5;
         }
-        input {
-            display: inline-block;
-            width: 80px;
-            text-align: center;
-        }
-        .add {
-            border-left: 1px solid #8E9198;
-        }
+      }
+      input {
+        border: 1px solid #8E9198;
+        border-left: none;
+        border-right: none;
+        display: inline-block;
+        width: 80px;
+        text-align: center;
+      }
+      .add {
+        border: 1px solid #8E9198;
+        border-radius: 0 10px 10px 0;
+      }
     }
-}
+  }
 </style>

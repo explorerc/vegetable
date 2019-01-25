@@ -1,13 +1,13 @@
 <template>
   <div class="cart">
-    <span>共有{{cartLIst.length}}件商品</span>
+    <span>共有{{cartList.length}}件商品</span>
     <ul
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
-      <li v-for="(item,idx) in cartLIst" @click="clickSelected(idx)">
+      <li v-for="(item,idx) in cartList">
         <div class="cart-item-top">
-          <input type="checkbox" name="goods" :value="item.goodId" :checked="item.isChecked">
+          <input type="checkbox" name="goods" :value="item.goodId" :checked="item.isChecked"  @click="clickSelected(idx)">
           <img :src="item.goodImg" alt="" class="good-img">
           <div class="good-des">
             <p class="good-name">{{item.goodName}}</p>
@@ -26,6 +26,13 @@
       </li>
 
     </ul>
+    <div class="cart-bottom clearfix">
+      <div class="fl"> <input type="checkbox" name="goods" @click="allClickSelected" :checked="this.isAllChecked"><span>全选</span></div>
+      <div class="fr">
+        <span>合计：<span>¥{{cartTotalMoney}}</span></span>
+        <button class="pay-btn">结算</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,13 +45,13 @@
     data () {
       return {
         goodsNum: 0, // 购物车中有多少件商品
-        cartLIst: [
+        cartList: [
           {
             goodId: 101,
             goodName: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
             price: '123',
             goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2,
+            number: 1,
             isChecked: false
           },
           {
@@ -87,7 +94,16 @@
             number: 4,
             isChecked: false
           }
-        ]
+        ],
+        cartTotalMoney: 0, // 勾选的商品总价格
+        isAllChecked: false, // 不是全选
+        selectedNum: 0 // 被选中的数量
+      }
+    },
+    props: {
+      isCartMange: {
+        default: false,
+        type: Boolean
       }
     },
     methods: {
@@ -106,17 +122,46 @@
       queryCartList (usreid) {
       },
       loadMore () {
-        this.loading = true
-        setTimeout(() => {
-          let last = this.list[this.list.length - 1]
-          for (let i = 1; i <= 10; i++) {
-            this.list.push(last + i)
-          }
-          this.loading = false
-        }, 2500)
+        // this.loading = true
+        // setTimeout(() => {
+        //   let last = this.cartLIst[this.cartLIst.length - 1]
+        //   for (let i = 1; i <= 10; i++) {
+        //     this.cartLIst.push(last + i)
+        //   }
+        //   this.loading = false
+        // }, 2500)
       },
+      // 单选时计算价格
       clickSelected (idx) {
-        this.cartLIst[idx].isChecked = !this.cartLIst[idx].isChecked
+        this.cartList[idx].isChecked = !this.cartList[idx].isChecked
+        // 计算被选中的数量
+        // 判断是否被全选了
+        if (this.cartList[idx].isChecked) {
+          this.selectedNum++
+          this.cartTotalMoney = this.cartList[idx].price * this.cartList[idx].number + this.cartTotalMoney
+        } else {
+          this.selectedNum--
+          this.cartTotalMoney = this.cartTotalMoney - this.cartList[idx].price * this.cartList[idx].number
+        }
+        if (this.selectedNum === this.cartList.length) {
+          this.isAllChecked = true
+        } else {
+          this.isAllChecked = false
+        }
+      },
+      // 全选时计算价格
+      allClickSelected () {
+        this.isAllChecked = !this.isAllChecked
+        for (let idx = 0; idx < this.cartList.length; idx++) {
+          this.cartList[idx].isChecked = this.isAllChecked
+          if (this.isAllChecked) {
+            this.cartTotalMoney = this.cartList[idx].price * this.cartList[idx].number + this.cartTotalMoney
+            this.selectedNum = this.cartList.length
+          } else {
+            this.cartTotalMoney = 0
+            this.selectedNum = 0
+          }
+        }
       }
     },
     created () {
@@ -125,8 +170,10 @@
 </script>
 
 <style scoped lang="scss">
+  @import '~assets/css/variable.scss';
   .cart {
-    padding: 0 40px;
+    position: relative;
+    padding: 0 40px 60px;
     li {
       margin-top: 40px;
       input {
@@ -161,6 +208,32 @@
         }
       }
 
+    }
+    .cart-bottom {
+      position: fixed;
+      display: block;
+      width: calc(100% - 45px);
+      height: 60px;
+      bottom: 100px;
+      left: 20px;
+      background-color: #efefef;
+      line-height: 60px;
+      .fl {
+        input {
+          position: relative;
+          top: 5px;
+        }
+      }
+      .fr {
+        button {
+          background-color: $color-default;
+          border: 1px solid $color-default;
+          border-radius: 20px;
+          color: #fff;
+          padding: 0 20px;
+          margin-left: 20px;
+        }
+      }
     }
   }
 </style>

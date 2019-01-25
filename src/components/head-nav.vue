@@ -5,7 +5,8 @@
         <mt-button class="iconfont icon-back" v-if="!isHeadClose"></mt-button>
         <mt-button @click="handleClose" v-if="isHeadClose"  class="iconfont icon-close"></mt-button>
       </router-link>
-      <mt-button icon="more" slot="right"></mt-button>
+      <mt-button slot="right" v-if="headTitle==='购物车'" class="cart-manger" @click="cartMangerClick">管理</mt-button>
+      <mt-button icon="more" slot="right" v-else></mt-button>
     </mt-header>
   </div>
 </template>
@@ -23,16 +24,24 @@
       isHeadClose: {
         type: Boolean,
         default: true
+      },
+      isCart: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
       handleClose () {
+      },
+      cartMangerClick () {
+        this.$emit('cartMangerClick')
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
+
 .head /deep/ {
   .mint-header {
     height: 80px;
@@ -46,6 +55,10 @@
     }
     .mint-button {
       line-height: 40px;
+    }
+    .cart-manger {
+      font-size: 28px;
+      color: #222;
     }
   }
 }
