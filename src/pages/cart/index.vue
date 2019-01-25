@@ -28,9 +28,12 @@
     </ul>
     <div class="cart-bottom clearfix">
       <div class="fl"> <input type="checkbox" name="goods" @click="allClickSelected" :checked="this.isAllChecked"><span>全选</span></div>
-      <div class="fr">
+      <div class="fr" v-if="!isCartMange">
         <span>合计：<span>¥{{cartTotalMoney}}</span></span>
-        <button class="pay-btn">结算</button>
+        <button class="pay-btn" @click="payGoods">结算({{selectedNum}})</button>
+      </div>
+      <div class="fr" v-else>
+        <button class="delete-btn" @click="deleteSelected">删除</button>
       </div>
     </div>
   </div>
@@ -162,6 +165,20 @@
             this.selectedNum = 0
           }
         }
+      },
+      deleteSelected () {
+        let deleteGoodsId = []
+        this.cartList.forEach(function (item, ind) {
+          if (item.isChecked) {
+            deleteGoodsId.push(item.goodId)
+          }
+        })
+        // 请求数据库操作购物车表中的数据
+        console.log(deleteGoodsId)
+      },
+      // 结算商品
+      payGoods () {
+        console.log('支付商品')
       }
     },
     created () {
@@ -213,25 +230,35 @@
       position: fixed;
       display: block;
       width: calc(100% - 45px);
-      height: 60px;
+      height: 100px;
       bottom: 100px;
       left: 20px;
       background-color: #efefef;
-      line-height: 60px;
+      line-height: 100px;
       .fl {
         input {
           position: relative;
-          top: 5px;
+          top: 4px;
         }
       }
       .fr {
-        button {
+        .pay-btn {
+          height: 60px;
           background-color: $color-default;
           border: 1px solid $color-default;
-          border-radius: 20px;
+          border-radius: 30px;
           color: #fff;
           padding: 0 20px;
           margin-left: 20px;
+        }
+        .delete-btn {
+          display: inline-block;
+          color: $color-default;
+          /*width: 96px;*/
+          margin-left: 20px;
+          padding: 0 34.5px;
+          background-color: transparent;
+          border: none;
         }
       }
     }

@@ -34,6 +34,7 @@
     display: inline-block;
     font-size: 32px;
     background-color: #fff;
+    border-radius: 10px;
     input, button {
       border: none;
       padding: 10px 20px;
