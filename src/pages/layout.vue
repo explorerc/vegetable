@@ -16,7 +16,9 @@
       </mt-header>
     </div>
     <keep-alive>
-      <component :is="currentTabComponent" :isCartMange="isCartMange"></component>
+      <component
+              :is="currentTabComponent"
+              :isCartMange="isCartMange"></component>
     </keep-alive>
     <bottomNav @change="changMenu"></bottomNav>
   </div>

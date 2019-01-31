@@ -21,22 +21,13 @@
 
 <script>
   import Search from '../../components/search'
+  import kind from 'src/api/kind'
   export default {
     name: 'kind',
     components: { Search },
     data () {
       return {
-        kindList: [
-          { id: 0, type: 'all', name: '全部' },
-          { id: 1, type: 'vegetable', name: '蔬菜' },
-          { id: 2, type: 'fruit', name: '水果' },
-          { id: 3, type: 'meat', name: '肉' },
-          { id: 4, type: 'mushroom', name: '菌类' },
-          { id: 5, type: 'seafood', name: '海鲜' },
-          { id: 6, type: 'rice', name: '原粮' },
-          { id: 7, type: 'collocate', name: '搭配' },
-          { id: 8, type: 'present', name: '礼盒' }
-        ],
+        kindList: [],
         index: 0
       }
     },
@@ -45,7 +36,18 @@
         this.index = index
         // 根据kind的id查询数据
         console.log(id)
+      },
+      // 获取净菜的分类
+      queryKind () {
+        this.$http.get(kind.GET_KIND_INFO, {}).then((res) => {
+          if (res.status === 200) {
+            this.kindList = res.data
+          }
+        })
       }
+    },
+    created () {
+      this.queryKind()
     }
   }
 </script>

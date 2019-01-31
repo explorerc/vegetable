@@ -2,7 +2,7 @@
 
   <div class="bottom-nav">
     <mt-tabbar v-model="selected = active" class="is-fixed">
-      <mt-tab-item @click.native.prevent="home" id="home">
+      <mt-tab-item @click.native.prevent="active = 'home'" id="home">
         <i slot="icon" class="iconfont icon-shouye"></i>
         首页
       </mt-tab-item>
@@ -10,13 +10,13 @@
         <i slot="icon" class="iconfont icon-leimupinleifenleileibie"></i>
         分类
       </mt-tab-item>
-      <mt-tab-item @click.native.prevent="active = 'record'" id="record">
-        <i slot="icon" class="iconfont icon-goumaijilu"></i>
-        购买记录
-      </mt-tab-item>
       <mt-tab-item  @click.native.prevent="active = 'cart'" id="cart">
         <i slot="icon" class="iconfont icon-gouwuche"></i>
         购物车
+      </mt-tab-item>
+      <mt-tab-item @click.native.prevent="active = 'record'" id="record">
+        <i slot="icon" class="iconfont icon-goumaijilu"></i>
+        订单
       </mt-tab-item>
       <mt-tab-item  @click.native.prevent="active = 'my'" id="my">
         <i slot="icon" class="iconfont icon-gerenzhongxin"></i>

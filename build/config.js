@@ -5,12 +5,12 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     PUBLIC_PATH: '/',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
+    // IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
     // MOBILE_HOST: '//172.16.11.28:8866/m/',
-    MOBILE_HOST: '//localhost:8866/m/',
+    MOBILE_HOST: 'http://localhost:80/m/',
     proxyTable: {
       '/api': {
-        target: 'http://test-api-zhike.vhall.com',
+        target: 'http://localhost:80/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
@@ -24,7 +24,7 @@ const config = {
     SUB_DIR: 'static',
     PUBLIC_PATH: '//dev-zhike.vhall.com/m/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
-    MOBILE_HOST: '//dev-zhike.vhall.com/m/'
+    MOBILE_HOST: 'http://locahost:80'
   },
   test: {
     BUILD_ENV: 'test',

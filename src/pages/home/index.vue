@@ -1,13 +1,11 @@
 <template>
   <div class="home">
     <Carousel></Carousel>
-    <Search
-      :keyType="keyType"
-    ></Search>
+    <Search></Search>
     <div class="vg-category-bg">
       <div class="vg-category">
         <ul class="cat-list">
-          <li v-for="item in vegetableType">
+          <li v-for="item in kindList">
             <div>
               <i></i>
             </div>
@@ -37,20 +35,13 @@
 import Carousel from '../../components/carousel'
 import Search from '../../components/search'
 import GoodCard from '../../components/good-card'
+import kind from 'src/api/kind'
 export default {
   components: { Carousel, Search, GoodCard },
   data () {
     return {
       cardTitle: '',
-      vegetableType: [
-        { id: 1, name: '蔬菜' },
-        { id: 2, name: '水果' },
-        { id: 3, name: '肉类' },
-        { id: 4, name: '菌类' },
-        { id: 5, name: '水产' },
-        { id: 6, name: '原粮' },
-        { id: 7, name: '搭配' },
-        { id: 8, name: '礼盒' }
+      kindList: [
       ],
       discountGoods: [
         { id: 1, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
@@ -61,6 +52,19 @@ export default {
       ],
       keyType: 0
     }
+  },
+  methods: {
+    // 获取净菜的分类
+    queryKind () {
+      this.$http.get(kind.GET_KIND_INFO, {}).then((res) => {
+        if (res.status === 200) {
+          this.kindList = res.data
+        }
+      })
+    }
+  },
+  created () {
+    this.queryKind()
   }
 }
 </script>

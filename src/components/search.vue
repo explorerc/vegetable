@@ -1,26 +1,28 @@
 <template>
-  <div class="search">
-    <div class="input-bg">
-      <i class="iconfont icon-search" @click="search()"></i>
-      <input
-        v-model="searchKey"
-        type="search"
-        @keypress="keySearch"
-        placeholder="请输入关键字进行搜索"
-        :result.sync="searchResult">
+  <div>
+    <div class="search-input">
+      <div class="input-bg">
+        <i class="iconfont icon-search" @click="search()"></i>
+        <input
+                v-model="searchKey"
+                type="search"
+                @keypress="keySearch"
+                placeholder="请输入关键字进行搜索"
+                :result.sync="searchResult">
+      </div>
+      <button @click="search()" class="search-btn">搜索</button>
     </div>
-    <button @click="search()" class="search-btn">搜索</button>
+    <div class="search-result" v-if="searchResult">
+      <slot></slot>
+    </div>
   </div>
+
 </template>
 
 <script>
   export default {
     name: 'search',
     props: {
-      keyType: {
-        type: Number,
-        default: 0 // 0表示全部种类 1表示蔬菜 2表示菌类 3表示礼盒类 4水果类 5原粮类
-      }
     },
     data () {
       return {
@@ -30,7 +32,7 @@
     },
     methods: {
       search () {
-        console.log(this.searchKey, this.keyType)
+        console.log(this.searchKey)
       },
       keySearch (event) {
         if (event.keyCode === 13) {
@@ -44,7 +46,7 @@
 
 <style scoped lang="scss">
   @import '~assets/css/variable.scss';
-  .search /deep/ {
+  .search-input /deep/ {
     position: relative;
     height: 60px;
     width: 90%;
