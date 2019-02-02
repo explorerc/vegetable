@@ -6,23 +6,7 @@
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
       <li v-for="(item,idx) in cartList">
-        <div class="cart-item-top">
-          <input type="checkbox" name="goods" :value="item.goodId" :checked="item.isChecked"  @click="clickSelected(idx)">
-          <img :src="item.goodImg" alt="" class="good-img">
-          <div class="good-des">
-            <p class="good-name">{{item.goodName}}</p>
-            <div class="price-box clearfix">
-              <span class="price">￥{{item.price}}</span>
-              <div class="clearfix choose-box fr" style="display: inline-block" @click.stop="">
-                <ChooseBtn
-                  :goodsAmount="item.number"
-                  @addNumberClick="addNumberClick(item.goodId,item.number)"
-                  @minusNumberClick="minusNumberClick(item.goodId,item.number)"
-                  class=""></ChooseBtn>
-              </div>
-            </div>
-          </div>
-        </div>
+        <goodInfo :goodInfo="item" :isCartShow="isCartShow" @clickSelected="clickSelected(idx)"></goodInfo>
       </li>
 
     </ul>
@@ -40,67 +24,74 @@
 </template>
 
 <script>
-  import ChooseBtn from '../../components/choose-btn'
+  import goodInfo from 'src/components/good-info'
 
   export default {
     name: 'index',
-    components: {ChooseBtn},
+    components: {goodInfo},
     data () {
       return {
         goodsNum: 0, // 购物车中有多少件商品
         cartList: [
           {
-            goodId: 101,
-            goodName: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
+            id: 101,
+            name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
             price: '123',
-            goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+            disprice: '111',
+            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
             number: 1,
             isChecked: false
           },
           {
-            goodId: 102,
-            goodName: '绿鲜知三宝白菜约1kg火锅食材新鲜蔬菜绿鲜知三宝白菜约1kg 火锅食材 ',
+            id: 102,
+            name: '绿鲜知三宝白菜约1kg火锅食材新鲜蔬菜绿鲜知三宝白菜约1kg 火锅食材 ',
             price: '123',
-            goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+            disprice: '',
+            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
             number: 2,
             isChecked: false
           },
           {
-            goodId: 104,
-            goodName: '商品3',
+            id: 104,
+            name: '商品3',
             price: '123',
-            goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+            disprice: '',
+            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
             number: 2,
             isChecked: false
           },
           {
-            goodId: 105,
-            goodName: '商品4',
+            id: 105,
+            name: '商品4',
             price: '123',
-            goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+            disprice: '',
+            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
             number: 3,
             isChecked: false
           },
           {
-            goodId: 107,
-            goodName: '商品5',
+            id: 107,
+            name: '商品5',
             price: '123',
-            goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+            disprice: '',
+            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
             number: 4,
             isChecked: false
           },
           {
-            goodId: 107,
-            goodName: '商品6',
+            id: 107,
+            name: '商品6',
             price: '123',
-            goodImg: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+            disprice: '',
+            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
             number: 4,
             isChecked: false
           }
         ],
         cartTotalMoney: 0, // 勾选的商品总价格
         isAllChecked: false, // 不是全选
-        selectedNum: 0 // 被选中的数量
+        selectedNum: 0, // 被选中的数量
+        isCartShow: true
       }
     },
     props: {
@@ -112,7 +103,6 @@
     methods: {
       // 修改购物车中商品的数量
       minusNumberClick (goodid, number) {
-        debugger
         console.log(goodid, number)
         // 根据id修改数据库中的数据
         // 然后返回购物车表数据库中的数据
@@ -155,6 +145,7 @@
       // 全选时计算价格
       allClickSelected () {
         this.isAllChecked = !this.isAllChecked
+        this.cartTotalMoney = 0
         for (let idx = 0; idx < this.cartList.length; idx++) {
           this.cartList[idx].isChecked = this.isAllChecked
           if (this.isAllChecked) {

@@ -6,13 +6,14 @@
     <div class="content">
       <div class="kind-list">
         <ul>
-          <li v-for="(item, ind) in kindList" :class="{'active':ind === index}" @click="changeKind(ind,item.id)">{{item.name}}</li>
+          <li :class="{'active':8 === index}" @click="changeKind(8)">全部</li>
+          <li v-for="(item, ind) in kindList" :class="{'active':ind === index}" @click="changeKind(ind, item.id)">{{item.name}}</li>
         </ul>
       </div>
       <div class="good-list">
-        <ul>
-          <li v-for="(item,ind) in kindList">{{item.name}}</li>
-        </ul>
+        <div v-for="item in goodKindInfo">
+          <GoodInfo :goodInfo="item"></GoodInfo>
+        </div>
       </div>
       <div class="clearfix"></div>
     </div>
@@ -22,20 +23,33 @@
 <script>
   import Search from '../../components/search'
   import kind from 'src/api/kind'
+  import goods from 'src/api/goods'
+  import GoodInfo from 'src/components/good-info'
   export default {
     name: 'kind',
-    components: { Search },
+    components: { Search, GoodInfo },
     data () {
       return {
         kindList: [],
-        index: 0
+        index: 8,
+        goodInfo: [],
+        goodKindInfo: []
       }
     },
     methods: {
       changeKind (index, id) {
         this.index = index
         // 根据kind的id查询数据
-        console.log(id)
+        this.goodKindInfo = []
+        if (index === 8) {
+          this.goodKindInfo = this.goodInfo
+        } else {
+          for (let i = 0; i < this.goodInfo.length; i++) {
+            if (this.goodInfo[i].kindId === id) {
+              this.goodKindInfo.push(this.goodInfo[i])
+            }
+          }
+        }
       },
       // 获取净菜的分类
       queryKind () {
@@ -44,10 +58,20 @@
             this.kindList = res.data
           }
         })
+      },
+      queryGoodInfo () {
+        this.$http.get(goods.GET_GOODS_INFO, {}).then(res => {
+          if (res.status === 200) {
+            this.goodInfo = res.data
+            this.goodKindInfo = this.goodInfo
+            console.log(this.goodInfo)
+          }
+        })
       }
     },
     created () {
       this.queryKind()
+      this.queryGoodInfo()
     }
   }
 </script>
@@ -86,8 +110,11 @@
     }
     .good-list {
       height: 1500px;
-      margin-left: 160px;
+      margin-left: 170px;
+      padding-right: 20px;
       overflow-y: auto;
+      padding-top: 20px;
+
     }
   }
 
