@@ -71,18 +71,18 @@
     }
     .card-item {
       display: inline-block;
-      width: 40%;
+      width: 44%;
       text-align: center;
       background-color: #FFF2E2;
       border-radius: 10px;
-      padding-bottom: 10px;
+      padding: 10px 0;
       margin-right: 20px;
       .good-name {
-        padding: 0 20px;
+        padding: 0 10px;
         overflow: hidden; //超出的文本隐藏
         text-overflow: ellipsis; //溢出用省略号显示
-        white-space: nowrap; //溢出不换行
-        margin-bottom: 10px;
+        white-space: nowrap; //溢出s不换行
+        margin-bottom: 5px;
         color: #333;
       }
       .price-box {

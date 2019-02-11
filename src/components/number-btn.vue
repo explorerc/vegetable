@@ -1,7 +1,7 @@
 <template>
-  <div class="choose-btn">
+  <div class="number-btn">
     <div class="choose-amount">
-      <button class="minus" @click="minusNumberClick" :disabled="goodsAmount<=1">-</button><input type="number" :value="goodsAmount"><button class="add" @click="addNumberClick">+</button>
+      <button class="minus" @click="minusNumberClick" :disabled="goodsAmount<=1">-</button><input type="number" :value="goodsAmount"><button class="add" @click="addNumberClick" :disabled="goodsAmount>=maxNumber">+</button>
     </div>
   </div>
 </template>
@@ -16,6 +16,10 @@
       goodsAmount: {
         type: Number,
         default: 0
+      },
+      maxNumber: {
+        type: Number,
+        default: 10000
       }
     },
     methods: {
@@ -30,7 +34,7 @@
 </script>
 
 <style scoped lang="scss">
-  .choose-btn {
+  .number-btn {
     display: inline-block;
     font-size: 32px;
     background-color: #fff;

@@ -6,8 +6,9 @@
       <input type="checkbox" name="goods" :checked="goodInfo.isChecked"
              @click="clickSelected()"
              v-if="isCartShow">
-      <img :src="goodInfo.imgUrl" alt="" class="good-img" @click="goodDetail(goodInfo.id)">
-      <div class="good-des"  @click="goodDetail(goodInfo.id)">
+      <img :src="goodInfo.imgUrl" alt="" class="good-img" @click="goodDetail()">
+
+      <div class="good-des" @click="goodDetail()">
         <p class="good-name">{{goodInfo.name}}</p>
         <div class="price-box clearfix">
           <span class="price" v-if="goodInfo.disprice===0||!goodInfo.disprice">¥{{goodInfo.price}}</span>
@@ -20,16 +21,16 @@
           </div>
           <div v-else-if="isNumberShow" class="fr info">
             <span>共{{goodInfo.number}}商品</span>
-            <span v-if="goodInfo.disprice">合计¥{{parseFloat(goodInfo.number)*parseFloat(goodInfo.disprice)}}</span>
-            <span v-else>合计 ¥{{parseFloat(goodInfo.number)*parseFloat(goodInfo.price)}}</span>
+            <span v-if="goodInfo.disprice">合计¥{{(parseFloat(goodInfo.number)*parseFloat(goodInfo.disprice)).toFixed(1)}}</span>
+            <span v-else>合计 ¥{{(parseFloat(goodInfo.number)*parseFloat(goodInfo.price)).toFixed(1)}}</span>
           </div>
-          <div v-else class="fr cart"> <span class="iconfont icon-cart" @click="addCart"></span></div>
+          <div v-else class="fr cart"> <span class="iconfont icon-cart" @click.stop="addCart"></span></div>
         </div>
       </div>
     </div>
     <!--未付款-->
     <div class="cart-bottom" v-if="isPayShow">
-      <button>取消订单</button>
+      <button @click="cancelOrder">取消订单</button>
       <button>付款</button>
     </div>
     <!--待发货-->
@@ -48,6 +49,7 @@
 <script>
   // import ChooseBtn from 'src/components/choose-btn'
   import EventBus from 'src/utils/eventBus'
+  import { MessageBox } from 'mint-ui'
   export default {
     name: 'good-info',
     // components: { ChooseBtn }
@@ -65,7 +67,8 @@
         isPayShow: false,
         isSendShow: false,
         isReceiveShow: false,
-        isNumberShow: false
+        isNumberShow: false,
+        goodsId: 0
       }
     },
     methods: {
@@ -80,12 +83,12 @@
       },
       isItemShow () {
         for (var item in this.goodInfo) {
-          if (item === 'isPay') {
-            if (this.goodInfo.isPay === 0) {
+          if (item === 'isPayed') {
+            if (this.goodInfo.isPayed === 0) {
               this.isPayShow = true
             } else if (this.goodInfo.isSend === 0) {
               this.isSendShow = true
-            } else if (this.goodInfo.isReceive === 0) {
+            } else if (this.goodInfo.isReceived === 0) {
               this.isReceiveShow = true
             }
           }
@@ -97,11 +100,20 @@
       addCart () {
         this.$emit('addCart')
       },
-      goodDetail (id) {
+      goodDetail () {
+        this.goodsId = this.goodInfo.goodId ? this.goodInfo.goodId : this.goodInfo.id
         EventBus.$emit('currentTabComponent', 'goodDetail')
         setTimeout(() => {
-          EventBus.$emit('goodsId', id)
+          EventBus.$emit('goodsId', this.goodsId)
         }, 0)
+      },
+      // 未付款时，取消订单
+      cancelOrder () {
+        MessageBox({
+          title: '',
+          message: '亲，确认取消订单吗？',
+          showCancelButton: true
+        })
       }
 
     },
@@ -220,6 +232,7 @@
         margin-left: 8px;
       }
     }
+
   }
 
 </style>

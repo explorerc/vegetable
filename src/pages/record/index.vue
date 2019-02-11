@@ -41,62 +41,6 @@
     components: { goodInfo },
     data () {
       return {
-        goodsInfo: [
-          {
-            id: 101,
-            name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 1,
-            isChecked: false
-          },
-          {
-            id: 102,
-            name: '绿鲜知三宝白菜约1kg火锅食材新鲜蔬菜绿鲜知三宝白菜约1kg 火锅食材 ',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2,
-            isChecked: false
-          },
-          {
-            id: 104,
-            name: '商品3',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2,
-            isChecked: false
-          },
-          {
-            id: 105,
-            name: '商品4',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 3,
-            isChecked: false
-          },
-          {
-            id: 107,
-            name: '商品5',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 4,
-            isChecked: false
-          },
-          {
-            id: 107,
-            name: '商品6',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 4,
-            isChecked: false
-          }
-        ],
         ordersInfo: [],
         payOrder: [],
         sendOrder: [],
@@ -107,90 +51,20 @@
     methods: {
       queryOrder () {
         this.$http.get(order.GET_ORDER_INFO, {
-          userId: 1
+          params: {
+            userId: 1
+          }
         }).then(res => {
-          this.ordersInfo = [
-            {
-              id: 101,
-              name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
-              price: '123',
-              disprice: '',
-              imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-              number: 1,
-              isChecked: false,
-              isPay: 0,
-              isSend: 0,
-              isReceive: 0
-            },
-            {
-              id: 102,
-              name: '绿鲜知三宝白菜约1kg火锅食材新鲜蔬菜绿鲜知三宝白菜约1kg 火锅食材 ',
-              price: '123',
-              disprice: '',
-              imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-              number: 2,
-              isChecked: false,
-              isPay: 1,
-              isSend: 0,
-              isReceive: 0
-            },
-            {
-              id: 104,
-              name: '商品3',
-              price: '123',
-              disprice: '',
-              imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-              number: 2,
-              isChecked: false,
-              isPay: 0,
-              isSend: 0,
-              isReceive: 0
-            },
-            {
-              id: 105,
-              name: '商品4',
-              price: '123',
-              disprice: '',
-              imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-              number: 3,
-              isChecked: false,
-              isPay: 0,
-              isSend: 0,
-              isReceive: 0
-            },
-            {
-              id: 107,
-              name: '商品5',
-              price: '123',
-              disprice: '',
-              imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-              number: 4,
-              isChecked: false,
-              isPay: 1,
-              isSend: 1,
-              isReceive: 0
-            },
-            {
-              id: 107,
-              name: '商品6',
-              price: '123',
-              disprice: '',
-              imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-              number: 4,
-              isChecked: false,
-              isPay: 1,
-              isSend: 1,
-              isReceive: 1
-            }
-          ]
+          this.ordersInfo = res.data
+          console.log(this.ordersInfo)
           for (let i = 0; i < this.ordersInfo.length; i++) {
-            if (this.ordersInfo[i].isPay === 0) {
+            if (this.ordersInfo[i].isPayed === 0) {
               this.payOrder.push(this.ordersInfo[i])
             } else if (this.ordersInfo[i].isSend === 0) {
               this.sendOrder.push(this.ordersInfo[i])
-            } else if (this.ordersInfo[i].isReceive === 0) {
+            } else if (this.ordersInfo[i].isReceived === 0) {
               this.receiveOrder.push(this.ordersInfo[i])
-            } else if (this.ordersInfo[i].isReceive === 1) {
+            } else if (this.ordersInfo[i].isReceived === 1) {
               this.allOtherOrder.push(this.ordersInfo[i])
             }
           }

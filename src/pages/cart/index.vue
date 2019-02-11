@@ -21,7 +21,7 @@
         <span>全选</span>
       </div>
       <div class="fr" v-if="!isCartMange">
-        <span>合计：<span>¥{{cartTotalMoney}}</span></span>
+        <span>合计：<span>¥{{cartTotalMoney.toFixed(1)}}</span></span>
         <button class="pay-btn" @click="payGoods">结算({{selectedNum}})</button>
       </div>
       <div class="fr" v-else>

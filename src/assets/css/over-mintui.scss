@@ -1,0 +1,17 @@
+@import './variable';
+$color-ui-components: #4b5afe;
+
+.mint-msgbox {
+  border-radius: 10px;
+}
+.mint-msgbox-content {
+  height: 120px;
+}
+.mint-msgbox-message {
+  line-height: 120px;
+  font-size: 36px;
+  color: #222;
+}
+.mint-msgbox-btns {
+  height: 50px;
+}
