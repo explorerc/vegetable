@@ -6,13 +6,13 @@
     <div class="content">
       <div class="kind-list">
         <ul>
-          <li :class="{'active':8 === index}" @click="changeKind(8)">全部</li>
-          <li v-for="(item, ind) in kindList" :class="{'active':ind === index}" @click="changeKind(ind, item.id)">{{item.name}}</li>
+          <li :class="{'active':9 === index}" @click="changeKind(9)">全部</li>
+          <li v-for="(item, ind) in kindList" :class="{'active':item.id === index}" @click="changeKind(item.id)">{{item.name}}</li>
         </ul>
       </div>
       <div class="good-list">
         <div v-for="item in goodKindInfo">
-          <GoodInfo :goodInfo="item"></GoodInfo>
+          <GoodInfo :goodInfo="item" @addCart="addCart(item.id)"></GoodInfo>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -23,25 +23,27 @@
 <script>
   import Search from '../../components/search'
   import kind from 'src/api/kind'
+  import cart from 'src/api/cart'
   import goods from 'src/api/goods'
   import GoodInfo from 'src/components/good-info'
+  import EventBus from '../../utils/eventBus'
   export default {
     name: 'kind',
     components: { Search, GoodInfo },
     data () {
       return {
         kindList: [],
-        index: 8,
+        index: 9,
         goodInfo: [],
         goodKindInfo: []
       }
     },
     methods: {
-      changeKind (index, id) {
-        this.index = index
+      changeKind (id) {
+        this.index = id
         // 根据kind的id查询数据
         this.goodKindInfo = []
-        if (index === 8) {
+        if (id === 9) {
           this.goodKindInfo = this.goodInfo
         } else {
           for (let i = 0; i < this.goodInfo.length; i++) {
@@ -64,7 +66,21 @@
           if (res.status === 200) {
             this.goodInfo = res.data
             this.goodKindInfo = this.goodInfo
-            console.log(this.goodInfo)
+          }
+        })
+      },
+      addCart (goodId) {
+        // alert(goodId)
+        this.$http.get(cart.GET_CART_ADD, {
+          params: {
+            'userId': 1,
+            'goodId': goodId,
+            'number': 1
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            // console.log(res)
+            alert(res.data)
           }
         })
       }
@@ -72,6 +88,10 @@
     created () {
       this.queryKind()
       this.queryGoodInfo()
+      EventBus.$on('kindId', (data) => {
+        this.index = data
+        // console.log(this.index)
+      })
     }
   }
 </script>
@@ -109,11 +129,11 @@
       }
     }
     .good-list {
-      height: 1500px;
+      height: 100%;
       margin-left: 170px;
       padding-right: 20px;
-      overflow-y: auto;
-      padding-top: 20px;
+      /*overflow-y: auto;*/
+      margin-top: 20px;
 
     }
   }

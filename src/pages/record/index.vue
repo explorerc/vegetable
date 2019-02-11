@@ -1,31 +1,31 @@
 <template>
   <div class="record">
     <div class="head">
-      <button><i class="iconfont icon-daifukuan"></i><span>待付款</span></button>
-      <button><i class="iconfont icon-daifahuo"></i><span>待发货</span></button>
-      <button><i class="iconfont icon-daishouhuo"></i><span>待收货</span></button>
-      <button><i class="iconfont icon-quanbudingdan"></i><span>已完成</span></button>
+      <button @click="orderKindClick('pay')"><i class="iconfont icon-daifukuan"></i><span>待付款</span></button>
+      <button @click="orderKindClick('send')"><i class="iconfont icon-daifahuo"></i><span>待发货</span></button>
+      <button @click="orderKindClick('receive')"><i class="iconfont icon-daishouhuo"></i><span>待收货</span></button>
+      <button @click="orderKindClick('accomplish')"><i class="iconfont icon-quanbudingdan"></i><span>已完成</span></button>
     </div>
     <div class="content">
-      <div class="order pay">
+      <div class="order pay" ref="pay">
         <div class="title">待付款({{payOrder.length}})</div>
         <div class="good-info-box" v-for="goodInfo in payOrder">
           <goodInfo :goodInfo="goodInfo"></goodInfo>
         </div>
       </div>
-      <div class="order">
+      <div class="order send" ref="send">
         <div class="title">待发货({{sendOrder.length}})</div>
         <div class="good-info-box" v-for="goodInfo in sendOrder">
           <goodInfo :goodInfo="goodInfo"></goodInfo>
         </div>
       </div>
-      <div class="order">
+      <div class="order receive" ref="receive">
         <div class="title">待收货({{receiveOrder.length}})</div>
         <div class="good-info-box" v-for="goodInfo in receiveOrder">
           <goodInfo :goodInfo="goodInfo"></goodInfo>
         </div>
       </div>
-      <div class="order"><div class="title">完成订单({{allOtherOrder.length}})</div>
+      <div class="order accomplish" ref="accomplish"><div class="title">完成订单({{allOtherOrder.length}})</div>
         <div class="good-info-box" v-for="goodInfo in allOtherOrder">
           <goodInfo :goodInfo="goodInfo"></goodInfo>
         </div></div>
@@ -205,6 +205,20 @@
           //   }
           // }
         })
+      },
+      // 顶部订单分类，点击滑动到指定位置
+      orderKindClick (el) {
+        let orderScrollTop
+        if (el === 'pay') {
+          orderScrollTop = this.$refs.pay.getBoundingClientRect().top
+        } else if (el === 'send') {
+          orderScrollTop = this.$refs.send.getBoundingClientRect().top
+        } else if (el === 'receive') {
+          orderScrollTop = this.$refs.receive.getBoundingClientRect().top
+        } else if (el === 'accomplish') {
+          orderScrollTop = this.$refs.accomplish.getBoundingClientRect().top
+        }
+        document.getElementsByClassName('container')[0].scrollTop = orderScrollTop
       }
     },
     created () {
@@ -240,6 +254,7 @@
     }
     .content {
       margin-top: 120px;
+      height: 100%;
       .order {
         background-color: #fff;
         margin-top: 20px;

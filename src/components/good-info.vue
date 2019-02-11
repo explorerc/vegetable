@@ -2,7 +2,8 @@
 <template>
   <div class="good-info">
     <div class="cart-top">
-      <input type="checkbox" name="goods" :value="goodInfo.isChecked" :checked="goodInfo.isChecked"
+      <!--<input type="checkbox" name="goods" :value="goodInfo.isChecked" :checked.async="goodInfo.isChecked"-->
+      <input type="checkbox" name="goods" :checked="goodInfo.isChecked"
              @click="clickSelected()"
              v-if="isCartShow">
       <img :src="goodInfo.imgUrl" alt="" class="good-img">
@@ -14,7 +15,7 @@
           <span class="del-price del-line" v-if="goodInfo.disprice">¥{{goodInfo.price}}</span>
           <div class="clearfix choose-btn fr" style="display: inline-block" @click.stop="" v-if="isCartShow">
             <div class="choose-amount">
-              <button class="minus" @click="minusNumberClick">-</button><input type="number" :value="goodInfo.number"><button class="add" @click="addNumberClick">+</button>
+              <button class="minus" @click="minusNumberClick" :disabled="goodInfo.number<=1">-</button><input type="number" :value="goodInfo.number"><button class="add" @click="addNumberClick">+</button>
             </div>
           </div>
           <div v-else-if="isNumberShow" class="fr info">
@@ -22,7 +23,7 @@
             <span v-if="goodInfo.disprice">合计¥{{parseFloat(goodInfo.number)*parseFloat(goodInfo.disprice)}}</span>
             <span v-else>合计 ¥{{parseFloat(goodInfo.number)*parseFloat(goodInfo.price)}}</span>
           </div>
-          <div v-else class="fr cart"> <span class="iconfont icon-cart"></span></div>
+          <div v-else class="fr cart"> <span class="iconfont icon-cart" @click="addCart"></span></div>
         </div>
       </div>
     </div>
@@ -91,12 +92,14 @@
             this.isNumberShow = true
           }
         }
+      },
+      addCart () {
+        this.$emit('addCart')
       }
 
     },
     created () {
       this.isItemShow()
-      console.log(this.goodInfo)
     },
     watch: {
       goodInfo: {
@@ -104,6 +107,11 @@
           console.log(val)
         },
         deep: true
+      },
+      'goodInfo.isClicked': {
+        handler (val, oldVal) {
+          console.log(val)
+        }
       }
     }
   }

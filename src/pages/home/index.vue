@@ -5,7 +5,7 @@
     <div class="vg-category-bg">
       <div class="vg-category">
         <ul class="cat-list">
-          <li v-for="item in kindList">
+          <li v-for="item in kindList" @click="kindClick(item.id)">
             <div>
               <i></i>
             </div>
@@ -36,13 +36,14 @@ import Carousel from '../../components/carousel'
 import Search from '../../components/search'
 import GoodCard from '../../components/good-card'
 import kind from 'src/api/kind'
+import EventBus from 'src/utils/eventBus'
 export default {
   components: { Carousel, Search, GoodCard },
   data () {
     return {
       cardTitle: '',
-      kindList: [
-      ],
+      kindList: [],
+      kindId: 8,
       discountGoods: [
         { id: 1, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
         { id: 2, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
@@ -61,6 +62,16 @@ export default {
           this.kindList = res.data
         }
       })
+    },
+    // 点击分类
+    kindClick (id) {
+      this.kindId = id
+      console.log(this.kindId)
+      setTimeout(() => {
+        EventBus.$emit('kindId', this.kindId)
+      }, 400)
+      EventBus.$emit('currentTabComponent', 'kind')
+      this.$emit('kindClick')
     }
   },
   created () {

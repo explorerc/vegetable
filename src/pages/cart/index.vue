@@ -6,12 +6,20 @@
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
       <li v-for="(item,idx) in cartList">
-        <goodInfo :goodInfo="item" :isCartShow="isCartShow" @clickSelected="clickSelected(idx)"></goodInfo>
+        <goodInfo
+          :goodInfo="item"
+          :isCartShow="isCartShow"
+          @minusNumberClick="minusNumberClick(item.id)"
+          @addNumberClick="addNumberClick(item.id)"
+          @clickSelected="clickSelected(idx)"></goodInfo>
       </li>
 
     </ul>
     <div class="cart-bottom clearfix">
-      <div class="fl"> <input type="checkbox" name="goods" @click="allClickSelected" :checked="this.isAllChecked"><span>全选</span></div>
+      <div class="fl">
+        <input type="checkbox" name="goods" @click="allClickSelected" :checked="this.isAllChecked">
+        <span>全选</span>
+      </div>
       <div class="fr" v-if="!isCartMange">
         <span>合计：<span>¥{{cartTotalMoney}}</span></span>
         <button class="pay-btn" @click="payGoods">结算({{selectedNum}})</button>
@@ -25,6 +33,7 @@
 
 <script>
   import goodInfo from 'src/components/good-info'
+  import cart from 'src/api/cart'
 
   export default {
     name: 'index',
@@ -33,60 +42,15 @@
       return {
         goodsNum: 0, // 购物车中有多少件商品
         cartList: [
-          {
-            id: 101,
-            name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
-            price: '123',
-            disprice: '111',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 1,
-            isChecked: false
-          },
-          {
-            id: 102,
-            name: '绿鲜知三宝白菜约1kg火锅食材新鲜蔬菜绿鲜知三宝白菜约1kg 火锅食材 ',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2,
-            isChecked: false
-          },
-          {
-            id: 104,
-            name: '商品3',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 2,
-            isChecked: false
-          },
-          {
-            id: 105,
-            name: '商品4',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 3,
-            isChecked: false
-          },
-          {
-            id: 107,
-            name: '商品5',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 4,
-            isChecked: false
-          },
-          {
-            id: 107,
-            name: '商品6',
-            price: '123',
-            disprice: '',
-            imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-            number: 4,
-            isChecked: false
-          }
+          // {
+          //   id: 101,
+          //   name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
+          //   price: '123',
+          //   disprice: '111',
+          //   imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+          //   number: 1,
+          //   isChecked: false
+          // }
         ],
         cartTotalMoney: 0, // 勾选的商品总价格
         isAllChecked: false, // 不是全选
@@ -102,17 +66,60 @@
     },
     methods: {
       // 修改购物车中商品的数量
-      minusNumberClick (goodid, number) {
-        console.log(goodid, number)
+      minusNumberClick (id) {
+        // console.log(userId, goodId, number)
         // 根据id修改数据库中的数据
         // 然后返回购物车表数据库中的数据
+        this.$http.get(cart.GET_CART_MINNUM, {
+          params: {
+            id: id
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            for (let i = 0; i < this.cartList.length; i++) {
+              if (this.cartList[i].id === id) {
+                this.cartList[i].number--
+              }
+            }
+            this.totalMoney()
+          }
+        })
       },
-      addNumberClick (goodid, number) {
+      addNumberClick (id) {
         // 根据id修改数据库中的数据
         // 然后返回购物车表数据库中的数据
+        this.$http.get(cart.GET_CART_ADDNUM, {
+          params: {
+            id: id
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            for (let i = 0; i < this.cartList.length; i++) {
+              if (this.cartList[i].id === id) {
+                this.cartList[i].number++
+              }
+            }
+            this.totalMoney()
+          }
+        })
       },
-      // 根据userif查询购物车中的商品信息
-      queryCartList (usreid) {
+      // 根据userid查询购物车中的商品信息
+      queryCartList () {
+        this.$http.get(cart.GET_CART_INFO, {
+          params: {
+            userId: 1
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            this.cartList = res.data
+            for (let i = 0; i < this.cartList.length; i++) {
+              this.cartList[i].isChecked = false
+              console.log(this.cartList[i])
+            }
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
       loadMore () {
         // this.loading = true
@@ -124,18 +131,23 @@
         //   this.loading = false
         // }, 2500)
       },
+      // 计算总价
+      totalMoney () {
+        this.cartTotalMoney = 0
+        this.selectedNum = 0
+        for (let i = 0; i < this.cartList.length; i++) {
+          if (this.cartList[i].isChecked) {
+            this.cartTotalMoney = this.cartList[i].price * this.cartList[i].number + this.cartTotalMoney
+            this.selectedNum = this.selectedNum + 1
+          }
+        }
+      },
       // 单选时计算价格
       clickSelected (idx) {
         this.cartList[idx].isChecked = !this.cartList[idx].isChecked
         // 计算被选中的数量
         // 判断是否被全选了
-        if (this.cartList[idx].isChecked) {
-          this.selectedNum++
-          this.cartTotalMoney = this.cartList[idx].price * this.cartList[idx].number + this.cartTotalMoney
-        } else {
-          this.selectedNum--
-          this.cartTotalMoney = this.cartTotalMoney - this.cartList[idx].price * this.cartList[idx].number
-        }
+        this.totalMoney()
         if (this.selectedNum === this.cartList.length) {
           this.isAllChecked = true
         } else {
@@ -145,12 +157,10 @@
       // 全选时计算价格
       allClickSelected () {
         this.isAllChecked = !this.isAllChecked
-        this.cartTotalMoney = 0
         for (let idx = 0; idx < this.cartList.length; idx++) {
           this.cartList[idx].isChecked = this.isAllChecked
           if (this.isAllChecked) {
-            this.cartTotalMoney = this.cartList[idx].price * this.cartList[idx].number + this.cartTotalMoney
-            this.selectedNum = this.cartList.length
+            this.totalMoney()
           } else {
             this.cartTotalMoney = 0
             this.selectedNum = 0
@@ -158,14 +168,23 @@
         }
       },
       deleteSelected () {
-        let deleteGoodsId = []
+        let deleteCartId = []
         this.cartList.forEach(function (item, ind) {
           if (item.isChecked) {
-            deleteGoodsId.push(item.goodId)
+            deleteCartId.push(item.id)
           }
         })
         // 请求数据库操作购物车表中的数据
-        console.log(deleteGoodsId)
+        this.$http.get(cart.GET_CART_DEL, {
+          params: {
+            'ids': deleteCartId
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            this.queryCartList()
+          }
+        })
+        console.log(deleteCartId)
       },
       // 结算商品
       payGoods () {
@@ -173,6 +192,20 @@
       }
     },
     created () {
+      this.queryCartList()
+    },
+    watch: {
+      cartList: {
+        handler (val, oldVal) {
+          console.log(this.cartList)
+        },
+        deep: true
+      },
+      'cartList.isClicked': {
+        handler (val, oldVal) {
+          console.log(val)
+        }
+      }
     }
   }
 </script>

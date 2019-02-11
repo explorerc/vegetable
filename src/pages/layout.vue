@@ -1,9 +1,5 @@
 <template>
   <div class="container">
-    <!--<headNav-->
-      <!--:headTitle="headTitle"-->
-      <!--@isHeadClose="isHeadClose"-->
-    <!--&gt;</headNav>-->
     <div class="head">
       <mt-header :title="headTitle" class="is-fixed">
         <router-link to="/" slot="left">
@@ -18,9 +14,36 @@
     <keep-alive>
       <component
               :is="currentTabComponent"
-              :isCartMange="isCartMange"></component>
+              :isCartMange="isCartMange"
+              @kindClick="kindClick"
+      ></component>
     </keep-alive>
-    <bottomNav @change="changMenu"></bottomNav>
+    <!--<bottomNav @change="changMenu"></bottomNav>-->
+    <div class="bottom-nav">
+      <mt-tabbar v-model="selected = bottomActive" class="is-fixed">
+        <mt-tab-item @click.native.prevent="bottomActive = 'home'" id="home">
+          <i slot="icon" class="iconfont icon-shouye"></i>
+          首页
+        </mt-tab-item>
+        <mt-tab-item @click.native.prevent="bottomActive = 'kind'" id="kind">
+          <i slot="icon" class="iconfont icon-leimupinleifenleileibie"></i>
+          分类
+        </mt-tab-item>
+        <mt-tab-item  @click.native.prevent="bottomActive = 'cart'" id="cart">
+          <i slot="icon" class="iconfont icon-gouwuche"></i>
+          购物车
+        </mt-tab-item>
+        <mt-tab-item @click.native.prevent="bottomActive = 'record'" id="record">
+          <i slot="icon" class="iconfont icon-goumaijilu"></i>
+          订单
+        </mt-tab-item>
+        <mt-tab-item  @click.native.prevent="bottomActive = 'my'" id="my">
+          <i slot="icon" class="iconfont icon-gerenzhongxin"></i>
+          个人中心
+        </mt-tab-item>
+      </mt-tabbar>
+    </div>
+
   </div>
 </template>
 
@@ -32,6 +55,7 @@
   import bottomNav from '../components/bottom-nav'
   import headNav from '../components/head-nav'
   import Kind from './kind/kind'
+  import EventBus from 'src/utils/eventBus'
   export default {
     components: { Home, User, Record, Cart, bottomNav, headNav, Kind },
     name: 'layout',
@@ -42,25 +66,26 @@
         currentTabComponent: Home,
         headTitle: '商城首页',
         isHeadClose: true,
-        isCartMange: false
+        isCartMange: false,
+        bottomActive: 'home'
       }
     },
     methods: {
       // 改变导航文字
-      changMenu (data) {
-        if (data === 'home') {
+      changMenu (value) {
+        if (value === 'home') {
           this.currentTabComponent = Home
           this.headTitle = '商城首页'
-        } else if (data === 'my') {
+        } else if (value === 'my') {
           this.currentTabComponent = User
           this.headTitle = '个人中心'
-        } else if (data === 'record') {
+        } else if (value === 'record') {
           this.currentTabComponent = Record
           this.headTitle = '购买记录'
-        } else if (data === 'cart') {
+        } else if (value === 'cart') {
           this.currentTabComponent = Cart
           this.headTitle = '购物车'
-        } else if (data === 'kind') {
+        } else if (value === 'kind') {
           this.currentTabComponent = Kind
           this.headTitle = '商品分类'
         }
@@ -71,6 +96,22 @@
       },
       // 头部导航关闭按钮
       handleClose () {
+      },
+      kindClick () {
+        this.bottomActive = 'kind'
+        this.changMenu('kind')
+      }
+    },
+    created () {
+      EventBus.$on('currentTabComponent', (data) => {
+        this.changMenu(data)
+      })
+    },
+    watch: {
+      bottomActive: {
+        handler (val, oldVal) {
+          this.changMenu(val)
+        }
       }
     }
   }
@@ -80,6 +121,7 @@
 .container {
   overflow-y: auto;
   padding: 80px 0 120px;
+  height: 100%;
   .head /deep/ {
     .mint-header {
       height: 80px;
@@ -100,6 +142,26 @@
       }
     }
   }
+  /deep/ {
+    .mint-tabbar {
+      .mint-tab-item{
+        padding-bottom: 16px;
+      }
+      .mint-tab-item-icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 15px;
+        .iconfont {
+          font-size: 44px;
+        }
+      }
+      .mint-tab-item-label {
+        font-size: 24px;
+      }
+    }
+  }
+}
+.bottom-nav {
   /deep/ {
     .mint-tabbar {
       .mint-tab-item{
