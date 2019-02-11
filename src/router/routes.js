@@ -1,6 +1,6 @@
 const Layout = () => import('src/pages/layout')
 const Home = () => import('src/pages/home/index')
-const GoodInfo = () => import('src/pages/home/goodDetail')
+const GoodDetail = () => import('src/pages/good/goodDetail')
 export default [
   {
     path: '/',
@@ -16,8 +16,8 @@ export default [
     ]
   },
   {
-    path: '/goodInfo',
-    name: 'GoodInfo',
-    component: GoodInfo
+    path: '/goodDetail/:id',
+    name: 'GoodDetail',
+    component: GoodDetail
   }
 ]

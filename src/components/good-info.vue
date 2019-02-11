@@ -6,8 +6,8 @@
       <input type="checkbox" name="goods" :checked="goodInfo.isChecked"
              @click="clickSelected()"
              v-if="isCartShow">
-      <img :src="goodInfo.imgUrl" alt="" class="good-img">
-      <div class="good-des">
+      <img :src="goodInfo.imgUrl" alt="" class="good-img" @click="goodDetail(goodInfo.id)">
+      <div class="good-des"  @click="goodDetail(goodInfo.id)">
         <p class="good-name">{{goodInfo.name}}</p>
         <div class="price-box clearfix">
           <span class="price" v-if="goodInfo.disprice===0||!goodInfo.disprice">¥{{goodInfo.price}}</span>
@@ -47,6 +47,7 @@
 
 <script>
   // import ChooseBtn from 'src/components/choose-btn'
+  import EventBus from 'src/utils/eventBus'
   export default {
     name: 'good-info',
     // components: { ChooseBtn }
@@ -95,6 +96,12 @@
       },
       addCart () {
         this.$emit('addCart')
+      },
+      goodDetail (id) {
+        EventBus.$emit('currentTabComponent', 'goodDetail')
+        setTimeout(() => {
+          EventBus.$emit('goodsId', id)
+        }, 0)
       }
 
     },

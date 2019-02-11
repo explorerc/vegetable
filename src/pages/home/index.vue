@@ -21,11 +21,11 @@
       ></GoodCard>
       <GoodCard
         :cardTitle="'礼包嘉年华'"
-        :goods="discountGoods"
+        :goods="presentGoods"
       ></GoodCard>
       <GoodCard
         :cardTitle="'绿色蔬菜'"
-        :goods="discountGoods"
+        :goods="greenGoods"
       ></GoodCard>
     </div>
   </div>
@@ -37,6 +37,7 @@ import Search from '../../components/search'
 import GoodCard from '../../components/good-card'
 import kind from 'src/api/kind'
 import EventBus from 'src/utils/eventBus'
+import goods from 'src/api/goods'
 export default {
   components: { Carousel, Search, GoodCard },
   data () {
@@ -44,14 +45,11 @@ export default {
       cardTitle: '',
       kindList: [],
       kindId: 8,
-      discountGoods: [
-        { id: 1, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
-        { id: 2, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
-        { id: 3, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
-        { id: 4, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 },
-        { id: 5, name: '山东新鲜小芋头粉糯芋艿 农家自种毛芋头香芋子非大芋头仔5斤蔬菜', price: 16.90, disprice: 59.00 }
-      ],
-      keyType: 0
+      discountGoods: [],
+      presentGoods: [],
+      greenGoods: [],
+      keyType: 0,
+      goodInfo: []
     }
   },
   methods: {
@@ -72,10 +70,32 @@ export default {
       }, 400)
       EventBus.$emit('currentTabComponent', 'kind')
       this.$emit('kindClick')
+    },
+    queryGoodInfo () {
+      this.$http.get(goods.GET_GOODS_INFO, {}).then(res => {
+        if (res.status === 200) {
+          this.goodInfo = res.data
+          let len = this.goodInfo.length
+          console.log(this.goodInfo[1].disprice)
+          for (let i = 0; i < len; i++) {
+            if (this.goodInfo[i].disprice && this.discountGoods.length < 10) {
+              this.discountGoods.push(this.goodInfo[i])
+            }
+            if (this.goodInfo[i].kindId === 1 && this.greenGoods.length < 10) {
+              this.greenGoods.push(this.goodInfo[i])
+            }
+            if (this.goodInfo[i].kindId === 8 && this.presentGoods.length < 10) {
+              this.presentGoods.push(this.goodInfo[i])
+            }
+          }
+          // this.goodKindInfo = this.goodInfo
+        }
+      })
     }
   },
   created () {
     this.queryKind()
+    this.queryGoodInfo()
   }
 }
 </script>

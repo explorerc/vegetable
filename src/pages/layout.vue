@@ -56,8 +56,9 @@
   import headNav from '../components/head-nav'
   import Kind from './kind/kind'
   import EventBus from 'src/utils/eventBus'
+  import GoodDetail from 'src/pages/good/goodDetail'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav, Kind },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail },
     name: 'layout',
     props: {
     },
@@ -88,6 +89,10 @@
         } else if (value === 'kind') {
           this.currentTabComponent = Kind
           this.headTitle = '商品分类'
+        } else if (value === 'goodDetail') {
+          this.currentTabComponent = GoodDetail
+          this.headTitle = '商品详情'
+          this.bottomActive = ''
         }
       },
       // 购物车是否处于管理状态

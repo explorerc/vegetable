@@ -1,20 +1,25 @@
 <template>
   <div class="good-card">
     <h3>--{{cardTitle}}--</h3>
-    <div class="card-content">
-      <div class="card-item" v-for="item in goods" v-if="item.id <= 2" @click="goodInfo">
-        <img src="../assets/image/vegetable01.jpg" alt="">
-        <p class="good-name">{{item.name}}</p>
-        <div class="price-box">
-          <span class="price">¥{{item.price}}</span>
-          <span class="del-price">¥<span class="del-line">{{item.disprice}}</span></span>
+    <div class="con-bg">
+      <div class="card-content">
+        <div class="card-item" v-for="item in goods" @click="goodDetail(item.id)">
+          <img :src="item.imgUrl" alt="">
+          <p class="good-name">{{item.name}}</p>
+          <div class="price-box">
+            <span class="price" v-if="item.disprice">¥{{item.disprice}}</span>
+            <span class="price" v-else>¥{{item.price}}</span>
+            <span class="del-price" v-if="item.disprice">¥<span class="del-line">{{item.price}}</span></span>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
+  import EventBus from 'src/utils/eventBus'
   export default {
     name: 'good-card',
     props: {
@@ -29,9 +34,13 @@
       }
     },
     methods: {
-      goodInfo () {
-        alert('123123')
-        // this.$router.replace('/salesTools/questionnaire/edit/' + this.activityId + '/' + naireId)
+      goodDetail (id) {
+        // alert('123123')
+        // this.$router.push(`/goodDetail/${id}`)
+        EventBus.$emit('currentTabComponent', 'goodDetail')
+        setTimeout(() => {
+          EventBus.$emit('goodsId', id)
+        }, 0)
       }
     }
   }
@@ -46,20 +55,28 @@
     h3 {
       color: #E20816;
     }
-    .card-content {
+    .con-bg {
       padding: 20px;
+      background-color: #AA141F;
+    }
+    .card-content {
       display: flex;
       margin-top: 10px;
       justify-content: space-between;
-      background-color: #AA141F;
+      overflow-x: auto;
+      border-radius: 10px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
     .card-item {
       display: inline-block;
-      width: 48%;
+      width: 40%;
       text-align: center;
       background-color: #FFF2E2;
       border-radius: 10px;
       padding-bottom: 10px;
+      margin-right: 20px;
       .good-name {
         padding: 0 20px;
         overflow: hidden; //超出的文本隐藏
@@ -77,6 +94,9 @@
         .del-price {
           margin-left: 20px;
         }
+      }
+      img {
+        width: 60%;
       }
 
     }
