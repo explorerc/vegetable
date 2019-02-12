@@ -15,29 +15,30 @@
       <component
               :is="currentTabComponent"
               :isCartMange="isCartMange"
-              @kindClick="kindClick"
+              @kindClick="changMenu('Kind')"
+              @saveUserInfo="changMenu('My')"
       ></component>
     </keep-alive>
     <!--<bottomNav @change="changMenu"></bottomNav>-->
     <div class="bottom-nav">
       <mt-tabbar v-model="selected = bottomActive" class="is-fixed">
-        <mt-tab-item @click.native.prevent="bottomActive = 'home'" id="home">
+        <mt-tab-item @click.native.prevent="bottomActive = 'Home'" id="Home">
           <i slot="icon" class="iconfont icon-shouye"></i>
           首页
         </mt-tab-item>
-        <mt-tab-item @click.native.prevent="bottomActive = 'kind'" id="kind">
+        <mt-tab-item @click.native.prevent="bottomActive = 'Kind'" id="Kind">
           <i slot="icon" class="iconfont icon-leimupinleifenleileibie"></i>
           分类
         </mt-tab-item>
-        <mt-tab-item  @click.native.prevent="bottomActive = 'cart'" id="cart">
+        <mt-tab-item  @click.native.prevent="bottomActive = 'Cart'" id="Cart">
           <i slot="icon" class="iconfont icon-gouwuche"></i>
           购物车
         </mt-tab-item>
-        <mt-tab-item @click.native.prevent="bottomActive = 'record'" id="record">
+        <mt-tab-item @click.native.prevent="bottomActive = 'Record'" id="Record">
           <i slot="icon" class="iconfont icon-goumaijilu"></i>
           订单
         </mt-tab-item>
-        <mt-tab-item  @click.native.prevent="bottomActive = 'my'" id="my">
+        <mt-tab-item  @click.native.prevent="bottomActive = 'My'" id="My">
           <i slot="icon" class="iconfont icon-gerenzhongxin"></i>
           个人中心
         </mt-tab-item>
@@ -75,26 +76,26 @@
     methods: {
       // 改变导航文字
       changMenu (value) {
-        if (value === 'home') {
+        if (value === 'Home') {
           this.currentTabComponent = Home
           this.headTitle = '商城首页'
-        } else if (value === 'my') {
+        } else if (value === 'My') {
           this.currentTabComponent = User
           this.headTitle = '个人中心'
-        } else if (value === 'record') {
+        } else if (value === 'Record') {
           this.currentTabComponent = Record
           this.headTitle = '购买记录'
-        } else if (value === 'cart') {
+        } else if (value === 'Cart') {
           this.currentTabComponent = Cart
           this.headTitle = '购物车'
-        } else if (value === 'kind') {
+        } else if (value === 'Kind') {
           this.currentTabComponent = Kind
           this.headTitle = '商品分类'
-        } else if (value === 'goodDetail') {
+        } else if (value === 'GoodDetail') {
           this.currentTabComponent = GoodDetail
           this.headTitle = '商品详情'
           this.bottomActive = ''
-        } else if (value === 'edit') {
+        } else if (value === 'Edit') {
           this.currentTabComponent = Edit
           this.headTitle = '编辑个人信息'
           this.bottomActive = ''
@@ -108,8 +109,12 @@
       handleClose () {
       },
       kindClick () {
-        this.bottomActive = 'kind'
-        this.changMenu('kind')
+        this.bottomActive = 'Kind'
+        this.changMenu('Kind')
+      },
+      saveUserInfo () {
+        this.bottomActive = 'My'
+        this.changMenu('User')
       }
     },
     created () {

@@ -49,7 +49,7 @@
         })
       },
       editUserInfo () {
-        EventBus.$emit('currentTabComponent', 'edit')
+        EventBus.$emit('currentTabComponent', 'Edit')
       }
     },
     created () {

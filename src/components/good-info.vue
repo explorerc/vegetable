@@ -101,7 +101,7 @@
       },
       goodDetail () {
         this.goodsId = this.goodInfo.goodId ? this.goodInfo.goodId : this.goodInfo.id
-        EventBus.$emit('currentTabComponent', 'goodDetail')
+        EventBus.$emit('currentTabComponent', 'GoodDetail')
         setTimeout(() => {
           EventBus.$emit('goodsId', this.goodsId)
         }, 0)

@@ -68,7 +68,7 @@ export default {
       setTimeout(() => {
         EventBus.$emit('kindId', this.kindId)
       }, 400)
-      EventBus.$emit('currentTabComponent', 'kind')
+      EventBus.$emit('currentTabComponent', 'Kind')
       this.$emit('kindClick')
     },
     queryGoodInfo () {

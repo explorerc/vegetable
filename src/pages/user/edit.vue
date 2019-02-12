@@ -63,7 +63,8 @@
           }
         }).then((res) => {
           if (res.status === 200) {
-            EventBus.$emit('currentTabComponent', 'my')
+            EventBus.$emit('currentTabComponent', 'My')
+            this.$emit('saveUserInfo')
           }
         })
       }
