@@ -36,7 +36,7 @@
     <!--待发货-->
     <div class="cart-bottom" v-if="isSendShow">
       <button>提醒发货</button>
-      <button>取消订单</button>
+      <button @click="cancelSendOrder">取消订单</button>
     </div>
     <!--待收货-->
     <div class="cart-bottom" v-if="isReceiveShow">
@@ -49,7 +49,6 @@
 <script>
   // import ChooseBtn from 'src/components/choose-btn'
   import EventBus from 'src/utils/eventBus'
-  import { MessageBox } from 'mint-ui'
   export default {
     name: 'good-info',
     // components: { ChooseBtn }
@@ -109,13 +108,11 @@
       },
       // 未付款时，取消订单
       cancelOrder () {
-        MessageBox({
-          title: '',
-          message: '亲，确认取消订单吗？',
-          showCancelButton: true
-        })
+        this.$emit('cancelOrder')
+      },
+      cancelSendOrder () {
+        this.$emit('cancelSendOrder')
       }
-
     },
     created () {
       this.isItemShow()

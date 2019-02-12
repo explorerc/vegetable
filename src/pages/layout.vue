@@ -11,7 +11,7 @@
         <mt-button icon="more" slot="right" v-if="headTitle!=='购物车'"></mt-button>
       </mt-header>
     </div>
-    <keep-alive>
+    <keep-alive include="Kind,Home">
       <component
               :is="currentTabComponent"
               :isCartMange="isCartMange"
@@ -52,13 +52,14 @@
   import Record from './record/index'
   import Cart from './cart/index'
   import User from './user/index'
+  import Edit from './user/edit'
   import bottomNav from '../components/bottom-nav'
   import headNav from '../components/head-nav'
   import Kind from './kind/kind'
   import EventBus from 'src/utils/eventBus'
   import GoodDetail from 'src/pages/good/goodDetail'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit },
     name: 'layout',
     props: {
     },
@@ -92,6 +93,10 @@
         } else if (value === 'goodDetail') {
           this.currentTabComponent = GoodDetail
           this.headTitle = '商品详情'
+          this.bottomActive = ''
+        } else if (value === 'edit') {
+          this.currentTabComponent = Edit
+          this.headTitle = '编辑个人信息'
           this.bottomActive = ''
         }
       },

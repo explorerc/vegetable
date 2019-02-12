@@ -15,3 +15,16 @@ $color-ui-components: #4b5afe;
 .mint-msgbox-btns {
   height: 50px;
 }
+.mint-cell-value {
+  input {
+    background-color: #fff;
+    &::-ms-clear{display:none;}
+  }
+}
+.mint-cell-wrapper {
+  font-size: 32px;
+  border-bottom: 1px solid #EDEDED;
+}
+.mint-cell {
+  height: 80px;
+}

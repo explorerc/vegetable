@@ -10,7 +10,7 @@
       <div class="order pay" ref="pay">
         <div class="title">待付款({{payOrder.length}})</div>
         <div class="good-info-box" v-for="goodInfo in payOrder">
-          <goodInfo :goodInfo="goodInfo"></goodInfo>
+          <goodInfo :goodInfo="goodInfo" @cancelOrder="cancelOrder(goodInfo.id)"></goodInfo>
         </div>
       </div>
       <div class="order send" ref="send">
@@ -34,8 +34,9 @@
 </template>
 
 <script>
-  import order from 'src/api/order'
+  import orders from 'src/api/orders'
   import goodInfo from 'src/components/good-info'
+  import { MessageBox } from 'mint-ui'
   export default {
     name: 'index',
     components: { goodInfo },
@@ -50,7 +51,7 @@
     },
     methods: {
       queryOrder () {
-        this.$http.get(order.GET_ORDER_INFO, {
+        this.$http.get(orders.GET_ORDER_INFO, {
           params: {
             userId: 1
           }
@@ -68,16 +69,6 @@
               this.allOtherOrder.push(this.ordersInfo[i])
             }
           }
-          // for (let item in this.ordersInfo) {
-          //   console.log(item)
-          //   if (this.ordersInfo[item].isPay === 0) {
-          //     this.payOrder.push(this.ordersInfo[item])
-          //   } else if (this.ordersInfo[item].isSend === 0) {
-          //     this.sendOrder.push(this.ordersInfo[item])
-          //   } else if (this.ordersInfo[item].isReceive === 0) {
-          //     this.receiveOrder.push(this.ordersInfo[item])
-          //   }
-          // }
         })
       },
       // 顶部订单分类，点击滑动到指定位置
@@ -93,6 +84,27 @@
           orderScrollTop = this.$refs.accomplish.getBoundingClientRect().top
         }
         document.getElementsByClassName('container')[0].scrollTop = orderScrollTop
+      },
+      cancelOrder (id) {
+        MessageBox({
+          title: '',
+          message: '亲，确认取消订单吗？',
+          showCancelButton: true
+        }).then((action) => {
+          if (action === 'confirm') {
+            this.$http.get(orders.GET_ORDER_DEL, {
+              params: {
+                id: id
+              }
+            }).then((res) => {
+              if (res === 200) {
+                console.log('删除成功')
+                this.queryOrder()
+              }
+            })
+          }
+          console.log(action)
+        })
       }
     },
     created () {
