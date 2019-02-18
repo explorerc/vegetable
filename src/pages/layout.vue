@@ -139,14 +139,14 @@
   height: 100%;
   .head /deep/ {
     .mint-header {
-      height: 80px;
+      height: 40px;
       background-color: #efefef;
       color: #222;
-      font-size: 36px;
+      font-size: 18px;
       .mint-header-title {
         display: inline-block;
-        height: 80px;
-        line-height: 80px;
+        height: 40px;
+        line-height: 40px;
       }
       .mint-button {
         line-height: 40px;
@@ -157,41 +157,23 @@
       }
     }
   }
-  /deep/ {
-    .mint-tabbar {
-      .mint-tab-item{
-        padding-bottom: 16px;
-      }
-      .mint-tab-item-icon {
-        width: 44px;
-        height: 44px;
-        margin-bottom: 15px;
-        .iconfont {
-          font-size: 44px;
-        }
-      }
-      .mint-tab-item-label {
-        font-size: 24px;
-      }
-    }
-  }
 }
 .bottom-nav {
   /deep/ {
     .mint-tabbar {
       .mint-tab-item{
-        padding-bottom: 16px;
+        padding-bottom: 8px;
       }
       .mint-tab-item-icon {
-        width: 44px;
-        height: 44px;
-        margin-bottom: 15px;
+        width: 22px;
+        height: 22px;
+        margin-bottom: 8px;
         .iconfont {
-          font-size: 44px;
+          font-size: 22px;
         }
       }
       .mint-tab-item-label {
-        font-size: 24px;
+        font-size: 12px;
       }
     }
   }

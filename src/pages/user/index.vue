@@ -32,7 +32,8 @@
     data () {
       return {
         userInfo: {},
-        currentTabComponent: ''
+        currentTabComponent: '',
+        rangeValue: 0
       }
     },
     methods: {

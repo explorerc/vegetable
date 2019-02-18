@@ -10,7 +10,7 @@ const config = {
     MOBILE_HOST: 'http://localhost:80/m/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:80/',
+        target: 'http://localhost/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

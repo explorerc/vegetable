@@ -26,7 +26,7 @@
 
 <style scoped lang="scss">
   .mint-swipe {
-    height: 300px;
+    height: 150px;
     img {
       height: 100%;
       width: 100%;
