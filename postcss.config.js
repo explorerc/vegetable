@@ -17,7 +17,7 @@ module.exports = {
       viewportHeight: 1334,
       unitPrecision: 3,
       viewportUnit: 'vw',
-      selectorBlackList: ['.ignore', '.hairlines',/.mint-*/], // 不转换的类名名单
+      selectorBlackList: ['.ignore', '.hairlines','mint'], // 不转换的类名名单
       minPixelValue: 1,
       mediaQuery: false
     },
