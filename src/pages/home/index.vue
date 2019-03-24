@@ -78,7 +78,7 @@ export default {
           let len = this.goodInfo.length
           console.log(this.goodInfo[1].disprice)
           for (let i = 0; i < len; i++) {
-            if (this.goodInfo[i].disprice && this.discountGoods.length < 10) {
+            if (this.goodInfo[i].disPrice && this.discountGoods.length < 10) {
               this.discountGoods.push(this.goodInfo[i])
             }
             if (this.goodInfo[i].kindId === 1 && this.greenGoods.length < 10) {

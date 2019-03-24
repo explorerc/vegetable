@@ -6,9 +6,9 @@
     </div>
     <div class="name">{{goodInfo[0].name}}</div>
     <div class="price-box">
-      <span class="price" v-if="goodInfo[0].disprice">¥{{goodInfo[0].disprice}}</span>
+      <span class="price" v-if="goodInfo[0].disPrice">¥{{goodInfo[0].disPrice}}</span>
       <span class="price" v-else>¥{{goodInfo[0].price}}</span>
-      <span class="del-price" v-if="goodInfo[0].disprice">原价¥<span class="del-line">{{goodInfo[0].price}}</span>份</span>
+      <span class="del-price" v-if="goodInfo[0].disPrice">原价¥<span class="del-line">{{goodInfo[0].price}}</span>份</span>
     </div>
     <div class="inventory">
       库存：{{goodInfo[0].inventory}}
