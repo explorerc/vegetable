@@ -59,8 +59,9 @@
   import Kind from './kind/kind'
   import EventBus from 'src/utils/eventBus'
   import GoodDetail from 'src/pages/good/goodDetail'
+  import SearchPage from 'src/pages/good/search'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage },
     name: 'layout',
     props: {
     },
@@ -76,6 +77,7 @@
     methods: {
       // 改变导航文字
       changMenu (value) {
+        // debugger
         if (value === 'Home') {
           this.currentTabComponent = Home
           this.headTitle = '商城首页'
@@ -98,6 +100,10 @@
         } else if (value === 'Edit') {
           this.currentTabComponent = Edit
           this.headTitle = '编辑个人信息'
+          this.bottomActive = ''
+        } else if (value === 'SearchPage') {
+          this.currentTabComponent = SearchPage
+          this.headTitle = '商品搜索'
           this.bottomActive = ''
         }
       },

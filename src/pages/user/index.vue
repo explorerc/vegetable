@@ -21,6 +21,9 @@
     <div class="address-box item">
       <i class="iconfont icon-dizhi"></i><span>地址：</span><span>{{userInfo.address1}}</span>
     </div>
+    <div class="connect-box item">
+      <i class="iconfont icon-dizhi"></i><span>联系卖家</span><span></span>
+    </div>
   </div>
 </template>
 

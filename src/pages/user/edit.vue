@@ -85,17 +85,25 @@
 <style scoped lang="scss">
 .edit {
   background-color: #fff;
-  padding: 20px 40px 30px;
+  padding: 10px 20px 10px;
   .save-box {
-    font-size: 40px;
+    font-size: 20px;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 15px;
     button {
-      padding: 15px 40px;
+      padding: 16px 40px;
       background-color: #ff4200;
       border: 1px solid #ff4200;
       border-radius: 35px;
       color: #fff;
+    }
+  }
+  /deep/ {
+    .mint-cell-wrapper {
+      font-size: 16px;
+    }
+    .mint-cell {
+      height: 50px;
     }
   }
 }

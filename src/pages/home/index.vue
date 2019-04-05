@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Carousel></Carousel>
-    <Search></Search>
+    <Search :isSearchPage="isSearchPage" @inputFocus="isSearchPage=false"></Search>
     <div class="vg-category-bg">
       <div class="vg-category">
         <ul class="cat-list">
@@ -49,7 +49,8 @@ export default {
       presentGoods: [],
       greenGoods: [],
       keyType: 0,
-      goodInfo: []
+      goodInfo: [],
+      isSearchPage: false
     }
   },
   methods: {

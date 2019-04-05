@@ -3,10 +3,11 @@
     <div class="search-input">
       <div class="input-bg">
         <i class="iconfont icon-search" @click="search()"></i>
-        <input
+        <input class="searchInput"
                 v-model="searchKey"
                 type="search"
                 @keypress="keySearch"
+                @focus="inputFocus"
                 placeholder="请输入关键字进行搜索"
                 :result.sync="searchResult">
       </div>
@@ -20,26 +21,50 @@
 </template>
 
 <script>
+  import EventBus from 'src/utils/eventBus'
   export default {
     name: 'search',
     props: {
+      isSearchPage: {
+        default: false,
+        type: Boolean
+      }
     },
     data () {
       return {
         searchKey: '', // 用户输入的关键字
-        searchResult: '' // 搜索的结果
+        searchResult: '', // 搜索的结果
+        searchPage: true
       }
     },
     methods: {
       search () {
-        console.log(this.searchKey)
+        // console.log(this.searchKey)
+        this.$emit('search', this.searchKey)
       },
       keySearch (event) {
         if (event.keyCode === 13) {
-          alert('12313')
+          // alert('12313')
           this.search()
         }
+      },
+      inputFocus () {
+        // debugger
+        this.searchPage = this.isSearchPage
+        if (!this.searchPage) {
+          EventBus.$emit('currentTabComponent', 'SearchPage')
+          // this.emit('inputFocus')
+        }
       }
+    },
+    watch: {
+      // isSearchPage: {
+      //   haandler (val, newVal) {
+      //     if (!val) {
+      //       EventBus.$emit('currentTabComponent', 'SearchPage')
+      //     }
+      //   }
+      // }
     }
   }
 </script>

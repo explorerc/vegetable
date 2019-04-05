@@ -6,7 +6,7 @@
     <div class="content">
       <div class="kind-list">
         <ul>
-          <li :class="{'active':9 === index}" @click="changeKind(9)">全部</li>
+          <li :class="{'active':0 === index}" @click="changeKind(0)">全部</li>
           <li v-for="(item, ind) in kindList" :class="{'active':item.id === index}" @click="changeKind(item.id)">{{item.name}}</li>
         </ul>
       </div>
@@ -33,7 +33,7 @@
     data () {
       return {
         kindList: [],
-        index: 9,
+        index: 0,
         goodInfo: [],
         goodKindInfo: []
       }
@@ -43,7 +43,7 @@
         this.index = id
         // 根据kind的id查询数据
         this.goodKindInfo = []
-        if (id === 9) {
+        if (id === 0) {
           this.goodKindInfo = this.goodInfo
         } else {
           for (let i = 0; i < this.goodInfo.length; i++) {
