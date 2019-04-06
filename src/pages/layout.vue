@@ -20,7 +20,7 @@
       ></component>
     </keep-alive>
     <!--<bottomNav @change="changMenu"></bottomNav>-->
-    <div class="bottom-nav">
+    <div class="bottom-nav" v-if="this.headTitle !== '联系卖家'">
       <mt-tabbar v-model="selected = bottomActive" class="is-fixed">
         <mt-tab-item @click.native.prevent="bottomActive = 'Home'" id="Home">
           <i slot="icon" class="iconfont icon-shouye"></i>
@@ -60,8 +60,9 @@
   import EventBus from 'src/utils/eventBus'
   import GoodDetail from 'src/pages/good/goodDetail'
   import SearchPage from 'src/pages/good/search'
+  import Chat from 'src/pages/user/chat'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage, Chat },
     name: 'layout',
     props: {
     },
@@ -104,6 +105,10 @@
         } else if (value === 'SearchPage') {
           this.currentTabComponent = SearchPage
           this.headTitle = '商品搜索'
+          this.bottomActive = ''
+        } else if (value === 'Chat') {
+          this.currentTabComponent = Chat
+          this.headTitle = '联系卖家'
           this.bottomActive = ''
         }
       },

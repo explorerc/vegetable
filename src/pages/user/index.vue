@@ -19,10 +19,10 @@
       <i class="iconfont icon-shengrilijin"></i><span>生日：</span><span v-if="userInfo.birth">{{userInfo.birth.split(' ')[0]}}</span><span v-else>设置</span>
     </div>
     <div class="address-box item">
-      <i class="iconfont icon-dizhi"></i><span>地址：</span><span>{{userInfo.address1}}</span>
+      <i class="iconfont icon-dizhi"></i><span>地址：</span><span>{{userInfo.address}}</span>
     </div>
-    <div class="connect-box item">
-      <i class="iconfont icon-dizhi"></i><span>联系卖家</span><span></span>
+    <div class="connect-box item" @click="connectBtn">
+      <i class="iconfont icon-lianxi"></i><span>联系卖家</span><span></span>
     </div>
   </div>
 </template>
@@ -54,6 +54,9 @@
       },
       editUserInfo () {
         EventBus.$emit('currentTabComponent', 'Edit')
+      },
+      connectBtn () {
+        EventBus.$emit('currentTabComponent', 'Chat')
       }
     },
     created () {
@@ -120,6 +123,9 @@
       }
       &.icon-tel {
         color: #9D7AFB;
+      }
+      &.icon-lianxi {
+        color: #3289EB;
       }
     }
   }
