@@ -59,13 +59,13 @@
           this.ordersInfo = res.data
           console.log(this.ordersInfo)
           for (let i = 0; i < this.ordersInfo.length; i++) {
-            if (this.ordersInfo[i].isPayed === 0) {
+            if (this.ordersInfo[i].status === 0) {
               this.payOrder.push(this.ordersInfo[i])
-            } else if (this.ordersInfo[i].isSend === 0) {
+            } else if (this.ordersInfo[i].status === 1) {
               this.sendOrder.push(this.ordersInfo[i])
-            } else if (this.ordersInfo[i].isReceived === 0) {
+            } else if (this.ordersInfo[i].status === 2) {
               this.receiveOrder.push(this.ordersInfo[i])
-            } else if (this.ordersInfo[i].isReceived === 1) {
+            } else if (this.ordersInfo[i].status === 3) {
               this.allOtherOrder.push(this.ordersInfo[i])
             }
           }
