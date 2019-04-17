@@ -50,6 +50,7 @@
 
 <script>
   import Home from './home/index'
+  import Coupon from './home/coupon'
   import Record from './record/index'
   import Cart from './cart/index'
   import User from './user/index'
@@ -61,8 +62,9 @@
   import GoodDetail from 'src/pages/good/goodDetail'
   import SearchPage from 'src/pages/good/search'
   import Chat from 'src/pages/user/chat'
+  import Pay from 'src/pages/cart/pay'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage, Chat },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage, Chat, Coupon, Pay },
     name: 'layout',
     props: {
     },
@@ -72,7 +74,7 @@
         headTitle: '商城首页',
         isHeadClose: true,
         isCartMange: false,
-        bottomActive: 'home'
+        bottomActive: 'Home'
       }
     },
     methods: {
@@ -82,18 +84,24 @@
         if (value === 'Home') {
           this.currentTabComponent = Home
           this.headTitle = '商城首页'
-        } else if (value === 'My') {
+          this.bottomActive = 'User'
+        } else if (value === 'Home') {
           this.currentTabComponent = User
           this.headTitle = '个人中心'
+          this.bottomActive = 'My'
         } else if (value === 'Record') {
           this.currentTabComponent = Record
+          this.bottomActive = 'Record'
           this.headTitle = '购买记录'
         } else if (value === 'Cart') {
           this.currentTabComponent = Cart
           this.headTitle = '购物车'
+          this.bottomActive = 'Cart'
         } else if (value === 'Kind') {
+          debugger
           this.currentTabComponent = Kind
           this.headTitle = '商品分类'
+          this.bottomActive = 'Kind'
         } else if (value === 'GoodDetail') {
           this.currentTabComponent = GoodDetail
           this.headTitle = '商品详情'
@@ -109,6 +117,14 @@
         } else if (value === 'Chat') {
           this.currentTabComponent = Chat
           this.headTitle = '联系卖家'
+          this.bottomActive = ''
+        } else if (value === 'Coupon') {
+          this.currentTabComponent = Coupon
+          this.headTitle = '优惠券'
+          this.bottomActive = ''
+        } else if (value === 'Pay') {
+          this.currentTabComponent = Pay
+          this.headTitle = '支付'
           this.bottomActive = ''
         }
       },

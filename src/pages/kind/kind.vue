@@ -17,6 +17,11 @@
       </div>
       <div class="clearfix"></div>
     </div>
+    <mt-popup
+        v-model="popupVisible"
+        popup-transition="popup-fade">
+       <div class="pop-con">{{popContent}}</div>
+    </mt-popup>
   </div>
 </template>
 
@@ -35,7 +40,10 @@
         kindList: [],
         index: 0,
         goodInfo: [],
-        goodKindInfo: []
+        goodKindInfo: [],
+        popupVisible: false,
+        popContent: '',
+        timer: null
       }
     },
     methods: {
@@ -79,8 +87,14 @@
           }
         }).then((res) => {
           if (res.status === 200) {
-            // console.log(res)
-            alert(res.data)
+            this.popContent = res.data
+            this.popupVisible = true
+            // if (this.timer) return
+            this.timer = setTimeout(function () {
+              clearTimeout(this.timer)
+              this.timer = null
+              this.popupVisible = false
+            }, 3000)
           }
         })
       }
@@ -137,6 +151,25 @@
 
     }
   }
-
+  .pop-con {
+    min-width: 400px;
+    max-width: 500px;
+    height: 100px;
+    line-height: 80px;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 50px;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+  }
+  /deep/ {
+    .v-modal {
+      opacity: 0;
+    }
+    .mint-popup {
+      background-color: transparent;
+    }
+  }
 }
+
 </style>

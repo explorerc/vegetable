@@ -28,12 +28,18 @@
         <button class="delete-btn" @click="deleteSelected">删除</button>
       </div>
     </div>
+      <mt-popup
+              v-model="popPayVisible"
+              popup-transition="popup-fade">
+          <div class="pop-con">请选择结算的商品</div>
+      </mt-popup>
   </div>
 </template>
 
 <script>
   import goodInfo from 'src/components/good-info'
   import cart from 'src/api/cart'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'index',
@@ -50,12 +56,24 @@
           //   imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
           //   number: 1,
           //   isChecked: false
+          // },
+          // {
+          //   id: 101,
+          //   name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
+          //   price: '123',
+          //   disprice: '111',
+          //   imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
+          //   number: 1,
+          //   isChecked: false
           // }
         ],
+        selectedGoods: [],
         cartTotalMoney: 0, // 勾选的商品总价格
         isAllChecked: false, // 不是全选
         selectedNum: 0, // 被选中的数量
-        isCartShow: true
+        isCartShow: true,
+        popPayVisible: false,
+        timer: null
       }
     },
     props: {
@@ -111,9 +129,10 @@
           }
         }).then((res) => {
           if (res.status === 200) {
-            this.cartList = res.data
-            for (let i = 0; i < this.cartList.length; i++) {
-              this.cartList[i].isChecked = false
+            // this.cartList = res.data
+            // console.log(re)
+            for (let i = 0; i < res.data.length; i++) {
+              this.cartList.push({ ...res.data[i], 'isChecked': false })
               console.log(this.cartList[i])
             }
           }
@@ -135,8 +154,10 @@
       totalMoney () {
         this.cartTotalMoney = 0
         this.selectedNum = 0
+        this.selectedGoods = []
         for (let i = 0; i < this.cartList.length; i++) {
           if (this.cartList[i].isChecked) {
+            this.selectedGoods.push(this.cartList[i])
             this.cartTotalMoney = this.cartList[i].price * this.cartList[i].number + this.cartTotalMoney
             this.selectedNum = this.selectedNum + 1
           }
@@ -160,8 +181,10 @@
         for (let idx = 0; idx < this.cartList.length; idx++) {
           this.cartList[idx].isChecked = this.isAllChecked
           if (this.isAllChecked) {
+            this.selectedGoods = [...this.cartList]
             this.totalMoney()
           } else {
+            this.selectedGoods = []
             this.cartTotalMoney = 0
             this.selectedNum = 0
           }
@@ -169,10 +192,13 @@
       },
       deleteSelected () {
         let deleteCartId = []
-        this.cartList.forEach(function (item, ind) {
-          if (item.isChecked) {
-            deleteCartId.push(item.id)
-          }
+        // this.cartList.forEach(function (item, ind) {
+        //   if (item.isChecked) {
+        //     deleteCartId.push(item.id)
+        //   }
+        // })
+        this.selectedGoods.forEach(function (item, ind) {
+          deleteCartId.push(item.id)
         })
         // 请求数据库操作购物车表中的数据
         this.$http.get(cart.GET_CART_DEL, {
@@ -184,11 +210,27 @@
             this.queryCartList()
           }
         })
-        console.log(deleteCartId)
       },
       // 结算商品
       payGoods () {
-        console.log('支付商品')
+        if (this.selectedNum > 0) {
+          console.log(this.selectedGoods)
+          // setTimeout(function () {
+          debugger
+          EventBus.$emit('selectedGoods', this.selectedGoods)
+          console.log(this.selectedGoods)
+          // }, 400)
+          EventBus.$emit('currentTabComponent', 'Pay')
+        } else {
+          debugger
+          this.popPayVisible = true
+          // if (this.timer) return
+          this.timer = setTimeout(function () {
+            clearTimeout(this.timer)
+            this.timer = null
+            this.popPayVisible = false
+          }, 3000)
+        }
       }
     },
     created () {
@@ -215,6 +257,25 @@
   .cart {
     position: relative;
     padding: 0 40px 60px;
+    .pop-con {
+      min-width: 400px;
+      max-width: 500px;
+      height: 100px;
+      line-height: 80px;
+      padding: 10px 20px;
+      text-align: center;
+      border-radius: 50px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+    }
+  /deep/ {
+      .v-modal {
+          opacity: 0;
+      }
+      .mint-popup {
+          background-color: transparent;
+      }
+  }
     li {
       margin-top: 40px;
       input {

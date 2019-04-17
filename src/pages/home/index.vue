@@ -1,6 +1,13 @@
 <template>
   <div class="home">
-    <Carousel></Carousel>
+    <div class="block">
+      <span class="demonstration"></span>
+      <mt-swipe :auto="4000">
+        <mt-swipe-item v-for="item in imgList" :key="item.id">
+          <img :src="item.idView" alt=""  @click="swipeClick(item.id)">
+        </mt-swipe-item>
+      </mt-swipe>
+    </div>
     <Search :isSearchPage="isSearchPage" @inputFocus="isSearchPage=false"></Search>
     <div class="vg-category-bg">
       <div class="vg-category">
@@ -32,14 +39,14 @@
 </template>
 
 <script>
-import Carousel from '../../components/carousel'
+// import Carousel from '../../components/carousel'
 import Search from '../../components/search'
 import GoodCard from '../../components/good-card'
 import kind from 'src/api/kind'
 import EventBus from 'src/utils/eventBus'
 import goods from 'src/api/goods'
 export default {
-  components: { Carousel, Search, GoodCard },
+  components: { Search, GoodCard },
   data () {
     return {
       cardTitle: '',
@@ -50,7 +57,12 @@ export default {
       greenGoods: [],
       keyType: 0,
       goodInfo: [],
-      isSearchPage: false
+      isSearchPage: false,
+      imgList: [
+        { id: 0, idView: require('../../assets/image/carousel1.jpg') },
+        { id: 1, name: '详情', idView: require('../../assets/image/carousel2.jpg') },
+        { id: 2, name: '推荐', idView: require('../../assets/image/carousel3.jpg') }
+      ]
     }
   },
   methods: {
@@ -68,7 +80,7 @@ export default {
       console.log(this.kindId)
       setTimeout(() => {
         EventBus.$emit('kindId', this.kindId)
-      }, 400)
+      }, 0)
       EventBus.$emit('currentTabComponent', 'Kind')
       this.$emit('kindClick')
     },
@@ -92,6 +104,19 @@ export default {
           // this.goodKindInfo = this.goodInfo
         }
       })
+    },
+    swipeClick (id) {
+      switch (id) {
+        case 0:
+          EventBus.$emit('currentTabComponent', 'Coupon')
+          break
+        case 1:
+          EventBus.$emit('currentTabComponent', 'Kind')
+          break
+        case 2:
+          EventBus.$emit('currentTabComponent', 'Kind')
+          break
+      }
     }
   },
   created () {
@@ -101,6 +126,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .mint-swipe {
+    height: 150px;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
 .home /deep/ {
   .vg-category-bg {
     background-color: #fff;

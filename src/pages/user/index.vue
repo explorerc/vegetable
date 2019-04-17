@@ -74,7 +74,7 @@
     position: relative;
     height: 400px;
     padding: 55px 40px;
-    background-image: url("http://photo.16pic.com/00/11/46/16pic_1146720_b.jpg");
+    /*background-image: url("http://photo.16pic.com/00/11/46/16pic_1146720_b.jpg");*/
     background-size: cover;
     .edit {
       position: absolute;
