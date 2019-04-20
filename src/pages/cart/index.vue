@@ -89,12 +89,10 @@
         // console.log(userId, goodId, number)
         // 根据id修改数据库中的数据
         // 然后返回购物车表数据库中的数据
-        this.$http.get(cart.GET_CART_MINNUM, {
-          params: {
-            id: id
-          }
+        this.$get(cart.GET_CART_MINNUM, {
+          id: id
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             for (let i = 0; i < this.cartList.length; i++) {
               if (this.cartList[i].id === id) {
                 this.cartList[i].number--
@@ -107,12 +105,12 @@
       addNumberClick (id) {
         // 根据id修改数据库中的数据
         // 然后返回购物车表数据库中的数据
-        this.$http.get(cart.GET_CART_ADDNUM, {
+        this.$get(cart.GET_CART_ADDNUM, {
           params: {
             id: id
           }
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             for (let i = 0; i < this.cartList.length; i++) {
               if (this.cartList[i].id === id) {
                 this.cartList[i].number++
@@ -125,12 +123,8 @@
       // 根据userid查询购物车中的商品信息
       queryCartList () {
         this.cartList = []
-        this.$http.get(cart.GET_CART_INFO, {
-          params: {
-            userId: 1
-          }
-        }).then((res) => {
-          if (res.status === 200) {
+        this.$get(cart.GET_CART_INFO).then((res) => {
+          if (res.code === 200) {
             // this.cartList = res.data
             // console.log(re)
             for (let i = 0; i < res.data.length; i++) {

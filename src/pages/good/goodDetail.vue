@@ -46,12 +46,10 @@
     },
     methods: {
       queryGood (id) {
-        this.$http.get(goods.GET_GOOD_BYID, {
-          params: {
-            'id': id
-          }
+        this.$get(this.base_url + goods.GET_GOOD_BYID, {
+          'id': id
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             this.goodInfo = res.data
             console.log(res.data)
           }
@@ -65,14 +63,11 @@
       },
       addCart (goodId) {
         // alert(goodId)
-        this.$http.get(cart.GET_CART_ADD, {
-          params: {
-            'userId': 1,
-            'goodId': goodId,
-            'number': 1
-          }
+        this.$get(cart.GET_CART_ADD, {
+          'goodId': goodId,
+          'number': 1
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             // console.log(res)
             alert(res.data)
           }

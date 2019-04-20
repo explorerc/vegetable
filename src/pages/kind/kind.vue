@@ -63,15 +63,15 @@
       },
       // 获取净菜的分类
       queryKind () {
-        this.$http.get(kind.GET_KIND_INFO, {}).then((res) => {
-          if (res.status === 200) {
+        this.$get(kind.GET_KIND_INFO, {}).then((res) => {
+          if (res.code === 200) {
             this.kindList = res.data
           }
         })
       },
       queryGoodInfo () {
-        this.$http.get(goods.GET_GOODS_INFO, {}).then(res => {
-          if (res.status === 200) {
+        this.$get(goods.GET_GOODS_INFO, {}).then(res => {
+          if (res.code === 200) {
             this.goodInfo = res.data
             this.goodKindInfo = this.goodInfo
           }
@@ -79,14 +79,12 @@
       },
       addCart (goodId) {
         // alert(goodId)
-        this.$http.get(cart.GET_CART_ADD, {
-          params: {
-            'userId': 1,
-            'goodId': goodId,
-            'number': 1
-          }
+        this.$get(cart.GET_CART_ADD, {
+          'userId': 1,
+          'goodId': goodId,
+          'number': 1
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             this.popContent = res.data
             this.popupVisible = true
             // if (this.timer) return

@@ -33,30 +33,22 @@
     },
     methods: {
       search (key) {
-        // alert(key)
-        // var data = {
-        //   key: key
-        // }
-        this.$http.get(goods.GET_GOOD_KEY, {
-          params: {
-            'key': key
-          }
+        this.$get(goods.GET_GOOD_KEY, {
+          'key': key
         }).then(res => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             this.goodInfo = res.data
           }
         })
       },
       addCart (goodId) {
         // alert(goodId)
-        this.$http.get(cart.GET_CART_ADD, {
-          params: {
-            'userId': 1,
-            'goodId': goodId,
-            'number': 1
-          }
+        this.$get(cart.GET_CART_ADD, {
+          'userId': 1,
+          'goodId': goodId,
+          'number': 1
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.code === 200) {
             // console.log(res)
             alert(res.data)
           }

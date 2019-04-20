@@ -1,9 +1,9 @@
 <template>
  <div class="coupon">
- <!--<div class="" v-for="coupon in coupons">-->
- <div class="" >
-     <!--<CouponCard :coupon="coupon"></CouponCard>-->
-     <CouponCard></CouponCard>
+ <div class="" v-for="coupon in coupons">
+ <!--<div class="" >-->
+     <CouponCard :coupon="coupon"></CouponCard>
+     <!--<CouponCard></CouponCard>-->
  </div>
 
  </div>
@@ -23,17 +23,17 @@
    },
    methods: {
      queryList () {
-       this.$http.get(couponServer.GET_COUPON_INFO, {}).then((res) => function () {
-         debugger
-         console.log(res)
+       this.$get(couponServer.GET_COUPON_INFO).then((res) => function () {
          if (res.code === 200) {
-           this.coupons = res.data
+           this.coupons = res.data.data
            console.log(this.coupons)
          }
        })
+       console.log(this.coupons)
      }
    },
    created () {
+     debugger
      this.queryList()
    }
  }

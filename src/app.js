@@ -5,11 +5,11 @@ import store from './store'
 import router from './router'
 import './utils/extend'
 import 'assets/css/index.scss'
-import axios from 'axios'
+// import axios from 'axios'
 
 import Ajax from './utils/_ajax'
 import MentUi from 'mint-ui'
-Vue.prototype.$http = axios
+Vue.prototype.base_url = 'http://localhost'
 
 Vue.use(MentUi)
 Vue.use(Ajax)

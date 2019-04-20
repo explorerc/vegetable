@@ -51,11 +51,7 @@
     },
     methods: {
       queryOrder () {
-        this.$http.get(orders.GET_ORDER_INFO, {
-          params: {
-            userId: 1
-          }
-        }).then(res => {
+        this.$get(orders.GET_ORDER_INFO).then(res => {
           this.ordersInfo = res.data
           console.log(this.ordersInfo)
           for (let i = 0; i < this.ordersInfo.length; i++) {
@@ -92,18 +88,15 @@
           showCancelButton: true
         }).then((action) => {
           if (action === 'confirm') {
-            this.$http.get(orders.GET_ORDER_DEL, {
-              params: {
-                id: id
-              }
+            this.$get(orders.GET_ORDER_DEL, {
+              id: id
             }).then((res) => {
-              if (res === 200) {
+              if (res.code === 200) {
                 console.log('删除成功')
                 this.queryOrder()
               }
             })
           }
-          console.log(action)
         })
       }
     },

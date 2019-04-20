@@ -72,10 +72,11 @@
         }
         .par{
             float: left;
-            padding: 16px 15px;
+            padding: 46px 15px;
             width:60%;
             border-right:2px dashed rgba(255,255,255,.3);
             text-align: left;
+            height: 100%;
             p{
                 color:#fff;
                 margin-bottom: 10px;

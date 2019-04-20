@@ -1,3 +1,3 @@
 export default {
-  GET_KIND_INFO: '/api/index/index'
+  GET_KIND_INFO: '/kind'
 }

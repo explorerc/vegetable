@@ -68,8 +68,8 @@ export default {
   methods: {
     // 获取净菜的分类
     queryKind () {
-      this.$http.get(kind.GET_KIND_INFO, {}).then((res) => {
-        if (res.status === 200) {
+      this.$get(this.base_url + kind.GET_KIND_INFO, {}).then((res) => {
+        if (res.code === 200) {
           this.kindList = res.data
         }
       })
@@ -85,8 +85,8 @@ export default {
       this.$emit('kindClick')
     },
     queryGoodInfo () {
-      this.$http.get(goods.GET_GOODS_INFO, {}).then(res => {
-        if (res.status === 200) {
+      this.$get(goods.GET_GOODS_INFO).then(res => {
+        if (res.code === 200) {
           this.goodInfo = res.data
           let len = this.goodInfo.length
           console.log(this.goodInfo[1].disprice)

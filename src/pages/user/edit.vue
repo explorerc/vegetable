@@ -44,12 +44,8 @@
     },
     methods: {
       queryUserInfo () {
-        this.$http.get(user.GET_USER_INFO, {
-          params: {
-            userId: 1
-          }
-        }).then((res) => {
-          if (res.status === 200) {
+        this.$http.get(user.GET_USER_INFO).then((res) => {
+          if (res.code === 200) {
             this.userInfo = res.data[0]
             this.userInfo.birth = this.userInfo.birth.split(' ')[0]
             console.log(this.userInfo)
@@ -57,10 +53,8 @@
         })
       },
       saveUserInfo () {
-        this.$http.get(user.GET_USER_UPDATE, {
-          params: {
-            ...this.userInfo
-          }
+        this.$get(user.GET_USER_UPDATE, {
+          ...this.userInfo
         }).then((res) => {
           if (res.status === 200) {
             EventBus.$emit('currentTabComponent', 'My')
