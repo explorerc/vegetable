@@ -38,7 +38,7 @@
           <i slot="icon" class="iconfont icon-goumaijilu"></i>
           订单
         </mt-tab-item>
-        <mt-tab-item  @click.native.prevent="bottomActive = 'My'" id="My">
+        <mt-tab-item  @click.native.prevent="bottomActive = 'User'" id="User">
           <i slot="icon" class="iconfont icon-gerenzhongxin"></i>
           个人中心
         </mt-tab-item>
@@ -84,11 +84,11 @@
         if (value === 'Home') {
           this.currentTabComponent = Home
           this.headTitle = '商城首页'
-          this.bottomActive = 'User'
-        } else if (value === 'Home') {
+          this.bottomActive = 'Home'
+        } else if (value === 'User') {
           this.currentTabComponent = User
           this.headTitle = '个人中心'
-          this.bottomActive = 'My'
+          this.bottomActive = 'User'
         } else if (value === 'Record') {
           this.currentTabComponent = Record
           this.bottomActive = 'Record'
@@ -98,7 +98,6 @@
           this.headTitle = '购物车'
           this.bottomActive = 'Cart'
         } else if (value === 'Kind') {
-          debugger
           this.currentTabComponent = Kind
           this.headTitle = '商品分类'
           this.bottomActive = 'Kind'
@@ -179,7 +178,7 @@
         line-height: 40px;
       }
       .cart-manger {
-        font-size: 28px;
+        font-size: 14px;
         color: #222;
       }
     }

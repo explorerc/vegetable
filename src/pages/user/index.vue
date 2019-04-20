@@ -41,13 +41,9 @@
     },
     methods: {
       queryUserInfo () {
-        this.$http.get(user.GET_USER_INFO, {
-          params: {
-            userId: 1
-          }
-        }).then((res) => {
-          if (res.status === 200) {
-            this.userInfo = res.data[0]
+        this.$http.get(user.GET_USER_INFO, {}).then((res) => {
+          if (res.data.code === 200) {
+            this.userInfo = res.data.data
             console.log(this.userInfo)
           }
         })

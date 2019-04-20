@@ -31,7 +31,7 @@
       <mt-popup
               v-model="popPayVisible"
               popup-transition="popup-fade">
-          <div class="pop-con">请选择结算的商品</div>
+          <div class="pop-con">{{popCon}}</div>
       </mt-popup>
   </div>
 </template>
@@ -73,7 +73,8 @@
         selectedNum: 0, // 被选中的数量
         isCartShow: true,
         popPayVisible: false,
-        timer: null
+        timer: null,
+        popCon: ''
       }
     },
     props: {
@@ -123,6 +124,7 @@
       },
       // 根据userid查询购物车中的商品信息
       queryCartList () {
+        this.cartList = []
         this.$http.get(cart.GET_CART_INFO, {
           params: {
             userId: 1
@@ -133,7 +135,6 @@
             // console.log(re)
             for (let i = 0; i < res.data.length; i++) {
               this.cartList.push({ ...res.data[i], 'isChecked': false })
-              console.log(this.cartList[i])
             }
           }
         }).catch(function (error) {
@@ -197,6 +198,16 @@
         //     deleteCartId.push(item.id)
         //   }
         // })
+        if (this.selectedGoods.length <= 0) {
+          this.popPayVisible = true
+          this.popCon = '请选择需要删除的商品'
+          this.timer = setTimeout(function () {
+            clearTimeout(this.timer)
+            this.timer = null
+            this.popPayVisible = false
+          }, 3000)
+          return
+        }
         this.selectedGoods.forEach(function (item, ind) {
           deleteCartId.push(item.id)
         })
@@ -216,14 +227,13 @@
         if (this.selectedNum > 0) {
           console.log(this.selectedGoods)
           // setTimeout(function () {
-          debugger
-          EventBus.$emit('selectedGoods', this.selectedGoods)
-          console.log(this.selectedGoods)
-          // }, 400)
+          setTimeout(() => {
+            EventBus.$emit('selectedGoods', this.selectedGoods)
+          }, 0)
           EventBus.$emit('currentTabComponent', 'Pay')
         } else {
-          debugger
           this.popPayVisible = true
+          this.popCon = '请选择结算的商品'
           // if (this.timer) return
           this.timer = setTimeout(function () {
             clearTimeout(this.timer)

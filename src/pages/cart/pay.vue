@@ -2,23 +2,38 @@
   <div class="pay">
    <div class="user">
      <div class="info">
-       <span>名字</span><span>电话</span>
+       <span class="name">{{userInfo.name}}</span><span class="tel">{{userInfo.tel}}</span>
      </div>
      <div>
-       <div><i class="iconfont"></i></div>
-       <div class="address">收货地址</div>
+       <div class="address"><i class="iconfont icon-dizhi"></i><span>{{userInfo.address}}</span></div>
      </div>
    </div>
    <div class="goods">
-     <div class="item" v-for="good in selectedGoods">
-       <div class="cover"><img src="" alt=""></div>
-       <div class="name">商品名称</div>
+     <div class="item" v-for="good in selectedGoods" :key="good.id">
+     <!--<div class="item">-->
+       <div class="cover"><img :src="good.imgUrl" alt=""></div>
+       <div class="name">{{good.name}}</div>
        <div class="sale">
-         <p>￥50</p>
-         <p>X2</p>
+         <p v-if="good.disPrice">￥{{good.disPrice}}</p>
+         <p v-else>￥{{good.price}}</p>
+         <p>X{{good.number}}</p>
        </div>
      </div>
    </div>
+   <div class="pay-bottom clearfix">
+      <div class="fr">
+          <span class="total">共{{selectedGoods.length}}件，</span>
+          <span>合计：¥{{cartTotalMoney}}</span>
+          <button class="pay-btn" @click="payOrder">提交订单</button>
+      </div>
+  </div>
+      <mt-popup
+              v-model="popPayVisible"
+              popup-transition="popup-fade">
+          <div class="pop-con">
+                这人是一个付钱的弹框
+          </div>
+      </mt-popup>
   </div>
 </template>
 
@@ -26,6 +41,7 @@
   import goodInfo from 'src/components/good-info'
   // import cart from 'src/api/cart'
   import EventBus from 'src/utils/eventBus'
+  import user from 'src/api/user-service'
 
   export default {
     name: 'index',
@@ -33,20 +49,37 @@
     data () {
       return {
         selectedNum: 0, // 被选中的数量
-        selectedGoods: []
+        selectedGoods: [],
+        userInfo: {},
+        popPayVisible: false,
+        timer: null
       }
     },
     methods: {
-      // 计算总价
-      totalMoney () {
-        this.cartTotalMoney = 0
-        this.selectedNum = 0
-        for (let i = 0; i < this.cartList.length; i++) {
-          if (this.cartList[i].isChecked) {
-            this.cartTotalMoney = this.cartList[i].price * this.cartList[i].number + this.cartTotalMoney
-            this.selectedNum = this.selectedNum + 1
+      queryUserInfo () {
+        this.$http.get(user.GET_USER_INFO, {}).then((res) => {
+          if (res.data.code === 200) {
+            this.userInfo = res.data.data
+            console.log(this.userInfo)
           }
-        }
+        })
+      },
+      payOrder () {
+        this.popPayVisible = true
+      }
+    },
+    computed: {
+      cartTotalMoney () {
+        let total = 0
+        this.selectedGoods.forEach((item, i) => {
+          if (item.disPrice) {
+            total += parseFloat(item.disPrice) * item.number
+          } else {
+            debugger
+            total += parseFloat(item.price) * item.number
+          }
+        })
+        return total.toFixed(2)
       }
     },
     created () {
@@ -54,6 +87,7 @@
         this.selectedGoods = data
         console.log(this.selectedGoods)
       })
+      this.queryUserInfo()
     },
     watch: {
     }
@@ -62,79 +96,83 @@
 
 <style scoped lang="scss">
   @import '~assets/css/variable.scss';
-  .cart {
-    position: relative;
-    padding: 0 40px 60px;
-    li {
-      margin-top: 40px;
-      input {
-        border-radius: 50%;
-      }
-      .cart-item-top {
-        display: flex;
-        align-items: center;
-        .good-img {
-          display: inline-block;
-          width: 25%;
-          margin: 0 15px 0 20px;
-          border-radius: 10px;
-        }
-        .good-des {
-          display: inline-block;
-          width: 100%;
-          .good-name {
+  .pay {
+    padding: 0 20px;
+    .user {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 30px 20px;
+        .info {
             margin-bottom: 20px;
-            /* 商品名字超过两行进行隐藏 */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-          }
-          .price {
-            color: #E4393C;
-            line-height: 55px;
-          }
         }
-      }
+        .name {
+            font-size: 32px;
+            color: #666;
+        }
+        .tel {
+            margin-left: 20px;
+            font-size: 28px;
+            color: #999;
+        }
+        .icon-dizhi {
+            margin-right: 15px;
+            vertical-align: middle;
+            font-size: 40px;
+        }
+        .address {
+            font-size: 28px;
+            color: #222;
+        }
+    }
+    .goods {
+        padding: 30px 20px;
+        margin-top: 40px;
+        background-color: #fff;
+        border-radius: 4px;
+        item {
+            margin-bottom: 20px;
+        }
+        div {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .cover {
 
-    }
-    .cart-bottom {
-      position: fixed;
-      display: block;
-      width: calc(100% - 45px);
-      height: 100px;
-      bottom: 100px;
-      left: 20px;
-      background-color: #efefef;
-      line-height: 100px;
-      .fl {
-        input {
-          position: relative;
-          top: 4px;
         }
-      }
-      .fr {
+        .name {
+            width: 330px;
+        }
+        .sale {
+            margin-left: 20px;
+            text-align: right;
+            max-width: 100px;
+        }
+        img {
+            width: 180px;
+            border-radius: 4px;
+        }
+    }
+    .pay-bottom {
+          position: fixed;
+          display: block;
+          width: calc(100% - 45px);
+          height: 100px;
+          bottom: 100px;
+          left: 20px;
+          background-color: #efefef;
+          line-height: 100px;
         .pay-btn {
-          height: 60px;
-          background-color: $color-default;
-          border: 1px solid $color-default;
-          border-radius: 30px;
-          color: #fff;
-          padding: 0 20px;
-          margin-left: 20px;
+            height: 60px;
+            background-color: $color-default;
+            border: 1px solid $color-default;
+            border-radius: 30px;
+            color: #fff;
+            padding: 0 20px;
+            margin-left: 20px;
         }
-        .delete-btn {
-          display: inline-block;
-          color: $color-default;
-          /*width: 96px;*/
-          margin-left: 20px;
-          padding: 0 34.5px;
-          background-color: transparent;
-          border: none;
+        .total {
+            color: #666;
         }
       }
-    }
   }
 </style>
