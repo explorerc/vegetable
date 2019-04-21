@@ -1,10 +1,10 @@
 <template>
   <div class="coupon-card">
-      <div class="stamp stamp01">
+      <div class="stamp stamp01" @click="couponClick(coupon.id)">
           <div class="par">
               <!--<p>XXXXXX折扣店</p>-->
-              <sub class="sign">￥</sub><span>50.00</span><sub>优惠券</sub><p>订单满100.00元</p></div>
-          <div class="copy">副券<p>2015-08-13<br>2016-08-13</p></div>
+              <sub class="sign">￥</sub><span>{{coupon.favour}}</span><sub>优惠券</sub><p>订单满{{coupon.total}}元</p></div>
+          <div class="copy">副券<p>{{coupon.start_time.split(' ')[0]}}<br>{{coupon.end_time.split(' ')[0]}}</p></div>
           <i></i>
       </div>
   </div>
@@ -17,6 +17,11 @@
       coupon: {
         default: null,
         type: Object
+      }
+    },
+    methods: {
+      couponClick (id) {
+        this.$emit('couponClick', id)
       }
     }
   }
@@ -32,6 +37,7 @@
         height: 200px;
         padding: 0 20px;
         position: relative;
+        margin-top: 40px;
         overflow: hidden;
         background: #F39B00;
         border-radius: 4px;
