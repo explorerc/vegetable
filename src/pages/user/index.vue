@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="user" v-title data-title="个人中心">
     <div class="top">
       <div class="edit" @click="editUserInfo"><i class="iconfont icon-bianji"></i></div>
       <div class="aviator">

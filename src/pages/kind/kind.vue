@@ -1,5 +1,5 @@
 <template>
-  <div class="kind">
+  <div class="kind" v-title data-title="商品分类">
     <div class="head">
       <search></search>
     </div>
@@ -114,7 +114,7 @@
   .head {
     width: 100%;
     position: fixed;
-    top: 80px;
+    top: 0;
     background-color: #efefef;
     height: 90px;
     border-bottom: 1px solid #8E9198;

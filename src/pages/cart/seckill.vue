@@ -1,5 +1,5 @@
 <template>
-  <div class="pay"  v-title data-title="支付">
+  <div class="pay">
    <div class="user">
      <div class="info">
        <span class="name">{{userInfo.name}}</span><span class="tel">{{userInfo.tel}}</span>

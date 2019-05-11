@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home"  v-title data-title="首页">
     <div class="block">
       <span class="demonstration"></span>
       <mt-swipe :auto="4000">

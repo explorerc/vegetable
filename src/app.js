@@ -30,6 +30,11 @@ new Vue({
   store,
   render: h => h(App)
 })
+Vue.directive('title', {
+  inserted (el) {
+    document.title = el.dataset.title
+  }
+})
 
 // let ready = window.Vhall.ready
 // let readyStatus = false

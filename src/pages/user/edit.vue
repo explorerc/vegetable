@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-  <div class="edit">
+  <div class="edit"  v-title data-title="信息编辑">
     <mt-field label="姓名" placeholder="请输入用户名" v-model="userInfo.name"></mt-field>
     <mt-field label="昵称" placeholder="请输入昵称" v-model="userInfo.nickname"></mt-field>
     <mt-field label="手机" placeholder="请输入手机号" type="tel" v-model="userInfo.tel"></mt-field>

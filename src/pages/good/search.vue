@@ -1,5 +1,5 @@
 <template>
-  <div class="search-result">
+  <div class="search-result"  v-title data-title="搜索商品">
       <Search :isSearchPage=true @search="search"></Search>
       <div class="good-list">
           <div v-for="item in goodInfo">

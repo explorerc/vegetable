@@ -1,5 +1,5 @@
 <template>
-  <div class="record">
+  <div class="record"  v-title data-title="订单">
     <div class="head">
       <button @click="orderKindClick('pay')"><i class="iconfont icon-daifukuan"></i><span>待付款</span></button>
       <button @click="orderKindClick('send')"><i class="iconfont icon-daifahuo"></i><span>待发货</span></button>

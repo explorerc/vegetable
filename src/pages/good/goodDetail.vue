@@ -1,5 +1,5 @@
 <template>
-  <div class="good-detail">
+  <div class="good-detail"  v-title data-title="商品详情">
     <div class="cover">
       <img :src='goodInfo[0].imgUrl' alt="">
       <!--<img alt="">-->

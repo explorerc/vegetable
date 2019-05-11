@@ -1,5 +1,5 @@
 <template>
- <div class="coupon">
+ <div class="coupon" v-title data-title="优惠券">
  <div class="" v-for="coupon in coupons">
      <CouponCard :coupon="coupon" @couponClick="couponClick"></CouponCard>
  </div>

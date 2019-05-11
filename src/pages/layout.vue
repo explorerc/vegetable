@@ -1,16 +1,16 @@
 <template>
   <div class="container">
-    <div class="head">
-      <mt-header :title="headTitle" class="is-fixed">
-        <router-link to="/" slot="left">
-          <mt-button class="iconfont icon-back" v-if="!isHeadClose"></mt-button>
-          <mt-button @click="handleClose" v-if="isHeadClose"  class="iconfont icon-close"></mt-button>
-        </router-link>
-        <mt-button slot="right" v-if="headTitle==='购物车'&&!isCartMange" class="cart-manger" @click="cartManferClick">管理</mt-button>
-        <mt-button slot="right" v-if="headTitle==='购物车'&&isCartMange" class="cart-manger" @click="cartManferClick">完成</mt-button>
-        <mt-button icon="more" slot="right" v-if="headTitle!=='购物车'"></mt-button>
-      </mt-header>
-    </div>
+    <!--<div class="head">-->
+      <!--<mt-header :title="headTitle" class="is-fixed">-->
+        <!--<router-link to="/" slot="left">-->
+          <!--<mt-button class="iconfont icon-back" v-if="!isHeadClose"></mt-button>-->
+          <!--<mt-button @click="handleClose" v-if="isHeadClose"  class="iconfont icon-close"></mt-button>-->
+        <!--</router-link>-->
+        <!--<mt-button slot="right" v-if="headTitle==='购物车'&&!isCartMange" class="cart-manger" @click="cartManferClick">管理</mt-button>-->
+        <!--<mt-button slot="right" v-if="headTitle==='购物车'&&isCartMange" class="cart-manger" @click="cartManferClick">完成</mt-button>-->
+        <!--<mt-button icon="more" slot="right" v-if="headTitle!=='购物车'"></mt-button>-->
+      <!--</mt-header>-->
+    <!--</div>-->
     <keep-alive include="Kind,Home">
       <component
               :is="currentTabComponent"
@@ -161,7 +161,7 @@
 <style scoped lang="scss">
 .container {
   overflow-y: auto;
-  padding: 80px 0 120px;
+  padding: 0 0 120px;
   height: 100%;
   .head /deep/ {
     .mint-header {
