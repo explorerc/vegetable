@@ -30,9 +30,9 @@ const config = {
     BUILD_ENV: 'test',
     API_PATH: '/m/api',
     SUB_DIR: 'static',
-    PUBLIC_PATH: '//test-zhike.vhall.com/m/',
+    PUBLIC_PATH: './',
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    MOBILE_HOST: '//test-zhike.vhall.com/m/'
+    MOBILE_HOST: './'
   },
   prod: {
     BUILD_ENV: 'prod',

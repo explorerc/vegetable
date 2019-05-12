@@ -43,7 +43,7 @@
 
   export default {
     name: 'index',
-    components: {goodInfo},
+    components: { goodInfo },
     data () {
       return {
         goodsNum: 0, // 购物车中有多少件商品
