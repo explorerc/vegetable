@@ -10,7 +10,7 @@ const config = {
     MOBILE_HOST: 'http://localhost:80/m/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost/',
+        target: 'http://mg.vegetable.umcoder.com/public',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
@@ -28,16 +28,16 @@ const config = {
   },
   test: {
     BUILD_ENV: 'test',
-    API_PATH: '/m/api',
-    SUB_DIR: 'static',
-    PUBLIC_PATH: './',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
+    API_PATH: 'http://mg.vegetable.umcoder.com/public',
+    SUB_DIR: './static',
+    PUBLIC_PATH: '//www.umcoder.com/',
+    IMGHOST: '',
     MOBILE_HOST: './'
   },
   prod: {
     BUILD_ENV: 'prod',
     API_PATH: '/m/api',
-    SUB_DIR: 'static',
+    SUB_DIR: './static',
     PUBLIC_PATH: '//zhike.vhall.com/m/',
     IMGHOST: '//static.vhallyun.com',
     MOBILE_HOST: '//zhike.vhall.com/m/'

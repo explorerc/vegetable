@@ -5,7 +5,7 @@
     <mt-field label="昵称" placeholder="请输入昵称" v-model="userInfo.nickname"></mt-field>
     <mt-field label="手机" placeholder="请输入手机号" type="tel" v-model="userInfo.tel"></mt-field>
     <mt-field label="生日" placeholder="请输入生日日期" type="date" v-model="userInfo.birth"></mt-field>
-    <mt-field label="地址" placeholder="请输入收货地址" type="text" v-model="userInfo.address1"></mt-field>
+    <mt-field label="地址" placeholder="请输入收货地址" type="text" v-model="userInfo.address"></mt-field>
     <!--<mt-picker :slots="slots" @change="onValuesChange"></mt-picker>-->
     <div class="save-box"><button class="" @click="saveUserInfo">保存</button></div>
   </div>

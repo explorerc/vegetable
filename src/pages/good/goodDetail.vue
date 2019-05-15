@@ -1,17 +1,17 @@
 <template>
   <div class="good-detail"  v-title data-title="商品详情">
     <div class="cover">
-      <img :src='goodInfo[0].imgUrl' alt="">
+      <img :src='goodInfo.imgUrl' alt="">
       <!--<img alt="">-->
     </div>
-    <div class="name">{{goodInfo[0].name}}</div>
+    <div class="name">{{goodInfo.name}}</div>
     <div class="price-box">
-      <span class="price" v-if="goodInfo[0].disPrice">¥{{goodInfo[0].disPrice}}</span>
-      <span class="price" v-else>¥{{goodInfo[0].price}}</span>
-      <span class="del-price" v-if="goodInfo[0].disPrice">原价¥<span class="del-line">{{goodInfo[0].price}}</span>份</span>
+      <span class="price" v-if="goodInfo.disPrice">¥{{goodInfo.disPrice}}</span>
+      <span class="price" v-else>¥{{goodInfo.price}}</span>
+      <span class="del-price" v-if="goodInfo.disPrice">原价¥<span class="del-line">{{goodInfo.price}}</span>份</span>
     </div>
     <div class="inventory">
-      库存：{{goodInfo[0].inventory}}
+      库存：{{goodInfo.inventory}}
     </div>
     <div class="number clearfix">
       <span class="fl">规格：</span>
@@ -19,12 +19,13 @@
                  class="fr"
                  @minusNumberClick="minusNumberClick"
                  @addNumberClick="addNumberClick"
-                 :maxNumber="goodInfo[0].inventory"
+                 :maxNumber="goodInfo.inventory"
       ></NumberBtn>
     </div>
     <div class="buy">
+      <button class="iconfont icon-ic_reserve" @click="bookClick(goodInfo.id)">预定</button>
       <button class="iconfont icon-goumai">立即购买</button>
-      <button class="iconfont icon-cart" @click="addCart(goodInfo[0].id)">加入购物车</button>
+      <button class="iconfont icon-cart" @click="addCart(goodInfo.id)">加入购物车</button>
     </div>
   </div>
 </template>
@@ -39,15 +40,15 @@
     components: { NumberBtn },
     data () {
       return {
-        goodId: 0,
+        goodId: this.$route.params.id,
         goodInfo: [],
         number: 1
       }
     },
     methods: {
       queryGood (id) {
-        this.$get(this.base_url + goods.GET_GOOD_BYID, {
-          'id': id
+        this.$get(goods.GET_GOOD_BYID, {
+          'goodId': id
         }).then((res) => {
           if (res.code === 200) {
             this.goodInfo = res.data
@@ -60,6 +61,16 @@
       },
       minusNumberClick () {
         this.number--
+      },
+      bookClick (id) {
+        setTimeout(() => {
+          EventBus.$emit('goodInfo', {
+            goodId: this.goodId,
+            ...this.goodInfo,
+            number: this.number
+          })
+        }, 0)
+        EventBus.$emit('currentTabComponent', 'Book')
       },
       addCart (goodId) {
         // alert(goodId)
@@ -75,10 +86,7 @@
       }
     },
     created () {
-      EventBus.$on('goodsId', (data) => {
-        this.goodId = data
-        this.queryGood(this.goodId)
-      })
+      this.queryGood(this.goodId)
     },
     watch: {
       goodInfo: {
@@ -132,9 +140,10 @@
     display: flex;
     position: fixed;
     bottom: 110px;
-    width: 90%;
+    left: 20px;
+    width: 100%;
     text-align: center;
-    padding: 0 40px 10px;
+    padding: 0 40px 10px 0;
     justify-content: space-between;
     button {
       display: inline-block;
@@ -143,12 +152,12 @@
       padding: 10px 20px;
       &.icon-goumai{
         color: #E5511D;
-        border-color: #F0CAB6;
+        border: 1px solid #F0CAB6;
         background: #FFE4D0;
       }
       &.icon-cart {
         color: #FFF;
-        border-color: #F40;
+        border: 1px solid #F40;
         background: #F40;
       }
     }

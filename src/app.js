@@ -9,7 +9,7 @@ import 'assets/css/index.scss'
 
 import Ajax from './utils/_ajax'
 import MentUi from 'mint-ui'
-Vue.prototype.base_url = 'http://localhost'
+Vue.prototype.base_url = 'http://mg.vegetable.umcoder.com/public'
 
 Vue.use(MentUi)
 Vue.use(Ajax)
