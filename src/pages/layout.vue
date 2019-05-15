@@ -65,6 +65,7 @@
   import Chat from 'src/pages/user/chat'
   import Pay from 'src/pages/cart/pay'
   import Book from 'src/pages/good/book'
+  import UserService from 'src/api/user-service'
   export default {
     components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage, Chat, Coupon, Pay, Book },
     name: 'layout',
@@ -147,12 +148,19 @@
       saveUserInfo () {
         this.bottomActive = 'My'
         this.changMenu('User')
+      },
+      getUserId () {
+        this.$get(UserService.GET_USER_ID).then(res => {
+          if (res.code === 200) {
+          }
+        })
       }
     },
     created () {
       EventBus.$on('currentTabComponent', (data) => {
         this.changMenu(data)
       })
+      this.getUserId()
     },
     watch: {
       bottomActive: {

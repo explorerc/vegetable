@@ -112,7 +112,7 @@
     .head {
       position: fixed;
       display: flex;
-      top: 80px;
+      top: 0;
       left: 0;
       width: 100%;
       padding: 10px 0;

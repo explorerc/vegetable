@@ -29,13 +29,15 @@
             :value.sync="pickerValue">
     </mt-datetime-picker>
     </div>
-
+    <div class="buy">
+      <button class="iconfont icon-ic_reserve" @click="bookSubmit()">预定</button>
+    </div>
   </div>
 </template>
 
 <script>
   import EventBus from 'src/utils/eventBus'
-  // import goods from 'src/api/goods'
+  import order from 'src/api/orders'
   import goodInfo from 'src/components/good-info'
   import cart from 'src/api/cart'
   import NumberBtn from 'src/components/number-btn'
@@ -54,7 +56,6 @@
         pickerVisible: true,
         pickerValue: null,
         days: [],
-        week: [],
         weekday: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
       }
     },
@@ -114,6 +115,25 @@
             // console.log(res)
             alert(res.data)
           }
+        })
+      },
+      bookSubmit () {
+        let data = []
+        this.days.forEach((item, ind) => {
+          if (item.selected) {
+            data.push({
+              ...item,
+              userId: this.userInfo.id,
+              goodId: this.goodId
+            })
+          }
+          this.$post(order.POST_BOOK, {
+            bookInfo: data
+          }).then((res) => {
+            if (res.code === 200) {
+              console.log(res)
+            }
+          })
         })
       }
     },
@@ -181,14 +201,49 @@
     border-radius: 4px;
   }
   .time {
+        margin-top: 20px;
+    .title {
+      font-size: 32px;
+      color: #222;
+      margin-bottom: 15px;
+    }
       .day {
         display: inline-block;
-        width: 33%;
-        height: 80px;
+        width: 30%;
+        /*height: 80px;*/
+        padding: 10px 0 ;
+        background-color: #fff;
+        margin-right: 5%;
+        margin-bottom: 20px;
+        border: 3px solid #fff;
+        border-radius: 4px;
+        &:nth-child(3n+1) {
+          margin-right: 0;
+        }
+        &.selected {
+          border: 3px solid blue;
+        }
         p {
           text-align: center;
         }
       }
+  }
+  .buy {
+    position: fixed;
+    bottom: 110px;
+    left: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 0 40px 10px 0;
+    button {
+      display: inline-block;
+      font-size: 36px;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 40px;
+      border: 1px solid #F40;
+      background: #F40;
+    }
   }
 }
 </style>
