@@ -1,5 +1,5 @@
 <template>
-  <div class="cart">
+  <div class="cart" v-title data-title="购物车">
     <span>共有{{cartList.length}}件商品</span>
     <ul
       v-infinite-scroll="loadMore"
@@ -47,26 +47,7 @@
     data () {
       return {
         goodsNum: 0, // 购物车中有多少件商品
-        cartList: [
-          // {
-          //   id: 101,
-          //   name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
-          //   price: '123',
-          //   disprice: '111',
-          //   imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-          //   number: 1,
-          //   isChecked: false
-          // },
-          // {
-          //   id: 101,
-          //   name: '绿鲜知 三宝白菜 约1kg 火锅食材 新鲜蔬菜绿鲜知 三宝白菜 约1kg 火锅食材',
-          //   price: '123',
-          //   disprice: '111',
-          //   imgUrl: 'https://gd2.alicdn.com/imgextra/i2/2604680124/O1CN011CmpaBtCRK980u7_!!2604680124.jpg_400x400.jpg_.webp',
-          //   number: 1,
-          //   isChecked: false
-          // }
-        ],
+        cartList: [],
         selectedGoods: [],
         cartTotalMoney: 0, // 勾选的商品总价格
         isAllChecked: false, // 不是全选

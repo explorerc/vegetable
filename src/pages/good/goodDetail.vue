@@ -27,6 +27,11 @@
       <button class="iconfont icon-goumai">立即购买</button>
       <button class="iconfont icon-cart" @click="addCart(goodInfo.id)">加入购物车</button>
     </div>
+    <mt-popup
+            v-model="popPayVisible"
+            popup-transition="popup-fade">
+      <div class="pop-con">{{popCon}}</div>
+    </mt-popup>
   </div>
 </template>
 
@@ -42,7 +47,10 @@
       return {
         goodId: this.$route.params.id,
         goodInfo: [],
-        number: 1
+        number: 1,
+        popPayVisible: false,
+        popCon: '',
+        timer: null
       }
     },
     methods: {
@@ -80,7 +88,13 @@
         }).then((res) => {
           if (res.code === 200) {
             // console.log(res)
-            alert(res.data)
+            this.popPayVisible = true
+            this.popCon = res.msg
+            this.timer = setTimeout(function () {
+              clearTimeout(this.timer)
+              this.timer = null
+              this.popPayVisible = false
+            }, 3000)
           }
         })
       }

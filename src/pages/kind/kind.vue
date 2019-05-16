@@ -1,5 +1,5 @@
 <template>
-  <div class="kind" v-title data-title="商品分类">
+  <div class="kind" v-title data-title="分类">
     <div class="head">
       <search></search>
     </div>
@@ -79,7 +79,7 @@
           'number': 1
         }).then((res) => {
           if (res.code === 200) {
-            this.popContent = res.data
+            this.popContent = res.msg
             this.popupVisible = true
             // if (this.timer) return
             this.timer = setTimeout(function () {
