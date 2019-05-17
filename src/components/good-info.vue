@@ -102,9 +102,7 @@
       goodDetail () {
         this.goodsId = this.goodInfo.goodId ? this.goodInfo.goodId : this.goodInfo.id
         EventBus.$emit('currentTabComponent', 'GoodDetail')
-        setTimeout(() => {
-          EventBus.$emit('goodsId', this.goodsId)
-        }, 0)
+        this.$router.replace(`/goodDetail/${this.goodsId}`)
       },
       // 未付款时，取消订单
       cancelOrder () {

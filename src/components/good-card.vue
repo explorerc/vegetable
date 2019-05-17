@@ -38,9 +38,10 @@
         // alert('123123')
         // this.$router.push(`/goodDetail/${id}`)
         EventBus.$emit('currentTabComponent', 'GoodDetail')
-        setTimeout(() => {
-          EventBus.$emit('goodsId', id)
-        }, 0)
+        this.$router.replace(`/goodDetail/${id}`)
+        // setTimeout(() => {
+        //   EventBus.$emit('goodsId', id)
+        // }, 0)
       }
     }
   }

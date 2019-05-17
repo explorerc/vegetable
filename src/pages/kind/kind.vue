@@ -1,5 +1,5 @@
 <template>
-  <div class="kind" v-title data-title="商品分类">
+  <div class="kind" v-title data-title="分类">
     <div class="head">
       <search></search>
     </div>
@@ -48,18 +48,12 @@
     },
     methods: {
       changeKind (id) {
-        this.index = id
-        // 根据kind的id查询数据
-        this.goodKindInfo = []
-        if (id === 0) {
-          this.goodKindInfo = this.goodInfo
-        } else {
-          for (let i = 0; i < this.goodInfo.length; i++) {
-            if (this.goodInfo[i].kindId === id) {
-              this.goodKindInfo.push(this.goodInfo[i])
-            }
+        this.index = parseInt(id)
+        this.$get(goods.GET_GOOD_KIND, {kindId: id}).then(res => {
+          if (res.code === 200) {
+            this.goodKindInfo = res.data
           }
-        }
+        })
       },
       // 获取净菜的分类
       queryKind () {
@@ -69,14 +63,14 @@
           }
         })
       },
-      queryGoodInfo () {
-        this.$get(goods.GET_GOODS_INFO, {}).then(res => {
-          if (res.code === 200) {
-            this.goodInfo = res.data
-            this.goodKindInfo = this.goodInfo
-          }
-        })
-      },
+      // queryGoodInfo () {
+      //   this.$get(goods.GET_GOODS_INFO, {}).then(res => {
+      //     if (res.code === 200) {
+      //       this.goodInfo = res.data
+      //       this.goodKindInfo = this.goodInfo
+      //     }
+      //   })
+      // },
       addCart (goodId) {
         // alert(goodId)
         this.$get(cart.GET_CART_ADD, {
@@ -85,7 +79,7 @@
           'number': 1
         }).then((res) => {
           if (res.code === 200) {
-            this.popContent = res.data
+            this.popContent = res.msg
             this.popupVisible = true
             // if (this.timer) return
             this.timer = setTimeout(function () {
@@ -98,12 +92,14 @@
       }
     },
     created () {
-      this.queryKind()
-      this.queryGoodInfo()
       EventBus.$on('kindId', (data) => {
-        this.index = data
-        // console.log(this.index)
+        this.index = parseInt(data)
       })
+      let _this = this
+      setTimeout(() => {
+        _this.changeKind(_this.index)
+      }, 0)
+      this.queryKind()
     }
   }
 </script>

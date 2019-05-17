@@ -68,7 +68,7 @@ export default {
   methods: {
     // 获取净菜的分类
     queryKind () {
-      this.$get(this.base_url + kind.GET_KIND_INFO, {}).then((res) => {
+      this.$get(kind.GET_KIND_INFO, {}).then((res) => {
         if (res.code === 200) {
           this.kindList = res.data
         }

@@ -11,14 +11,15 @@
         <!--<mt-button icon="more" slot="right" v-if="headTitle!=='购物车'"></mt-button>-->
       <!--</mt-header>-->
     <!--</div>-->
-    <keep-alive include="Kind,Home">
-      <component
-              :is="currentTabComponent"
-              :isCartMange="isCartMange"
-              @kindClick="changMenu('Kind')"
-              @saveUserInfo="changMenu('My')"
-      ></component>
-    </keep-alive>
+    <!--<keep-alive include="Kind,Home">-->
+      <!--<component-->
+              <!--:is="currentTabComponent"-->
+              <!--:isCartMange="isCartMange"-->
+              <!--@kindClick="changMenu('Kind')"-->
+              <!--@saveUserInfo="changMenu('My')"-->
+      <!--&gt;</component>-->
+    <!--</keep-alive>-->
+    <router-view></router-view>
     <!--<bottomNav @change="changMenu"></bottomNav>-->
     <div class="bottom-nav" v-if="this.headTitle !== '联系卖家'">
       <mt-tabbar v-model="selected = bottomActive" class="is-fixed">
@@ -63,8 +64,10 @@
   import SearchPage from 'src/pages/good/search'
   import Chat from 'src/pages/user/chat'
   import Pay from 'src/pages/cart/pay'
+  import Book from 'src/pages/good/book'
+  import UserService from 'src/api/user-service'
   export default {
-    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage, Chat, Coupon, Pay },
+    components: { Home, User, Record, Cart, bottomNav, headNav, Kind, GoodDetail, Edit, SearchPage, Chat, Coupon, Pay, Book },
     name: 'layout',
     props: {
     },
@@ -82,49 +85,53 @@
       changMenu (value) {
         // debugger
         if (value === 'Home') {
-          this.currentTabComponent = Home
-          this.headTitle = '商城首页'
           this.bottomActive = 'Home'
+          this.$router.replace('/home')
         } else if (value === 'User') {
-          this.currentTabComponent = User
-          this.headTitle = '个人中心'
           this.bottomActive = 'User'
+          this.$router.replace('/user')
         } else if (value === 'Record') {
-          this.currentTabComponent = Record
-          this.bottomActive = 'Record'
           this.headTitle = '购买记录'
+          this.$router.replace('/record')
         } else if (value === 'Cart') {
-          this.currentTabComponent = Cart
-          this.headTitle = '购物车'
           this.bottomActive = 'Cart'
+          this.$router.replace('/cart')
         } else if (value === 'Kind') {
-          this.currentTabComponent = Kind
-          this.headTitle = '商品分类'
           this.bottomActive = 'Kind'
+          this.$router.replace('/kind')
         } else if (value === 'GoodDetail') {
           this.currentTabComponent = GoodDetail
           this.headTitle = '商品详情'
           this.bottomActive = ''
         } else if (value === 'Edit') {
-          this.currentTabComponent = Edit
-          this.headTitle = '编辑个人信息'
+          // this.currentTabComponent = Edit
+          // this.headTitle = '编辑个人信息'
           this.bottomActive = ''
+          this.$router.replace('/edit')
         } else if (value === 'SearchPage') {
-          this.currentTabComponent = SearchPage
-          this.headTitle = '商品搜索'
+          // this.currentTabComponent = SearchPage
+          // this.headTitle = '商品搜索'
           this.bottomActive = ''
+          this.$router.replace('/search')
         } else if (value === 'Chat') {
-          this.currentTabComponent = Chat
-          this.headTitle = '联系卖家'
+          // this.currentTabComponent = Chat
+          // this.headTitle = '联系卖家'
           this.bottomActive = ''
         } else if (value === 'Coupon') {
-          this.currentTabComponent = Coupon
-          this.headTitle = '优惠券'
+          // this.currentTabComponent = Coupon
+          // this.headTitle = '优惠券'
           this.bottomActive = ''
+          this.$router.replace('/coupon')
         } else if (value === 'Pay') {
-          this.currentTabComponent = Pay
-          this.headTitle = '支付'
+          // this.currentTabComponent = Pay
+          // this.headTitle = '支付'
           this.bottomActive = ''
+          this.$router.replace('/pay')
+        } else if (value === 'Book') {
+          // this.currentTabComponent = Book
+          // this.headTitle = '预定'
+          this.bottomActive = ''
+          this.$router.replace('/book')
         }
       },
       // 购物车是否处于管理状态
@@ -141,12 +148,19 @@
       saveUserInfo () {
         this.bottomActive = 'My'
         this.changMenu('User')
+      },
+      getUserId () {
+        this.$get(UserService.GET_USER_ID).then(res => {
+          if (res.code === 200) {
+          }
+        })
       }
     },
     created () {
       EventBus.$on('currentTabComponent', (data) => {
         this.changMenu(data)
       })
+      this.getUserId()
     },
     watch: {
       bottomActive: {
