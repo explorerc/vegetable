@@ -1,6 +1,10 @@
 <template>
   <div class="book"  v-title data-title="预定">
-
+    <goodInfo
+      :goodInfo="goodInfo"
+      :isCartShow="isCartShow"
+      @minusNumberClick="minusNumberClick(goodInfo.id)"
+      @addNumberClick="addNumberClick(goodInfo.id)"></goodInfo>
   </div>
 </template>
 
